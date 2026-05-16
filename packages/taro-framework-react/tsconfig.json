@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "esModuleInterop": true,
-    "module": "ESNext"
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "include": ["./src", "./rollup.config.ts"]
 }
