@@ -122,22 +122,12 @@ export default class CLI {
           // 针对不同的内置平台注册对应的端平台插件
           switch (platform) {
             case 'weapp':
-            case 'ascf':
-            case 'alipay':
-            case 'swan':
-            case 'tt':
-            case 'qq':
-            case 'jd':
-            case 'h5':
-            case 'harmony-hybrid':
               kernel.optsPlugins.push(`@tarojs/plugin-platform-${platform}`)
               break
             default: {
-              // plugin, rn
-              const platformPlugins = fs.readdirSync(platformsPath)
-              const targetPlugin = `${platform}.js`
-              if (platformPlugins.includes(targetPlugin)) {
-                kernel.optsPlugins.push(path.resolve(platformsPath, targetPlugin))
+              if (platform) {
+                console.log('当前 Fork 仅支持微信小程序（weapp）构建。')
+                return
               }
               break
             }
@@ -145,24 +135,22 @@ export default class CLI {
 
           // 根据 framework 启用插件
           const framework = kernel.config?.initialConfig.framework || DEFAULT_FRAMEWORK
-          const frameworkMap = {
-            vue3: '@tarojs/plugin-framework-vue3',
-            react: '@tarojs/plugin-framework-react',
-            preact: '@tarojs/plugin-framework-react',
-            solid: '@tarojs/plugin-framework-solid',
+          if (framework !== 'react') {
+            console.log('当前 Fork 仅支持 React 框架。')
+            return
           }
-          if (frameworkMap[framework]) {
-            kernel.optsPlugins.push(frameworkMap[framework])
-          }
+          kernel.optsPlugins.push('@tarojs/plugin-framework-react')
 
           // 编译小程序插件
           if (typeof args.plugin === 'string') {
             plugin = args.plugin
+            if (plugin !== 'weapp') {
+              console.log('当前 Fork 仅支持 weapp 小程序插件编译。')
+              return
+            }
             platform = 'plugin'
             kernel.optsPlugins.push(path.resolve(platformsPath, 'plugin.js'))
-            if (plugin === 'weapp' || plugin === 'alipay' || plugin === 'jd') {
-              kernel.optsPlugins.push(`@tarojs/plugin-platform-${plugin}`)
-            }
+            kernel.optsPlugins.push(`@tarojs/plugin-platform-${plugin}`)
           }
 
           // 传递 inspect 参数即可

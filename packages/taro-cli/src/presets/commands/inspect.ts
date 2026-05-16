@@ -16,7 +16,7 @@ export default (ctx: IPluginContext) => {
   ctx.registerCommand({
     name: 'inspect',
     optionsMap: {
-      '-t, --type [typeName]': 'Build type, weapp/swan/alipay/tt/h5/quickapp/rn/qq/jd',
+      '-t, --type [typeName]': 'Build type, weapp',
       '-o, --output [outputPath]': 'output config to outputPath'
     },
     synopsisList: [
@@ -104,6 +104,10 @@ function verifyIsTaroProject (ctx: IPluginContext) {
 function verifyPlatform (platform, chalk) {
   if (typeof platform !== 'string') {
     console.log(chalk.red('请传入正确的编译类型！'))
+    process.exit(0)
+  }
+  if (platform !== 'weapp') {
+    console.log(chalk.red('当前 Fork 仅支持 weapp 平台检查。'))
     process.exit(0)
   }
 }

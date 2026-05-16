@@ -535,8 +535,7 @@ export async function stylePostPlugin(_viteCompilerContext: ViteHarmonyCompilerC
       return null
     },
     async generateBundle(opts, bundle) {
-      // @ts-expect-error asset emits are skipped in legacy bundle
-      if (opts.__vite_skip_asset_emit__) {
+      if ((opts as any).__vite_skip_asset_emit__) {
         return
       }
 

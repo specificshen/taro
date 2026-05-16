@@ -205,7 +205,7 @@ export async function compileCSS(
 
           return id
         },
-      }),
+      }) as any,
     )
   }
 

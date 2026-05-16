@@ -14,12 +14,6 @@ const PAGES_ENTRY = '/src/pages'
 const handler = {
   '/tsconfig.json': createWhenTs,
   '/types/global.d.ts': createWhenTs,
-  '/types/vue.d.ts' (err, { framework, typescript }) {
-    return ['Vue3'].includes(framework) && !!typescript
-  },
-  '/types/solid.d.ts' (err, { framework, typescript }) {
-    return ['Solid'].includes(framework) && !!typescript
-  },
   '/src/pages/index/index.jsx' (err, { pageDir = '', pageName = '', subPkg = '' }) {
     return {
       setPageName: normalizePath(path.join(PAGES_ENTRY, pageDir, pageName, 'index.jsx')),
@@ -30,12 +24,6 @@ const handler = {
     return {
       setPageName: normalizePath(path.join(PAGES_ENTRY, pageDir, pageName, 'index.css')),
       setSubPkgName: normalizePath(path.join(SOURCE_ENTRY, subPkg, pageDir, pageName, 'index.css'))
-    }
-  },
-  '/src/pages/index/index.vue' (err, { pageDir = '', pageName = '', subPkg = '' }) {
-    return {
-      setPageName: normalizePath(path.join(PAGES_ENTRY, pageDir, pageName, 'index.vue')),
-      setSubPkgName: normalizePath(path.join(SOURCE_ENTRY, subPkg, pageDir, pageName, 'index.vue'))
     }
   },
   '/src/pages/index/index.config.js' (err, { pageDir = '', pageName = '', subPkg = '' }) {
@@ -66,7 +54,6 @@ const handler = {
 
 const basePageFiles = [
   '/src/pages/index/index.jsx',
-  '/src/pages/index/index.vue',
   '/src/pages/index/index.css',
   '/src/pages/index/index.config.js'
 ]

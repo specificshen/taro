@@ -117,7 +117,7 @@ describe('inspect', () => {
       const appPath = path.resolve(__dirname, 'fixtures/default')
       await runInspect(appPath, {
         options: {
-          type: 'h5'
+          type: 'weapp'
         },
         args: ['resolve.mainFields.0']
       })
@@ -125,7 +125,7 @@ describe('inspect', () => {
 
     expect(exitSpy).toBeCalledWith(0)
     expect(logSpy).toBeCalledTimes(1)
-    expect(logSpy).toBeCalledWith('\'main:h5\'')
+    expect(logSpy).toBeCalledWith('\'browser\'')
 
     exitSpy.mockRestore()
     logSpy.mockRestore()

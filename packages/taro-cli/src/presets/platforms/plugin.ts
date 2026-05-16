@@ -16,16 +16,13 @@ export default (ctx: IPluginContext) => {
         _
       } = ctx.runOpts
       const { chalk, PLATFORMS } = ctx.helper
-      const { ASCF, WEAPP, ALIPAY, JD } = PLATFORMS
+      const { WEAPP } = PLATFORMS
       const typeMap = {
-        [ASCF]: 'ASCF',
-        [JD]: '京东',
         [WEAPP]: '微信',
-        [ALIPAY]: '支付宝'
       }
       const { plugin, isWatch } = options
-      if (plugin !== ASCF && plugin !== WEAPP && plugin !== ALIPAY && plugin !== JD) {
-        console.log(chalk.red('目前插件编译仅支持 ASCF/微信/支付宝/京东 小程序！'))
+      if (plugin !== WEAPP) {
+        console.log(chalk.red('当前 Fork 仅支持微信小程序插件编译！'))
         return
       }
       console.log(chalk.green(`开始编译${typeMap[plugin]}小程序插件`))
