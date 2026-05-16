@@ -9,7 +9,9 @@ import { componentConfig } from './utils/component'
 import type { ViteH5BuildConfig } from '@tarojs/taro/types/compile/viteCompilerContext'
 import type { InlineConfig, UserConfig } from 'vite'
 
-const legacy = require('@vitejs/plugin-legacy').default as (options?: any) => any
+type LegacyPluginFactory = (options?: Record<string, unknown>) => unknown
+
+const legacy = require('@vitejs/plugin-legacy').default as LegacyPluginFactory
 
 export default async function (appPath: string, rawTaroConfig: ViteH5BuildConfig) {
   const viteCompilerContext = new TaroCompilerContext(appPath, rawTaroConfig)
