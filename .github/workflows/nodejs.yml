@@ -67,12 +67,6 @@ jobs:
           flags: taro-cli
           files: ./packages/taro-cli/coverage/clover.xml
           token: ${{ secrets.CODECOV_TOKEN }}
-      - name: Upload runtime coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          flags: taro-runtime
-          files: ./packages/taro-runtime/coverage/clover.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload components coverage to Codecov
         uses: codecov/codecov-action@v5
         with:

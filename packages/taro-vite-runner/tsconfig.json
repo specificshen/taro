@@ -6,8 +6,7 @@
     "lib": ["ESNext"],
     "outDir": "dist",
     "rootDir": "./src",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "module": "commonjs",
     "sourceMap": true,
     "esModuleInterop": true,
     "preserveConstEnums": true
