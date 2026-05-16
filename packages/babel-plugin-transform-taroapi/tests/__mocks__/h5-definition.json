@@ -2189,7 +2189,6 @@
       "type": "Type"
     },
     "image": {
-      "lang": "string",
       "lazyLoad": "boolean",
       "mode": "Mode",
       "nativeProps": "*",
@@ -2287,6 +2286,7 @@
     "official-account": {},
     "open-container": {},
     "open-data": {},
+    "open-embedded-atomicservice": {},
     "page-container": {},
     "page-meta": {},
     "pan-gesture-handler": {},
