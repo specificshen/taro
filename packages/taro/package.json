@@ -20,7 +20,7 @@
     "taro"
   ],
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "@tarojs/api": "workspace:*",
@@ -41,7 +41,7 @@
     "@tarojs/components": "workspace:*",
     "@tarojs/helper": "workspace:*",
     "@tarojs/shared": "workspace:*",
-    "@types/react": "^18",
+    "@types/react": "^19",
     "html-webpack-plugin": "^5",
     "rollup": "^3",
     "postcss": "^8",

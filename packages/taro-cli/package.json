@@ -40,7 +40,7 @@
     "weapp"
   ],
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "@tarojs/binding": "workspace:*",
@@ -62,7 +62,6 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.0",
-    "@tarojs/plugin-platform-h5": "workspace:*",
     "@tarojs/plugin-platform-weapp": "workspace:*",
     "@tarojs/taro": "workspace:*",
     "@tarojs/webpack5-runner": "workspace:*",

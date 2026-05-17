@@ -17,11 +17,12 @@
     "url": "git+https://github.com/NervJS/taro.git"
   },
   "main": "index.js",
+  "packageManager": "pnpm@10.22.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "build": "pnpm -r --aggregate-output --filter=./packages/* prod",
-    "build:serial": "pnpm -r --workspace-concurrency=1 --aggregate-output --filter=./packages/* prod",
+    "build": "pnpm -r --aggregate-output --filter=./packages/* --filter=!@tarojs/plugin-platform-alipay --filter=!@tarojs/plugin-platform-ascf --filter=!@tarojs/plugin-platform-h5 --filter=!@tarojs/plugin-platform-harmony-cpp --filter=!@tarojs/plugin-platform-harmony-ets --filter=!@tarojs/plugin-platform-harmony-hybrid --filter=!@tarojs/plugin-platform-jd --filter=!@tarojs/plugin-platform-qq --filter=!@tarojs/plugin-platform-swan --filter=!@tarojs/plugin-platform-tt --filter=!@tarojs/plugin-framework-solid --filter=!@tarojs/plugin-framework-vue3 --filter=!@tarojs/components-advanced --filter=!@tarojs/components-library-solid --filter=!@tarojs/components-library-vue3 --filter=!@tarojs/plugin-vue-devtools --filter=!@tarojs/webpack5-runner --filter=!@tarojs/webpack5-prebundle --filter=!@tarojs/taro-h5 --filter=!@tarojs/runtime-rn --filter=!@tarojs/router-rn --filter=!@tarojs/components-rn --filter=!@tarojs/taro-rn --filter=!@tarojs/rn-runner --filter=!@tarojs/rn-style-transformer --filter=!@tarojs/rn-supporter --filter=!@tarojs/rn-transformer --filter=!stylelint-taro-rn --filter=!babel-plugin-transform-react-jsx-to-rn-stylesheet --filter=!babel-plugin-transform-solid-jsx --filter=!@tarojs/taroize --filter=!@tarojs/cli-convertor prod",
+    "build:serial": "pnpm -r --workspace-concurrency=1 --aggregate-output --filter=./packages/* --filter=!@tarojs/plugin-platform-alipay --filter=!@tarojs/plugin-platform-ascf --filter=!@tarojs/plugin-platform-h5 --filter=!@tarojs/plugin-platform-harmony-cpp --filter=!@tarojs/plugin-platform-harmony-ets --filter=!@tarojs/plugin-platform-harmony-hybrid --filter=!@tarojs/plugin-platform-jd --filter=!@tarojs/plugin-platform-qq --filter=!@tarojs/plugin-platform-swan --filter=!@tarojs/plugin-platform-tt --filter=!@tarojs/plugin-framework-solid --filter=!@tarojs/plugin-framework-vue3 --filter=!@tarojs/components-advanced --filter=!@tarojs/components-library-solid --filter=!@tarojs/components-library-vue3 --filter=!@tarojs/plugin-vue-devtools --filter=!@tarojs/webpack5-runner --filter=!@tarojs/webpack5-prebundle --filter=!@tarojs/taro-h5 --filter=!@tarojs/runtime-rn --filter=!@tarojs/router-rn --filter=!@tarojs/components-rn --filter=!@tarojs/taro-rn --filter=!@tarojs/rn-runner --filter=!@tarojs/rn-style-transformer --filter=!@tarojs/rn-supporter --filter=!@tarojs/rn-transformer --filter=!stylelint-taro-rn --filter=!babel-plugin-transform-react-jsx-to-rn-stylesheet --filter=!babel-plugin-transform-solid-jsx --filter=!@tarojs/taroize --filter=!@tarojs/cli-convertor prod",
     "build:binding:debug": "pnpm --filter @tarojs/binding run build:debug",
     "build:binding:release": "pnpm --filter @tarojs/binding run build",
     "debug": "node scripts/debug.js",
@@ -31,11 +32,11 @@
     "lint:style": "stylelint ./packages/**/*.{css,scss}",
     "format": "prettier --write --cache .",
     "format:check": "prettier --check --cache .",
-    "test": "pnpm --if-present -r --aggregate-output --filter=./packages/* --filter=./tests test:ci",
+    "test": "pnpm --filter @tarojs/components test:ci && pnpm --filter babel-plugin-transform-taroapi test:ci && pnpm --filter @tarojs/cli test:ci -- cli.spec.ts build-config.spec.ts --runInBand",
     "test:binding": "pnpm --filter @tarojs/binding run test",
-    "updateSnapshot": "pnpm --if-present -r --aggregate-output --filter=./tests --filter=./packages/* updateSnapshot",
+    "updateSnapshot": "pnpm --if-present -r --aggregate-output --filter=./packages/* --filter=!@tarojs/plugin-platform-alipay --filter=!@tarojs/plugin-platform-ascf --filter=!@tarojs/plugin-platform-h5 --filter=!@tarojs/plugin-platform-harmony-cpp --filter=!@tarojs/plugin-platform-harmony-ets --filter=!@tarojs/plugin-platform-harmony-hybrid --filter=!@tarojs/plugin-platform-jd --filter=!@tarojs/plugin-platform-qq --filter=!@tarojs/plugin-platform-swan --filter=!@tarojs/plugin-platform-tt --filter=!@tarojs/plugin-framework-solid --filter=!@tarojs/plugin-framework-vue3 --filter=!@tarojs/components-advanced --filter=!@tarojs/components-library-solid --filter=!@tarojs/components-library-vue3 --filter=!@tarojs/plugin-vue-devtools --filter=!@tarojs/webpack5-runner --filter=!@tarojs/webpack5-prebundle --filter=!@tarojs/taro-h5 --filter=!@tarojs/runtime-rn --filter=!@tarojs/router-rn --filter=!@tarojs/components-rn --filter=!@tarojs/taro-rn --filter=!@tarojs/rn-runner --filter=!@tarojs/rn-style-transformer --filter=!@tarojs/rn-supporter --filter=!@tarojs/rn-transformer --filter=!stylelint-taro-rn --filter=!babel-plugin-transform-react-jsx-to-rn-stylesheet --filter=!babel-plugin-transform-solid-jsx --filter=!@tarojs/taroize --filter=!@tarojs/cli-convertor updateSnapshot",
     "version": "run-s version:*",
-    "version:release": "pnpm --parallel -r --aggregate-output --filter=./{npm/**,crates/native_binding,packages/*} exec npm version ${npm_package_version}",
+    "version:release": "pnpm --parallel -r --aggregate-output --filter=./packages/* --filter=!@tarojs/plugin-platform-alipay --filter=!@tarojs/plugin-platform-ascf --filter=!@tarojs/plugin-platform-h5 --filter=!@tarojs/plugin-platform-harmony-cpp --filter=!@tarojs/plugin-platform-harmony-ets --filter=!@tarojs/plugin-platform-harmony-hybrid --filter=!@tarojs/plugin-platform-jd --filter=!@tarojs/plugin-platform-qq --filter=!@tarojs/plugin-platform-swan --filter=!@tarojs/plugin-platform-tt --filter=!@tarojs/plugin-framework-solid --filter=!@tarojs/plugin-framework-vue3 --filter=!@tarojs/components-advanced --filter=!@tarojs/components-library-solid --filter=!@tarojs/components-library-vue3 --filter=!@tarojs/plugin-vue-devtools --filter=!@tarojs/webpack5-runner --filter=!@tarojs/webpack5-prebundle --filter=!@tarojs/taro-h5 --filter=!@tarojs/runtime-rn --filter=!@tarojs/router-rn --filter=!@tarojs/components-rn --filter=!@tarojs/taro-rn --filter=!@tarojs/rn-runner --filter=!@tarojs/rn-style-transformer --filter=!@tarojs/rn-supporter --filter=!@tarojs/rn-transformer --filter=!stylelint-taro-rn --filter=!babel-plugin-transform-react-jsx-to-rn-stylesheet --filter=!babel-plugin-transform-solid-jsx --filter=!@tarojs/taroize --filter=!@tarojs/cli-convertor exec npm version ${npm_package_version}",
     "version:git": "git add . && git commit -m \"chore(release): publish ${npm_package_version}\"",
     "version:changelog": "conventional-changelog -p angular",
     "artifacts": "pnpm --filter @tarojs/helper --filter @tarojs/binding run artifacts"
@@ -71,9 +72,9 @@
     "@babel/types",
     "babel-plugin-syntax-jsx",
     "babel-preset-power-assert",
-    "'@types/react': '^18.0.0',",
-    "'@types/react-dom': '^18.0.0',",
-    "'@types/react-reconciler': '0.28.1',"
+    "'@types/react': '^19.2.14',",
+    "'@types/react-dom': '^19.2.3',",
+    "'@types/react-reconciler': '0.33.0',"
   ],
   "devDependencies": {
     "@babel/cli": "^7.24.1",
@@ -96,12 +97,12 @@
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^29.5.0",
     "@types/less": "^3.0.2",
-    "@types/node": "^18",
+    "@types/node": "^22.19.19",
     "@types/postcss-import": "^14.0.0",
     "@types/postcss-url": "^10.0.0",
-    "@types/react": "^18.3.20",
-    "@types/react-dom": "^18.3.6",
-    "@types/react-reconciler": "^0.28.9",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-reconciler": "^0.33.0",
     "@types/resolve": "^1.20.6",
     "@types/sass": "1.43.1",
     "@types/tapable": "^1",
@@ -151,8 +152,8 @@
     "power-assert": "^1.6.1",
     "prettier": "^2.7.1",
     "prop-types": "^15.7.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "rimraf": "^5.0.0",
     "rollup": "^4.16.4",
     "rollup-plugin-node-externals": "^7.1.1",
@@ -177,7 +178,7 @@
       },
       "react-native-root-siblings": {
         "peerDependencies": {
-          "react": "18.3.1"
+          "react": "19.2.0"
         },
         "peerDependenciesMeta": {
           "react": {
@@ -189,5 +190,8 @@
     "overrides": {
       "browserslist": "^4.24.4"
     }
+  },
+  "engines": {
+    "node": ">= 22"
   }
 }

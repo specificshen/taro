@@ -28,7 +28,7 @@ export default function ({ include = [], comparisonId, force = false }: IOption 
     generateBundle(_outputOpts, bundle) {
       if (firstGenerate || !this.meta.watchMode || force === true) return
 
-      const chunks = Object.values(bundle)
+      const chunks = Object.values(bundle) as Array<any>
       for (const chunk of chunks) {
         if (files.has(chunk.fileName)) continue
         if (include.some(f => {

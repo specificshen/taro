@@ -55,6 +55,8 @@ interface AskMethods {
 }
 
 const NONE_AVAILABLE_TEMPLATE = '无可用模板'
+const SUPPORTED_FRAMEWORK = FrameworkType.React
+const SUPPORTED_COMPILER = CompilerType.Vite
 
 export default class Project extends Creator {
   public rootPath: string
@@ -105,22 +107,25 @@ export default class Project extends Creator {
 
     this.askProjectName(conf, prompts)
     this.askDescription(conf, prompts)
-    this.askFramework(conf, prompts)
     this.askTypescript(conf, prompts)
     this.askBuildEs5(conf, prompts)
     this.askCSS(conf, prompts)
     this.askNpm(conf, prompts)
     const answers = await inquirer.prompt<IProjectConf>(prompts)
 
-    // Note: 由于 Solid 框架适配 Vite 还存在某些问题，所以在选择 Solid 框架时，不再询问编译工具
-    prompts = []
-    if (answers.framework === FrameworkType.Solid || conf.framework === FrameworkType.Solid) {
-      answers.compiler = CompilerType.Webpack5
-    } else {
-      this.askCompiler(conf, prompts)
+    if (conf.framework && conf.framework !== SUPPORTED_FRAMEWORK) {
+      console.log(chalk.yellow('当前 Fork 仅支持 React 模板，将自动切换为 React。'))
     }
+    if (conf.compiler && conf.compiler !== SUPPORTED_COMPILER) {
+      console.log(chalk.yellow('当前 Fork 仅支持 Vite 编译，将自动切换为 Vite。'))
+    }
+    answers.framework = SUPPORTED_FRAMEWORK
+    answers.compiler = SUPPORTED_COMPILER
+
+    prompts = []
     await this.askTemplateSource(conf, prompts)
     const compilerAndTemplateSourceAnswer = await inquirer.prompt<IProjectConf>(prompts)
+    compilerAndTemplateSourceAnswer.compiler = SUPPORTED_COMPILER
 
     prompts = []
     const templates = await this.fetchTemplates(Object.assign({}, answers, compilerAndTemplateSourceAnswer))

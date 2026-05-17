@@ -55,7 +55,7 @@ const DEFAULT_TEMPLATE_INFO = {
   name: 'default',
   css: CSSType.None,
   typescript: false,
-  compiler: CompilerType.Webpack5,
+  compiler: CompilerType.Vite,
   framework: FrameworkType.React
 }
 

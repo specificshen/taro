@@ -15,7 +15,7 @@
     "updateSnapshot": "vitest run --updateSnapshot"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "lodash": "^4.17.21"

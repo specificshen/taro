@@ -30,7 +30,7 @@
     "url": "https://github.com/NervJS/taro/issues"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "acorn": "^8.11.3",
@@ -45,7 +45,7 @@
     "@tarojs/service": "workspace:*",
     "@tarojs/taro": "workspace:*",
     "webpack-chain": "^6.5.1",
-    "vite": "^4.2.0"
+    "vite": "^8.0.13"
   },
   "peerDependencies": {
     "@tarojs/helper": "workspace:*",
@@ -54,10 +54,10 @@
     "@pmmmwh/react-refresh-webpack-plugin": "*",
     "@preact/preset-vite": "^2",
     "@prefresh/webpack": "^4",
-    "@vitejs/plugin-react": "^4",
+    "@vitejs/plugin-react": "^6",
     "preact": "^10",
-    "react": "^18",
-    "vite": "^4",
+    "react": "^19",
+    "vite": "^8",
     "webpack": "^5"
   },
   "peerDependenciesMeta": {

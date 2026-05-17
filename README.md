@@ -63,6 +63,14 @@
 
 开放式跨端跨框架解决方案，支持使用 React/Vue/Nerv 等框架来开发微信/京东/百度/支付宝/字节跳动/ QQ 小程序/H5/React Native 等应用。现如今市面上端的形态多种多样，Web、React Native、微信小程序等各种端大行其道，当业务要求同时在不同的端都要求有所表现的时候，针对不同的端去编写多套代码的成本显然非常高，这时候只编写一套代码就能够适配到多端的能力就显得极为需要
 
+### 当前 fork 支持范围
+
+- 仅保证 **React + 微信小程序（WeApp）**
+- 默认并推荐使用 **Vite**
+- CI / build / publish 已收敛到 React + WeApp 保留链路
+- 本 fork 不再保证 H5、React Native、Harmony 以及 Vue / Solid 相关能力可用
+- 建议使用 **Node.js 22+** 与 **pnpm 10**
+
 ### 版本迁移
 
 Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https://docs.taro.zone/blog/2020-09-01-taro-versions)

@@ -39,7 +39,7 @@ export async function resolvePostcssConfig(
     const searchPath =
       typeof inlineOptions === 'string' ? inlineOptions : config.root
     try {
-      result = await postcssRC({}, searchPath)
+      result = await postcssRC({}, searchPath) as any
     } catch (e) {
       if (!/No PostCSS Config found/.test(e.message)) {
         if (e instanceof Error) {

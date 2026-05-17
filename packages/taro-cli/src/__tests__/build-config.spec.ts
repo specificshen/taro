@@ -6,8 +6,7 @@ import { run } from './utils'
 
 const runBuild = run('build', [
   'commands/build',
-  require.resolve('@tarojs/plugin-platform-weapp'),
-  require.resolve('@tarojs/plugin-platform-h5')
+  require.resolve('@tarojs/plugin-platform-weapp')
 ])
 
 jest.mock('@tarojs/helper', () => {
@@ -61,35 +60,6 @@ describe('构建配置测试', () => {
         // no handler
       }
       expect(emptyDirectoryMocked).toBeCalledWith(OUTPUT_PATH, { excludes: ['project.config.json'] })
-
-      exitSpy.mockRestore()
-      logSpy.mockRestore()
-      errorSpy.mockRestore()
-    })
-  })
-
-  describe('h5', () => {
-    it('output.clean = false ==> 保留dist文件夹', async () => {
-      const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>
-      const logSpy = jest.spyOn(console, 'log')
-      const errorSpy = jest.spyOn(console, 'error')
-      logSpy.mockImplementation(() => {})
-      errorSpy.mockImplementation(() => {})
-      exitSpy.mockImplementation(() => {
-        throw new Error()
-      })
-
-      try {
-        await runBuild(APP_PATH, {
-          options: {
-            type: 'h5',
-            platform: 'h5'
-          }
-        })
-      } catch (error) {
-        // no handler
-      }
-      expect(emptyDirectoryMocked).toBeCalledTimes(0)
 
       exitSpy.mockRestore()
       logSpy.mockRestore()

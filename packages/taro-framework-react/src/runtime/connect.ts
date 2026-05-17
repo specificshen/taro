@@ -52,7 +52,7 @@ export function setReconciler (ReactDOM?) {
 
   if (process.env.TARO_PLATFORM === 'web') {
     hooks.tap('createPullDownComponent', (
-      el: React.FunctionComponent<PageProps> | React.ComponentClass<PageProps>,
+      el: ((props: PageProps) => React.ReactNode) | React.ComponentClass<PageProps>,
       _,
       R: typeof React,
       customWrapper
