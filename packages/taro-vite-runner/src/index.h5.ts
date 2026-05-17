@@ -1,5 +1,6 @@
 import { isString } from '@tarojs/shared'
 import { build, createServer } from 'vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import h5Preset from './h5'
 import { convertCopyOptions, getMode } from './utils'
@@ -32,7 +33,7 @@ export default async function (appPath: string, rawTaroConfig: ViteH5BuildConfig
 
   // copy-plugin
   if (taroConfig.copy?.patterns?.length) {
-    plugins.push(require('vite-plugin-static-copy').viteStaticCopy({
+    plugins.push(viteStaticCopy({
       targets: convertCopyOptions(taroConfig)
     }))
   }
