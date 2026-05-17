@@ -69,7 +69,7 @@
 - 默认并推荐使用 **Vite**
 - CI / build / publish 已收敛到 React + WeApp 保留链路
 - 本 fork 不再保证 H5、React Native、Harmony 以及 Vue / Solid 相关能力可用
-- 建议使用 **Node.js 20** 与 **pnpm 10**
+- 建议使用 **Node.js 22+** 与 **pnpm 10**
 
 ### 版本迁移
 

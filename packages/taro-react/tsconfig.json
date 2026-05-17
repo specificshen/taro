@@ -4,9 +4,11 @@
     "baseUrl": ".",
     "lib": ["ESNext"],
     "module": "ESNext",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "declaration": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "./src"
   },
   "include": ["./src"]
 }

@@ -69,7 +69,7 @@
 - **Vite** is the default and recommended compiler
 - CI, build, and publish flows are narrowed to the retained React + WeApp toolchain
 - H5, React Native, Harmony, and Vue / Solid related paths are no longer guaranteed in this fork
-- Use **Node.js 20** with **pnpm 10**
+- Use **Node.js 22+** with **pnpm 10**
 
 ### Version
 

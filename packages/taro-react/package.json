@@ -25,14 +25,14 @@
     "url": "https://github.com/NervJS/taro/issues"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "@tarojs/shared": "workspace:*",
     "@tarojs/runtime": "workspace:*",
-    "react-reconciler": "0.29.0"
+    "react-reconciler": "0.33.0"
   },
   "peerDependencies": {
-    "react": "^18"
+    "react": "^19"
   }
 }

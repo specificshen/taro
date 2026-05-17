@@ -17,7 +17,7 @@
     "dev": "tsc -w"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22"
   },
   "dependencies": {
     "@tarojs/helper": "workspace:*"
