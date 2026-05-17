@@ -15,7 +15,7 @@ declare namespace NodeJS {
   interface ProcessEnv {
     /** NODE 内置环境变量, 会影响到最终构建生成产物 */
     NODE_ENV: 'development' | 'production',
-    /** 当前构建的平台 */
+    /** 当前构建的平台（当前 fork 仅支持 weapp） */
     TARO_ENV: 'weapp'
     /**
      * 当前构建的小程序 appid
