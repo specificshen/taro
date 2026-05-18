@@ -1,6 +1,9 @@
 <div align="center">
-  <h1>Taro</h1>
-  <p>开放式跨端跨框架解决方案，轻松构建可以运行在 小程序/Web/APP 上的应用</p>
+  <h1>Taro · React-only Modern Fork</h1>
+  <p>本仓库是 Taro 的一个 fork，长期维护目标：<strong>React + Vite + 微信小程序（Skyline / glass-easel 优先）</strong>。</p>
+  <p>Vue / Solid / Nerv 等框架路径、H5 / RN / 支付宝 / 字节 / 百度 / QQ / 鸿蒙 等平台路径、Webpack runner 已不在本 fork 的维护范围内。详见 <code>docs/taro-react-only-modernization.md</code>。</p>
+  <hr />
+  <p>原 Taro 项目介绍：开放式跨端跨框架解决方案，轻松构建可以运行在 小程序/Web/APP 上的应用</p>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
   </a>
@@ -87,18 +90,18 @@ Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https
 
 ### UI 库
 
-| 名称                                               | 地址                                            | 介绍                                                     | 支持的框架 | 支持的 Taro 版本                          |
-| -------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- | ---------- | ----------------------------------------- |
-| [taro-ui](https://github.com/NervJS/taro-ui)       | https://taro-ui.jd.com/#/                       | 一套基于 Taro 框架开发的多端 UI 组件库                   | React      | Taro 1/2/3 |
-| [NutUI](https://github.com/jdf2e/nutui)            | https://nutui.jd.com/#/                         | 京东风格的轻量级移动端 Vue 组件库                        | Vue3       | Taro 3                                    |
-| [taroify](https://github.com/mallfoundry/taroify)  | https://taroify.github.io/taroify.com/introduce/ | 轻量、可靠的小程序端 Taro 组件库（Vant 的 Taro 版本）    | React      | Taro 3                                    |
-| [@antmjs/vantui](https://github.com/AntmJS/vantui) | https://antmjs.github.io/vantui/#/home          | 基于有赞 VantWeapp 开发的同时支持 Taro 和 React 的 UI 库 | React      | Taro 3                                    |
-| [Tard](https://github.com/jd-antelope/tard)        | https://tard-ui.selling.cn/                     | 一套基于 Taro 框架开发的多端 React UI 组件库             | React      | Taro 3                                    |
-| [duxui](https://github.com/duxapp/duxui)           | https://duxapp.cn/docs/duxui/start/             | 一套能同时兼容小程序、React Native、鸿蒙、H5的移动端ui组件库| React      | Taro 4                                    |
+| 名称                                               | 地址                                             | 介绍                                                            | 支持的框架 | 支持的 Taro 版本 |
+| -------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------- | ---------- | ---------------- |
+| [taro-ui](https://github.com/NervJS/taro-ui)       | https://taro-ui.jd.com/#/                        | 一套基于 Taro 框架开发的多端 UI 组件库                          | React      | Taro 1/2/3       |
+| [NutUI](https://github.com/jdf2e/nutui)            | https://nutui.jd.com/#/                          | 京东风格的轻量级移动端 Vue 组件库                               | Vue3       | Taro 3           |
+| [taroify](https://github.com/mallfoundry/taroify)  | https://taroify.github.io/taroify.com/introduce/ | 轻量、可靠的小程序端 Taro 组件库（Vant 的 Taro 版本）           | React      | Taro 3           |
+| [@antmjs/vantui](https://github.com/AntmJS/vantui) | https://antmjs.github.io/vantui/#/home           | 基于有赞 VantWeapp 开发的同时支持 Taro 和 React 的 UI 库        | React      | Taro 3           |
+| [Tard](https://github.com/jd-antelope/tard)        | https://tard-ui.selling.cn/                      | 一套基于 Taro 框架开发的多端 React UI 组件库                    | React      | Taro 3           |
+| [duxui](https://github.com/duxapp/duxui)           | https://duxapp.cn/docs/duxui/start/              | 一套能同时兼容小程序、React Native、鸿蒙、H5 的移动端 ui 组件库 | React      | Taro 4           |
 
 ## 项目状态
 
-![Alt](https://repobeats.axiom.co/api/embed/275806b6f177f7e4c005e956d94440562635c36d.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/275806b6f177f7e4c005e956d94440562635c36d.svg 'Repobeats analytics image')
 
 ## 使用案例
 

@@ -12,7 +12,7 @@ export default (ctx: IPluginContext) => {
   ctx.registerCommand({
     name: 'build',
     optionsMap: {
-      '--type [typeName]': 'Build type, weapp',
+      '--type [typeName]': 'Build type, weapp（默认 weapp）',
       '--watch': 'Watch mode',
       '--env [env]': 'Value for process.env.NODE_ENV',
       '--pages': 'Specify the pages to be compiled, separate multiple by comma',

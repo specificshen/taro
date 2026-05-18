@@ -62,6 +62,10 @@ export default class CLI {
         process.env.NODE_ENV = (args.watch ? 'development' : 'production')
       }
       args.type ||= args.t
+      // React-only / weapp-first fork：build/inspect 命令未显式指定 --type 时默认 weapp
+      if (!args.type && (command === 'build' || command === 'inspect') && typeof args.plugin !== 'string') {
+        args.type = 'weapp'
+      }
       if (args.type) {
         process.env.TARO_ENV = args.type
       }
