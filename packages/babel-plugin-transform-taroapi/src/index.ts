@@ -13,20 +13,6 @@ interface IState extends BabelCore.PluginPass {
 const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
   const t = babel.types
 
-  // 默认属性映射：将驼峰命名转换为 kebab-case（仅 H5 平台使用）
-  const DEFAULT_ATTRIBUTE_MAP: Record<string, string> = {
-    ariaRole: 'role',
-    ariaLabel: 'aria-label',
-    ariaHidden: 'aria-hidden',
-    ariaChecked: 'aria-checked',
-    ariaSelected: 'aria-selected',
-    ariaRoledescription: 'aria-roledescription',
-    ariaValuemax: 'aria-valuemax',
-    ariaValuemin: 'aria-valuemin',
-    ariaValuenow: 'aria-valuenow',
-    ariaValuetext: 'aria-valuetext',
-  }
-
   // 这些变量需要在每个 program 里重置
   const invokedApis: Map<string, string> = new Map()
   let taroName: string
@@ -58,7 +44,7 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
     name: 'babel-plugin-transform-taro-api',
     pre () {
       const { opts = {} as any } = this
-      const { apis = new Set<string>(), bindingName = 'Taro', packageName = '@tarojs/taro-h5', definition = {} } = opts
+      const { apis = new Set<string>(), bindingName = 'Taro', packageName = '@tarojs/taro', definition = {} } = opts
       this.definition = {
         ...definition.apis,
         ...definition.components,
@@ -164,18 +150,6 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
           const isCanIUse = t.isIdentifier(callee, { name })
           // canIUse as _canIUse
           if (isCanIUse) replaceCanIUse(ast, this.definition)
-        }
-      },
-      JSXAttribute (ast: BabelCore.NodePath<any>) {
-        // 仅在 H5 平台进行属性转换
-        if (process.env.TARO_ENV !== 'h5') return
-
-        const { name } = ast.node
-        if (!t.isJSXIdentifier(name)) return
-
-        // 使用默认属性映射进行转换
-        if (DEFAULT_ATTRIBUTE_MAP[name.name]) {
-          name.name = DEFAULT_ATTRIBUTE_MAP[name.name]
         }
       },
       Program: {

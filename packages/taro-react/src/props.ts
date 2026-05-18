@@ -1,5 +1,5 @@
 import { convertNumber2PX, eventHandlerTTDom, FormElement, setInnerHTML } from '@tarojs/runtime'
-import { capitalize, internalComponents, isEnableTTDom, isFunction, isNumber, isObject, isString, PLATFORM_TYPE, toCamelCase, UNITLESS_PROPERTIES_SET } from '@tarojs/shared'
+import { capitalize, internalComponents, isEnableTTDom, isFunction, isNumber, isObject, isString, toCamelCase, UNITLESS_PROPERTIES_SET } from '@tarojs/shared'
 
 import type { Style, TaroElement } from '@tarojs/runtime'
 
@@ -54,34 +54,12 @@ export function updateProps (dom: TaroElement, oldProps: Props, newProps: Props)
 }
 
 export function updatePropsByPayload (dom: TaroElement, oldProps: Props, updatePayload: any[]) {
-  const handlers: (() => void)[] = []
-  let fixedHandler: (() => void) | null = null
   for (let i = 0; i < updatePayload.length; i += 2) {
     // key, value 成对出现
     const key = updatePayload[i]
     const newProp = updatePayload[i + 1]
     const oldProp = oldProps[key]
-    if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY) {
-      if (key === '__fixed') {
-        // hack: __fixed最先识别
-        fixedHandler = () => setProperty(dom, key, newProp, oldProp)
-        continue
-      }
-      // 鸿蒙样式前置插入，防止覆盖style
-      if (key === '__hmStyle') {
-        handlers.splice(0, 0, () => setHarmonyStyle(dom, newProp, oldProp))
-      } else {
-        handlers.push(() => setProperty(dom, key, newProp, oldProp))
-      }
-    } else {
-      setProperty(dom, key, newProp, oldProp)
-    }
-  }
-  if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY) {
-    fixedHandler && fixedHandler()
-    for (let i = 0; i < handlers.length; i++) {
-      handlers[i]()
-    }
+    setProperty(dom, key, newProp, oldProp)
   }
 }
 
@@ -122,7 +100,7 @@ function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: un
 
   const compName = capitalize(toCamelCase(dom.tagName.toLowerCase()))
 
-  if (eventName === 'click' && process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY && compName in internalComponents) {
+  if (eventName === 'click' && compName in internalComponents) {
     eventName = 'tap'
   }
 
@@ -139,10 +117,10 @@ function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: un
 
   if (isFunction(value)) {
     if (oldValue) {
-      dom.removeEventListener(eventName, oldValue as any, process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY ? false : undefined)
-      dom.addEventListener(eventName, value, process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY ? { isCapture, sideEffect: false } : undefined)
+      dom.removeEventListener(eventName, oldValue as any, false)
+      dom.addEventListener(eventName, value, { isCapture, sideEffect: false })
     } else {
-      dom.addEventListener(eventName, value, process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY ? isCapture : undefined)
+      dom.addEventListener(eventName, value, isCapture)
     }
   } else {
     dom.removeEventListener(eventName, oldValue as any)
@@ -150,7 +128,7 @@ function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: un
 }
 
 function setStyle (style: Style, key: string, value: unknown) {
-  if (key[0] === '-' && process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY) {
+  if (key[0] === '-') {
     // css variables need not further judgment
     style.setProperty(key, (value as string).toString())
     return
@@ -158,7 +136,7 @@ function setStyle (style: Style, key: string, value: unknown) {
 
   style[key] =
     isNumber(value) && IS_NON_DIMENSIONAL.test(key) === false
-      ? (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY ? value + 'px' : convertNumber2PX(value))
+      ? convertNumber2PX(value)
       : value === null
         ? ''
         : value
@@ -169,67 +147,6 @@ interface DangerouslySetInnerHTML {
   __html?: string
 }
 
-// 鸿蒙样式特殊处理，需要在插入顺序中前置插入，防止覆盖了style
-function setHarmonyStyle(dom: TaroElement, value: unknown, oldValue?: unknown) {
-  // @ts-ignore
-  const style = dom._st.hmStyle // __hmStyle是已经被处理过的鸿蒙样式，可以直接塞进hmStyle对象内
-  if (isObject<StyleValue>(oldValue)) {
-    for (const i in oldValue) {
-      if (!(value && i in (value as StyleValue))) {
-        // 鸿蒙伪类特殊处理
-        if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY) {
-          if (i === '::after' || i === '::before') {
-            setPseudo(dom, i, null)
-          } else if (['::first-child', '::last-child', '::empty'].includes(i) || `${i}`.indexOf('::nth-child') === 0) {
-            // @ts-ignore
-            dom.set_pseudo_class(i, null)
-          } else {
-            if (i === 'position' && oldValue[i] === 'fixed') {
-              // @ts-ignore
-              dom.setLayer(0)
-            } else if (i === 'animationName') {
-              // @ts-ignore
-              dom.setAnimation(false)
-            }
-            style[i] = ''
-          }
-        } else {
-          style[i] = ''
-        }
-      }
-    }
-  }
-  if (isObject<StyleValue>(value)) {
-    for (const i in value) {
-      if (!oldValue || !isEqual(value[i], (oldValue as StyleValue)[i])) {
-        // 鸿蒙伪类特殊处理
-        if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY) {
-          if (i === '::after' || i === '::before') {
-            setPseudo(dom, i, value[i] as unknown as StyleValue)
-          } else if (['::first-child', '::last-child', '::empty'].includes(i) || i.startsWith('::nth-child')) {
-            // @ts-ignore
-            dom.set_pseudo_class(i, value[i])
-          } else {
-            if (i === 'position') {
-              if (value[i] === 'fixed' || (value[i] !== 'fixed' && oldValue?.[i])) {
-                // @ts-ignore
-                dom.setLayer(value[i] === 'fixed' ? 1 : 0)
-              }
-            } else if (i === 'animationName') {
-              // @ts-ignore
-              dom.setAnimation(true)
-            }
-            style[i] = value[i]
-          }
-        } else {
-          style[i] = value[i]
-        }
-      }
-    }
-  }
-
-  dom.setAttribute('__hmStyle', value)
-}
 function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
   name = name === 'className' ? 'class' : name
 
@@ -247,9 +164,6 @@ function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?:
         dom.setAttribute('style', styleObjectToCss(value as StyleValue))
       }
     } else {
-      if (/harmony.*cpp/.test(process.env.TARO_ENV || '')) {
-        return dom.setAttribute('_style4cpp', value)
-      }
       const style = dom.style
       if (isString(value)) {
         style.cssText = value
@@ -262,11 +176,6 @@ function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?:
         if (isObject<StyleValue>(oldValue)) {
           for (const i in oldValue) {
             if (!(value && i in (value as StyleValue))) {
-              // Harmony特殊处理
-              if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY && i === 'position' && oldValue[i] === 'fixed') {
-                // @ts-ignore
-                dom.setLayer(0)
-              }
               setStyle(style, i, '')
             }
           }
@@ -275,13 +184,6 @@ function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?:
         if (isObject<StyleValue>(value)) {
           for (const i in value) {
             if (!oldValue || !isEqual(value[i], (oldValue as StyleValue)[i])) {
-              // Harmony特殊处理
-              if (process.env.TARO_PLATFORM === PLATFORM_TYPE.HARMONY && i === 'position') {
-                if (value[i] === 'fixed' || (value[i] !== 'fixed' && oldValue?.[i])) {
-                  // @ts-ignore
-                  dom.setLayer(value[i] === 'fixed' ? 1 : 0)
-                }
-              }
               setStyle(style, i, value[i])
             }
           }
@@ -311,17 +213,6 @@ function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?:
     } else {
       dom.setAttribute(name, value as string)
     }
-  }
-}
-
-// 设置鸿蒙伪类属性(特殊设置)
-function setPseudo(dom: TaroElement, name: '::after' | '::before', value: StyleValue | null) {
-  if (name === '::after') {
-    // @ts-ignore
-    dom.set_pseudo_after(value)
-  } else if (name === '::before') {
-    // @ts-ignore
-    dom.set_pseudo_before(value)
   }
 }
 

@@ -14,7 +14,7 @@ declare const ENABLE_CONTAINS: boolean
 declare const ENABLE_SIZE_APIS: boolean
 declare const ENABLE_TEMPLATE_CONTENT: boolean
 
-if (process.env.TARO_PLATFORM !== PLATFORM_TYPE.WEB && process.env.TARO_PLATFORM !== PLATFORM_TYPE.HARMONY) {
+if (process.env.TARO_PLATFORM !== PLATFORM_TYPE.WEB) {
   if (ENABLE_INNER_HTML) {
     TaroNode.extend('innerHTML', {
       set (html: string) {
