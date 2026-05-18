@@ -134,7 +134,6 @@ export const FILE_PROCESSOR_MAP = {
 export const UPDATE_PACKAGE_LIST = [
   'babel-plugin-transform-taroapi',
   'babel-preset-taro',
-  'eslint-config-taro',
   'postcss-html-transform',
   'postcss-plugin-constparse',
   'postcss-pxtransform',

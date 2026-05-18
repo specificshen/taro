@@ -46,7 +46,6 @@
     "postcss-pxtransform": "workspace:*",
     "regenerator-runtime": "0.11",
     "sax": "1.2.4",
-    "stylelint": "^16.4.0",
     "vite-plugin-static-copy": "^4.1.0"
   },
   "devDependencies": {

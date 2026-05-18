@@ -1,6 +1,5 @@
 packages:
   - 'packages/**'
-  - 'tests'
   - '!packages/_legacy/**'
   - '!packages/taro-cli/templates/**'
   - '!**/__tests__/**'

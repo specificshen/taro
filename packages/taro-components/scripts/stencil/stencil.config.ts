@@ -3,17 +3,10 @@ import { OutputTarget } from '@stencil/core/internal'
 import * as path from 'path'
 import externals from 'rollup-plugin-node-externals'
 
-import { reactOutputTarget } from './output-target'
 import scssPlugin from './plugin/sass-plugin'
 
 const isProd = process.env.NODE_ENV === 'production'
 const outputTargets: OutputTarget[] = [
-  reactOutputTarget({
-    componentCorePackage: '@tarojs/components',
-    customElementsDir: 'dist/components',
-    includeImportCustomElements: true,
-    proxiesFile: '../taro-components-library-react/src/components.ts',
-  }),
   {
     type: 'dist',
     esmLoaderPath: '../loader',

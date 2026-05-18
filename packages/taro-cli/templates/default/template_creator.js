@@ -44,9 +44,6 @@ const handler = {
   '/_env.test' () {
     return { setPageName: `/.env.test` }
   },
-  '/_eslintrc' () {
-    return { setPageName: `/.eslintrc` }
-  },
   '/_gitignore' () {
     return { setPageName: `/.gitignore` }
   }

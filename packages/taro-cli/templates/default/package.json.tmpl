@@ -10,7 +10,6 @@
     "framework": "{{ framework }}"
   },
   "scripts": {
-    "prepare": "husky",
     "new": "taro new",
     "build:weapp": "taro build --type weapp",
     "dev:weapp": "npm run build:weapp -- --watch"
@@ -49,26 +48,16 @@
   },
   "devDependencies": {
     "@tarojs/plugin-generator": "{{ version }}",
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "lint-staged": "^16.1.2",
-    "husky": "^9.1.7",
-    "stylelint-config-standard": "^38.0.0",
     "@babel/core": "^7.24.4",
     "@babel/plugin-transform-class-properties": "7.25.9",
     "@tarojs/cli": "{{ version }}",
     "@tarojs/vite-runner": "{{ version }}",
     "babel-preset-taro": "{{ version }}",
-    "eslint-config-taro": "{{ version }}",
-    "eslint": "^8.57.0",
-    "stylelint": "^16.4.0",
     "terser": "^5.30.4",
     "vite": "^8.0.13",
     "@babel/preset-react": "^7.24.1",
     "@types/react": "^19.2.14",
-    "@vitejs/plugin-react": "^6.0.2",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.4.0",{{#if (eq css "Sass") }}
+    "@vitejs/plugin-react": "^6.0.2",{{#if (eq css "Sass") }}
     "sass": "^1.75.0",{{/if}}{{#if (eq css "Less") }}
     "less": "^4.2.0",{{/if}}{{#if (eq css "Stylus") }}
     "stylus": "^0.63.0",{{/if}}{{#if typescript }}

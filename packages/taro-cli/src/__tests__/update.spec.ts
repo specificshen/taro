@@ -98,7 +98,6 @@ function updatePkg (pkgPath: string, version: string) {
     devDependencies: {
       ...packageMap.devDependencies,
       'babel-preset-taro': version,
-      'eslint-config-taro': version,
       'babel-plugin-transform-taroapi': version,
       'postcss-plugin-constparse': version,
       'postcss-pxtransform': version

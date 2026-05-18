@@ -1,5 +1,5 @@
 {
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "editor.defaultFormatter": "biomejs.biome",
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
@@ -21,5 +21,12 @@
     "./crates/swc_plugin_define_config/Cargo.toml",
     "./crates/swc_plugin_compile_mode_pre_process/Cargo.toml"
   ],
-  "rust-analyzer.showUnlinkedFileNotification": false
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "cSpell.words": [
+    "cameraroll",
+    "specificshen",
+    "taroapi",
+    "tarojs",
+    "weapp"
+  ]
 }
