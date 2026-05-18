@@ -9,10 +9,10 @@ export const COMPILE_MODE_SUB_RENDER_FN = 'subRenderFn'
 
 export const PLATFORM_CONFIG_MAP = {
   h5: {
-    type: PLATFORM_TYPE.WEB
+    type: PLATFORM_TYPE.WEB,
   },
   mini: {
-    type: PLATFORM_TYPE.MINI
+    type: PLATFORM_TYPE.MINI,
   },
 }
 
@@ -35,7 +35,7 @@ export const TT_SPECIFIC_COMPONENTS = new Set([
   'lynx-view',
   'flow-ad',
   'ai-agent-chat',
-  'component'
+  'component',
 ])
 
 export const DEFAULT_COMPONENTS = new Set<string>([
@@ -81,7 +81,7 @@ export const DEFAULT_COMPONENTS = new Set<string>([
   'block',
   'import',
   'official-account',
-  'editor'
+  'editor',
 ])
 
 export const UNITLESS_PROPERTIES_SET = new Set([

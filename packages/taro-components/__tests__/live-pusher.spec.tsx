@@ -13,7 +13,7 @@ describe('LivePusher', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [LivePusher],
-      template: () => (<taro-live-pusher-core />),
+      template: () => <taro-live-pusher-core />,
     })
     await page.waitForChanges()
 

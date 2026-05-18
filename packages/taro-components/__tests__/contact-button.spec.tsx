@@ -13,7 +13,7 @@ describe('ContactButton', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ContactButton],
-      template: () => (<taro-contact-button-core />),
+      template: () => <taro-contact-button-core />,
     })
     await page.waitForChanges()
 

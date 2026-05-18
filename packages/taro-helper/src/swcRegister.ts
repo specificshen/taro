@@ -3,26 +3,26 @@ interface ICreateSwcRegisterParam {
   plugins?: [string, any][]
 }
 
-export default function createSwcRegister ({ only, plugins }: ICreateSwcRegisterParam) {
+export default function createSwcRegister({ only, plugins }: ICreateSwcRegisterParam) {
   const config: Record<string, any> = {
     only: Array.from(new Set([...only])),
     jsc: {
       parser: {
         syntax: 'typescript',
-        decorators: true
+        decorators: true,
       },
       transform: {
-        legacyDecorator: true
-      }
+        legacyDecorator: true,
+      },
     },
     module: {
-      type: 'commonjs'
-    }
+      type: 'commonjs',
+    },
   }
 
   if (plugins) {
     config.jsc.experimental = {
-      plugins
+      plugins,
     }
   }
 

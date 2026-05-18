@@ -8,7 +8,7 @@ interface ITerminalLinkOptions {
   [key: string]: unknown
 }
 
-function terminalLink (text: string, url: string, { target = 'stdout', fallback }: ITerminalLinkOptions = {}) {
+function terminalLink(text: string, url: string, { target = 'stdout', fallback }: ITerminalLinkOptions = {}) {
   if (!supportsHyperlinks[target]) {
     if (fallback === false) return text
 
@@ -19,7 +19,8 @@ function terminalLink (text: string, url: string, { target = 'stdout', fallback 
 }
 
 terminalLink.isSupported = supportsHyperlinks.stdout
-terminalLink.stderr = ((text: string, url: string, options = {}) => terminalLink(text, url, { target: 'stderr', ...options })) as typeof terminalLink
+terminalLink.stderr = ((text: string, url: string, options = {}) =>
+  terminalLink(text, url, { target: 'stderr', ...options })) as typeof terminalLink
 terminalLink.stderr.isSupported = supportsHyperlinks.stderr
 
 export { chalk, terminalLink }

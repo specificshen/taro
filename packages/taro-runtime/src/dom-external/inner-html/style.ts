@@ -33,7 +33,7 @@ interface IStyle {
 export default class StyleTagParser {
   styles: IStyle[] = []
 
-  extractStyle (src: string) {
+  extractStyle(src: string) {
     const REG_STYLE = /<style\s?[^>]*>((.|\n|\s)+?)<\/style>/g
     let html = src
     // let html = src.replace(/\n/g, '')
@@ -47,7 +47,7 @@ export default class StyleTagParser {
     return html.trim()
   }
 
-  stringToSelector (style: string) {
+  stringToSelector(style: string) {
     let lb = style.indexOf(LEFT_BRACKET)
 
     while (lb > -1) {
@@ -62,14 +62,14 @@ export default class StyleTagParser {
       content = content.replace(/ /g, '')
       content = content.replace(/\+\+\+/g, ' ')
 
-      if (!(/;$/.test(content))) {
+      if (!/;$/.test(content)) {
         content += ';'
       }
-      selectors.split(',').forEach(src => {
+      selectors.split(',').forEach((src) => {
         const selectorList = this.parseSelector(src)
         this.styles.push({
           content,
-          selectorList
+          selectorList,
         })
       })
       style = style.slice(rb + 1)
@@ -78,14 +78,14 @@ export default class StyleTagParser {
     // console.log('res this.styles: ', this.styles)
   }
 
-  parseSelector (src: string) {
+  parseSelector(src: string) {
     const list = src
       .trim()
       .replace(/ *([>~+]) */g, ' $1')
       .replace(/ +/g, ' ')
       .replace(/\[\s*([^[\]=\s]+)\s*=\s*([^[\]=\s]+)\s*\]/g, '[$1=$2]')
       .split(' ')
-    const selectors = list.map(item => {
+    const selectors = list.map((item) => {
       const firstChar = item.charAt(0)
       const selector: ISelector = {
         isChild: firstChar === CHILD_COMBINATOR,
@@ -94,7 +94,7 @@ export default class StyleTagParser {
         tag: null,
         id: null,
         class: [],
-        attrs: []
+        attrs: [],
       }
 
       item = item.replace(/^[>~+]/, '')
@@ -107,7 +107,7 @@ export default class StyleTagParser {
         const attr = {
           all,
           key,
-          value: all ? null : value
+          value: all ? null : value,
         }
         selector.attrs.push(attr)
         return ''
@@ -134,7 +134,7 @@ export default class StyleTagParser {
     return selectors
   }
 
-  matchStyle (tagName: string, el: ParsedTaroElement, list: number[]): string {
+  matchStyle(tagName: string, el: ParsedTaroElement, list: number[]): string {
     const res = sortStyles(this.styles).reduce((str, { content, selectorList }, i) => {
       let idx = list[i]
       let selector = selectorList[idx]
@@ -192,7 +192,7 @@ export default class StyleTagParser {
     return res
   }
 
-  matchCurrent (tagName: string, el: ParsedTaroElement, selector: ISelector): boolean {
+  matchCurrent(tagName: string, el: ParsedTaroElement, selector: ISelector): boolean {
     // 标签选择器
     if (selector.tag && selector.tag !== tagName) return false
 
@@ -229,7 +229,7 @@ export default class StyleTagParser {
   }
 }
 
-function getPreviousElement (el: ParsedTaroElement): ParsedTaroElement | null {
+function getPreviousElement(el: ParsedTaroElement): ParsedTaroElement | null {
   const parent = el.parentElement
   if (!parent) return null
 
@@ -246,7 +246,7 @@ function getPreviousElement (el: ParsedTaroElement): ParsedTaroElement | null {
 // 根据 css selector 权重排序: 权重大的靠后
 // @WARN 不考虑伪类
 // https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity_2
-function sortStyles (styles: IStyle[]) {
+function sortStyles(styles: IStyle[]) {
   return styles.sort((s1, s2) => {
     const hundreds1 = getHundredsWeight(s1.selectorList)
     const hundreds2 = getHundredsWeight(s2.selectorList)
@@ -265,14 +265,14 @@ function sortStyles (styles: IStyle[]) {
   })
 }
 
-function getHundredsWeight (selectors: ISelector[]) {
+function getHundredsWeight(selectors: ISelector[]) {
   return selectors.reduce((pre, cur) => pre + (cur.id ? 1 : 0), 0)
 }
 
-function getTensWeight (selectors: ISelector[]) {
+function getTensWeight(selectors: ISelector[]) {
   return selectors.reduce((pre, cur) => pre + cur.class.length + cur.attrs.length, 0)
 }
 
-function getOnesWeight (selectors: ISelector[]) {
+function getOnesWeight(selectors: ISelector[]) {
   return selectors.reduce((pre, cur) => pre + (cur.tag ? 1 : 0), 0)
 }

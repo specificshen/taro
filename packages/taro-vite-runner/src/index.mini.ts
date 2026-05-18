@@ -13,15 +13,15 @@ import type { UserConfig } from 'vite'
 export default async function (appPath: string, rawTaroConfig: ViteMiniBuildConfig) {
   const viteCompilerContext = new TaroCompilerContext(appPath, rawTaroConfig)
   const { taroConfig } = viteCompilerContext
-  const plugins: UserConfig['plugins'] = [
-    miniPreset(viteCompilerContext)
-  ]
+  const plugins: UserConfig['plugins'] = [miniPreset(viteCompilerContext)]
 
   // copy-plugin
   if (taroConfig.copy?.patterns?.length) {
-    plugins.push(viteStaticCopy({
-      targets: convertCopyOptions(taroConfig)
-    }))
+    plugins.push(
+      viteStaticCopy({
+        targets: convertCopyOptions(taroConfig),
+      }),
+    )
   }
 
   // custom vite plugins
@@ -30,7 +30,7 @@ export default async function (appPath: string, rawTaroConfig: ViteMiniBuildConf
   }
 
   const commonConfig: UserConfig = {
-    plugins
+    plugins,
   }
 
   const modifyComponentConfig = taroConfig.modifyComponentConfig
@@ -41,9 +41,9 @@ export default async function (appPath: string, rawTaroConfig: ViteMiniBuildConf
   taroConfig.modifyViteConfig?.(
     commonConfig,
     {
-      componentConfig
+      componentConfig,
     },
-    viteCompilerContext
+    viteCompilerContext,
   )
 
   await build(commonConfig)

@@ -7,9 +7,9 @@ import { run } from './utils'
 jest.mock('cli-highlight', () => {
   return {
     __esModule: true,
-    default (str) {
+    default(str) {
       return str
-    }
+    },
   }
 })
 
@@ -21,15 +21,15 @@ jest.mock('@tarojs/helper', () => {
     ...helper,
     fs: {
       ...fs,
-      writeFileSync: jest.fn()
-    }
+      writeFileSync: jest.fn(),
+    },
   }
 })
 
 const runInspect = run('inspect', [
   'commands/build',
   'commands/inspect',
-  require.resolve('@tarojs/plugin-platform-weapp')
+  require.resolve('@tarojs/plugin-platform-weapp'),
 ])
 
 describe('inspect', () => {
@@ -37,7 +37,7 @@ describe('inspect', () => {
     jest.resetModules()
   })
 
-  it('should exit because there isn\'t a Taro project', async () => {
+  it("should exit because there isn't a Taro project", async () => {
     const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>
     const logSpy = jest.spyOn(console, 'log')
 
@@ -57,7 +57,7 @@ describe('inspect', () => {
     logSpy.mockRestore()
   })
 
-  it('should exit when user haven\'t pass correct type', async () => {
+  it("should exit when user haven't pass correct type", async () => {
     const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>
     const logSpy = jest.spyOn(console, 'log')
 
@@ -90,8 +90,8 @@ describe('inspect', () => {
       const appPath = path.resolve(__dirname, 'fixtures/default')
       await runInspect(appPath, {
         options: {
-          type: 'weapp'
-        }
+          type: 'weapp',
+        },
       })
     } catch (error) {} // eslint-disable-line no-empty
 
@@ -117,15 +117,15 @@ describe('inspect', () => {
       const appPath = path.resolve(__dirname, 'fixtures/default')
       await runInspect(appPath, {
         options: {
-          type: 'weapp'
+          type: 'weapp',
         },
-        args: ['resolve.mainFields.0']
+        args: ['resolve.mainFields.0'],
       })
     } catch (error) {} // eslint-disable-line no-empty
 
     expect(exitSpy).toBeCalledWith(0)
     expect(logSpy).toBeCalledTimes(1)
-    expect(logSpy).toBeCalledWith('\'browser\'')
+    expect(logSpy).toBeCalledWith("'browser'")
 
     exitSpy.mockRestore()
     logSpy.mockRestore()
@@ -146,14 +146,14 @@ describe('inspect', () => {
       await runInspect(appPath, {
         options: {
           type: 'weapp',
-          output: outputPath
+          output: outputPath,
         },
-        args: ['resolve.mainFields.0']
+        args: ['resolve.mainFields.0'],
       })
     } catch (error) {} // eslint-disable-line no-empty
 
     expect(exitSpy).toBeCalledWith(0)
-    expect(writeFileSync).toBeCalledWith(outputPath, '\'browser\'')
+    expect(writeFileSync).toBeCalledWith(outputPath, "'browser'")
 
     exitSpy.mockRestore()
   })

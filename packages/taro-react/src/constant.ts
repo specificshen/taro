@@ -1,8 +1,4 @@
-import {
-  ContinuousEventPriority,
-  DefaultEventPriority,
-  DiscreteEventPriority,
-} from 'react-reconciler/constants'
+import { ContinuousEventPriority, DefaultEventPriority, DiscreteEventPriority } from 'react-reconciler/constants'
 
 export const supportedInputTypes: { [key: string]: boolean } = {
   color: true,
@@ -22,7 +18,7 @@ export const supportedInputTypes: { [key: string]: boolean } = {
   week: true,
 }
 
-export function getEventPriority (domEventName) {
+export function getEventPriority(domEventName) {
   switch (domEventName) {
     case 'cancel':
     case 'click':
@@ -71,9 +67,7 @@ export function getEventPriority (domEventName) {
   }
 }
 
-const randomKey = Math.random()
-  .toString(36)
-  .slice(2)
+const randomKey = Math.random().toString(36).slice(2)
 
 export const internalPropsKey = '__reactProps$' + randomKey
 export const internalInstanceKey = '__reactFiber$' + randomKey

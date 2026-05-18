@@ -9,7 +9,7 @@ export default () => {
       // 兼容其他平台小程序插件
       path.resolve(__dirname, '../../presets', 'files', 'writeFileToDist.ts'),
       path.resolve(__dirname, '../../presets', 'files', 'generateProjectConfig.ts'),
-      path.resolve(__dirname, '../../presets', 'files', 'generateFrameworkInfo.ts')
-    ]
+      path.resolve(__dirname, '../../presets', 'files', 'generateFrameworkInfo.ts'),
+    ],
   }
 }

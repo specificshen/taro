@@ -3,13 +3,16 @@ import path from 'node:path'
 import { resolveMainFilePath } from '@tarojs/helper'
 
 import type * as BabelCore from '@babel/core'
-import type { ViteHarmonyCompilerContext, ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type {
+  ViteHarmonyCompilerContext,
+  ViteMiniCompilerContext,
+} from '@tarojs/taro/types/compile/viteCompilerContext'
 
 const IMPORT_COMPONENT_NAME = 'importNativeComponent'
 
 type TCallback = (path: string | false, name?: string, exportName?: string) => string
 export default (compiler: ViteHarmonyCompilerContext | ViteMiniCompilerContext, id: string, cb: TCallback) => {
-  return function pluginImportNativeComponent (babel: typeof BabelCore): BabelCore.PluginObj<BabelCore.PluginPass> {
+  return function pluginImportNativeComponent(babel: typeof BabelCore): BabelCore.PluginObj<BabelCore.PluginPass> {
     const t = babel.types
     let enableImportComponent = true
 
@@ -19,7 +22,10 @@ export default (compiler: ViteHarmonyCompilerContext | ViteMiniCompilerContext, 
         CallExpression(ast) {
           // 识别所有 importNativeComponent 函数调用, 并替换为对应的组件名
           if (t.isIdentifier(ast.node.callee, { name: IMPORT_COMPONENT_NAME })) {
-            let pathArg = compiler.resolvePageImportPath(id, t.isStringLiteral(ast.node.arguments[0]) ? ast.node.arguments[0].value : '')
+            let pathArg = compiler.resolvePageImportPath(
+              id,
+              t.isStringLiteral(ast.node.arguments[0]) ? ast.node.arguments[0].value : '',
+            )
             if (pathArg.startsWith('.')) {
               pathArg = path.resolve(path.dirname(id), pathArg)
             }
@@ -40,10 +46,10 @@ export default (compiler: ViteHarmonyCompilerContext | ViteMiniCompilerContext, 
           }
         },
         ImportDeclaration(ast) {
-          ast.node.specifiers.forEach(specifier => {
+          ast.node.specifiers.forEach((specifier) => {
             if (
               (t.isImportSpecifier(specifier) || t.isImportDefaultSpecifier(specifier)) &&
-                        specifier.local.name === IMPORT_COMPONENT_NAME
+              specifier.local.name === IMPORT_COMPONENT_NAME
             ) {
               enableImportComponent = false
               cb(false)
@@ -53,14 +59,13 @@ export default (compiler: ViteHarmonyCompilerContext | ViteMiniCompilerContext, 
         VariableDeclarator(ast) {
           if (
             t.isIdentifier(ast.node.id, { name: IMPORT_COMPONENT_NAME }) &&
-                      (t.isArrowFunctionExpression(ast.node.init) ||
-                       t.isFunctionExpression(ast.node.init))
+            (t.isArrowFunctionExpression(ast.node.init) || t.isFunctionExpression(ast.node.init))
           ) {
             enableImportComponent = false
             cb(false)
           }
-        }
-      }
+        },
+      },
     }
   }
 }

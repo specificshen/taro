@@ -22,11 +22,5 @@
     "./crates/swc_plugin_compile_mode_pre_process/Cargo.toml"
   ],
   "rust-analyzer.showUnlinkedFileNotification": false,
-  "cSpell.words": [
-    "cameraroll",
-    "specificshen",
-    "taroapi",
-    "tarojs",
-    "weapp"
-  ]
+  "cSpell.words": ["cameraroll", "specificshen", "taroapi", "tarojs", "weapp"]
 }

@@ -13,7 +13,7 @@ describe('OfficialAccount', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [OfficialAccount],
-      template: () => (<taro-official-account-core />),
+      template: () => <taro-official-account-core />,
     })
     await page.waitForChanges()
 

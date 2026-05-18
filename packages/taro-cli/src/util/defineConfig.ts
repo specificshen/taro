@@ -10,13 +10,19 @@ export interface ConfigEnv {
   mode: string
 }
 
-export type UserConfigFn<T extends CompilerTypes = CompilerWebpackTypes> = (merge: WebpackMerge, env: ConfigEnv) => IProjectConfig<T> | Promise<IProjectConfig<T>>
-export type UserConfigExport<T extends CompilerTypes = CompilerWebpackTypes> = IProjectConfig<T> | Promise<IProjectConfig<T>> | UserConfigFn
+export type UserConfigFn<T extends CompilerTypes = CompilerWebpackTypes> = (
+  merge: WebpackMerge,
+  env: ConfigEnv,
+) => IProjectConfig<T> | Promise<IProjectConfig<T>>
+export type UserConfigExport<T extends CompilerTypes = CompilerWebpackTypes> =
+  | IProjectConfig<T>
+  | Promise<IProjectConfig<T>>
+  | UserConfigFn
 
 /**
  * @since v3.6.9
  * @warning 暂不支持 react native
  */
-export function defineConfig<T extends CompilerTypes = CompilerWebpackTypes> (config: UserConfigExport<T>) {
+export function defineConfig<T extends CompilerTypes = CompilerWebpackTypes>(config: UserConfigExport<T>) {
   return config
 }

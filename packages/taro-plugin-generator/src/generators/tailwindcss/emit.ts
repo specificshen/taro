@@ -64,7 +64,7 @@ async function emitPostcssConfig(ctx: IPluginContext) {
           (prop) =>
             t.isObjectProperty(prop) &&
             t.isIdentifier(prop.key, { name: 'plugins' }) &&
-            t.isObjectExpression(prop.value)
+            t.isObjectExpression(prop.value),
         ) as t.ObjectProperty | undefined
 
         if (pluginsProp) {
@@ -80,7 +80,7 @@ async function emitPostcssConfig(ctx: IPluginContext) {
 
           if (!hasTailwind) {
             pluginsNode.properties.push(
-              t.objectProperty(t.stringLiteral('@tailwindcss/postcss'), t.objectExpression([]))
+              t.objectProperty(t.stringLiteral('@tailwindcss/postcss'), t.objectExpression([])),
             )
             modified = true
           }

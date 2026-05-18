@@ -13,7 +13,7 @@ describe('NavigationBar', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [NavigationBar],
-      template: () => (<taro-navigation-bar-core />),
+      template: () => <taro-navigation-bar-core />,
     })
     await page.waitForChanges()
 

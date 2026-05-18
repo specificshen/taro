@@ -31,78 +31,102 @@ class TaroHistory extends Events {
 
   #window: any
 
-  constructor (location: TaroLocation, options: Options) {
+  constructor(location: TaroLocation, options: Options) {
     super()
 
     this.#window = options.window
     this.#location = location
 
-    this.#location.on('__record_history__', (href: string) => {
-      this.#cur++
-      this.#stack = this.#stack.slice(0, this.#cur)
-      this.#stack.push({
-        state: null,
-        title: '',
-        url: href
-      })
-    }, null)
+    this.#location.on(
+      '__record_history__',
+      (href: string) => {
+        this.#cur++
+        this.#stack = this.#stack.slice(0, this.#cur)
+        this.#stack.push({
+          state: null,
+          title: '',
+          url: href,
+        })
+      },
+      null,
+    )
 
-    this.#location.on('__reset_history__', (href: string) => {
-      this.#reset(href)
-    }, null)
+    this.#location.on(
+      '__reset_history__',
+      (href: string) => {
+        this.#reset(href)
+      },
+      null,
+    )
 
     // 切换上下文行为
 
-    this.on(CONTEXT_ACTIONS.INIT, () => {
-      this.#reset()
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.INIT,
+      () => {
+        this.#reset()
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.RESTORE, (pageId: string) => {
-      cache.set(pageId, {
-        location: this.#location,
-        stack: this.#stack.slice(),
-        cur: this.#cur
-      })
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.RESTORE,
+      (pageId: string) => {
+        cache.set(pageId, {
+          location: this.#location,
+          stack: this.#stack.slice(),
+          cur: this.#cur,
+        })
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.RECOVER, (pageId: string) => {
-      if (cache.has(pageId)) {
-        const ctx = cache.get(pageId)!
-        this.#location = ctx.location
-        this.#stack = ctx.stack
-        this.#cur = ctx.cur
-      }
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.RECOVER,
+      (pageId: string) => {
+        if (cache.has(pageId)) {
+          const ctx = cache.get(pageId)!
+          this.#location = ctx.location
+          this.#stack = ctx.stack
+          this.#cur = ctx.cur
+        }
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.DESTROY, (pageId: string) => {
-      cache.delete(pageId)
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.DESTROY,
+      (pageId: string) => {
+        cache.delete(pageId)
+      },
+      null,
+    )
 
     this.#reset()
   }
 
-  #reset (href = '') {
+  #reset(href = '') {
     this.#stack = [
       {
         state: null,
         title: '',
-        url: href || this.#location.href
-      }
+        url: href || this.#location.href,
+      },
     ]
     this.#cur = 0
   }
 
   /* public property */
-  get length () {
+  get length() {
     return this.#stack.length
   }
 
-  get state () {
+  get state() {
     return this.#stack[this.#cur].state
   }
 
   /* public method */
-  go (delta: number) {
+  go(delta: number) {
     if (!isNumber(delta) || isNaN(delta)) return
 
     let targetIdx = this.#cur + delta
@@ -114,40 +138,40 @@ class TaroHistory extends Events {
     this.#window.trigger('popstate', this.#stack[this.#cur])
   }
 
-  back () {
+  back() {
     this.go(-1)
   }
 
-  forward () {
+  forward() {
     this.go(1)
   }
 
-  pushState (state: any, title: string, url: string) {
+  pushState(state: any, title: string, url: string) {
     if (!url || !isString(url)) return
     this.#stack = this.#stack.slice(0, this.#cur + 1)
     this.#stack.push({
       state,
       title,
-      url
+      url,
     })
     this.#cur = this.length - 1
 
     this.#location.trigger('__set_href_without_history__', url)
   }
 
-  replaceState (state: any, title: string, url: string) {
+  replaceState(state: any, title: string, url: string) {
     if (!url || !isString(url)) return
     this.#stack[this.#cur] = {
       state,
       title,
-      url
+      url,
     }
 
     this.#location.trigger('__set_href_without_history__', url)
   }
 
   // For debug
-  get cache () {
+  get cache() {
     return cache
   }
 }

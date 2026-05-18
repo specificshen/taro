@@ -14,38 +14,38 @@ const defaultConfig: Partial<ViteMiniBuildConfig> = {
     style: '.wxss',
     config: '.json',
     script: '.js',
-    templ: '.wxml'
+    templ: '.wxml',
   },
   imageUrlLoaderOption: {
-    limit: IMAGE_LIMIT
+    limit: IMAGE_LIMIT,
   },
   fontUrlLoaderOption: {
-    limit: FONT_LIMIT
+    limit: FONT_LIMIT,
   },
   mediaUrlLoaderOption: {
-    limit: MEDIA_LIMIT
+    limit: MEDIA_LIMIT,
   },
   postcss: {
     autoprefixer: {
       enable: true,
       config: {
-        flexbox: 'no-2009'
-      }
+        flexbox: 'no-2009',
+      },
     },
     pxtransform: {
       enable: true,
       config: {
-        platform
-      }
+        platform,
+      },
     },
     htmltransform: {
       enable: true,
       config: {
         platform,
-        removeCursorStyle: false
-      }
-    }
-  }
+        removeCursorStyle: false,
+      },
+    },
+  },
 }
 
 export default defaultConfig

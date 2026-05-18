@@ -78,7 +78,9 @@ module.exports = declare((api) => {
             path.node.body.forEach((node) => {
               if (api.types.isImportDeclaration(node) && api.types.isStringLiteral(node.source)) {
                 if (node.source.value === TARO_COMPONENTS) {
-                  collectedSpecifiers.push(...node.specifiers.filter((specifier) => api.types.isImportSpecifier(specifier)))
+                  collectedSpecifiers.push(
+                    ...node.specifiers.filter((specifier) => api.types.isImportSpecifier(specifier)),
+                  )
                   return
                 }
               }
@@ -103,7 +105,7 @@ module.exports = declare((api) => {
               if (!specifierMap.has(localName)) {
                 specifierMap.set(
                   localName,
-                  api.types.importSpecifier(api.types.identifier(localName), api.types.identifier(importedName))
+                  api.types.importSpecifier(api.types.identifier(localName), api.types.identifier(importedName)),
                 )
               }
             }
@@ -125,7 +127,7 @@ module.exports = declare((api) => {
             const nextSpecifiers = Array.from(specifierMap.values())
             if (nextSpecifiers.length > 0) {
               remainingBody.unshift(
-                api.types.importDeclaration(nextSpecifiers, api.types.stringLiteral(TARO_COMPONENTS))
+                api.types.importDeclaration(nextSpecifiers, api.types.stringLiteral(TARO_COMPONENTS)),
               )
             }
 
@@ -173,12 +175,12 @@ module.exports = declare((api) => {
             // 创建 ScrollView 开始标签
             const scrollViewProps = pickAttrs(props, SCROLL_VIEW_PROPS)
             scrollViewProps.push(
-              api.types.jsxAttribute(api.types.jsxIdentifier('type'), api.types.stringLiteral('custom'))
+              api.types.jsxAttribute(api.types.jsxIdentifier('type'), api.types.stringLiteral('custom')),
             )
             const scrollViewOpening = api.types.jsxOpeningElement(
               api.types.jsxIdentifier(scrollViewName),
               scrollViewProps,
-              false
+              false,
             )
             // 创建 ScrollView 闭合标签
             const scrollViewClosing = api.types.jsxClosingElement(api.types.jsxIdentifier(scrollViewName))
@@ -186,7 +188,7 @@ module.exports = declare((api) => {
             const listBuilderOpening = api.types.jsxOpeningElement(
               api.types.jsxIdentifier(listBuilderName),
               pickAttrs(props, LIST_BUILDER_PROPS),
-              false
+              false,
             )
             // 创建 ListBuilder 闭合标签
             const listBuilderClosing = api.types.jsxClosingElement(api.types.jsxIdentifier(listBuilderName))
@@ -199,7 +201,7 @@ module.exports = declare((api) => {
               scrollViewOpening,
               scrollViewClosing,
               [listBuilderElement],
-              false
+              false,
             )
 
             path.replaceWith(scrollViewElement)

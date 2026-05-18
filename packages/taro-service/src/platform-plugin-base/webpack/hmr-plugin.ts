@@ -2,19 +2,15 @@
 import type { Compiler } from 'webpack'
 
 export default class TaroMiniHMRPlugin {
-  apply (compiler: Compiler) {
-    compiler.hooks.thisCompilation.tap('TaroMiniHMRPlugin', compilation => {
+  apply(compiler: Compiler) {
+    compiler.hooks.thisCompilation.tap('TaroMiniHMRPlugin', (compilation) => {
       compilation.hooks.beforeChunkAssets.tap('TaroMiniHMRPlugin', () => {
-        compilation.chunks.forEach(chunk => {
+        compilation.chunks.forEach((chunk) => {
           if (chunk.hasRuntime() && chunk.name === 'runtime') {
             const runtimeModules = compilation.chunkGraph.getChunkRuntimeModulesInOrder(chunk)
             for (const module of runtimeModules) {
               if (module.name === 'jsonp chunk loading') {
-                const runtimeSource = compilation.codeGenerationResults.getSource(
-                  module,
-                  chunk.runtime,
-                  'runtime'
-                )
+                const runtimeSource = compilation.codeGenerationResults.getSource(module, chunk.runtime, 'runtime')
                 runtimeSource['_value'] += `
 var miniHMRCallback = function(parentChunkLoadingFunction, data) {
   var chunkIds = data[0];

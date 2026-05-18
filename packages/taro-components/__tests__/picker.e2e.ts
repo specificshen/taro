@@ -5,9 +5,9 @@ import { delay, getBoundingClientRect } from './utils'
 
 describe('Picker', () => {
   let page: E2EPage
-  async function scrollToNextItem (page: E2EPage, columnIndex = 0) {
+  async function scrollToNextItem(page: E2EPage, columnIndex = 0) {
     const column = (await page.findAll('.weui-picker__group'))[columnIndex] as unknown as AnyHTMLElement
-    const cur = await page.find('.weui-picker__indicator') as unknown as AnyHTMLElement
+    const cur = (await page.find('.weui-picker__indicator')) as unknown as AnyHTMLElement
     const curRect = await getBoundingClientRect(cur)
     const startY = curRect.top + curRect.height / 2
     const endY = curRect.top - curRect.height / 2
@@ -15,7 +15,7 @@ describe('Picker', () => {
     const touchStart = {
       identifier: 0,
       target: column,
-      clientY: startY
+      clientY: startY,
     }
     // Note: 当前无法在模拟事件参数
     // column.triggerEvent('touchstart', { changedTouches: [touchStart] })
@@ -25,7 +25,7 @@ describe('Picker', () => {
     const touchMove = {
       identifier: 0,
       target: column,
-      clientY: endY
+      clientY: endY,
     }
     // column.triggerEvent('touchmove', { changedTouches: [touchMove] })
     await column.callMethod('handleMoving', touchMove.clientY)
@@ -34,7 +34,7 @@ describe('Picker', () => {
     const touchEnd = {
       identifier: 0,
       target: column,
-      clientY: endY
+      clientY: endY,
     }
     // column.triggerEvent('touchend', { changedTouches: [touchEnd] })
     await column.callMethod('handleMoveEnd', touchEnd.clientY)
@@ -66,7 +66,7 @@ describe('Picker', () => {
     await picker?.click()
     await page.waitForChanges()
 
-    const cur = await page.find('.weui-picker__indicator') as unknown as AnyHTMLElement
+    const cur = (await page.find('.weui-picker__indicator')) as unknown as AnyHTMLElement
     const curRect = await getBoundingClientRect(cur)
     const startY = curRect.top + curRect.height / 2
     const endY = curRect.top - curRect.height / 2
@@ -179,22 +179,32 @@ describe('Picker', () => {
   })
 
   it('multiSelector', async () => {
-    const range = [[{
-      id: 0,
-      name: '饭'
-    }, {
-      id: 1,
-      name: '粥'
-    }, {
-      id: 2,
-      name: '粉'
-    }], [{
-      id: 0,
-      name: '猪肉'
-    }, {
-      id: 1,
-      name: '牛肉'
-    }]]
+    const range = [
+      [
+        {
+          id: 0,
+          name: '饭',
+        },
+        {
+          id: 1,
+          name: '粥',
+        },
+        {
+          id: 2,
+          name: '粉',
+        },
+      ],
+      [
+        {
+          id: 0,
+          name: '猪肉',
+        },
+        {
+          id: 1,
+          name: '牛肉',
+        },
+      ],
+    ]
     const selected = [0, 0]
     page = await newE2EPage({
       html: `<taro-picker-core mode="multiSelector">

@@ -1,10 +1,4 @@
-import {
-  validateConfig,
-  validateEnv,
-  validateEslint,
-  validatePackage,
-  validateRecommend
-} from '@tarojs/plugin-doctor'
+import { validateConfig, validateEnv, validateEslint, validatePackage, validateRecommend } from '@tarojs/plugin-doctor'
 
 export default {
   validators: [
@@ -22,6 +16,6 @@ export default {
     },
     async (args) => {
       return await validateEslint.call(this, args.projectConfig, args.chalk)
-    }
-  ]
+    },
+  ],
 }

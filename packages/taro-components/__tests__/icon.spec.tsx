@@ -9,7 +9,7 @@ describe('Icon', () => {
   it('props', async () => {
     page = await newSpecPage({
       components: [Icon],
-      template: () => (<taro-icon-core />),
+      template: () => <taro-icon-core />,
     })
     await page.waitForChanges()
 

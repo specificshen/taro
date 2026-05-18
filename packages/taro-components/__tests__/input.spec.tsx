@@ -18,16 +18,18 @@ describe('Input', () => {
 
     page = await newSpecPage({
       components: [Input],
-      template: () => (<taro-input-core
-        maxlength={maxLength}
-        disabled={disabled}
-        value={value}
-        placeholder={placeholder}
-        type={type}
-        autoFocus={autoFocus}
-        onFocus={onFocus}
-        readonly={readonly}
-      />),
+      template: () => (
+        <taro-input-core
+          maxlength={maxLength}
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          type={type}
+          autoFocus={autoFocus}
+          onFocus={onFocus}
+          readonly={readonly}
+        />
+      ),
     })
     const input = page.root?.querySelector('input')
     expect(input?.classList.contains('weui-input')).toEqual(true)
@@ -68,15 +70,17 @@ describe('Input', () => {
     const onInput = jest.fn()
     page = await newSpecPage({
       components: [Input],
-      template: () => (<taro-input-core
-        maxlength={maxLength}
-        value={value}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-        onConfirm={onConfirm}
-        onInput={onInput}
-      />),
+      template: () => (
+        <taro-input-core
+          maxlength={maxLength}
+          value={value}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          onConfirm={onConfirm}
+          onInput={onInput}
+        />
+      ),
     })
     const input = page.root?.querySelector('input')
 
@@ -102,7 +106,7 @@ describe('Input', () => {
     expect(onConfirm).toHaveBeenCalledTimes(1)
     const inputEvent = {
       data: 'a',
-      inputType: 'insertText'
+      inputType: 'insertText',
     }
     // @ts-ignore
     input?.dispatchEvent(new CustomEvent('input', inputEvent))

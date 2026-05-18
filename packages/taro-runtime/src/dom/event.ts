@@ -9,7 +9,7 @@ import {
   TARGET,
   TIME_STAMP,
   TOUCHMOVE,
-  TYPE
+  TYPE,
 } from '../constants'
 import env from '../env'
 import { isParentBound } from '../utils'
@@ -43,26 +43,26 @@ export class TaroEvent {
 
   public mpEvent: MpEvent | undefined
 
-  public constructor (type: string, opts: EventOptions, event?: MpEvent) {
+  public constructor(type: string, opts: EventOptions, event?: MpEvent) {
     this.type = type.toLowerCase()
     this.mpEvent = event
     this.bubbles = Boolean(opts && opts.bubbles)
     this.cancelable = Boolean(opts && opts.cancelable)
   }
 
-  public stopPropagation () {
+  public stopPropagation() {
     this._stop = true
   }
 
-  public stopImmediatePropagation () {
+  public stopImmediatePropagation() {
     this._end = this._stop = true
   }
 
-  public preventDefault () {
+  public preventDefault() {
     this.defaultPrevented = true
   }
 
-  get target () {
+  get target() {
     const cacheTarget = this.cacheTarget
     if (!cacheTarget) {
       const target = Object.create(this.mpEvent?.target || null)
@@ -72,7 +72,7 @@ export class TaroEvent {
 
       target.dataset = {
         ...(currentEle !== null ? currentEle.dataset : EMPTY_OBJ),
-        ...(element !== null ? element.dataset : EMPTY_OBJ)
+        ...(element !== null ? element.dataset : EMPTY_OBJ),
       }
 
       for (const key in this.mpEvent?.detail) {
@@ -87,7 +87,7 @@ export class TaroEvent {
     }
   }
 
-  get currentTarget () {
+  get currentTarget() {
     const cacheCurrentTarget = this.cacheCurrentTarget
     if (!cacheCurrentTarget) {
       const doc = env.document
@@ -95,7 +95,9 @@ export class TaroEvent {
       const currentTarget = Object.create(this.mpEvent?.currentTarget || null)
 
       const element = doc.getElementById(currentTarget.dataset?.sid || currentTarget.id || null)
-      const targetElement = doc.getElementById(this.mpEvent?.target?.dataset?.sid as string || this.mpEvent?.target?.id as string || null)
+      const targetElement = doc.getElementById(
+        (this.mpEvent?.target?.dataset?.sid as string) || (this.mpEvent?.target?.id as string) || null,
+      )
 
       if (element === null || (element && element === targetElement)) {
         this.cacheCurrentTarget = this.target
@@ -117,7 +119,7 @@ export class TaroEvent {
   }
 }
 
-export function createEvent (event: MpEvent | string, node?: TaroElement) {
+export function createEvent(event: MpEvent | string, node?: TaroElement) {
   if (typeof event === 'string') {
     // For Vue3 using document.createEvent
     return new TaroEvent(event, { bubbles: true, cancelable: true })
@@ -143,7 +145,7 @@ export function createEvent (event: MpEvent | string, node?: TaroElement) {
 
 const eventsBatch = {}
 
-function getEventCBResult (event: MpEvent) {
+function getEventCBResult(event: MpEvent) {
   const result = event[EVENT_CALLBACK_RESULT]
   if (!isUndefined(result)) {
     delete event[EVENT_CALLBACK_RESULT]
@@ -152,19 +154,25 @@ function getEventCBResult (event: MpEvent) {
 }
 
 // 小程序的事件代理回调函数
-export function eventHandler (event: MpEvent) {
+export function eventHandler(event: MpEvent) {
   // Note: ohos 上事件没有设置 type、detail 类型 setter 方法，且部分事件（例如 load 等）缺失 target 导致事件错误
-  event.type === undefined && Object.defineProperty(event, 'type', {
-    value: (event as any)._type // ohos only
-  })
-  event.detail === undefined && Object.defineProperty(event, 'detail', {
-    value: (event as any)._detail || { ...event } // ohos only
-  })
+  event.type === undefined &&
+    Object.defineProperty(event, 'type', {
+      value: (event as any)._type, // ohos only
+    })
+  event.detail === undefined &&
+    Object.defineProperty(event, 'detail', {
+      value: (event as any)._detail || { ...event }, // ohos only
+    })
   event.currentTarget = event.currentTarget || event.target || { ...event }
   hooks.call('modifyMpEventImpl', event)
 
   const currentTarget = event.currentTarget
-  const id = currentTarget.dataset?.sid as string /** sid */ || currentTarget.id /** uid */ || event.detail?.id as string || ''
+  const id =
+    (currentTarget.dataset?.sid as string) /** sid */ ||
+    currentTarget.id /** uid */ ||
+    (event.detail?.id as string) ||
+    ''
 
   const node = env.document.getElementById(id)
   if (node) {
@@ -186,7 +194,7 @@ export function eventHandler (event: MpEvent) {
         // 最上层组件统一 batchUpdate
         hooks.call('batchedEventUpdates', () => {
           if (eventsBatch[type]) {
-            eventsBatch[type].forEach(fn => fn())
+            eventsBatch[type].forEach((fn) => fn())
             delete eventsBatch[type]
           }
           dispatch()
@@ -194,7 +202,7 @@ export function eventHandler (event: MpEvent) {
         return getEventCBResult(event)
       } else {
         // 如果上层组件也有绑定同类型的组件，委托给上层组件调用事件回调
-        (eventsBatch[type] ||= []).push(dispatch)
+        ;(eventsBatch[type] ||= []).push(dispatch)
       }
     } else {
       dispatch()

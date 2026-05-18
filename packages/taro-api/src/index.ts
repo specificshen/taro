@@ -1,22 +1,10 @@
 /* eslint-disable camelcase */
-import {
-  Current,
-  eventCenter,
-  Events,
-  getCurrentInstance,
-  nextTick,
-  options
-} from '@tarojs/runtime'
+import { Current, eventCenter, Events, getCurrentInstance, nextTick, options } from '@tarojs/runtime'
 
 import { ENV_TYPE, getEnv } from './env'
 import Link, { interceptorify } from './interceptor'
 import * as interceptors from './interceptor/interceptors'
-import {
-  Behavior,
-  getInitPxTransform,
-  getPreload,
-  getPxTransform,
-} from './tools'
+import { Behavior, getInitPxTransform, getPreload, getPxTransform } from './tools'
 
 const Taro: Record<string, unknown> = {
   Behavior,
@@ -31,7 +19,7 @@ const Taro: Record<string, unknown> = {
   eventCenter,
   Events,
   getInitPxTransform,
-  interceptorify
+  interceptorify,
 }
 
 Taro.initPxTransform = getInitPxTransform(Taro)

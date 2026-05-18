@@ -16,13 +16,13 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
   return {
     name: 'taro:vite-mini-entry',
     enforce: 'pre',
-    resolveId (source, _importer, options) {
+    resolveId(source, _importer, options) {
       if (viteCompilerContext?.isApp(source) && options.isEntry) {
         return appendVirtualModulePrefix(source + ENTRY_SUFFIX)
       }
       return null
     },
-    async load (id) {
+    async load(id) {
       if (viteCompilerContext && id.endsWith(ENTRY_SUFFIX)) {
         const rawId = stripVirtualModulePrefix(id).replace(ENTRY_SUFFIX, '')
         const { taroConfig, app } = viteCompilerContext
@@ -38,17 +38,14 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           }
         }, '')
 
-        const { importFrameworkStatement, frameworkArgs, creator, creatorLocation, modifyInstantiate } = viteCompilerContext.loaderMeta
+        const { importFrameworkStatement, frameworkArgs, creator, creatorLocation, modifyInstantiate } =
+          viteCompilerContext.loaderMeta
         const createApp = `${creator}(component, ${frameworkArgs})`
 
         const appConfigStr = prettyPrintJson(appConfig)
 
         let instantiateApp = taroConfig.blended
-          ? [
-            `\nvar app = ${createApp}`,
-            'app.onLaunch()',
-            'exports.taroApp = app'
-          ].join('\n')
+          ? [`\nvar app = ${createApp}`, 'app.onLaunch()', 'exports.taroApp = app'].join('\n')
           : `var inst = App(${createApp})`
 
         if (typeof modifyInstantiate === 'function') {
@@ -56,7 +53,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         }
 
         // pages
-        viteCompilerContext.pages.forEach(async page => {
+        viteCompilerContext.pages.forEach(async (page) => {
           // 小程序原生页面
           if (page.isNative) {
             if (page.templatePath) {
@@ -64,7 +61,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
               this.emitFile({
                 type: 'asset',
                 fileName: viteCompilerContext.getTemplatePath(page.name),
-                source
+                source,
               })
             }
             page.cssPath && this.addWatchFile(page.cssPath)
@@ -73,7 +70,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             type: 'chunk',
             id: `${page.scriptPath}${page.isNative ? QUERY_IS_NATIVE_PAGE : ''}`,
             fileName: viteCompilerContext.getScriptPath(page.name),
-            implicitlyLoadedAfterOneOf: [rawId]
+            implicitlyLoadedAfterOneOf: [rawId],
           })
         })
 
@@ -88,7 +85,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             type: 'chunk',
             id: path.resolve(__dirname, '../template/comp'),
             fileName: viteCompilerContext.getScriptPath(baseCompName),
-            implicitlyLoadedAfterOneOf: [rawId]
+            implicitlyLoadedAfterOneOf: [rawId],
           })
         }
 
@@ -97,21 +94,21 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           type: 'chunk',
           id: path.resolve(__dirname, '../template/custom-wrapper'),
           fileName: viteCompilerContext.getScriptPath(customWrapperName),
-          implicitlyLoadedAfterOneOf: [rawId]
+          implicitlyLoadedAfterOneOf: [rawId],
         })
 
         // tabbar
         if (appConfig.tabBar && !isEmptyObject(appConfig.tabBar)) {
           const list = appConfig.tabBar.list || []
           const { sourceDir } = viteCompilerContext
-          list.forEach(async item => {
+          list.forEach(async (item) => {
             const { iconPath, selectedIconPath } = item
             if (iconPath && !iconPath.startsWith('@')) {
               const filePath = path.resolve(sourceDir, iconPath)
               this.emitFile({
                 type: 'asset',
                 fileName: removePathPrefix(iconPath),
-                source: Uint8Array.from(fs.readFileSync(filePath))
+                source: Uint8Array.from(fs.readFileSync(filePath)),
               })
               this.addWatchFile(filePath)
             }
@@ -121,7 +118,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
               this.emitFile({
                 type: 'asset',
                 fileName: removePathPrefix(selectedIconPath),
-                source: Uint8Array.from(fs.readFileSync(filePath))
+                source: Uint8Array.from(fs.readFileSync(filePath)),
               })
               this.addWatchFile(filePath)
             }
@@ -134,7 +131,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           this.emitFile({
             type: 'asset',
             fileName: appConfig.themeLocation,
-            source: Uint8Array.from(fs.readFileSync(themePath))
+            source: Uint8Array.from(fs.readFileSync(themePath)),
           })
           this.addWatchFile(themePath)
         }
@@ -153,9 +150,9 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           'initPxTransform({',
           `designWidth: ${taroConfig.designWidth || 750},`,
           `deviceRatio: ${JSON.stringify(taroConfig.deviceRatio || { 750: 1 })}`,
-          '})'
+          '})',
         ].join('\n')
       }
-    }
+    },
   }
 }

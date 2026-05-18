@@ -10,10 +10,13 @@ describe('babel-preset-taro with h5', () => {
   })
 
   test('not exist dynamic-import-node', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -24,11 +27,14 @@ describe('babel-preset-taro with h5', () => {
   })
 
   test('enable dynamic-import-node', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true,
-      'dynamic-import-node': true
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+        'dynamic-import-node': true,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 

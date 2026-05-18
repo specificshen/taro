@@ -9,7 +9,7 @@ jest.mock('@tarojs/service')
 const MockedKernel = Kernel as unknown as jest.Mock<Kernel>
 const APP_PATH = path.join(__dirname, 'fixtures/default')
 
-function setProcessArgv (cmd: string) {
+function setProcessArgv(cmd: string) {
   // @ts-ignore
   process.argv = [null, ...cmd.split(' ')]
 }

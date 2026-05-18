@@ -10,17 +10,17 @@ export const components = {
     'border-radius': _zero,
     'font-size': '16',
     duration: '30',
-    bindActiveEnd: _empty
+    bindActiveEnd: _empty,
   },
   RichText: {
     space: _empty,
     'user-select': _false,
-    mode: "'default'"
+    mode: "'default'",
   },
   Text: {
     'user-select': _false,
     overflow: 'visible',
-    'max-lines': ''
+    'max-lines': '',
   },
   Map: {
     polygons: '[]',
@@ -51,7 +51,7 @@ export const components = {
     bindAuthSuccess: _empty,
     bindInterpolatePoint: _empty,
     bindError: _empty,
-    bindAnchorPointTap: _empty
+    bindAnchorPointTap: _empty,
   },
   Button: {
     lang: 'en',
@@ -70,10 +70,10 @@ export const components = {
     bindError: _empty,
     bindOpenSetting: _empty,
     bindLaunchApp: _empty,
-    bindAgreePrivacyAuthorization: _empty
+    bindAgreePrivacyAuthorization: _empty,
   },
   Form: {
-    'report-submit-timeout': _zero
+    'report-submit-timeout': _zero,
   },
   Input: {
     'always-embed': _false,
@@ -96,16 +96,16 @@ export const components = {
   },
   Picker: {
     'header-text': _empty,
-    level: 'region'
+    level: 'region',
   },
   PickerView: {
     'immediate-change': _false,
     bindPickStart: _empty,
-    bindPickEnd: _empty
+    bindPickEnd: _empty,
   },
   Slider: {
     color: "'#e9e9e9'",
-    'selected-color': "'#1aad19'"
+    'selected-color': "'#1aad19'",
   },
   Textarea: {
     'show-confirm-bar': _true,
@@ -163,11 +163,11 @@ export const components = {
     bindScrollStart: _empty,
     bindScrollEnd: _empty,
     bindRefresherWillRefresh: _empty,
-    bindRefresherStatusChange: _empty
+    bindRefresherStatusChange: _empty,
   },
   StickySection: {
     'push-pinned-header': _true,
-    padding: '[0, 0, 0, 0]'
+    padding: '[0, 0, 0, 0]',
   },
   GridView: {
     type: "'aligned'",
@@ -175,7 +175,7 @@ export const components = {
     'max-cross-axis-extent': _zero,
     'main-axis-gap': _zero,
     'cross-axis-gap': _zero,
-    padding: '[0, 0, 0, 0]'
+    padding: '[0, 0, 0, 0]',
   },
   GridBuilder: {
     type: "'aligned'",
@@ -186,10 +186,10 @@ export const components = {
     'cross-axis-gap': _zero,
     padding: '[0, 0, 0, 0]',
     bindItemBuild: _empty,
-    bindItemDispose: _empty
+    bindItemDispose: _empty,
   },
   ListView: {
-    padding: '[0, 0, 0, 0]'
+    padding: '[0, 0, 0, 0]',
   },
   ListBuilder: {
     list: '[]',
@@ -198,11 +198,11 @@ export const components = {
     'child-count': _empty,
     'child-height': _empty,
     bindItemBuild: _empty,
-    bindItemDispose: _empty
+    bindItemDispose: _empty,
   },
   StickyHeader: {
     'offset-top': '0',
-    padding: '[0, 0, 0, 0]'
+    padding: '[0, 0, 0, 0]',
   },
   Swiper: {
     'snap-to-edge': _false,
@@ -221,26 +221,26 @@ export const components = {
     'cache-extent': '0',
   },
   SwiperItem: {
-    'skip-hidden-item-layout': _false
+    'skip-hidden-item-layout': _false,
   },
   Navigator: {
     target: "'self'",
     'app-id': _empty,
     path: _empty,
     'extra-data': _empty,
-    version: "'version'"
+    version: "'version'",
   },
   Camera: {
     mode: "'normal'",
     resolution: "'medium'",
     'frame-size': "'medium'",
     bindInitDone: _empty,
-    bindScanCode: _empty
+    bindScanCode: _empty,
   },
   Image: {
     webp: _false,
     'show-menu-by-longpress': _false,
-    'fade-in': _false
+    'fade-in': _false,
   },
   LivePlayer: {
     mode: "'live'",
@@ -259,7 +259,7 @@ export const components = {
     bindLeavePictureInPicture: _empty,
     bindCastingUserSelect: _empty,
     bindCastingStateChange: _empty,
-    bindCastingInterrupt: _empty
+    bindCastingInterrupt: _empty,
   },
   Video: {
     title: _empty,
@@ -303,18 +303,18 @@ export const components = {
     bindAdLoad: _empty,
     bindAdError: _empty,
     bindAdClose: _empty,
-    bindAdPlay: _empty
+    bindAdPlay: _empty,
   },
   Canvas: {
-    type: _empty
+    type: _empty,
   },
   Ad: {
     'ad-type': "'banner'",
-    'ad-theme': "'white'"
+    'ad-theme': "'white'",
   },
   CoverView: {
     'marker-id': _empty,
-    slot: _empty
+    slot: _empty,
   },
   // ======== 额外组件 ========
   Editor: {
@@ -329,7 +329,7 @@ export const components = {
     bindBlur: _empty,
     bindInput: _empty,
     bindStatusChange: _empty,
-    name: _empty
+    name: _empty,
   },
   MatchMedia: {
     'min-width': _empty,
@@ -338,7 +338,7 @@ export const components = {
     'min-height': _empty,
     'max-height': _empty,
     height: _empty,
-    orientation: _empty
+    orientation: _empty,
   },
   FunctionalPageNavigator: {
     version: "'release'",
@@ -346,7 +346,7 @@ export const components = {
     args: _empty,
     bindSuccess: _empty,
     bindFail: _empty,
-    bindCancel: _empty
+    bindCancel: _empty,
   },
   LivePusher: {
     url: _empty,
@@ -386,11 +386,11 @@ export const components = {
     bindBgmStart: _empty,
     bindBgmProgress: _empty,
     bindBgmComplete: _empty,
-    bindAudioVolumeNotify: _empty
+    bindAudioVolumeNotify: _empty,
   },
   OfficialAccount: {
     bindLoad: _empty,
-    bindError: _empty
+    bindError: _empty,
   },
   OpenData: {
     type: _empty,
@@ -398,7 +398,7 @@ export const components = {
     lang: "'en'",
     'default-text': _empty,
     'default-avatar': _empty,
-    bindError: _empty
+    bindError: _empty,
   },
   NavigationBar: {
     title: _empty,
@@ -406,7 +406,7 @@ export const components = {
     'front-color': "'#000000'",
     'background-color': _empty,
     'color-animation-duration': _zero,
-    'color-animation-timing-func': "'linear'"
+    'color-animation-timing-func': "'linear'",
   },
   PageMeta: {
     'background-text-style': _empty,
@@ -421,19 +421,19 @@ export const components = {
     'page-orientation': "''",
     bindResize: _empty,
     bindScroll: _empty,
-    bindScrollDone: _empty
+    bindScrollDone: _empty,
   },
   VoipRoom: {
     openid: _empty,
     mode: "'camera'",
     'device-position': "'front'",
-    bindError: _empty
+    bindError: _empty,
   },
   AdCustom: {
     'unit-id': _empty,
     'ad-intervals': _empty,
     bindLoad: _empty,
-    bindError: _empty
+    bindError: _empty,
   },
   PageContainer: {
     show: _false,
@@ -451,7 +451,7 @@ export const components = {
     bindBeforeLeave: _empty,
     bindLeave: _empty,
     bindAfterLeave: _empty,
-    bindClickOverlay: _empty
+    bindClickOverlay: _empty,
   },
   ShareElement: {
     mapkey: _empty,
@@ -461,15 +461,15 @@ export const components = {
     'transition-on-gesture': _false,
     'shuttle-on-push': "'to'",
     'shuttle-on-pop': "'to'",
-    'rect-tween-type': "'materialRectArc'"
+    'rect-tween-type': "'materialRectArc'",
   },
   KeyboardAccessory: {},
   RootPortal: {
-    enable: _true
+    enable: _true,
   },
   ChannelLive: {
     'feed-id': _empty,
-    'finder-user-name': _empty
+    'finder-user-name': _empty,
   },
   ChannelVideo: {
     'feed-id': _empty,
@@ -479,7 +479,7 @@ export const components = {
     loop: _false,
     muted: _false,
     'object-fit': "'contain'",
-    bindError: _empty
+    bindError: _empty,
   },
   Snapshot: {
     mode: "'view'",
@@ -494,14 +494,14 @@ export const components = {
     middleColor: _empty,
     openColor: "'white'",
     openElevation: _zero,
-    openBorderRadius: _zero
+    openBorderRadius: _zero,
   },
   DraggableSheet: {
     initialChildSize: '0.5',
     minChildSize: '0.25',
     maxChildSize: '1.0',
     snap: _false,
-    snapSizes: '[]'
+    snapSizes: '[]',
   },
   NestedScrollHeader: {},
   NestedScrollBody: {},

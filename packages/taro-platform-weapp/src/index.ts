@@ -13,9 +13,9 @@ export default (ctx: IPluginContext, options: IOptions) => {
   ctx.registerPlatform({
     name: 'weapp',
     useConfigName: 'mini',
-    async fn ({ config }) {
+    async fn({ config }) {
       const program = new Weapp(ctx, config, options || {})
       await program.start()
-    }
+    },
   })
 }

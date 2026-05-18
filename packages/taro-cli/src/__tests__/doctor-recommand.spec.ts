@@ -66,33 +66,11 @@ describe('recommand validator of doctor', () => {
 
     expect(lines.length).toBe(1)
     expect(lines[0].desc).toBe(
-      '没有检查到常见的测试依赖(jest/mocha/ava/tape/jesmine/karma), 配置测试可以帮助提升项目质量'
+      '没有检查到常见的测试依赖(jest/mocha/ava/tape/jesmine/karma), 配置测试可以帮助提升项目质量',
     )
     expect(lines[0].valid).toBe(true)
     expect(lines[0].solution).toBe(
-      '可以参考 https://github.com/NervJS/taro-ui-sample 项目, 其中已经包含了完整的测试配置与范例'
-    )
-
-    jest.dontMock('./fixtures/default/package.json')
-  })
-
-  it.skip('should warn when linters not found', async () => {
-    jest.doMock('./fixtures/default/package.json', () => ({
-      devDependencies: {
-        jest: 1,
-      },
-    }))
-    readdirSyncMocked.mockReturnValue(['readme.md', '.gitignore', '.editorconfig'])
-
-    const { lines } = await validator({ appPath: path.join(__dirname, './fixtures/default') })
-
-    expect(lines.length).toBe(1)
-    expect(lines[0].desc).toBe(
-      '没有检查到常见的 linter (eslint/jslint/jshint/tslint), 配置 linter 可以帮助提升项目质量'
-    )
-    expect(lines[0].valid).toBe(true)
-    expect(lines[0].solution).toBe(
-      'Taro 还提供了定制的 ESLint 规则, 可以帮助开发者避免一些常见的问题. 使用 taro cli 创建新项目即可体验'
+      '可以参考 https://github.com/NervJS/taro-ui-sample 项目, 其中已经包含了完整的测试配置与范例',
     )
 
     jest.dontMock('./fixtures/default/package.json')
@@ -111,7 +89,7 @@ describe('recommand validator of doctor', () => {
 
     expect(lines.length).toBe(1)
     expect(lines[0].desc).toBe(
-      '没有检查到 Readme (readme/readme.md/readme.markdown), 编写 Readme 可以方便其他人了解项目'
+      '没有检查到 Readme (readme/readme.md/readme.markdown), 编写 Readme 可以方便其他人了解项目',
     )
     expect(lines[0].valid).toBe(true)
 
@@ -131,7 +109,7 @@ describe('recommand validator of doctor', () => {
 
     expect(lines.length).toBe(1)
     expect(lines[0].desc).toBe(
-      '没有检查到 .gitignore 配置, 配置 .gitignore 以避免将敏感信息或不必要的内容提交到代码仓库'
+      '没有检查到 .gitignore 配置, 配置 .gitignore 以避免将敏感信息或不必要的内容提交到代码仓库',
     )
     expect(lines[0].valid).toBe(true)
 

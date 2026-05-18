@@ -13,7 +13,7 @@ describe('Camera', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Camera],
-      template: () => (<taro-camera-core />),
+      template: () => <taro-camera-core />,
     })
     await page.waitForChanges()
 

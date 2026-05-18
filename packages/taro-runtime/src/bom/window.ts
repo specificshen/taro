@@ -23,15 +23,15 @@ export class TaroWindow extends Events {
   history: TaroHistory
   XMLHttpRequest?: Partial<XMLHttpRequest>
 
-  constructor () {
+  constructor() {
     super()
 
     const globalProperties = [
       ...Object.getOwnPropertyNames(global || {}),
-      ...Object.getOwnPropertySymbols(global || {})
+      ...Object.getOwnPropertySymbols(global || {}),
     ]
 
-    globalProperties.forEach(property => {
+    globalProperties.forEach((property) => {
       if (property === 'atob' || property === 'document') return
       if (!Object.prototype.hasOwnProperty.call(this, property)) {
         // 防止小程序环境下，window 上的某些 get 属性在赋值时报错
@@ -55,58 +55,75 @@ export class TaroWindow extends Events {
     this.initEvent()
   }
 
-  initEvent () {
+  initEvent() {
     const _location = this.location
     const _history = this.history
 
-    this.on(CONTEXT_ACTIONS.INIT, (pageId: string) => {
-      // 页面 onload，为该页面建立新的上下文信息
-      _location.trigger(CONTEXT_ACTIONS.INIT, pageId)
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.INIT,
+      (pageId: string) => {
+        // 页面 onload，为该页面建立新的上下文信息
+        _location.trigger(CONTEXT_ACTIONS.INIT, pageId)
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.RECOVER, (pageId: string) => {
-      // 页面 onshow，恢复当前页面的上下文信息
-      _location.trigger(CONTEXT_ACTIONS.RECOVER, pageId)
-      _history.trigger(CONTEXT_ACTIONS.RECOVER, pageId)
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.RECOVER,
+      (pageId: string) => {
+        // 页面 onshow，恢复当前页面的上下文信息
+        _location.trigger(CONTEXT_ACTIONS.RECOVER, pageId)
+        _history.trigger(CONTEXT_ACTIONS.RECOVER, pageId)
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.RESTORE, (pageId: string) => {
-      // 页面 onhide，缓存当前页面的上下文信息
-      _location.trigger(CONTEXT_ACTIONS.RESTORE, pageId)
-      _history.trigger(CONTEXT_ACTIONS.RESTORE, pageId)
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.RESTORE,
+      (pageId: string) => {
+        // 页面 onhide，缓存当前页面的上下文信息
+        _location.trigger(CONTEXT_ACTIONS.RESTORE, pageId)
+        _history.trigger(CONTEXT_ACTIONS.RESTORE, pageId)
+      },
+      null,
+    )
 
-    this.on(CONTEXT_ACTIONS.DESTROY, (pageId: string) => {
-      // 页面 onunload，清除当前页面的上下文信息
-      _location.trigger(CONTEXT_ACTIONS.DESTROY, pageId)
-      _history.trigger(CONTEXT_ACTIONS.DESTROY, pageId)
-    }, null)
+    this.on(
+      CONTEXT_ACTIONS.DESTROY,
+      (pageId: string) => {
+        // 页面 onunload，清除当前页面的上下文信息
+        _location.trigger(CONTEXT_ACTIONS.DESTROY, pageId)
+        _history.trigger(CONTEXT_ACTIONS.DESTROY, pageId)
+      },
+      null,
+    )
   }
 
-  get document () {
+  get document() {
     return env.document
   }
 
-  addEventListener (event: string, callback: (arg: any) => void) {
+  addEventListener(event: string, callback: (arg: any) => void) {
     if (!isString(event)) return
     this.on(event, callback, null)
   }
 
-  removeEventListener (event: string, callback: (arg: any) => void) {
+  removeEventListener(event: string, callback: (arg: any) => void) {
     if (!isString(event)) return
     this.off(event, callback, null)
   }
 
-  setTimeout (...args: Parameters<typeof setTimeout>) {
+  setTimeout(...args: Parameters<typeof setTimeout>) {
     return setTimeout(...args)
   }
 
-  clearTimeout (...args: Parameters<typeof clearTimeout>) {
+  clearTimeout(...args: Parameters<typeof clearTimeout>) {
     return clearTimeout(...args)
   }
 }
 
 // Note: 小程序端 vite 打包成 commonjs，const window = xxx 会报错，所以把 window 改为 taroWindowProvider，location 和 history 同理
-export const taroWindowProvider: TaroWindow = process.env.TARO_PLATFORM === 'web' ? env.window : (env.window = new TaroWindow())
+export const taroWindowProvider: TaroWindow =
+  process.env.TARO_PLATFORM === 'web' ? env.window : (env.window = new TaroWindow())
 export const taroLocationProvider = taroWindowProvider.location
 export const taroHistoryProvider = taroWindowProvider.history

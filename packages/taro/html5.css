@@ -158,7 +158,12 @@
   margin-block-end: 1.67em;
 }
 
-:-webkit-any(.h5-article) :-webkit-any(.h5-article) :-webkit-any(.h5-article) :-webkit-any(.h5-article) :-webkit-any(.h5-article) .h5-h1 {
+:-webkit-any(.h5-article)
+  :-webkit-any(.h5-article)
+  :-webkit-any(.h5-article)
+  :-webkit-any(.h5-article)
+  :-webkit-any(.h5-article)
+  .h5-h1 {
   font-size: 0.67em;
   margin-block-start: 2.33em;
   margin-block-end: 2.33em;

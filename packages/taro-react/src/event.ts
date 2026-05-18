@@ -1,5 +1,10 @@
 import { getFiberCurrentPropsFromNode, getInstanceFromNode, getNodeFromInstance } from './componentTree'
-import { isTextInputElement, ReactDOMInputRestoreControlledState, ReactDOMTextareaRestoreControlledState, toString } from './domInput'
+import {
+  isTextInputElement,
+  ReactDOMInputRestoreControlledState,
+  ReactDOMTextareaRestoreControlledState,
+  toString,
+} from './domInput'
 import { updateValueIfChanged } from './inputValueTracking'
 import { TaroReconciler } from './reconciler'
 
@@ -17,7 +22,7 @@ interface RestoreItem {
 let restoreQueue: RestoreItem[] | null = null
 
 // 对比 TaroElement tracker 下的 value 和事件下的 value，判断 element 的值是否存在更改
-export function getTargetInstForInputOrChangeEvent (e: TaroEvent, node: TaroElement) {
+export function getTargetInstForInputOrChangeEvent(e: TaroEvent, node: TaroElement) {
   const targetInst = getInstanceFromNode(node)
   const domEventName = e.type
 
@@ -30,7 +35,7 @@ export function getTargetInstForInputOrChangeEvent (e: TaroEvent, node: TaroElem
   }
 }
 
-function getInstIfValueChanged (targetInst: Fiber, nextValue: string) {
+function getInstIfValueChanged(targetInst: Fiber, nextValue: string) {
   const targetNode = getNodeFromInstance(targetInst)
 
   if (!targetNode) return false
@@ -41,7 +46,7 @@ function getInstIfValueChanged (targetInst: Fiber, nextValue: string) {
 }
 
 // 把 target 塞入更新队列中
-export function enqueueStateRestore (target: RestoreItem): void {
+export function enqueueStateRestore(target: RestoreItem): void {
   if (restoreQueue) {
     restoreQueue.push(target)
   } else {
@@ -50,11 +55,11 @@ export function enqueueStateRestore (target: RestoreItem): void {
 }
 
 // 判断是否需要恢复 target（input、textarea） 的状态
-export function needsStateRestore (): boolean {
+export function needsStateRestore(): boolean {
   return restoreQueue !== null
 }
 
-export function finishEventHandler () {
+export function finishEventHandler() {
   const controlledComponentsHavePendingUpdates = needsStateRestore()
 
   if (controlledComponentsHavePendingUpdates) {
@@ -64,7 +69,7 @@ export function finishEventHandler () {
 }
 
 // 遍历 restoreQueue、restoreTarget，恢复其状态
-export function restoreStateIfNeeded () {
+export function restoreStateIfNeeded() {
   if (!restoreQueue) {
     return
   }
@@ -77,7 +82,7 @@ export function restoreStateIfNeeded () {
   }
 }
 
-function restoreImpl (
+function restoreImpl(
   domElement: TaroElement,
   tag: string,
   oldValue: string | number | boolean | any[],
@@ -93,7 +98,7 @@ function restoreImpl (
   }
 }
 
-function restoreStateOfTarget (item: RestoreItem) {
+function restoreStateOfTarget(item: RestoreItem) {
   const internalInstance = getInstanceFromNode(item.target)
 
   if (!internalInstance) return

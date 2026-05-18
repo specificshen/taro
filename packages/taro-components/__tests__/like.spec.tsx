@@ -13,7 +13,7 @@ describe('Like', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Like],
-      template: () => (<taro-like-core />),
+      template: () => <taro-like-core />,
     })
     await page.waitForChanges()
 

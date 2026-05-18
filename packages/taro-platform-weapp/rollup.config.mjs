@@ -14,8 +14,8 @@ const base = {
     externals({
       peerDeps: true,
     }),
-    typescript()
-  ]
+    typescript(),
+  ],
 }
 
 // 供 CLI 编译时使用的 Taro 插件入口
@@ -25,9 +25,9 @@ const compileConfig = {
     file: path.join(cwd, 'dist/index.js'),
     format: 'cjs',
     sourcemap: true,
-    exports: 'named'
+    exports: 'named',
   },
-  ...base
+  ...base,
 }
 
 // 供 Loader 使用的运行时入口
@@ -36,9 +36,9 @@ const runtimeConfig = {
   output: {
     file: path.join(cwd, 'dist/runtime.js'),
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
-  ...base
+  ...base,
 }
 
 // 供继承的包使用，为了能 tree-shaking
@@ -47,9 +47,9 @@ const runtimeUtilsConfig = {
   output: {
     file: path.join(cwd, 'dist/runtime-utils.js'),
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
-  ...base
+  ...base,
 }
 
 // React 下 webpack 会 alias @tarojs/components 为此文件
@@ -58,9 +58,9 @@ const otherConfig = {
   output: {
     file: path.join(cwd, 'dist/components-react.js'),
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
-  ...base
+  ...base,
 }
 
 export default [compileConfig, runtimeConfig, runtimeUtilsConfig, otherConfig]

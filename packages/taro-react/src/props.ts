@@ -1,5 +1,15 @@
 import { convertNumber2PX, eventHandlerTTDom, FormElement, setInnerHTML } from '@tarojs/runtime'
-import { capitalize, internalComponents, isEnableTTDom, isFunction, isNumber, isObject, isString, toCamelCase, UNITLESS_PROPERTIES_SET } from '@tarojs/shared'
+import {
+  capitalize,
+  internalComponents,
+  isEnableTTDom,
+  isFunction,
+  isNumber,
+  isObject,
+  isString,
+  toCamelCase,
+  UNITLESS_PROPERTIES_SET,
+} from '@tarojs/shared'
 
 import type { Style, TaroElement } from '@tarojs/runtime'
 
@@ -10,11 +20,11 @@ export type Props = Record<string, unknown>
 const IS_NON_DIMENSIONAL = /aspect|acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i
 const IS_DATASET_OR_ARIA = /^(data|aria)-/
 
-function isEventName (s: string) {
+function isEventName(s: string) {
   return s[0] === 'o' && s[1] === 'n'
 }
 
-function isEqual (obj1, obj2) {
+function isEqual(obj1, obj2) {
   // 首先检查引用是否相同
   if (obj1 === obj2) {
     return true
@@ -46,14 +56,14 @@ function isEqual (obj1, obj2) {
   return true
 }
 
-export function updateProps (dom: TaroElement, oldProps: Props, newProps: Props) {
+export function updateProps(dom: TaroElement, oldProps: Props, newProps: Props) {
   const updatePayload = getUpdatePayload(dom, oldProps, newProps)
   if (updatePayload) {
     updatePropsByPayload(dom, oldProps, updatePayload)
   }
 }
 
-export function updatePropsByPayload (dom: TaroElement, oldProps: Props, updatePayload: any[]) {
+export function updatePropsByPayload(dom: TaroElement, oldProps: Props, updatePayload: any[]) {
   for (let i = 0; i < updatePayload.length; i += 2) {
     // key, value 成对出现
     const key = updatePayload[i]
@@ -63,13 +73,13 @@ export function updatePropsByPayload (dom: TaroElement, oldProps: Props, updateP
   }
 }
 
-export function getUpdatePayload (dom: TaroElement, oldProps: Props, newProps: Props) {
+export function getUpdatePayload(dom: TaroElement, oldProps: Props, newProps: Props) {
   let i: string
   let updatePayload: any[] | null = null
 
   for (i in oldProps) {
     if (!(i in newProps)) {
-      (updatePayload = updatePayload || []).push(i, null)
+      ;(updatePayload = updatePayload || []).push(i, null)
     }
   }
   const isFormElement = dom instanceof FormElement
@@ -78,7 +88,7 @@ export function getUpdatePayload (dom: TaroElement, oldProps: Props, newProps: P
       // 如果都是 style，且 style 里面的值相等，则无需记录到 payload 中
       if (i === 'style' && isObject(oldProps[i]) && isObject(newProps[i]) && isEqual(oldProps[i], newProps[i])) continue
 
-      (updatePayload = updatePayload || []).push(i, newProps[i])
+      ;(updatePayload = updatePayload || []).push(i, newProps[i])
     }
   }
 
@@ -91,7 +101,7 @@ export function getUpdatePayload (dom: TaroElement, oldProps: Props, newProps: P
 //   handlers[0](e)
 // }
 
-function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
+function setEvent(dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
   const isCapture = name.endsWith('Capture')
   let eventName = name.toLowerCase().slice(2)
   if (isCapture) {
@@ -106,7 +116,7 @@ function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: un
 
   if (process.env.TARO_ENV === 'tt' && isEnableTTDom()) {
     if (isFunction(oldValue)) {
-      (dom as any).removeEventListener(`bind${eventName}`, dom[`__${eventName}__`])
+      ;(dom as any).removeEventListener(`bind${eventName}`, dom[`__${eventName}__`])
     }
     if (isFunction(value)) {
       dom[`__${eventName}__`] = eventHandlerTTDom.bind(null, dom, value)
@@ -127,7 +137,7 @@ function setEvent (dom: TaroElement, name: string, value: unknown, oldValue?: un
   }
 }
 
-function setStyle (style: Style, key: string, value: unknown) {
+function setStyle(style: Style, key: string, value: unknown) {
   if (key[0] === '-') {
     // css variables need not further judgment
     style.setProperty(key, (value as string).toString())
@@ -135,11 +145,7 @@ function setStyle (style: Style, key: string, value: unknown) {
   }
 
   style[key] =
-    isNumber(value) && IS_NON_DIMENSIONAL.test(key) === false
-      ? convertNumber2PX(value)
-      : value === null
-        ? ''
-        : value
+    isNumber(value) && IS_NON_DIMENSIONAL.test(key) === false ? convertNumber2PX(value) : value === null ? '' : value
 }
 
 type StyleValue = Record<string, string | number>
@@ -147,14 +153,10 @@ interface DangerouslySetInnerHTML {
   __html?: string
 }
 
-function setProperty (dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
+function setProperty(dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
   name = name === 'className' ? 'class' : name
 
-  if (
-    name === 'key' ||
-    name === 'children' ||
-    name === 'ref'
-  ) {
+  if (name === 'key' || name === 'children' || name === 'ref') {
     // skip
   } else if (name === 'style') {
     if (process.env.TARO_ENV === 'tt' && isEnableTTDom()) {
@@ -220,7 +222,12 @@ function styleObjectToCss(style: StyleValue) {
   return Object.entries(style)
     .map(([key, value]) => {
       const kebabCaseKey = key.replace(/([A-Z])/g, '-$1').toLowerCase()
-      const cssValue = typeof value === 'number' && !UNITLESS_PROPERTIES_SET.has(kebabCaseKey) ? `${value}px` : value === null ? '' : value
+      const cssValue =
+        typeof value === 'number' && !UNITLESS_PROPERTIES_SET.has(kebabCaseKey)
+          ? `${value}px`
+          : value === null
+            ? ''
+            : value
       return `${kebabCaseKey}: ${cssValue};`
     })
     .join(' ')

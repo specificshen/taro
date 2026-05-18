@@ -19,7 +19,7 @@ export default class Weapp extends TaroPlatformBase {
     style: '.wxss',
     config: '.json',
     script: '.js',
-    xs: '.wxs'
+    xs: '.wxs',
   }
 
   /**
@@ -30,7 +30,7 @@ export default class Weapp extends TaroPlatformBase {
    * 5. build
    * 6. buildTransaction - close
    */
-  constructor (ctx, config, pluginOptions?: IOptions) {
+  constructor(ctx, config, pluginOptions?: IOptions) {
     super(ctx, config)
     this.template = new Template(pluginOptions)
     // Skyline / glass-easel 默认配置（用户可在 project config 中覆盖）
@@ -42,17 +42,17 @@ export default class Weapp extends TaroPlatformBase {
       ...this.config,
     }
     this.setupTransaction.addWrapper({
-      close () {
+      close() {
         this.modifyTemplate(pluginOptions)
         this.modifyWebpackConfig()
-      }
+      },
     })
   }
 
   /**
    * 增加组件或修改组件属性
    */
-  modifyTemplate (pluginOptions?: IOptions) {
+  modifyTemplate(pluginOptions?: IOptions) {
     const template = this.template
     template.mergeComponents(this.ctx, components)
     template.voidElements.add('voip-room')
@@ -67,7 +67,7 @@ export default class Weapp extends TaroPlatformBase {
   /**
    * 修改 Webpack 配置
    */
-  modifyWebpackConfig () {
+  modifyWebpackConfig() {
     this.ctx.modifyWebpackChain(({ chain }) => {
       // 解决微信小程序 sourcemap 映射失败的问题，#9412
       chain.output.devtoolModuleFilenameTemplate((info) => {

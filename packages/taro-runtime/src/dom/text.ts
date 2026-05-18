@@ -9,41 +9,41 @@ export class TaroText extends TaroNode {
   public nodeType = NodeType.TEXT_NODE
   public nodeName = '#text'
 
-  constructor (value) {
+  constructor(value) {
     super()
     this._value = value
   }
 
-  public set textContent (text: string) {
+  public set textContent(text: string) {
     MutationObserver.record({
       target: this,
       type: MutationRecordType.CHARACTER_DATA,
-      oldValue: this._value
+      oldValue: this._value,
     })
     this._value = text
     this.enqueueUpdate({
       path: `${this._path}.${Shortcuts.Text}`,
-      value: text
+      value: text,
     })
   }
 
-  public get textContent (): string {
+  public get textContent(): string {
     return this._value
   }
 
-  public set nodeValue (text: string) {
+  public set nodeValue(text: string) {
     this.textContent = text
   }
 
-  public get nodeValue (): string {
+  public get nodeValue(): string {
     return this._value
   }
 
-  public set data (text: string) {
+  public set data(text: string) {
     this.textContent = text
   }
 
-  public get data (): string {
+  public get data(): string {
     return this._value
   }
 }

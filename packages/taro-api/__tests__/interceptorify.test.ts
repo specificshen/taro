@@ -1,4 +1,3 @@
-
 import Taro from '@tarojs/taro'
 
 describe('taro interceptorify', () => {

@@ -15,12 +15,15 @@ describe('event', () => {
     const div = document.createElement('div')
     const spy = vi.fn()
     div.addEventListener('tap', spy, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     // mini program event system will do this for us
     div.dispatchEvent(event)
   })
@@ -29,12 +32,15 @@ describe('event', () => {
     const div = document.createElement('div')
     const spy = vi.fn()
     div.addEventListener('tap', spy, { once: true })
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
@@ -44,12 +50,15 @@ describe('event', () => {
     const div = document.createElement('div')
     const spy = vi.fn()
     div.addEventListener('tap', spy, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(2)
@@ -61,12 +70,15 @@ describe('event', () => {
     const spy2 = vi.fn()
     div.addEventListener('tap', spy, null)
     div.addEventListener('tap', spy2, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
     expect(spy2).toBeCalledTimes(1)
@@ -78,12 +90,15 @@ describe('event', () => {
     const spy2 = vi.fn()
     div.addEventListener('tap', spy, null)
     div.addEventListener('tap', spy2, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
     expect(spy2).toBeCalledTimes(1)
@@ -99,12 +114,15 @@ describe('event', () => {
     const spy2 = vi.fn()
     div.addEventListener('tap', spy, null)
     div.addEventListener('tap', spy2, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
     expect(spy2).toBeCalledTimes(1)
@@ -128,16 +146,23 @@ describe('event', () => {
     const containerSpy = vi.fn()
     const divSpy = vi.fn()
     container.addEventListener('tap', containerSpy, null)
-    div.addEventListener('tap', (e: any) => {
-      divSpy()
-      e.stopPropagation()
-    }, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    div.addEventListener(
+      'tap',
+      (e: any) => {
+        divSpy()
+        e.stopPropagation()
+      },
+      null,
+    )
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     container.dispatchEvent(event) // bubble event
     expect(divSpy).toBeCalledTimes(1)
@@ -153,12 +178,15 @@ describe('event', () => {
     const divSpy = vi.fn()
     container.addEventListener(eventName, containerSpy, null)
     div.addEventListener(eventName, divSpy, null)
-    const event = runtime.createEvent({
-      type: eventName,
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: eventName,
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     container.dispatchEvent(event) // bubble event
     expect(divSpy).toBeCalledTimes(1)
@@ -172,16 +200,23 @@ describe('event', () => {
     const containerSpy = vi.fn()
     const divSpy = vi.fn()
     container.addEventListener('tap', containerSpy, null)
-    div.addEventListener('tap', (e: any) => {
-      divSpy()
-      e.preventDefault()
-    }, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    div.addEventListener(
+      'tap',
+      (e: any) => {
+        divSpy()
+        e.preventDefault()
+      },
+      null,
+    )
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(divSpy).toBeCalledTimes(1)
     expect(event.defaultPrevented).toBe(true)
@@ -192,16 +227,23 @@ describe('event', () => {
     const spy = vi.fn()
     const spy2 = vi.fn()
     div.addEventListener('tap', spy2, null)
-    div.addEventListener('tap', (e: any) => {
-      spy()
-      e.stopImmediatePropagation()
-    }, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    div.addEventListener(
+      'tap',
+      (e: any) => {
+        spy()
+        e.stopImmediatePropagation()
+      },
+      null,
+    )
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
     expect(spy2).toBeCalledTimes(0)
@@ -212,16 +254,23 @@ describe('event', () => {
     const spy = vi.fn()
     const spy2 = vi.fn()
     div.addEventListener('tap', spy2, null)
-    div.addEventListener('tap', (e: any) => {
-      spy()
-      e.stopImmediatePropagation()
-    }, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    div.addEventListener(
+      'tap',
+      (e: any) => {
+        spy()
+        e.stopImmediatePropagation()
+      },
+      null,
+    )
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
     expect(spy2).toBeCalledTimes(0)
@@ -233,12 +282,15 @@ describe('event', () => {
     container.appendChild(div)
     const containerSpy = vi.fn()
     const divSpy = vi.fn()
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     container.dispatchEvent(event) // bubble event
     expect(divSpy).toBeCalledTimes(0)
@@ -269,10 +321,10 @@ describe('event', () => {
       type: 'tap',
       target: {
         dataset: { sid: 'test-id', customData: 'value' },
-        id: 'target-id'
+        id: 'target-id',
       },
       currentTarget: { dataset: {}, id: '' },
-      detail: { x: 10, y: 20 }
+      detail: { x: 10, y: 20 },
     }
 
     // Create element and add to document
@@ -297,7 +349,7 @@ describe('event', () => {
       type: 'tap',
       target: { dataset: { sid: 'target-id' }, id: 'target-id' },
       currentTarget: { dataset: { sid: 'current-id' }, id: 'current-id' },
-      detail: { value: 'test' }
+      detail: { value: 'test' },
     }
 
     // Create elements
@@ -326,7 +378,7 @@ describe('event', () => {
       type: 'tap',
       target: { dataset: { sid: 'same-id' }, id: 'same-id' },
       currentTarget: { dataset: { sid: 'same-id' }, id: 'same-id' },
-      detail: {}
+      detail: {},
     }
 
     const element = runtime.document.createElement('div')
@@ -344,7 +396,7 @@ describe('event', () => {
       type: 'confirm',
       target: { dataset: {}, id: '' },
       currentTarget: { dataset: {}, id: '' },
-      detail: {}
+      detail: {},
     }
 
     const event = runtime.createEvent(mpEvent, input)
@@ -358,7 +410,7 @@ describe('event', () => {
       currentTarget: { dataset: {}, id: '' },
       timeStamp: 12345,
       customProp: 'test',
-      detail: {}
+      detail: {},
     }
 
     const event = runtime.createEvent(mpEvent)
@@ -369,7 +421,7 @@ describe('event', () => {
   test('eventHandler with basic mpEvent', () => {
     const mockHooks = {
       call: vi.fn(),
-      isExist: vi.fn(() => false)
+      isExist: vi.fn(() => false),
     }
 
     // Mock hooks globally
@@ -384,7 +436,7 @@ describe('event', () => {
       type: 'tap',
       target: { dataset: {}, id: 'test-element' },
       currentTarget: { dataset: {}, id: 'test-element' },
-      detail: {}
+      detail: {},
     }
 
     eventHandler(mpEvent)
@@ -399,7 +451,7 @@ describe('event', () => {
   test('eventHandler with OHOS specific properties', () => {
     const mockHooks = {
       call: vi.fn(),
-      isExist: vi.fn(() => false)
+      isExist: vi.fn(() => false),
     }
 
     const originalHooks = runtime.hooks
@@ -414,7 +466,7 @@ describe('event', () => {
       _type: 'tap',
       _detail: { x: 100 },
       target: { dataset: {}, id: 'ohos-element' },
-      currentTarget: { dataset: {}, id: 'ohos-element' }
+      currentTarget: { dataset: {}, id: 'ohos-element' },
     } as any
 
     eventHandler(ohosEvent)
@@ -428,7 +480,7 @@ describe('event', () => {
   test('eventHandler with missing target', () => {
     const mockHooks = {
       call: vi.fn(),
-      isExist: vi.fn(() => false)
+      isExist: vi.fn(() => false),
     }
 
     const originalHooks = runtime.hooks
@@ -438,7 +490,7 @@ describe('event', () => {
       type: 'tap',
       detail: {},
       target: null,
-      currentTarget: null
+      currentTarget: null,
     } as any
 
     // Should handle gracefully when target is missing
@@ -459,7 +511,7 @@ describe('event', () => {
         }
         return undefined
       }),
-      isExist: vi.fn((name) => name === 'batchedEventUpdates')
+      isExist: vi.fn((name) => name === 'batchedEventUpdates'),
     }
 
     const originalHooks = runtime.hooks
@@ -473,7 +525,7 @@ describe('event', () => {
       type: 'load',
       target: { dataset: {}, id: 'batch-element' },
       currentTarget: { dataset: {}, id: 'batch-element' },
-      detail: {}
+      detail: {},
     }
 
     eventHandler(mpEvent)
@@ -491,7 +543,7 @@ describe('event', () => {
         if (name === 'isBubbleEvents') return true
         return undefined
       }),
-      isExist: vi.fn((name) => name === 'batchedEventUpdates')
+      isExist: vi.fn((name) => name === 'batchedEventUpdates'),
     }
 
     const originalHooks = runtime.hooks
@@ -506,7 +558,7 @@ describe('event', () => {
       type: 'touchmove',
       target: { dataset: {}, id: 'touchmove-element' },
       currentTarget: { dataset: {}, id: 'touchmove-element' },
-      detail: {}
+      detail: {},
     }
 
     eventHandler(mpEvent)
@@ -519,7 +571,7 @@ describe('event', () => {
   test('eventHandler with EVENT_CALLBACK_RESULT', () => {
     const mockHooks = {
       call: vi.fn(),
-      isExist: vi.fn(() => false)
+      isExist: vi.fn(() => false),
     }
 
     const originalHooks = runtime.hooks
@@ -534,7 +586,7 @@ describe('event', () => {
       target: { dataset: {}, id: 'callback-element' },
       currentTarget: { dataset: {}, id: 'callback-element' },
       detail: {},
-      [EVENT_CALLBACK_RESULT]: 'test-result'
+      [EVENT_CALLBACK_RESULT]: 'test-result',
     } as any
 
     const result = eventHandler(mpEvent)
@@ -552,7 +604,7 @@ describe('event', () => {
         if (name === 'batchedEventUpdates') {
           const fn = args[0]
           if (batchedEvents.length > 0) {
-            batchedEvents.forEach(f => f())
+            batchedEvents.forEach((f) => f())
             batchedEvents.length = 0
           }
           fn()
@@ -561,7 +613,7 @@ describe('event', () => {
         if (name === 'isBubbleEvents') return true
         return true // isParentBound returns true
       }),
-      isExist: vi.fn((name) => name === 'batchedEventUpdates')
+      isExist: vi.fn((name) => name === 'batchedEventUpdates'),
     }
 
     const originalHooks = runtime.hooks
@@ -575,7 +627,7 @@ describe('event', () => {
       type: 'tap',
       target: { dataset: {}, id: 'parent-bound-element' },
       currentTarget: { dataset: {}, id: 'parent-bound-element' },
-      detail: {}
+      detail: {},
     }
 
     eventHandler(mpEvent)
@@ -588,7 +640,7 @@ describe('event', () => {
   test('eventHandler without node element', () => {
     const mockHooks = {
       call: vi.fn(),
-      isExist: vi.fn(() => false)
+      isExist: vi.fn(() => false),
     }
 
     const originalHooks = runtime.hooks
@@ -599,7 +651,7 @@ describe('event', () => {
       type: 'tap',
       target: { dataset: {}, id: 'non-existent-element' },
       currentTarget: { dataset: {}, id: 'non-existent-element' },
-      detail: {}
+      detail: {},
     }
 
     const result = eventHandler(mpEvent)

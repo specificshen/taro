@@ -15,12 +15,12 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * 1. 清空 dist 文件夹
    * 2. 输出编译提示
    */
-  private async setup () {
+  private async setup() {
     await this.setupTransaction.perform(this.setupWebApp, this)
     this.ctx.onSetupClose?.(this)
   }
 
-  private setupWebApp () {
+  private setupWebApp() {
     const { output } = this.config
     // webpack5 原生支持 output.clean 选项，但是 webpack4 不支持， 为统一行为，这里做一下兼容
     // （在 packages/taro-mini-runner/src/webpack/chain.ts 和 packages/taro-webpack-runner/src/utils/chain.ts 的 makeConfig 中对 clean 选项做了过滤）
@@ -33,7 +33,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
     this.printDevelopmentTip()
   }
 
-  protected printDevelopmentTip () {
+  protected printDevelopmentTip() {
     const tips: string[] = []
 
     if (tips.length) {
@@ -47,7 +47,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
   /**
    * 返回当前项目内的 runner 包
    */
-  protected async getRunner () {
+  protected async getRunner() {
     const { appPath } = this.ctx.paths
     const { npm } = this.helper
 
@@ -63,7 +63,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * 准备 runner 参数
    * @param extraOptions 需要额外合入 Options 的配置项
    */
-  protected getOptions (extraOptions = {}) {
+  protected getOptions(extraOptions = {}) {
     const { sourcePath } = this.ctx.paths
     const { initialConfig } = this.ctx
     const { port } = this.ctx.runOpts.options
@@ -71,7 +71,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
     const entryFileName = `${ENTRY}.config`
     const entryFile = path.basename(entryFileName)
     const defaultEntry = {
-      [ENTRY]: [path.join(sourcePath, entryFile)]
+      [ENTRY]: [path.join(sourcePath, entryFile)],
     }
     const customEntry = get(initialConfig, 'h5.entry')
     const config = recursiveMerge(Object.assign({}, this.config), {
@@ -80,11 +80,11 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
         FRAMEWORK: JSON.stringify(this.config.framework),
         TARO_ENV: JSON.stringify(this.platform),
         TARO_PLATFORM: JSON.stringify(this.platformType),
-        TARO_VERSION: JSON.stringify(getPkgVersion())
+        TARO_VERSION: JSON.stringify(getPkgVersion()),
       },
       devServer: { port },
       sourceRoot: this.config.sourceRoot || SOURCE_DIR,
-      outputRoot: this.config.outputRoot || OUTPUT_DIR
+      outputRoot: this.config.outputRoot || OUTPUT_DIR,
     })
     config.entry = merge(defaultEntry, customEntry)
 
@@ -92,7 +92,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
       ...config,
       buildAdapter: config.platform,
       platformType: this.platformType,
-      ...extraOptions
+      ...extraOptions,
     }
   }
 
@@ -100,23 +100,28 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * 调用 runner 开始编译
    * @param extraOptions 需要额外传入 runner 的配置项
    */
-  private async build (extraOptions = {}) {
+  private async build(extraOptions = {}) {
     this.ctx.onBuildInit?.(this)
     await this.buildTransaction.perform(this.buildWebApp, this, extraOptions)
   }
 
-  private async buildWebApp (extraOptions = {}) {
+  private async buildWebApp(extraOptions = {}) {
     const runner = await this.getRunner()
-    const options = this.getOptions(Object.assign({
-      runtimePath: this.runtimePath,
-    }, extraOptions))
+    const options = this.getOptions(
+      Object.assign(
+        {
+          runtimePath: this.runtimePath,
+        },
+        extraOptions,
+      ),
+    )
     await runner(options)
   }
 
   /**
    * 调用 runner 开启编译
    */
-  public async start () {
+  public async start() {
     await this.setup()
     await this.build()
   }

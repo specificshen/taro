@@ -9,7 +9,7 @@ describe('location', () => {
     // full url
     {
       const { href, origin, protocol, hostname, host, port, pathname, search, hash } = parseUrl(
-        'https://taro.com:8080/hello/world?name=hongxin&age=18#a=1&b=2'
+        'https://taro.com:8080/hello/world?name=hongxin&age=18#a=1&b=2',
       )
       expect(href).toBe('https://taro.com:8080/hello/world?name=hongxin&age=18#a=1&b=2')
       expect(origin).toBe('https://taro.com:8080')
@@ -24,7 +24,7 @@ describe('location', () => {
 
     {
       const { href, origin, protocol, hostname, host, port, pathname, search, hash } = parseUrl(
-        'http://taro.com/hello/world#a=1&b=2?name=hongxin&age=18'
+        'http://taro.com/hello/world#a=1&b=2?name=hongxin&age=18',
       )
       expect(href).toBe('http://taro.com/hello/world#a=1&b=2?name=hongxin&age=18')
       expect(origin).toBe('http://taro.com')

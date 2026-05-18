@@ -13,7 +13,7 @@ describe('Editor', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Editor],
-      template: () => (<taro-editor-core />),
+      template: () => <taro-editor-core />,
     })
     await page.waitForChanges()
 

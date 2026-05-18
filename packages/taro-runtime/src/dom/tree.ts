@@ -4,11 +4,11 @@ import type { TaroElement } from './element'
 
 type Filter = (element: TaroElement) => boolean
 
-function returnTrue () {
+function returnTrue() {
   return true
 }
 
-export function treeToArray (root: TaroElement, predict?: Filter): TaroElement[] {
+export function treeToArray(root: TaroElement, predict?: Filter): TaroElement[] {
   const array: TaroElement[] = []
   const filter = predict ?? returnTrue
 
@@ -25,7 +25,7 @@ export function treeToArray (root: TaroElement, predict?: Filter): TaroElement[]
   return array
 }
 
-function following (el: TaroElement, root: TaroElement): TaroElement | null {
+function following(el: TaroElement, root: TaroElement): TaroElement | null {
   const firstChild = el.firstChild
   const isElmentTypeValid = el.nodeType === NodeType.ELEMENT_NODE || el.nodeType === NodeType.DOCUMENT_NODE
 

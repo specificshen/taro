@@ -13,7 +13,7 @@ describe('PageContainer', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [PageContainer],
-      template: () => (<taro-page-container-core />),
+      template: () => <taro-page-container-core />,
     })
     await page.waitForChanges()
 

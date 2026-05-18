@@ -7,29 +7,29 @@ const baseConfig = {
   projectName: 'test',
   sourceRoot: 'src',
   outputRoot: 'dist',
-  framework: 'react'
+  framework: 'react',
 }
 
-function getConfig (config) {
+function getConfig(config) {
   return {
     projectConfig: {
       ...baseConfig,
-      ...config
+      ...config,
     },
     helper,
-    configPath: ''
+    configPath: '',
   }
 }
 
 describe('config validator of doctor', () => {
-  it('should config include\'s all the required values', async () => {
+  it("should config include's all the required values", async () => {
     let { messages } = await validator({
       projectConfig: {},
       helper,
-      configPath: ''
+      configPath: '',
     })
     expect(messages.length).toEqual(6)
-    let msgs = messages.map(line => line.content)
+    let msgs = messages.map((line) => line.content)
     expect(msgs.includes('缺少 "projectName" 配置项')).toBeTruthy()
     expect(msgs.includes('缺少 "sourceRoot" 配置项')).toBeTruthy()
     expect(msgs.includes('缺少 "outputRoot" 配置项')).toBeTruthy()
@@ -40,28 +40,34 @@ describe('config validator of doctor', () => {
         projectName: '',
         sourceRoot: '',
         outputRoot: '',
-        framework: ''
+        framework: '',
       },
       helper,
-      configPath: ''
+      configPath: '',
     })
     messages = res.messages
 
     expect(messages.length).toEqual(3)
-    msgs = messages.map(line => line.content)
-    expect(msgs.includes('framework 的值 "" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配')).toBeTruthy()
+    msgs = messages.map((line) => line.content)
+    expect(
+      msgs.includes('framework 的值 "" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配'),
+    ).toBeTruthy()
   })
 
   it('date', async () => {
-    let { messages } = await validator(getConfig({
-      date: '2020-5-26'
-    }))
+    let { messages } = await validator(
+      getConfig({
+        date: '2020-5-26',
+      }),
+    )
 
     expect(messages.length).toEqual(3)
 
-    const res = await validator(getConfig({
-      date: 'abc'
-    }))
+    const res = await validator(
+      getConfig({
+        date: 'abc',
+      }),
+    )
     messages = res.messages
 
     expect(messages.length).toEqual(3)
@@ -69,548 +75,640 @@ describe('config validator of doctor', () => {
   })
 
   it('framework', async () => {
-    let res = await validator(getConfig({
-      framework: 'react'
-    }))
+    let res = await validator(
+      getConfig({
+        framework: 'react',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      framework: 'vue'
-    }))
+    res = await validator(
+      getConfig({
+        framework: 'vue',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      framework: 'nerv'
-    }))
+    res = await validator(
+      getConfig({
+        framework: 'nerv',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      framework: 'vue3'
-    }))
+    res = await validator(
+      getConfig({
+        framework: 'vue3',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      framework: 'other'
-    }))
+    res = await validator(
+      getConfig({
+        framework: 'other',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
-    expect(res.messages[2].content).toEqual('framework 的值 "other" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配')
+    expect(res.messages[2].content).toEqual(
+      'framework 的值 "other" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配',
+    )
   })
 
   it('designWidth', async () => {
-    let res = await validator(getConfig({
-      designWidth: '750'
-    }))
+    let res = await validator(
+      getConfig({
+        designWidth: '750',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      designWidth: 'a'
-    }))
+    res = await validator(
+      getConfig({
+        designWidth: 'a',
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      designWidth: 700.5
-    }))
+    res = await validator(
+      getConfig({
+        designWidth: 700.5,
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      designWidth: -640
-    }))
+    res = await validator(
+      getConfig({
+        designWidth: -640,
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('deviceRatio', async () => {
-    let res = await validator(getConfig({
-      deviceRatio: {
-        640: 2.34 / 2,
-        750: 1,
-        828: 1.81 / 2
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        deviceRatio: {
+          640: 2.34 / 2,
+          750: 1,
+          828: 1.81 / 2,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      deviceRatio: {
-        640: 2.34 / 2,
-        750: 'a',
-        828: 1.81 / 2
-      }
-    }))
+    res = await validator(
+      getConfig({
+        deviceRatio: {
+          640: 2.34 / 2,
+          750: 'a',
+          828: 1.81 / 2,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('plugins', async () => {
-    let res = await validator(getConfig({
-      plugins: [
-        '@tarojs/plugin-mock',
-        ['@tarojs/plugin-mock', {
-          mocks: {
-            '/api/user/1': {
-              name: 'judy',
-              desc: 'Mental guy'
-            }
-          }
-        }],
-        ['@tarojs/plugin-mock'],
-        '/absulute/path/plugin/filename'
-      ]
-    }))
+    let res = await validator(
+      getConfig({
+        plugins: [
+          '@tarojs/plugin-mock',
+          [
+            '@tarojs/plugin-mock',
+            {
+              mocks: {
+                '/api/user/1': {
+                  name: 'judy',
+                  desc: 'Mental guy',
+                },
+              },
+            },
+          ],
+          ['@tarojs/plugin-mock'],
+          '/absulute/path/plugin/filename',
+        ],
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      plugins: [
-        1,
-        {},
-        ['x', 1],
-        [{}, 'x'],
-        ['x', {}, 1],
-        ['']
-      ]
-    }))
+    res = await validator(
+      getConfig({
+        plugins: [1, {}, ['x', 1], [{}, 'x'], ['x', {}, 1], ['']],
+      }),
+    )
     expect(res.messages.length).toEqual(6)
   })
 
   it('presets', async () => {
-    let res = await validator(getConfig({
-      presets: [
-        '@tarojs/plugin-mock',
-        ['@tarojs/plugin-mock', {
-          mocks: {
-            '/api/user/1': {
-              name: 'judy',
-              desc: 'Mental guy'
-            }
-          }
-        }],
-        ['@tarojs/plugin-mock'],
-        '/absulute/path/plugin/filename'
-      ]
-    }))
+    let res = await validator(
+      getConfig({
+        presets: [
+          '@tarojs/plugin-mock',
+          [
+            '@tarojs/plugin-mock',
+            {
+              mocks: {
+                '/api/user/1': {
+                  name: 'judy',
+                  desc: 'Mental guy',
+                },
+              },
+            },
+          ],
+          ['@tarojs/plugin-mock'],
+          '/absulute/path/plugin/filename',
+        ],
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      presets: [
-        1,
-        {},
-        ['x', 1],
-        [{}, 'x'],
-        ['x', {}, 1],
-        ['']
-      ]
-    }))
+    res = await validator(
+      getConfig({
+        presets: [1, {}, ['x', 1], [{}, 'x'], ['x', {}, 1], ['']],
+      }),
+    )
     expect(res.messages.length).toEqual(6)
   })
 
   it('terser', async () => {
-    let res = await validator(getConfig({
-      terser: {
-        enable: true,
-        config: {
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        terser: {
+          enable: true,
+          config: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      terser: {
-        enables: true,
-        enable: 1,
-        config: []
-      }
-    }))
+    res = await validator(
+      getConfig({
+        terser: {
+          enables: true,
+          enable: 1,
+          config: [],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(5)
   })
 
   it('csso', async () => {
-    let res = await validator(getConfig({
-      csso: {
-        enable: true,
-        config: {
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        csso: {
+          enable: true,
+          config: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      csso: {
-        enables: true,
-        enable: 1,
-        config: []
-      }
-    }))
+    res = await validator(
+      getConfig({
+        csso: {
+          enables: true,
+          enable: 1,
+          config: [],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(5)
   })
 
   it('uglify', async () => {
-    let res = await validator(getConfig({
-      uglify: {
-        enable: true,
-        config: {
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        uglify: {
+          enable: true,
+          config: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      uglify: {
-        enables: true,
-        enable: 1,
-        config: []
-      }
-    }))
+    res = await validator(
+      getConfig({
+        uglify: {
+          enables: true,
+          enable: 1,
+          config: [],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('sass', async () => {
-    let res = await validator(getConfig({
-      sass: {
-        resource: '/src/styles/variable.scss'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        sass: {
+          resource: '/src/styles/variable.scss',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      sass: {
-        resource: [
-          './src/styles/variable.scss',
-          './src/styles/mixins.scss'
-        ],
-        projectDirectory: '/root',
-        data: '$nav-height: 48px;'
-      }
-    }))
+    res = await validator(
+      getConfig({
+        sass: {
+          resource: ['./src/styles/variable.scss', './src/styles/mixins.scss'],
+          projectDirectory: '/root',
+          data: '$nav-height: 48px;',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      sass: {
-        resource: {},
-        projectDirectory: 1,
-        data: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        sass: {
+          resource: {},
+          projectDirectory: 1,
+          data: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(5)
   })
 
   it('env', async () => {
-    const res = await validator(getConfig({
-      env: {
-        NODE_ENV: '"development"'
-      }
-    }))
+    const res = await validator(
+      getConfig({
+        env: {
+          NODE_ENV: '"development"',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('defineConstants', async () => {
-    const res = await validator(getConfig({
-      defineConstants: {
-        A: '"a"'
-      }
-    }))
+    const res = await validator(
+      getConfig({
+        defineConstants: {
+          A: '"a"',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('alias', async () => {
-    let res = await validator(getConfig({
-      alias: {
-        '@/components': 'src/components'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        alias: {
+          '@/components': 'src/components',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      alias: {
-        '@/components': ['src/components'],
-        '@/utils': 1,
-        '@/project': {}
-      }
-    }))
+    res = await validator(
+      getConfig({
+        alias: {
+          '@/components': ['src/components'],
+          '@/utils': 1,
+          '@/project': {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('copy', async () => {
-    let res = await validator(getConfig({
-      copy: {
-        patterns: [
-          { from: 'src/asset/tt/', to: 'dist/asset/tt/', ignore: ['*.js'] },
-          { from: 'src/asset/tt/sd.jpg', to: 'dist/asset/tt/sd.jpg' }
-        ]
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        copy: {
+          patterns: [
+            { from: 'src/asset/tt/', to: 'dist/asset/tt/', ignore: ['*.js'] },
+            { from: 'src/asset/tt/sd.jpg', to: 'dist/asset/tt/sd.jpg' },
+          ],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      copy: {
-        options: {
-          ignore: ['*.js', '*.css']
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        copy: {
+          options: {
+            ignore: ['*.js', '*.css'],
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      copy: {
-        patterns: [
-          { ignore: ['*.js'] },
-          { from: 'src/asset/tt/sd.jpg' },
-          { to: 'dist/asset/tt/sd.jpg' }
-        ],
-        options: {
-          ignore: [1, true, {}]
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        copy: {
+          patterns: [{ ignore: ['*.js'] }, { from: 'src/asset/tt/sd.jpg' }, { to: 'dist/asset/tt/sd.jpg' }],
+          options: {
+            ignore: [1, true, {}],
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(9)
   })
 
   it('mini.compile', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        compile: {
-          exclude: [
-            'src/pages/index/vod-wx-sdk-v2.js',
-            modulePath => modulePath.indexOf('vod-wx-sdk-v2') >= 0
-          ],
-          include: [
-            'src/pages/index/vod-wx-sdk-v2.js',
-            modulePath => modulePath.indexOf('vod-wx-sdk-v2') >= 0
-          ]
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          compile: {
+            exclude: ['src/pages/index/vod-wx-sdk-v2.js', (modulePath) => modulePath.indexOf('vod-wx-sdk-v2') >= 0],
+            include: ['src/pages/index/vod-wx-sdk-v2.js', (modulePath) => modulePath.indexOf('vod-wx-sdk-v2') >= 0],
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        compile: {
-          exclude: [null, []],
-          include: [1, {}]
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          compile: {
+            exclude: [null, []],
+            include: [1, {}],
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(6)
   })
 
   it('mini.webpackChain', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        webpackChain (chain, webpack) {
-          console.log(chain, webpack)
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          webpackChain(chain, webpack) {
+            console.log(chain, webpack)
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        webpackChain: 'some'
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          webpackChain: 'some',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('mini.commonChunks', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        commonChunks: ['runtime', 'vendors', 'taro', 'common']
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          commonChunks: ['runtime', 'vendors', 'taro', 'common'],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        commonChunks (commonChunks) {
-          commonChunks.push('yourCustomCommonChunkName')
-          return commonChunks
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          commonChunks(commonChunks) {
+            commonChunks.push('yourCustomCommonChunkName')
+            return commonChunks
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        commonChunks: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          commonChunks: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('mini.addChunkPages', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        addChunkPages (pages, pagesNames) {
-          console.log(pages, pagesNames)
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          addChunkPages(pages, pagesNames) {
+            console.log(pages, pagesNames)
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        addChunkPages: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          addChunkPages: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('mini.postcss', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        postcss: {
-          autoprefixer: {
-            enable: true,
-            config: {}
-          }
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          postcss: {
+            autoprefixer: {
+              enable: true,
+              config: {},
+            },
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        postcss: {
-          autoprefixer: {
-            enable: 1,
-            config: 'a'
+    res = await validator(
+      getConfig({
+        mini: {
+          postcss: {
+            autoprefixer: {
+              enable: 1,
+              config: 'a',
+            },
+            pxtransform: true,
           },
-          pxtransform: true
-        }
-      }
-    }))
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(5)
   })
 
   it('mini.output', async () => {
-    let res = await validator(getConfig({
-      mini: {
-        output: {}
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        mini: {
+          output: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      mini: {
-        output: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        mini: {
+          output: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
-  it('mini\'s third party options', async () => {
-    const res = await validator(getConfig({
-      mini: {
-        cssLoaderOption: {},
-        styleLoaderOption: {},
-        sassLoaderOption: {},
-        lessLoaderOption: {},
-        stylusLoaderOption: {},
-        mediaUrlLoaderOption: {},
-        fontUrlLoaderOption: {},
-        imageUrlLoaderOption: {},
-        miniCssExtractPluginOption: {}
-      }
-    }))
+  it("mini's third party options", async () => {
+    const res = await validator(
+      getConfig({
+        mini: {
+          cssLoaderOption: {},
+          styleLoaderOption: {},
+          sassLoaderOption: {},
+          lessLoaderOption: {},
+          stylusLoaderOption: {},
+          mediaUrlLoaderOption: {},
+          fontUrlLoaderOption: {},
+          imageUrlLoaderOption: {},
+          miniCssExtractPluginOption: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.devServer', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        devServer: {
-          port: 10086
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          devServer: {
+            port: 10086,
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        devServer: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          devServer: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.output', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        output: {
-          filename: 'js/[name].[hash:8].js',
-          chunkFilename: 'js/[name].[chunkhash:8].js'
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          output: {
+            filename: 'js/[name].[hash:8].js',
+            chunkFilename: 'js/[name].[chunkhash:8].js',
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        output: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          output: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.publicPath', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        publicPath: '/'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          publicPath: '/',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        publicPath: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          publicPath: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.staticDirectory', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        staticDirectory: '/'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          staticDirectory: '/',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        staticDirectory: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          staticDirectory: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.chunkDirectory', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        chunkDirectory: '/'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          chunkDirectory: '/',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        chunkDirectory: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          chunkDirectory: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.webpackChain', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        webpackChain (chain, webpack) {
-          console.log(chain, webpack)
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          webpackChain(chain, webpack) {
+            console.log(chain, webpack)
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        webpackChain: 'some'
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          webpackChain: 'some',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
@@ -625,109 +723,135 @@ describe('config validator of doctor', () => {
   // })
 
   it('h5.router', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        router: {
-          mode: 'hash'
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          router: {
+            mode: 'hash',
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        router: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          router: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.entry', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        entry: './path/to/my/entry/file.js'
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          entry: './path/to/my/entry/file.js',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        entry: ['./path/to/my/entry/file.js', './path/other/file.js']
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          entry: ['./path/to/my/entry/file.js', './path/other/file.js'],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        entry: {
-          main: './path/to/my/entry/file.js'
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          entry: {
+            main: './path/to/my/entry/file.js',
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        entry: {
-          main: ['./path/to/my/entry/file.js', './path/other/file.js']
-        }
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          entry: {
+            main: ['./path/to/my/entry/file.js', './path/other/file.js'],
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        entry: () => './demo'
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          entry: () => './demo',
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.enableSourceMap', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        enableSourceMap: true
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          enableSourceMap: true,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        enableSourceMap: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          enableSourceMap: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.enableExtract', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        enableExtract: true
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          enableExtract: true,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        enableExtract: 1
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          enableExtract: 1,
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.esnextModules', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        esnextModules: ['taro-ui']
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          esnextModules: ['taro-ui'],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        esnextModules: [1, true, {}]
-      }
-    }))
+    res = await validator(
+      getConfig({
+        h5: {
+          esnextModules: [1, true, {}],
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(4)
 
     res = await validator(getConfig({ h5: 1 }))
@@ -735,71 +859,83 @@ describe('config validator of doctor', () => {
   })
 
   it('h5.postcss', async () => {
-    let res = await validator(getConfig({
-      h5: {
-        postcss: {
-          autoprefixer: {
-            enable: true,
-            config: {}
-          }
-        }
-      }
-    }))
+    let res = await validator(
+      getConfig({
+        h5: {
+          postcss: {
+            autoprefixer: {
+              enable: true,
+              config: {},
+            },
+          },
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
 
-    res = await validator(getConfig({
-      h5: {
-        postcss: {
-          autoprefixer: {
-            enable: 1,
-            config: 'a'
+    res = await validator(
+      getConfig({
+        h5: {
+          postcss: {
+            autoprefixer: {
+              enable: 1,
+              config: 'a',
+            },
+            pxtransform: true,
           },
-          pxtransform: true
-        }
-      }
-    }))
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(5)
   })
 
-  it('h5\'s third party options', async () => {
-    const res = await validator(getConfig({
-      h5: {
-        cssLoaderOption: {},
-        styleLoaderOption: {},
-        sassLoaderOption: {},
-        lessLoaderOption: {},
-        stylusLoaderOption: {},
-        mediaUrlLoaderOption: {},
-        fontUrlLoaderOption: {},
-        imageUrlLoaderOption: {},
-        miniCssExtractPluginOption: {}
-      }
-    }))
+  it("h5's third party options", async () => {
+    const res = await validator(
+      getConfig({
+        h5: {
+          cssLoaderOption: {},
+          styleLoaderOption: {},
+          sassLoaderOption: {},
+          lessLoaderOption: {},
+          stylusLoaderOption: {},
+          mediaUrlLoaderOption: {},
+          fontUrlLoaderOption: {},
+          imageUrlLoaderOption: {},
+          miniCssExtractPluginOption: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('unknow', async () => {
-    const res = await validator(getConfig({
-      unknow: {}
-    }))
+    const res = await validator(
+      getConfig({
+        unknow: {},
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('mini.unknow', async () => {
-    const res = await validator(getConfig({
-      mini: {
-        unknow: {}
-      }
-    }))
+    const res = await validator(
+      getConfig({
+        mini: {
+          unknow: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 
   it('h5.unknow', async () => {
-    const res = await validator(getConfig({
-      h5: {
-        unknow: {}
-      }
-    }))
+    const res = await validator(
+      getConfig({
+        h5: {
+          unknow: {},
+        },
+      }),
+    )
     expect(res.messages.length).toEqual(3)
   })
 })

@@ -10,13 +10,13 @@ export default class Plugin {
   ctx: Kernel
   optsSchema: Func
 
-  constructor (opts) {
+  constructor(opts) {
     this.id = opts.id
     this.path = opts.path
     this.ctx = opts.ctx
   }
 
-  register (hook: IHook) {
+  register(hook: IHook) {
     if (typeof hook.name !== 'string') {
       throw new Error(`插件 ${this.id} 中注册 hook 失败， hook.name 必须是 string 类型`)
     }
@@ -28,7 +28,7 @@ export default class Plugin {
     this.ctx.hooks.set(hook.name, hooks.concat(hook))
   }
 
-  registerCommand (command: ICommand) {
+  registerCommand(command: ICommand) {
     if (this.ctx.commands.has(command.name)) {
       throw new Error(`命令 ${command.name} 已存在`)
     }
@@ -36,7 +36,7 @@ export default class Plugin {
     this.register(command)
   }
 
-  registerPlatform (platform: IPlatform) {
+  registerPlatform(platform: IPlatform) {
     if (this.ctx.platforms.has(platform.name)) {
       throw new Error(`适配平台 ${platform.name} 已存在`)
     }
@@ -45,24 +45,27 @@ export default class Plugin {
     this.register(platform)
   }
 
-  registerMethod (...args) {
+  registerMethod(...args) {
     const { name, fn } = processArgs(args)
     const methods = this.ctx.methods.get(name) || []
-    methods.push(fn || function (fn: Func) {
-      this.register({
-        name,
-        fn
-      })
-    }.bind(this))
+    methods.push(
+      fn ||
+        function (fn: Func) {
+          this.register({
+            name,
+            fn,
+          })
+        }.bind(this),
+    )
     this.ctx.methods.set(name, methods)
   }
 
-  addPluginOptsSchema (schema) {
+  addPluginOptsSchema(schema) {
     this.optsSchema = schema
   }
 }
 
-function processArgs (args) {
+function processArgs(args) {
   let name, fn
   if (!args.length) {
     throw new Error('参数为空')

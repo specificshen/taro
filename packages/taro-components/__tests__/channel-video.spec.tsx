@@ -13,7 +13,7 @@ describe('ChannelVideo', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ChannelVideo],
-      template: () => (<taro-channel-video-core />),
+      template: () => <taro-channel-video-core />,
     })
     await page.waitForChanges()
 

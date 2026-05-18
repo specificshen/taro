@@ -34,7 +34,7 @@ export default (ctx: IPluginContext) => {
   })
 }
 
-function VitePresetPlugin (): PluginOption {
+function VitePresetPlugin(): PluginOption {
   return require('@vitejs/plugin-react').default({
     babel: {
       plugins: [

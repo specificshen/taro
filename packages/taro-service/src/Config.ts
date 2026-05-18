@@ -10,16 +10,13 @@ import {
   resolveScriptPath,
   SOURCE_DIR,
   TARO_GLOBAL_CONFIG_DIR,
-  TARO_GLOBAL_CONFIG_FILE
+  TARO_GLOBAL_CONFIG_FILE,
 } from '@tarojs/helper'
 import * as ora from 'ora'
 import { merge } from 'webpack-merge'
 
 import { filterGlobalConfig } from './utils'
-import {
-  CONFIG_DIR_NAME,
-  DEFAULT_CONFIG_FILE
-} from './utils/constants'
+import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from './utils/constants'
 
 import type { IProjectConfig } from '@tarojs/taro/types/compile'
 
@@ -36,15 +33,12 @@ export default class Config {
   isInitSuccess: boolean
   disableGlobalConfig: boolean
 
-  constructor (opts: IConfigOptions) {
+  constructor(opts: IConfigOptions) {
     this.appPath = opts.appPath
     this.disableGlobalConfig = !!opts?.disableGlobalConfig
   }
 
-  async init (configEnv: {
-    mode: string
-    command: string
-  }) {
+  async init(configEnv: { mode: string; command: string }) {
     this.initialConfig = {}
     this.initialGlobalConfig = {}
     this.isInitSuccess = false
@@ -55,9 +49,7 @@ export default class Config {
     } else {
       this.initGlobalConfig(configEnv.command)
       createSwcRegister({
-        only: [
-          filePath => filePath.indexOf(path.join(this.appPath, CONFIG_DIR_NAME)) >= 0
-        ]
+        only: [(filePath) => filePath.indexOf(path.join(this.appPath, CONFIG_DIR_NAME)) >= 0],
       })
       try {
         const userExport = getModuleDefaultExport(require(this.configPath))
@@ -69,7 +61,7 @@ export default class Config {
     }
   }
 
-  initGlobalConfig (command: string = '') {
+  initGlobalConfig(command: string = '') {
     const homedir = getUserHomeDir()
     if (!homedir) return console.error('获取不到用户 home 路径')
     const globalPluginConfigPath = path.join(getUserHomeDir(), TARO_GLOBAL_CONFIG_DIR, TARO_GLOBAL_CONFIG_FILE)
@@ -85,7 +77,7 @@ export default class Config {
     }
   }
 
-  getConfigWithNamed (platform, configName) {
+  getConfigWithNamed(platform, configName) {
     const initialConfig = this.initialConfig
     const sourceDirName = initialConfig.sourceRoot || SOURCE_DIR
     const outputDirName = initialConfig.outputRoot || OUTPUT_DIR
@@ -94,7 +86,7 @@ export default class Config {
     const entryFilePath = resolveScriptPath(path.join(sourceDir, entryName))
 
     const entry = {
-      [entryName]: [entryFilePath]
+      [entryName]: [entryFilePath],
     }
 
     return {

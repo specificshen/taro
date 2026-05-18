@@ -13,7 +13,7 @@ describe('ChannelLive', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ChannelLive],
-      template: () => (<taro-channel-live-core />),
+      template: () => <taro-channel-live-core />,
     })
     await page.waitForChanges()
 

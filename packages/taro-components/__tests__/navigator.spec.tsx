@@ -9,7 +9,7 @@ describe('Navigator', () => {
   it('base', async () => {
     page = await newSpecPage({
       components: [Navigator],
-      template: () => (<taro-navigator-core />),
+      template: () => <taro-navigator-core />,
     })
     expect(page.root).toMatchSnapshot()
   })

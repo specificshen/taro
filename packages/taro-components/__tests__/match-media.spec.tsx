@@ -13,7 +13,7 @@ describe('MatchMedia', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [MatchMedia],
-      template: () => (<taro-match-media-core />),
+      template: () => <taro-match-media-core />,
     })
     await page.waitForChanges()
 

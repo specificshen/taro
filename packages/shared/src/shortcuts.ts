@@ -10,5 +10,5 @@ export const enum Shortcuts {
   Sid = 'sid',
   Style = 'st',
   Class = 'cl',
-  Src = 'src'
+  Src = 'src',
 }

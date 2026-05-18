@@ -5,7 +5,7 @@ import type { AddEventListenerOptions, EventHandler } from '../interface'
 export class TaroEventTarget {
   public __handlers: Record<string, EventHandler[]> = {}
 
-  public addEventListener (type: string, handler: EventHandler, options?: boolean | AddEventListenerOptions) {
+  public addEventListener(type: string, handler: EventHandler, options?: boolean | AddEventListenerOptions) {
     type = type.toLowerCase()
 
     hooks.call('onAddEvent', type, handler, options, this)
@@ -31,7 +31,7 @@ export class TaroEventTarget {
       }
       this.addEventListener(type, wrapper, {
         ...(options as AddEventListenerOptions),
-        once: false
+        once: false,
       })
       return
     }
@@ -56,7 +56,7 @@ export class TaroEventTarget {
     }
   }
 
-  public removeEventListener (type: string, handler: EventHandler) {
+  public removeEventListener(type: string, handler: EventHandler) {
     type = type.toLowerCase()
 
     if (type === 'regionchange') {
@@ -75,7 +75,7 @@ export class TaroEventTarget {
       return
     }
 
-    const index = handlers.findIndex(item => {
+    const index = handlers.findIndex((item) => {
       if (item === handler || (item as any).oldHandler === handler) return true
     })
 
@@ -84,13 +84,13 @@ export class TaroEventTarget {
     handlers.splice(index, 1)
   }
 
-  public isAnyEventBinded (): boolean {
+  public isAnyEventBinded(): boolean {
     const handlers = this.__handlers
-    const isAnyEventBinded = Object.keys(handlers).find(key => handlers[key].length)
+    const isAnyEventBinded = Object.keys(handlers).find((key) => handlers[key].length)
     return Boolean(isAnyEventBinded)
   }
 
-  public isOnlyClickBinded (): boolean {
+  public isOnlyClickBinded(): boolean {
     const handlers = this.__handlers
     const isOnlyClickBinded = handlers.tap && Object.keys(handlers).length === 1
     return Boolean(isOnlyClickBinded)

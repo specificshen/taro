@@ -15,10 +15,10 @@ const base: RollupOptions = {
     externals({
       deps: true,
       devDeps: false,
-      include: [/@tarojs/]
+      include: [/@tarojs/],
     }),
     typescript(),
-  ]
+  ],
 }
 
 // 供 CLI 编译时使用的 Taro 插件入口
@@ -28,9 +28,9 @@ const compileConfig: RollupOptions = {
     file: path.join(cwd, 'dist/index.js'),
     format: 'cjs',
     sourcemap: true,
-    exports: 'named'
+    exports: 'named',
   },
-  ...base
+  ...base,
 }
 
 // 供 Loader 使用的运行时入口
@@ -39,12 +39,9 @@ const runtimeConfig: RollupOptions = {
   output: {
     file: path.join(cwd, 'dist/runtime.js'),
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
-  ...base
+  ...base,
 }
 
-export default defineConfig([
-  compileConfig,
-  runtimeConfig,
-])
+export default defineConfig([compileConfig, runtimeConfig])

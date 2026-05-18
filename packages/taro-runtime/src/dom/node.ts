@@ -30,7 +30,7 @@ export class TaroNode extends TaroEventTarget {
   public parentNode: TaroNode | null = null
   public childNodes: TaroNode[] = []
 
-  public constructor () {
+  public constructor() {
     super()
     this.uid = '_' + nodeId() // dom 节点 id，开发者可修改
     this.sid = this.uid // dom 节点全局唯一 id，不可被修改
@@ -39,20 +39,20 @@ export class TaroNode extends TaroEventTarget {
 
   private hydrate = (node: TaroNode) => () => hydrate(node as TaroElement)
 
-  private updateChildNodes (isClean?: boolean) {
+  private updateChildNodes(isClean?: boolean) {
     const cleanChildNodes = () => []
     const rerenderChildNodes = () => {
-      const childNodes = this.childNodes.filter(node => !isComment(node))
+      const childNodes = this.childNodes.filter((node) => !isComment(node))
       return childNodes.map(hydrate)
     }
 
     this.enqueueUpdate({
       path: `${this._path}.${CHILDNODES}`,
-      value: isClean ? cleanChildNodes : rerenderChildNodes
+      value: isClean ? cleanChildNodes : rerenderChildNodes,
     })
   }
 
-  private updateSingleChild (index: number) {
+  private updateSingleChild(index: number) {
     this.childNodes.forEach((child, childIndex) => {
       if (isComment(child)) return
 
@@ -60,16 +60,16 @@ export class TaroNode extends TaroEventTarget {
 
       this.enqueueUpdate({
         path: child._path,
-        value: this.hydrate(child)
+        value: this.hydrate(child),
       })
     })
   }
 
-  public get _root (): TaroRootElement | null {
+  public get _root(): TaroRootElement | null {
     return this.parentNode?._root || null
   }
 
-  protected findIndex (refChild: TaroNode): number {
+  protected findIndex(refChild: TaroNode): number {
     const index = this.childNodes.indexOf(refChild)
 
     ensure(index !== -1, 'The node to be replaced is not a child of this node.')
@@ -77,12 +77,12 @@ export class TaroNode extends TaroEventTarget {
     return index
   }
 
-  public get _path (): string {
+  public get _path(): string {
     const parentNode = this.parentNode
 
     if (parentNode) {
       // 计算路径时，先过滤掉 comment 节点
-      const list = parentNode.childNodes.filter(node => !isComment(node))
+      const list = parentNode.childNodes.filter((node) => !isComment(node))
       const indexOfNode = list.indexOf(this)
       const index = hooks.call('getPathIndex', indexOfNode)
 
@@ -92,17 +92,17 @@ export class TaroNode extends TaroEventTarget {
     return ''
   }
 
-  public get nextSibling (): TaroNode | null {
+  public get nextSibling(): TaroNode | null {
     const parentNode = this.parentNode
     return parentNode?.childNodes[parentNode.findIndex(this) + 1] || null
   }
 
-  public get previousSibling (): TaroNode | null {
+  public get previousSibling(): TaroNode | null {
     const parentNode = this.parentNode
     return parentNode?.childNodes[parentNode.findIndex(this) - 1] || null
   }
 
-  public get parentElement (): TaroElement | null {
+  public get parentElement(): TaroElement | null {
     const parentNode = this.parentNode
     if (parentNode?.nodeType === NodeType.ELEMENT_NODE) {
       return parentNode as TaroElement
@@ -110,11 +110,11 @@ export class TaroNode extends TaroEventTarget {
     return null
   }
 
-  public get firstChild (): TaroNode | null {
+  public get firstChild(): TaroNode | null {
     return this.childNodes[0] || null
   }
 
-  public get lastChild (): TaroNode | null {
+  public get lastChild(): TaroNode | null {
     const childNodes = this.childNodes
     return childNodes[childNodes.length - 1] || null
   }
@@ -124,7 +124,7 @@ export class TaroNode extends TaroEventTarget {
    * @TODO 等待完整 innerHTML 实现
    */
   // eslint-disable-next-line accessor-pairs
-  public set textContent (text: string) {
+  public set textContent(text: string) {
     const removedNodes = this.childNodes.slice()
     const addedNodes: TaroNode[] = []
 
@@ -147,7 +147,7 @@ export class TaroNode extends TaroEventTarget {
       type: MutationRecordType.CHILD_LIST,
       target: this,
       removedNodes,
-      addedNodes
+      addedNodes,
     })
   }
 
@@ -159,7 +159,7 @@ export class TaroNode extends TaroEventTarget {
    *   2. insert D before C, D has the same parent of C
    *   3. insert D before C, D has the different parent of C
    */
-  public insertBefore<T extends TaroNode> (newChild: T, refChild?: TaroNode | null, isReplace?: boolean): T {
+  public insertBefore<T extends TaroNode>(newChild: T, refChild?: TaroNode | null, isReplace?: boolean): T {
     if (newChild.nodeName === DOCUMENT_FRAGMENT) {
       newChild.childNodes.reduceRight((previousValue, currentValue) => {
         this.insertBefore(currentValue, previousValue)
@@ -196,14 +196,14 @@ export class TaroNode extends TaroEventTarget {
         } else {
           this.enqueueUpdate({
             path: newChild._path,
-            value: this.hydrate(newChild)
+            value: this.hydrate(newChild),
           })
         }
       } else if (isReplace) {
         // replaceChild
         this.enqueueUpdate({
           path: newChild._path,
-          value: this.hydrate(newChild)
+          value: this.hydrate(newChild),
         })
       } else {
         // insertBefore 有两种更新模式
@@ -217,7 +217,7 @@ export class TaroNode extends TaroEventTarget {
         // })
         // 由于微信解析 ’cn.[2]‘ 这些路径的时候也需要消耗时间，
         // 所以根据 insertBefore 插入的位置来做不同的处理
-        const mark = childNodesLength * 2 / 3
+        const mark = (childNodesLength * 2) / 3
         if (mark > index) {
           // 如果 insertBefore 的位置在 childNodes 的 2/3 前，则为了避免解析路径消耗过多的时间，采用第一种方式
           this.updateChildNodes()
@@ -232,13 +232,11 @@ export class TaroNode extends TaroEventTarget {
       type: MutationRecordType.CHILD_LIST,
       target: this,
       addedNodes: [newChild],
-      removedNodes: isReplace
-        ? [refChild as TaroNode] /** replaceChild */
-        : [],
+      removedNodes: isReplace ? [refChild as TaroNode] /** replaceChild */ : [],
       nextSibling: isReplace
         ? (refChild as TaroNode).nextSibling /** replaceChild */
-        : (refChild || null), /** insertBefore & appendChild */
-      previousSibling: newChild.previousSibling
+        : refChild || null /** insertBefore & appendChild */,
+      previousSibling: newChild.previousSibling,
     })
 
     return newChild
@@ -252,7 +250,7 @@ export class TaroNode extends TaroEventTarget {
    *   2. append C, C has the same parent of B
    *   3. append C, C has the different parent of B
    */
-  public appendChild (newChild: TaroNode) {
+  public appendChild(newChild: TaroNode) {
     return this.insertBefore(newChild)
   }
 
@@ -264,7 +262,7 @@ export class TaroNode extends TaroEventTarget {
    *   2. replace B with C, C has no parent, C has the same parent of B
    *   3. replace B with C, C has no parent, C has the different parent of B
    */
-  public replaceChild (newChild: TaroNode, oldChild: TaroNode) {
+  public replaceChild(newChild: TaroNode, oldChild: TaroNode) {
     if (oldChild.parentNode !== this) return
 
     // Insert the newChild
@@ -285,7 +283,7 @@ export class TaroNode extends TaroEventTarget {
    *   1. remove A or B
    *   2. remove C
    */
-  public removeChild<T extends TaroNode> (child: T, options: RemoveChildOptions = {}): T {
+  public removeChild<T extends TaroNode>(child: T, options: RemoveChildOptions = {}): T {
     const { cleanRef, doUpdate } = options
 
     if (cleanRef !== false && doUpdate !== false) {
@@ -296,7 +294,7 @@ export class TaroNode extends TaroEventTarget {
         target: this,
         removedNodes: [child],
         nextSibling: child.nextSibling,
-        previousSibling: child.previousSibling
+        previousSibling: child.previousSibling,
       })
     }
 
@@ -318,23 +316,23 @@ export class TaroNode extends TaroEventTarget {
     return child
   }
 
-  public remove (options?: RemoveChildOptions) {
+  public remove(options?: RemoveChildOptions) {
     this.parentNode?.removeChild(this, options)
   }
 
-  public hasChildNodes () {
+  public hasChildNodes() {
     return this.childNodes.length > 0
   }
 
-  public enqueueUpdate (payload: UpdatePayload) {
+  public enqueueUpdate(payload: UpdatePayload) {
     this._root?.enqueueUpdate(payload)
   }
 
-  public get ownerDocument (): TaroDocument {
+  public get ownerDocument(): TaroDocument {
     return env.document
   }
 
-  static extend (methodName: string, options: TFunc | Record<string, any>) {
+  static extend(methodName: string, options: TFunc | Record<string, any>) {
     extend(TaroNode, methodName, options)
   }
 }

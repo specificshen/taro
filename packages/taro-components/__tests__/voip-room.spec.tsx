@@ -13,7 +13,7 @@ describe('VoipRoom', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [VoipRoom],
-      template: () => (<taro-voip-room-core />),
+      template: () => <taro-voip-room-core />,
     })
     await page.waitForChanges()
 

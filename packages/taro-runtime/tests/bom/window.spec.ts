@@ -7,14 +7,14 @@ import { CONTEXT_ACTIONS } from '../../src/constants'
 vi.mock('../../src/env', () => ({
   default: {
     document: {},
-    window: globalThis
-  }
+    window: globalThis,
+  },
 }))
 
 vi.mock('@tarojs/shared', () => ({
   isString: (val: any) => typeof val === 'string',
   Events: class Events {
-    private events: { [key: string]: Array<{ callback: (...args: any[]) => any, ctx: any }> } = {}
+    private events: { [key: string]: Array<{ callback: (...args: any[]) => any; ctx: any }> } = {}
 
     on(event: string, callback: (...args: any[]) => any, ctx: any) {
       if (!this.events[event]) this.events[event] = []
@@ -23,9 +23,7 @@ vi.mock('@tarojs/shared', () => ({
 
     off(event: string, callback: (...args: any[]) => any, ctx: any) {
       if (!this.events[event]) return
-      this.events[event] = this.events[event].filter(
-        item => item.callback !== callback || item.ctx !== ctx
-      )
+      this.events[event] = this.events[event].filter((item) => item.callback !== callback || item.ctx !== ctx)
     }
 
     trigger(event: string, ...args: any[]) {
@@ -36,35 +34,35 @@ vi.mock('@tarojs/shared', () => ({
     }
   },
   hooks: {
-    call: vi.fn().mockReturnValue({})
-  }
+    call: vi.fn().mockReturnValue({}),
+  },
 }))
 
 vi.mock('../../src/bom/history', () => ({
   History: class MockHistory {
     trigger = vi.fn()
-  }
+  },
 }))
 
 vi.mock('../../src/bom/location', () => ({
   Location: class MockLocation {
     trigger = vi.fn()
-  }
+  },
 }))
 
 vi.mock('../../src/bom/navigator', () => ({
   nav: {
-    userAgent: 'Taro'
-  }
+    userAgent: 'Taro',
+  },
 }))
 
 vi.mock('../../src/bom/raf', () => ({
   raf: vi.fn(),
-  caf: vi.fn()
+  caf: vi.fn(),
 }))
 
 vi.mock('../../src/bom/getComputedStyle', () => ({
-  taroGetComputedStyleProvider: vi.fn()
+  taroGetComputedStyleProvider: vi.fn(),
 }))
 
 describe('TaroWindow', () => {
@@ -207,7 +205,7 @@ describe('TaroWindow', () => {
       get() {
         throw new Error('Test error')
       },
-      configurable: true
+      configurable: true,
     })
 
     // 创建新的 TaroWindow 实例来触发属性复制
@@ -217,7 +215,7 @@ describe('TaroWindow', () => {
     // 在生产环境下不会打印警告
     if (process.env.NODE_ENV !== 'production') {
       expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[Taro warn] window.errorProperty 在赋值到 window 时报错')
+        expect.stringContaining('[Taro warn] window.errorProperty 在赋值到 window 时报错'),
       )
     }
 

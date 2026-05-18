@@ -19,46 +19,39 @@ const getRelativeUrlFromDocument = (relativePath: string, umd = false) =>
   getResolveUrl(
     `'${escapeId(relativePath)}', ${
       umd ? `typeof document === 'undefined' ? location.href : ` : ''
-    }document.currentScript && document.currentScript.src || document.baseURI`
+    }document.currentScript && document.currentScript.src || document.baseURI`,
   )
 
 export const getGenericImportMetaMechanism =
   (getUrl: (chunkId: string) => string) =>
-    (property: string | null, { chunkId }: { chunkId: string }) => {
-      const urlMechanism = getUrl(chunkId)
-      return property === null
-        ? `({ url: ${urlMechanism} })`
-        : property === 'url'
-          ? urlMechanism
-          : 'undefined'
-    }
+  (property: string | null, { chunkId }: { chunkId: string }) => {
+    const urlMechanism = getUrl(chunkId)
+    return property === null ? `({ url: ${urlMechanism} })` : property === 'url' ? urlMechanism : 'undefined'
+  }
 
 const getFileUrlFromFullPath = (path: string) => `require('u' + 'rl').pathToFileURL(${path}).href`
 
-const getFileUrlFromRelativePath = (path: string) =>
-  getFileUrlFromFullPath(`__dirname + '/${path}'`)
+const getFileUrlFromRelativePath = (path: string) => getFileUrlFromFullPath(`__dirname + '/${path}'`)
 
 export const getUrlFromDocument = (chunkId: string, umd = false) =>
   `${
     umd ? `typeof document === 'undefined' ? location.href : ` : ''
-  }(document.currentScript && document.currentScript.src || new URL('${escapeId(
-    chunkId
-  )}', document.baseURI).href)`
+  }(document.currentScript && document.currentScript.src || new URL('${escapeId(chunkId)}', document.baseURI).href)`
 
 export const relativeUrlMechanisms: Record<InternalModuleFormat, (relativePath: string) => string> = {
-  amd: relativePath => {
+  amd: (relativePath) => {
     if (relativePath[0] !== '.') relativePath = './' + relativePath
     return getResolveUrl(`require.toUrl('${relativePath}'), document.baseURI`)
   },
-  cjs: relativePath =>
+  cjs: (relativePath) =>
     `(typeof document === 'undefined' ? ${getFileUrlFromRelativePath(
-      relativePath
+      relativePath,
     )} : ${getRelativeUrlFromDocument(relativePath)})`,
-  es: relativePath => getResolveUrl(`'${relativePath}', import.meta.url`),
-  iife: relativePath => getRelativeUrlFromDocument(relativePath),
-  system: relativePath => getResolveUrl(`'${relativePath}', module.meta.url`),
-  umd: relativePath =>
+  es: (relativePath) => getResolveUrl(`'${relativePath}', import.meta.url`),
+  iife: (relativePath) => getRelativeUrlFromDocument(relativePath),
+  system: (relativePath) => getResolveUrl(`'${relativePath}', module.meta.url`),
+  umd: (relativePath) =>
     `(typeof document === 'undefined' && typeof location === 'undefined' ? ${getFileUrlFromRelativePath(
-      relativePath
-    )} : ${getRelativeUrlFromDocument(relativePath, true)})`
+      relativePath,
+    )} : ${getRelativeUrlFromDocument(relativePath, true)})`,
 }

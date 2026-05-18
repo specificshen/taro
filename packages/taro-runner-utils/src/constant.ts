@@ -41,7 +41,7 @@ export const DEFAULT_Components = new Set<string>([
   'block',
   'import',
   'official-account',
-  'editor'
+  'editor',
 ])
 
 export const VITE_COMPILER_LABEL = 'taro:compiler'

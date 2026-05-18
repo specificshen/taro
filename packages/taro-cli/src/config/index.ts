@@ -3,5 +3,5 @@ export default {
   SOURCE_DIR: 'src',
   TEMP_DIR: '.temp',
   NPM_DIR: 'npm',
-  ENTRY: 'app'
+  ENTRY: 'app',
 }

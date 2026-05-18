@@ -13,7 +13,7 @@ describe('LivePlayer', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [LivePlayer],
-      template: () => (<taro-live-player-core />),
+      template: () => <taro-live-player-core />,
     })
     await page.waitForChanges()
 

@@ -8,14 +8,14 @@ export default class Creator {
   protected _rootPath: string
   public rootPath: string
 
-  constructor (sourceRoot?: string) {
+  constructor(sourceRoot?: string) {
     this.rootPath = this.sourceRoot(sourceRoot || path.join(getRootPath()))
     this.init()
   }
 
-  init () {}
+  init() {}
 
-  sourceRoot (rootPath?: string) {
+  sourceRoot(rootPath?: string) {
     if (typeof rootPath === 'string') {
       this._rootPath = path.resolve(rootPath)
     }
@@ -25,7 +25,7 @@ export default class Creator {
     return this._rootPath
   }
 
-  templatePath (...args: string[]): string {
+  templatePath(...args: string[]): string {
     let filepath = path.join.apply(path, args)
     if (!path.isAbsolute(filepath)) {
       filepath = path.join(this._rootPath, 'templates', filepath)
@@ -33,5 +33,5 @@ export default class Creator {
     return filepath
   }
 
-  write () {}
+  write() {}
 }

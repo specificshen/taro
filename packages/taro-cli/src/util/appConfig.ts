@@ -9,15 +9,18 @@ import { AppConfig } from '@tarojs/taro'
  */
 export function extractCompileEntry(
   appConfig: AppConfig,
-  args: { _: string[], [key: string]: any },
-  ctx: IPluginContext
+  args: { _: string[]; [key: string]: any },
+  ctx: IPluginContext,
 ): void {
   const { chalk } = ctx.helper
 
   const extractType = isString(args.pages) ? 'pages' : isString(args.components) ? 'components' : ''
   if (!extractType) return
 
-  const entries = args[extractType].split(',').map(item => item.trim()).filter(Boolean)
+  const entries = args[extractType]
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
   if (!entries.length) {
     console.log(chalk.yellow(`按需编译开启失败，请指定要编译的${extractType}`))
     return

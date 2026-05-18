@@ -12,9 +12,7 @@ describe('Video', () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-      />),
+      template: () => <taro-video-core src={videoUrl} />,
     })
     const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
     // const centerPlayBtnCls = '.taro-video-cover-play-button'
@@ -62,10 +60,7 @@ describe('Video', () => {
     const initialTime = 10
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-        initialTime={initialTime}
-      />),
+      template: () => <taro-video-core src={videoUrl} initialTime={initialTime} />,
     })
     const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
 
@@ -79,10 +74,7 @@ describe('Video', () => {
     const onFullScreenChange = jest.fn()
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-        onFullScreenChange={onFullScreenChange}
-      />),
+      template: () => <taro-video-core src={videoUrl} onFullScreenChange={onFullScreenChange} />,
     })
     // const wrapper = await mount(app, scratch)
     // const { node } = wrapper
@@ -120,9 +112,7 @@ describe('Video', () => {
   it('should play', async () => {
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-      />),
+      template: () => <taro-video-core src={videoUrl} />,
     })
     const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
     if (video) {
@@ -140,9 +130,7 @@ describe('Video', () => {
   it('should pause', async () => {
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-      />),
+      template: () => <taro-video-core src={videoUrl} />,
     })
     const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
     if (video) {
@@ -161,9 +149,7 @@ describe('Video', () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-      />),
+      template: () => <taro-video-core src={videoUrl} />,
     })
     // const wrapper = await mount(app, scratch)
     // const video = wrapper.find('video.taro-video-video')
@@ -186,9 +172,7 @@ describe('Video', () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-      />),
+      template: () => <taro-video-core src={videoUrl} />,
     })
     // const wrapper = await mount(app, scratch)
     // const controlBar = wrapper.find('.taro-video-controls')
@@ -249,21 +233,17 @@ describe('Video', () => {
       {
         text: '第 1s 出现的弹幕',
         color: 'rgb(255, 0, 0)',
-        time: 1
+        time: 1,
       },
       {
         text: '第 3s 出现的弹幕',
         color: 'rgb(255, 0, 255)',
-        time: 3
-      }
+        time: 3,
+      },
     ]
     page = await newSpecPage({
       components: [Video],
-      template: () => (<taro-video-core
-        src={videoUrl}
-        enableDanmu={true}
-        danmuList={danmuList}
-      />),
+      template: () => <taro-video-core src={videoUrl} enableDanmu={true} danmuList={danmuList} />,
     })
     // const wrapper = await mount(app, scratch)
     // const danmu = wrapper.find('taro-video-danmu')

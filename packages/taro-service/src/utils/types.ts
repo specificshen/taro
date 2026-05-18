@@ -107,7 +107,7 @@ export declare interface IPluginContext {
   /**
    * 向 ctx 上挂载一个方法可供其他插件直接调用
    */
-  registerMethod: (arg: (string | { name: string, fn?: Func }), fn?: Func) => void
+  registerMethod: (arg: string | { name: string; fn?: Func }, fn?: Func) => void
   /**
    * 注册一个自定义命令
    */
@@ -119,7 +119,7 @@ export declare interface IPluginContext {
   /**
    * 触发注册的钩子（使用`ctx.register`方法注册的钩子），传入钩子名和钩子所需参数
    */
-  applyPlugins: (args: string | { name: string, initialVal?: any, opts?: any }) => Promise<any>
+  applyPlugins: (args: string | { name: string; initialVal?: any; opts?: any }) => Promise<any>
   /**
    * 为插件添加入参校验
    */
@@ -139,7 +139,9 @@ export declare interface IPluginContext {
   /**
    * 修改编译过程中的页面组件配置
    */
-  onCompilerMake: (fn: (args: { compilation: Webpack.Compilation, compiler: Webpack.Compiler, plugin: any }) => void) => void
+  onCompilerMake: (
+    fn: (args: { compilation: Webpack.Compilation; compiler: Webpack.Compiler; plugin: any }) => void,
+  ) => void
   /**
    * 编译前，修改 App 配置
    */
@@ -147,15 +149,15 @@ export declare interface IPluginContext {
   /**
    * 编译中修改 webpack 配置，在这个钩子中，你可以对 webpackChain 作出想要的调整，等同于配置 [`webpackChain`](./config-detail.md#miniwebpackchain)
    */
-  modifyWebpackChain: (fn: (args: { chain: Chain, webpack: typeof Webpack, data?: IModifyChainData }) => void) => void
+  modifyWebpackChain: (fn: (args: { chain: Chain; webpack: typeof Webpack; data?: IModifyChainData }) => void) => void
   /**
    * 编译中修改 vite 配置
    */
-  modifyViteConfig: (fn: (args: { viteConfig: any, data?: IModifyChainData, viteCompilerContext: any }) => void) => void
+  modifyViteConfig: (fn: (args: { viteConfig: any; data?: IModifyChainData; viteCompilerContext: any }) => void) => void
   /**
    * 修改编译后的结果
    */
-  modifyBuildAssets: (fn: (args: { assets: any, miniPlugin: any }) => void) => void
+  modifyBuildAssets: (fn: (args: { assets: any; miniPlugin: any }) => void) => void
   /**
    * 修改编译过程中的页面组件配置
    */

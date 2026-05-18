@@ -241,7 +241,7 @@ export function resolveSync(id: string, opts: TResolve.SyncOpts & { mainFields?:
   }
 }
 
-export function resolveMainFilePath (p: string, extArrs = SCRIPT_EXT): string {
+export function resolveMainFilePath(p: string, extArrs = SCRIPT_EXT): string {
   if (p.startsWith('pages/') || p === 'app.config') {
     return p
   }
@@ -279,7 +279,7 @@ export function resolveScriptPath(p: string): string {
   return resolveMainFilePath(p)
 }
 
-export function generateEnvList (env: Record<string, any>): Record<string, any> {
+export function generateEnvList(env: Record<string, any>): Record<string, any> {
   const res = {}
   if (env && !isEmptyObject(env)) {
     for (const key in env) {
@@ -300,7 +300,7 @@ export function generateEnvList (env: Record<string, any>): Record<string, any> 
  * @param {string} 参数 2 - 文件扩展名
  * @returns {string} npm 文件绝对路径
  */
-export function getNpmPackageAbsolutePath (npmPath: string, defaultFile = 'index'): string | null {
+export function getNpmPackageAbsolutePath(npmPath: string, defaultFile = 'index'): string | null {
   try {
     let packageName = ''
     let componentRelativePath = ''
@@ -332,7 +332,7 @@ export function getNpmPackageAbsolutePath (npmPath: string, defaultFile = 'index
   }
 }
 
-export function generateConstantsList (constants: Record<string, any>): Record<string, any> {
+export function generateConstantsList(constants: Record<string, any>): Record<string, any> {
   const res = {}
   if (constants && !isEmptyObject(constants)) {
     for (const key in constants) {
@@ -366,7 +366,10 @@ export function cssImports(content: string): string[] {
 
 /*eslint-disable*/
 const retries = process.platform === 'win32' ? 100 : 1
-export function emptyDirectory(dirPath: string, opts: { excludes: Array<string | RegExp> | string | RegExp } = { excludes: [] }) {
+export function emptyDirectory(
+  dirPath: string,
+  opts: { excludes: Array<string | RegExp> | string | RegExp } = { excludes: [] },
+) {
   if (fs.existsSync(dirPath)) {
     fs.readdirSync(dirPath).forEach((file) => {
       const curPath = path.join(dirPath, file)
@@ -378,9 +381,7 @@ export function emptyDirectory(dirPath: string, opts: { excludes: Array<string |
             const excludes = Array.isArray(opts.excludes) ? opts.excludes : [opts.excludes]
             const canRemove =
               !excludes.length ||
-              !excludes.some((item) =>
-                typeof item === 'string' ? curPath.indexOf(item) >= 0 : item.test(curPath)
-              )
+              !excludes.some((item) => (typeof item === 'string' ? curPath.indexOf(item) >= 0 : item.test(curPath)))
             if (canRemove) {
               emptyDirectory(curPath)
               fs.rmdirSync(curPath)
@@ -421,7 +422,7 @@ export function getInstalledNpmPkgVersion(pkgName: string, basedir: string): str
   return fs.readJSONSync(pkgPath).version
 }
 
-export const recursiveMerge = <T = any> (src: Partial<T>, ...args: (Partial<T> | undefined)[]) => {
+export const recursiveMerge = <T = any>(src: Partial<T>, ...args: (Partial<T> | undefined)[]) => {
   return mergeWith(src, ...args, (value, srcValue) => {
     const typeValue = typeof value
     const typeSrcValue = typeof srcValue
@@ -489,7 +490,7 @@ export const getAllFilesInFolder = async (folder: string, filter: string[] = [])
       } else if (item.isFile) {
         if (!filter.find((rule) => rule === item.name)) files.push(itemPath)
       }
-    })
+    }),
   )
 
   return files
@@ -556,7 +557,7 @@ function exprToObject(node: any) {
         ...acc,
         ...(el!.type === 'SpreadElement' ? exprToObject(el.argument) : [exprToObject(el)]),
       ],
-      []
+      [],
     )
   }
 }
@@ -603,7 +604,7 @@ function readSFCPageConfig(configPath: string) {
       p.stop()
     }
     const configSource = matches[0]
-    const program = (babel.parse(configSource, { filename: '' }))?.program
+    const program = babel.parse(configSource, { filename: '' })?.program
 
     program && babel.traverse(program as any, { CallExpression: callExprHandler })
   }
@@ -635,7 +636,7 @@ interface IReadConfigOptions {
   defineConstants?: Record<string, any>
 }
 
-export function readConfig<T extends IReadConfigOptions> (configPath: string, options: T = {} as T) {
+export function readConfig<T extends IReadConfigOptions>(configPath: string, options: T = {} as T) {
   let result: any = {}
   if (fs.existsSync(configPath)) {
     if (REG_JSON.test(configPath)) {
@@ -658,10 +659,8 @@ export function readConfig<T extends IReadConfigOptions> (configPath: string, op
               legacyDecorator: true,
             },
             experimental: {
-              plugins: [
-                [path.resolve(__dirname, '../swc/swc_plugin_define_config.wasm'), {}]
-              ]
-            }
+              plugins: [[path.resolve(__dirname, '../swc/swc_plugin_define_config.wasm'), {}]],
+            },
           },
           module: {
             type: 'commonjs',

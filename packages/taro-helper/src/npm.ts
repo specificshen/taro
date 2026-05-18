@@ -13,7 +13,7 @@ type pluginFunction = (
   content: string | null,
   file: string,
   config: Record<string, any>,
-  root: string
+  root: string,
 ) => any
 export interface IInstallOptions {
   dev: boolean
@@ -141,7 +141,7 @@ export const callPlugin: pluginFunction = async (
   content: string | null,
   file: string,
   config: Record<string, any>,
-  root: string
+  root: string,
 ) => {
   const pluginFn = await getNpmPkg(`${taroPluginPrefix}${pluginName}`, root)
   return pluginFn(content, file, config)
@@ -152,7 +152,7 @@ export const callPluginSync: pluginFunction = (
   content: string | null,
   file: string,
   config: Record<string, any>,
-  root: string
+  root: string,
 ) => {
   const pluginFn = getNpmPkgSync(`${taroPluginPrefix}${pluginName}`, root)
   return pluginFn(content, file, config)

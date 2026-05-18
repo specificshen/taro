@@ -13,7 +13,7 @@ describe('Login', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Login],
-      template: () => (<taro-login-core />),
+      template: () => <taro-login-core />,
     })
     await page.waitForChanges()
 

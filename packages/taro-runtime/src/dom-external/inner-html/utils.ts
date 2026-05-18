@@ -1,4 +1,4 @@
-export function unquote (str: string): string {
+export function unquote(str: string): string {
   const car = str.charAt(0)
   const end = str.length - 1
   const isQuoteStart = car === '"' || car === "'"

@@ -20,11 +20,11 @@ export default class CLI {
     }
   }
 
-  run () {
+  run() {
     return this.parseArgs()
   }
 
-  async parseArgs () {
+  async parseArgs() {
     const args = minimist(process.argv.slice(2), {
       alias: {
         version: ['v'],
@@ -43,7 +43,7 @@ export default class CLI {
       default: {
         build: true,
         check: true,
-        'inject-global-style': true
+        'inject-global-style': true,
       },
     })
     const _ = args._
@@ -59,7 +59,7 @@ export default class CLI {
       // 设置环境变量
       process.env.NODE_ENV ||= args.env
       if (process.env.NODE_ENV === 'undefined' && (command === 'build' || command === 'inspect')) {
-        process.env.NODE_ENV = (args.watch ? 'development' : 'production')
+        process.env.NODE_ENV = args.watch ? 'development' : 'production'
       }
       args.type ||= args.t
       // React-only / weapp-first fork：build/inspect 命令未显式指定 --type 时默认 weapp
@@ -84,17 +84,15 @@ export default class CLI {
       }
       const config = new Config({
         appPath: this.appPath,
-        disableGlobalConfig: disableGlobalConfig
+        disableGlobalConfig: disableGlobalConfig,
       })
       await config.init(configEnv)
 
       const kernel = new Kernel({
         appPath,
-        presets: [
-          path.resolve(__dirname, '.', 'presets', 'index.js')
-        ],
+        presets: [path.resolve(__dirname, '.', 'presets', 'index.js')],
         config,
-        plugins: []
+        plugins: [],
       })
       kernel.optsPlugins ||= []
 
@@ -113,8 +111,8 @@ export default class CLI {
       // 把内置命令插件传递给 kernel，可以暴露给其他插件使用
       kernel.cliCommandsPath = commandsPath
       kernel.cliCommands = commandPlugins
-        .filter(commandFileName => /^[\w-]+(\.[\w-]+)*\.js$/.test(commandFileName))
-        .map(fileName => fileName.replace(/\.js$/, ''))
+        .filter((commandFileName) => /^[\w-]+(\.[\w-]+)*\.js$/.test(commandFileName))
+        .map((fileName) => fileName.replace(/\.js$/, ''))
 
       switch (command) {
         case 'inspect':
@@ -188,7 +186,7 @@ export default class CLI {
             assetsDest,
             qr: !!args.qr,
             blended: Boolean(args.blended),
-            h: args.h
+            h: args.h,
           })
           break
         }
@@ -208,7 +206,7 @@ export default class CLI {
             template: args.template,
             css: args.css,
             autoInstall: args.autoInstall,
-            h: args.h
+            h: args.h,
           })
           break
         }

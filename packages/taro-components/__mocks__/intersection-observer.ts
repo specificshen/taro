@@ -6,15 +6,15 @@ type ref = {
 class IntersectionObserver {
   list: ref[] = []
 
-  constructor (fn: (args: ref[]) => void) {
+  constructor(fn: (args: ref[]) => void) {
     setTimeout(() => {
       fn([{ isIntersecting: true }])
     }, 1000)
   }
 
-  observe () {}
-  unobserve () {}
-  disconnect () {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
 }
 
 window.IntersectionObserver = IntersectionObserver

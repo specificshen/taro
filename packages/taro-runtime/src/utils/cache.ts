@@ -6,25 +6,25 @@ export class RuntimeCache<T> {
   name: string
   cache = new Map<string, T>()
 
-  constructor (name: string) {
+  constructor(name: string) {
     this.name = name
   }
 
-  has (identifier: string) {
+  has(identifier: string) {
     return this.cache.has(identifier)
   }
 
-  set (identifier: string, ctx: T) {
+  set(identifier: string, ctx: T) {
     if (identifier && ctx) {
       this.cache.set(identifier, ctx)
     }
   }
 
-  get (identifier: string): T | undefined {
+  get(identifier: string): T | undefined {
     if (this.has(identifier)) return this.cache.get(identifier)
   }
 
-  delete (identifier: string) {
+  delete(identifier: string) {
     this.cache.delete(identifier)
   }
 }

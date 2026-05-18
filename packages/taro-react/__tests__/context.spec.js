@@ -16,10 +16,10 @@ describe('Context', () => {
     let actual = 0
     const Context = React.createContext()
 
-    function Consumer () {
+    function Consumer() {
       return (
         <Context.Consumer>
-          {value => {
+          {(value) => {
             actual = value
             return <text prop={'Result: ' + value} />
           }}
@@ -28,7 +28,7 @@ describe('Context', () => {
     }
 
     class MyNode extends React.Component {
-      render () {
+      render() {
         return (
           <view>
             <text>Noise</text>
@@ -46,7 +46,7 @@ describe('Context', () => {
       container,
       function () {
         expect(actual).toBe(5)
-      }
+      },
     )
   })
 })

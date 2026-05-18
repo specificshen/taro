@@ -13,7 +13,7 @@ describe('AnimationView', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [AnimationView],
-      template: () => (<taro-animation-view-core />),
+      template: () => <taro-animation-view-core />,
     })
     await page.waitForChanges()
 

@@ -13,7 +13,7 @@ import type { LegacyOptions } from 'sass/types/legacy/options'
  * @returns `true` if the name of the file ends with a sass extension (.scss, .sass), case insensitive. `false`
  * otherwise
  */
-export function usePlugin (fileName: string): boolean {
+export function usePlugin(fileName: string): boolean {
   if (typeof fileName === 'string') {
     return /(\.scss|\.sass)$/i.test(fileName)
   }
@@ -32,7 +32,7 @@ const SLASH_REGEX = /\\/g
  * @param context the runtime context being used by the plugin
  * @returns the generated/normalized plugin options
  */
-export function getRenderOptions (
+export function getRenderOptions(
   opts: d.PluginOptions,
   sourceText: string,
   fileName: string,
@@ -164,14 +164,14 @@ export function getRenderOptions (
  * @param fileName the name of the file whose extension should be replaced
  * @returns the updated filename, using 'css' as the file extension
  */
-export function createResultsId (fileName: string): string {
+export function createResultsId(fileName: string): string {
   // create what the new path is post transform (.css)
   const pathParts = fileName.split('.')
   pathParts[pathParts.length - 1] = 'css'
   return pathParts.join('.')
 }
 
-export function normalizePath (str: string) {
+export function normalizePath(str: string) {
   // Convert Windows backslash paths to slash paths: foo\\bar ➔ foo/bar
   // https://github.com/sindresorhus/slash MIT
   // By Sindre Sorhus
@@ -207,7 +207,7 @@ export function normalizePath (str: string) {
  * @param orgImport the import path to split
  * @returns a module id and the filepath under that module id
  */
-export function getModuleId (orgImport: string): { moduleId?: string, filePath?: string } {
+export function getModuleId(orgImport: string): { moduleId?: string; filePath?: string } {
   if (orgImport.startsWith('~')) {
     orgImport = orgImport.substring(1)
   }

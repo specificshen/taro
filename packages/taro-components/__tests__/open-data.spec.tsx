@@ -13,7 +13,7 @@ describe('OpenData', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [OpenData],
-      template: () => (<taro-open-data-core />),
+      template: () => <taro-open-data-core />,
     })
     await page.waitForChanges()
 

@@ -1,4 +1,4 @@
-import { fs, REG_FONT, REG_IMAGE, REG_MEDIA, } from '@tarojs/helper'
+import { fs, REG_FONT, REG_IMAGE, REG_MEDIA } from '@tarojs/helper'
 import { isBoolean, isFunction, isString } from '@tarojs/shared'
 import mrmime from 'mrmime'
 
@@ -13,8 +13,7 @@ const urlRE = /(\?|&)url(?:&|$)/
 const queryRE = /\?.*$/s
 const hashRE = /#.*$/s
 
-const cleanUrl = (url: string): string =>
-  url.replace(hashRE, '').replace(queryRE, '')
+const cleanUrl = (url: string): string => url.replace(hashRE, '').replace(queryRE, '')
 
 export default function (viteCompilerContext: ViteH5CompilerContext | ViteMiniCompilerContext): PluginOption {
   const { taroConfig, sourceDir } = viteCompilerContext
@@ -23,13 +22,13 @@ export default function (viteCompilerContext: ViteH5CompilerContext | ViteMiniCo
   return {
     name: 'taro:vite-assets',
     enforce: 'pre',
-    configResolved (config) {
+    configResolved(config) {
       resolvedConfig = config
     },
-    buildStart () {
+    buildStart() {
       assetsCache.set(resolvedConfig, new Map())
     },
-    async load (id) {
+    async load(id) {
       if (isVirtualModule(id)) return
       if (rawRE.test(id) || urlRE.test(id)) return
 
@@ -44,11 +43,7 @@ export default function (viteCompilerContext: ViteH5CompilerContext | ViteMiniCo
 
       const source = fs.readFileSync(id)
 
-      const {
-        imageUrlLoaderOption = {},
-        fontUrlLoaderOption = {},
-        mediaUrlLoaderOption = {}
-      } = taroConfig
+      const { imageUrlLoaderOption = {}, fontUrlLoaderOption = {}, mediaUrlLoaderOption = {} } = taroConfig
 
       let limit: number | boolean
 
@@ -78,16 +73,14 @@ export default function (viteCompilerContext: ViteH5CompilerContext | ViteMiniCo
         const referenceId = this.emitFile({
           type: 'asset',
           fileName,
-          source: Uint8Array.from(source)
+          source: Uint8Array.from(source),
         })
         url = `__VITE_ASSET__${referenceId}__`
       }
 
       cache?.set(id, url)
 
-      return isEsModule
-        ? `export default "${url}"`
-        : `module.exports = "${url}"`
+      return isEsModule ? `export default "${url}"` : `module.exports = "${url}"`
     },
   }
 }

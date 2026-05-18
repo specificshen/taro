@@ -13,7 +13,7 @@ describe('GridView', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [GridView],
-      template: () => (<taro-grid-view-core />),
+      template: () => <taro-grid-view-core />,
     })
     await page.waitForChanges()
 

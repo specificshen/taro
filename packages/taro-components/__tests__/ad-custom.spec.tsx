@@ -13,7 +13,7 @@ describe('AdCustom', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [AdCustom],
-      template: () => (<taro-ad-custom-core />),
+      template: () => <taro-ad-custom-core />,
     })
     await page.waitForChanges()
 

@@ -1,18 +1,6 @@
-import {
-  getComponentsAlias as _getComponentsAlias,
-  internalComponents,
-  isFunction,
-  Shortcuts
-} from '@tarojs/shared'
+import { getComponentsAlias as _getComponentsAlias, internalComponents, isFunction, Shortcuts } from '@tarojs/shared'
 
-import {
-  CLASS,
-  COMMENT,
-  ID,
-  ROOT_STR,
-  STYLE,
-  UID
-} from '../constants'
+import { CLASS, COMMENT, ID, ROOT_STR, STYLE, UID } from '../constants'
 import { NodeType } from '../dom/node_types'
 
 import type { TaroElement } from '../dom/element'
@@ -33,7 +21,7 @@ export const incrementId = () => {
   const chatCodesLen = chatCodes.length - 1
   const list = [0, 0]
   return () => {
-    const target = list.map(item => chatCodes[item])
+    const target = list.map((item) => chatCodes[item])
     const res = String.fromCharCode(...target)
 
     let tailIdx = list.length - 1
@@ -54,20 +42,20 @@ export const incrementId = () => {
   }
 }
 
-export function isElement (node: TaroNode): node is TaroElement {
+export function isElement(node: TaroNode): node is TaroElement {
   return node.nodeType === NodeType.ELEMENT_NODE
 }
 
-export function isText (node: TaroNode): node is TaroText {
+export function isText(node: TaroNode): node is TaroText {
   return node.nodeType === NodeType.TEXT_NODE
 }
 
-export function isComment (node: TaroNode): boolean {
+export function isComment(node: TaroNode): boolean {
   return node.nodeName === COMMENT
 }
 
-export function isHasExtractProp (el: TaroElement): boolean {
-  const res = Object.keys(el.props).find(prop => {
+export function isHasExtractProp(el: TaroElement): boolean {
+  const res = Object.keys(el.props).find((prop) => {
     return !(/^(class|style|id)$/.test(prop) || prop.startsWith('data-'))
   })
   return Boolean(res)
@@ -78,7 +66,7 @@ export function isHasExtractProp (el: TaroElement): boolean {
  * @param node 当前组件
  * @param type 事件类型
  */
-export function isParentBound (node: TaroElement | null, type: string): boolean {
+export function isParentBound(node: TaroElement | null, type: string): boolean {
   while ((node = node?.parentElement || null)) {
     if (!node || node.nodeName === ROOT_STR || node.nodeName === 'root-portal') {
       return false
@@ -90,7 +78,7 @@ export function isParentBound (node: TaroElement | null, type: string): boolean 
   return false
 }
 
-export function shortcutAttr (key: string): string {
+export function shortcutAttr(key: string): string {
   switch (key) {
     case STYLE:
       return Shortcuts.Style
@@ -109,28 +97,28 @@ interface Ctor {
   new (...args: any[]): any
 }
 
-export function extend (ctor: Ctor, methodName: string, options: TFunc | Record<string, any>) {
+export function extend(ctor: Ctor, methodName: string, options: TFunc | Record<string, any>) {
   if (isFunction(options)) {
     options = {
-      value: options
+      value: options,
     }
   }
   Object.defineProperty(ctor.prototype, methodName, {
     configurable: true,
     enumerable: true,
-    ...options
+    ...options,
   })
 }
 
 let componentsAlias
-export function getComponentsAlias () {
+export function getComponentsAlias() {
   if (!componentsAlias) {
     componentsAlias = _getComponentsAlias(internalComponents)
   }
   return componentsAlias
 }
 
-export function convertNumber2PX (value: number) {
+export function convertNumber2PX(value: number) {
   return value + 'px'
 }
 

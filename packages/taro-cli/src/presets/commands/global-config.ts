@@ -12,16 +12,16 @@ type TPluginType = 'plugin' | 'preset'
 
 const PRESET_OR_PLUGIN_COMMAND_CHINESE_MAP_MAP = {
   install: '添加',
-  uninstall: '删除'
+  uninstall: '删除',
 }
 const PRESET_OR_PLUGIN_CHINESE_NAME_MAP = {
   plugin: '插件',
-  preset: '插件集'
+  preset: '插件集',
 }
 
 const PLUGIN_TYPE_TO_CONFIG_KEY = {
   plugin: 'plugins',
-  preset: 'presets'
+  preset: 'presets',
 }
 
 export default (ctx: IPluginContext) => {
@@ -36,9 +36,9 @@ export default (ctx: IPluginContext) => {
     ],
     optionsMap: {
       '-r --registry [url]': '指定 npm registry',
-      '-h, --help': 'output usage information'
+      '-h, --help': 'output usage information',
     },
-    fn ({ _, options }) {
+    fn({ _, options }) {
       const [, action, pluginName] = _
       const { getUserHomeDir, TARO_GLOBAL_CONFIG_DIR, fs, TARO_GLOBAL_CONFIG_FILE } = ctx.helper
       const homedir = getUserHomeDir()
@@ -47,7 +47,7 @@ export default (ctx: IPluginContext) => {
       const rootPath = getRootPath()
       const templatePath = path.join(rootPath, 'templates', 'global-config')
       const registry = options.registry || options.r
-      function makeSureConfigExists () {
+      function makeSureConfigExists() {
         if (!fs.existsSync(globalPluginConfigDir)) {
           const spinner = ora(`目录不存在，全局配置初始化`).start()
           try {
@@ -59,7 +59,7 @@ export default (ctx: IPluginContext) => {
           }
         }
       }
-      function addOrRemovePresetOrPlugin (actionType: TPresetOrPluginAction, pluginType: TPluginType) {
+      function addOrRemovePresetOrPlugin(actionType: TPresetOrPluginAction, pluginType: TPluginType) {
         makeSureConfigExists()
         const presetOrPluginChineseName = PRESET_OR_PLUGIN_CHINESE_NAME_MAP[pluginType]
         const chineseCommand = PRESET_OR_PLUGIN_COMMAND_CHINESE_MAP_MAP[actionType]
@@ -80,7 +80,7 @@ export default (ctx: IPluginContext) => {
         }
         execCommand({
           command,
-          successCallback (data) {
+          successCallback(data) {
             console.log(data.replace(/\n$/, ''))
             spinner.start(`开始修改${presetOrPluginChineseName}配置`)
             const configFilePath = path.join(globalPluginConfigDir, TARO_GLOBAL_CONFIG_FILE)
@@ -101,7 +101,7 @@ export default (ctx: IPluginContext) => {
               actionType === 'install' ? configItem.push(pluginWithoutVersionName) : configItem.splice(pluginIndex, 1)
               try {
                 fs.writeJSONSync(configFilePath, {
-                  [configKey]: configItem
+                  [configKey]: configItem,
                 })
               } catch (e) {
                 spinner.fail(`修改配置文件失败：${e}`)
@@ -109,23 +109,23 @@ export default (ctx: IPluginContext) => {
             }
             spinner.succeed('修改配置文件成功')
           },
-          failCallback (data) {
+          failCallback(data) {
             spinner.stop()
             spinner.warn(data.replace(/\n$/, ''))
-          }
+          },
         })
       }
       switch (action) {
         case 'add-plugin':
           addOrRemovePresetOrPlugin('install', 'plugin')
           break
-        case 'remove-plugin' :
+        case 'remove-plugin':
           addOrRemovePresetOrPlugin('uninstall', 'plugin')
           break
         case 'add-preset':
           addOrRemovePresetOrPlugin('install', 'preset')
           break
-        case 'remove-preset' :
+        case 'remove-preset':
           addOrRemovePresetOrPlugin('uninstall', 'preset')
           break
         case 'reset':
@@ -135,6 +135,6 @@ export default (ctx: IPluginContext) => {
         default:
           console.error('请输出正确的参数')
       }
-    }
+    },
   })
 }

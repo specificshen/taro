@@ -4,18 +4,16 @@ import { readConfig } from '../utils'
 
 describe('readConfig', () => {
   const config = {
-    pages: [
-      'pages/index/index',
-    ],
+    pages: ['pages/index/index'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
-    }
+      navigationBarTextStyle: 'black',
+    },
   }
   const pageConfig = {
-    navigationBarTitleText: 'index'
+    navigationBarTitleText: 'index',
   }
 
   test('read app config without tips', async () => {
@@ -47,21 +45,21 @@ describe('readConfig', () => {
     const result = readConfig(path.join(__dirname, './__mocks__/page.alias.config.ts'), {
       alias: {
         '@/utils': path.resolve(__dirname, './__mocks__/utils'),
-      }
+      },
     })
     expect(result).toEqual({
-      navigationBarTitleText: 'i18n'
+      navigationBarTitleText: 'i18n',
     })
   })
 
   test('read page config with defineConstants', async () => {
     const result = readConfig(path.join(__dirname, './__mocks__/page.define-constants.config.ts'), {
       defineConstants: {
-        IS_BUILD_COMPONENT: 'true'
-      }
+        IS_BUILD_COMPONENT: 'true',
+      },
     })
     expect(result).toEqual({
-      navigationBarTitleText: 'comp'
+      navigationBarTitleText: 'comp',
     })
   })
 

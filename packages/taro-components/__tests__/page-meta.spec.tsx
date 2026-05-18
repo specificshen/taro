@@ -13,7 +13,7 @@ describe('PageMeta', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [PageMeta],
-      template: () => (<taro-page-meta-core />),
+      template: () => <taro-page-meta-core />,
     })
     await page.waitForChanges()
 

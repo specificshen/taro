@@ -1,13 +1,6 @@
 import path from 'node:path'
 
-import {
-  fs,
-  isAliasPath,
-  readConfig,
-  recursiveMerge,
-  replaceAliasPath,
-  resolveMainFilePath
-} from '@tarojs/helper'
+import { fs, isAliasPath, readConfig, recursiveMerge, replaceAliasPath, resolveMainFilePath } from '@tarojs/helper'
 import { isArray, isFunction } from '@tarojs/shared'
 
 import defaultConfig from '../../defaultConfig/defaultConfig.mini'
@@ -23,7 +16,7 @@ import type {
   ViteMiniBuildConfig,
   ViteMiniCompilerContext,
   ViteNativeCompMeta,
-  VitePageMeta
+  VitePageMeta,
 } from '@tarojs/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 
@@ -32,7 +25,7 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
   commonChunks: string[]
   nativeComponents = new Map<string, ViteNativeCompMeta>()
 
-  constructor (appPath: string, taroConfig: ViteMiniBuildConfig) {
+  constructor(appPath: string, taroConfig: ViteMiniBuildConfig) {
     super(appPath, taroConfig)
 
     this.fileType = this.taroConfig.fileType
@@ -42,18 +35,19 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     this.pages = this.getPages()
   }
 
-  processConfig () {
+  processConfig() {
     this.taroConfig = recursiveMerge({}, defaultConfig, this.rawTaroConfig)
   }
 
-  getCommonChunks () {
+  getCommonChunks() {
     const { commonChunks } = this.taroConfig
     const defaultCommonChunks = ['runtime', 'vendors', 'taro', 'common']
     let customCommonChunks: string[] = defaultCommonChunks
     if (isFunction(commonChunks)) {
-      customCommonChunks = (commonChunks as ((commonChunks: string[]) => string[]))(defaultCommonChunks.concat()) || defaultCommonChunks
+      customCommonChunks =
+        (commonChunks as (commonChunks: string[]) => string[])(defaultCommonChunks.concat()) || defaultCommonChunks
     } else if (isArray(commonChunks) && commonChunks!.length) {
-      customCommonChunks = commonChunks as string []
+      customCommonChunks = commonChunks as string[]
     }
     return customCommonChunks
   }
@@ -64,9 +58,7 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     const scriptPath = resolveMainFilePath(path.join(sourceDir, pageName), frameworkExts)
     const templatePath = this.getTemplatePath(scriptPath)
     const isNative = this.isNativePageORComponent(templatePath)
-    const configPath = isNative
-      ? this.getConfigPath(scriptPath)
-      : this.getConfigFilePath(scriptPath)
+    const configPath = isNative ? this.getConfigPath(scriptPath) : this.getConfigFilePath(scriptPath)
     const config: PageConfig = readConfig(configPath, this.taroConfig) || {}
 
     const pageMeta = {
@@ -81,7 +73,7 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
 
     this.filesConfig[this.getConfigFilePath(pageMeta.name)] = {
       path: configPath,
-      content: config
+      content: config,
     }
     this.collectNativeComponents(pageMeta)
     this.configFileList.push(pageMeta.configPath)
@@ -89,7 +81,7 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     return pageMeta
   }
 
-  resolvePageImportPath (scriptPath: string, importPath: string) {
+  resolvePageImportPath(scriptPath: string, importPath: string) {
     const alias = this.taroConfig.alias
     if (isAliasPath(importPath, alias)) {
       importPath = replaceAliasPath(scriptPath, importPath, alias)
@@ -97,7 +89,7 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     return importPath
   }
 
-  collectNativeComponents (meta: ViteAppMeta | VitePageMeta | ViteNativeCompMeta): ViteNativeCompMeta[] {
+  collectNativeComponents(meta: ViteAppMeta | VitePageMeta | ViteNativeCompMeta): ViteNativeCompMeta[] {
     const { name, scriptPath, config } = meta
     const { usingComponents } = config
 
@@ -126,12 +118,12 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
         config: readConfig(configPath) || {},
         templatePath,
         cssPath,
-        isNative: true
+        isNative: true,
       }
 
       this.filesConfig[this.getConfigFilePath(nativeCompMeta.name)] = {
         path: configPath,
-        content: nativeCompMeta.config
+        content: nativeCompMeta.config,
       }
       this.nativeComponents.set(compScriptPath, nativeCompMeta)
       this.configFileList.push(nativeCompMeta.configPath)
@@ -144,7 +136,11 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     return list
   }
 
-  generateNativeComponent (rollupCtx: PluginContext, meta: ViteNativeCompMeta, implicitlyLoadedAfterOneOf: string[] = []) {
+  generateNativeComponent(
+    rollupCtx: PluginContext,
+    meta: ViteNativeCompMeta,
+    implicitlyLoadedAfterOneOf: string[] = [],
+  ) {
     if (meta.isGenerated) return
 
     rollupCtx.emitFile({
@@ -157,26 +153,26 @@ export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> im
     rollupCtx.emitFile({
       type: 'asset',
       fileName: this.getTemplatePath(meta.name),
-      source
+      source,
     })
     meta.cssPath && rollupCtx.addWatchFile(meta.cssPath)
     meta.isGenerated = true
   }
 
   /** 工具函数 */
-  getScriptPath (filePath: string) {
+  getScriptPath(filePath: string) {
     return this.getTargetFilePath(filePath, this.fileType.script)
   }
 
-  getTemplatePath (filePath: string) {
+  getTemplatePath(filePath: string) {
     return this.getTargetFilePath(filePath, this.fileType.templ)
   }
 
-  getStylePath (filePath: string) {
+  getStylePath(filePath: string) {
     return this.getTargetFilePath(filePath, this.fileType.style)
   }
 
-  getConfigPath (filePath: string) {
+  getConfigPath(filePath: string) {
     return this.getTargetFilePath(filePath, this.fileType.config)
   }
 }

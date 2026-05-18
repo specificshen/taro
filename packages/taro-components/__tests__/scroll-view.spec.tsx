@@ -20,11 +20,11 @@ describe('ScrollView', () => {
   const divStyleH = {
     display: 'inline-block',
     width: '100%',
-    height: '300px'
+    height: '300px',
   }
 
   const divStyleV = {
-    height: '300px'
+    height: '300px',
   }
 
   it('scroll-x', async () => {
@@ -34,19 +34,21 @@ describe('ScrollView', () => {
     const onScrollToLower = jest.fn()
     page = await newSpecPage({
       components: [ScrollView],
-      template: () => (<taro-scroll-view-core
-        scrollX
-        style={{
-          'white-space': 'nowrap'
-        }}
-        onScroll={onScroll}
-        onScrollToUpper={onScrollToUpper}
-        onScrollToLower={onScrollToLower}
-      >
-        <div style={Object.assign({}, divStyleH, { backgroundColor: 'blue' })}></div>
-        <div style={Object.assign({}, divStyleH, { backgroundColor: 'yellow' })}></div>
-        <div style={Object.assign({}, divStyleH, { backgroundColor: 'blue' })}></div>
-      </taro-scroll-view-core>),
+      template: () => (
+        <taro-scroll-view-core
+          scrollX
+          style={{
+            'white-space': 'nowrap',
+          }}
+          onScroll={onScroll}
+          onScrollToUpper={onScrollToUpper}
+          onScrollToLower={onScrollToLower}
+        >
+          <div style={Object.assign({}, divStyleH, { backgroundColor: 'blue' })}></div>
+          <div style={Object.assign({}, divStyleH, { backgroundColor: 'yellow' })}></div>
+          <div style={Object.assign({}, divStyleH, { backgroundColor: 'blue' })}></div>
+        </taro-scroll-view-core>
+      ),
     })
     // const { scrollHeight, scrollWidth } = node
     // const { width } = node.getBoundingClientRect()
@@ -102,21 +104,23 @@ describe('ScrollView', () => {
     const onScrollToLower = jest.fn()
     page = await newSpecPage({
       components: [ScrollView],
-      template: () => (<taro-scroll-view-core
-        scrollY
-        style={{
-          height: '300px'
-        }}
-        upperThreshold={upper}
-        lowerThreshold={lower}
-        onScroll={onScroll}
-        onScrollToUpper={onScrollToUpper}
-        onScrollToLower={onScrollToLower}
-      >
-        <div style={Object.assign({}, divStyleV, { backgroundColor: 'blue' })}></div>
-        <div style={Object.assign({}, divStyleV, { backgroundColor: 'yellow' })}></div>
-        <div style={Object.assign({}, divStyleV, { backgroundColor: 'blue' })}></div>
-      </taro-scroll-view-core>),
+      template: () => (
+        <taro-scroll-view-core
+          scrollY
+          style={{
+            height: '300px',
+          }}
+          upperThreshold={upper}
+          lowerThreshold={lower}
+          onScroll={onScroll}
+          onScrollToUpper={onScrollToUpper}
+          onScrollToLower={onScrollToLower}
+        >
+          <div style={Object.assign({}, divStyleV, { backgroundColor: 'blue' })}></div>
+          <div style={Object.assign({}, divStyleV, { backgroundColor: 'yellow' })}></div>
+          <div style={Object.assign({}, divStyleV, { backgroundColor: 'blue' })}></div>
+        </taro-scroll-view-core>
+      ),
     })
     // const { scrollHeight, scrollWidth } = node
     // const { height } = node.getBoundingClientRect()

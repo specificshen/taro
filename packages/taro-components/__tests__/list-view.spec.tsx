@@ -13,7 +13,7 @@ describe('ListView', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ListView],
-      template: () => (<taro-list-view-core />),
+      template: () => <taro-list-view-core />,
     })
     await page.waitForChanges()
 

@@ -8,20 +8,47 @@ import type { TaroNode } from '../../dom/node'
 options.html = {
   skipElements: new Set(['style', 'script']),
   voidElements: new Set([
-    '!doctype', 'area', 'base', 'br', 'col', 'command',
-    'embed', 'hr', 'img', 'input', 'keygen', 'link',
-    'meta', 'param', 'source', 'track', 'wbr'
+    '!doctype',
+    'area',
+    'base',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
   ]),
   closingElements: new Set([
-    'html', 'head', 'body', 'p', 'dt', 'dd', 'li', 'option',
-    'thead', 'th', 'tbody', 'tr', 'td', 'tfoot', 'colgroup'
+    'html',
+    'head',
+    'body',
+    'p',
+    'dt',
+    'dd',
+    'li',
+    'option',
+    'thead',
+    'th',
+    'tbody',
+    'tr',
+    'td',
+    'tfoot',
+    'colgroup',
   ]),
-  renderHTMLTag: false
+  renderHTMLTag: false,
 }
 
 declare const tt: any
 
-export function setInnerHTML (element: TaroNode, html: string) {
+export function setInnerHTML(element: TaroNode, html: string) {
   while (element.firstChild) {
     element.removeChild(element.firstChild)
   }

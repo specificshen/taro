@@ -16,17 +16,21 @@ const generateNewSubPackageItem = (subPackage: string) => {
 
 const isValidSubPkgObject = (subPkgObject: ObjectExpression) => {
   const properties = subPkgObject?.properties || {}
-  const rootProperty = properties.find((property: ObjectProperty) => (property.key as any)?.name === 'root') as ObjectProperty
-  const pagesProperty = properties.find((property: ObjectProperty) => (property.key as any)?.name === 'pages') as ObjectProperty
+  const rootProperty = properties.find(
+    (property: ObjectProperty) => (property.key as any)?.name === 'root',
+  ) as ObjectProperty
+  const pagesProperty = properties.find(
+    (property: ObjectProperty) => (property.key as any)?.name === 'pages',
+  ) as ObjectProperty
   const rootPropertyValueType = rootProperty?.value?.type
   const pagesPropertyValueType = pagesProperty?.value?.type
   return rootPropertyValueType === 'StringLiteral' && pagesPropertyValueType === 'ArrayExpression'
 }
 
 const addNewSubPackage = (node: ObjectExpression, page: string, subPackage: string): ConfigModificationState => {
-  let subPackages = node?.properties.find(node => (node as any).key.name === 'subPackages') as ObjectProperty
+  let subPackages = node?.properties.find((node) => (node as any).key.name === 'subPackages') as ObjectProperty
   if (!subPackages) {
-  // config 文件不存在 subPackages 字段的情况，给该字段赋予默认值
+    // config 文件不存在 subPackages 字段的情况，给该字段赋予默认值
     const subPkgObject = t.objectProperty(t.identifier('subPackages'), t.arrayExpression([]))
     subPackages = subPkgObject
     node?.properties.push(subPkgObject)
@@ -35,7 +39,9 @@ const addNewSubPackage = (node: ObjectExpression, page: string, subPackage: stri
 
   // 文件格式不对的情况
   if (!value || value?.type !== 'ArrayExpression') return ConfigModificationState.Fail
-  let targetSubPkgObject: ObjectExpression = value.elements.find(node => (node as any)?.properties?.find(property => (property as any)?.value?.value === subPackage)) as ObjectExpression
+  let targetSubPkgObject: ObjectExpression = value.elements.find((node) =>
+    (node as any)?.properties?.find((property) => (property as any)?.value?.value === subPackage),
+  ) as ObjectExpression
 
   if (!targetSubPkgObject) {
     // 不存在 当前分包配置对象的情况
@@ -44,10 +50,13 @@ const addNewSubPackage = (node: ObjectExpression, page: string, subPackage: stri
     value.elements.push(subPkgItemObject)
   }
 
-  if (targetSubPkgObject.type !== 'ObjectExpression' || !isValidSubPkgObject(targetSubPkgObject)) return ConfigModificationState.Fail
-  const pagesProperty: ObjectProperty = targetSubPkgObject.properties.find((property: ObjectProperty) => (property.key as any)?.name === 'pages') as ObjectProperty
+  if (targetSubPkgObject.type !== 'ObjectExpression' || !isValidSubPkgObject(targetSubPkgObject))
+    return ConfigModificationState.Fail
+  const pagesProperty: ObjectProperty = targetSubPkgObject.properties.find(
+    (property: ObjectProperty) => (property.key as any)?.name === 'pages',
+  ) as ObjectProperty
   const currentPages = (pagesProperty.value as ArrayExpression).elements
-  const isPageExists = Boolean(currentPages.find(node => (node as any).value === page))
+  const isPageExists = Boolean(currentPages.find((node) => (node as any).value === page))
 
   if (isPageExists) return ConfigModificationState.NeedLess
 
@@ -56,14 +65,14 @@ const addNewSubPackage = (node: ObjectExpression, page: string, subPackage: stri
 }
 
 const addNewPage = (node: ObjectExpression, page: string): ConfigModificationState => {
-  const pages = node?.properties.find(node => (node as any).key.name === 'pages') as ObjectProperty
+  const pages = node?.properties.find((node) => (node as any).key.name === 'pages') as ObjectProperty
   if (!pages) return ConfigModificationState.Fail
 
   const value = pages?.value
   // 仅处理 pages 为数组字面量的情形
   if (!value || value?.type !== 'ArrayExpression') return ConfigModificationState.Fail
 
-  const isPageExists = Boolean(value.elements.find(node => (node as any).value === page))
+  const isPageExists = Boolean(value.elements.find((node) => (node as any).value === page))
   if (isPageExists) return ConfigModificationState.NeedLess
 
   const newArrayElement = t.stringLiteral(page)
@@ -105,7 +114,7 @@ const modifySubPackages = (path: NodePath<ExportDefaultDeclaration>, newPageConf
 const generateNewPageConfig = (fullPagePath: string, subPkgRootPath = '') => {
   const newPageConfig = {
     pkg: '',
-    page: ''
+    page: '',
   }
   if (subPkgRootPath) {
     const processedSubPkg = `${subPkgRootPath}/`
@@ -126,7 +135,5 @@ export const modifyPagesOrSubPackages = (params: {
 }) => {
   const { fullPagePath, subPkgRootPath, callback, path } = params
   const newPageConfig = generateNewPageConfig(fullPagePath, subPkgRootPath)
-  subPkgRootPath
-    ? modifySubPackages(path, newPageConfig, callback)
-    : modifyPages(path, newPageConfig, callback)
+  subPkgRootPath ? modifySubPackages(path, newPageConfig, callback) : modifyPages(path, newPageConfig, callback)
 }

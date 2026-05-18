@@ -1,4 +1,4 @@
-export const normalizePath = url => {
+export const normalizePath = (url) => {
   let _isRelative
   let _leadingParents = ''
   let _parent, _pos
@@ -52,13 +52,13 @@ export const normalizePath = url => {
   return url
 }
 
-export const splitUrl = _url => {
+export const splitUrl = (_url) => {
   let url = _url || ''
   let pos
   const res = {
     path: null,
     query: null,
-    fragment: null
+    fragment: null,
   }
 
   pos = url.indexOf('#')

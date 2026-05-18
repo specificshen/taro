@@ -18,6 +18,6 @@ export default defineConfig({
       provider: 'istanbul',
       include: ['src/**/*.ts'],
     },
-    setupFiles: [resolve(__dirname, './tests/setup.ts')]
-  }
+    setupFiles: [resolve(__dirname, './tests/setup.ts')],
+  },
 })

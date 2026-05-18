@@ -14,9 +14,9 @@ export default (ctx: IPluginContext) => {
       '--template [template]': '项目模板',
       '--css [css]': 'CSS预处理器(sass/less/stylus/none)',
       '--autoInstall': '自动安装依赖',
-      '-h, --help': 'output usage information'
+      '-h, --help': 'output usage information',
     },
-    async fn (opts) {
+    async fn(opts) {
       // init project
       const { appPath } = ctx.paths
       const {
@@ -34,7 +34,7 @@ export default (ctx: IPluginContext) => {
         hideDefaultTemplate,
         sourceRoot,
         autoInstall,
-        ask
+        ask,
       } = opts.options
 
       const Project = require('../../create/project').default
@@ -54,10 +54,10 @@ export default (ctx: IPluginContext) => {
         hideDefaultTemplate,
         autoInstall,
         css,
-        ask
+        ask,
       })
 
       project.create()
-    }
+    },
   })
 }

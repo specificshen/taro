@@ -13,7 +13,7 @@ describe('StickySection', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [StickySection],
-      template: () => (<taro-sticky-section-core />),
+      template: () => <taro-sticky-section-core />,
     })
     await page.waitForChanges()
 

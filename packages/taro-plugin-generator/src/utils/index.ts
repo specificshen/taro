@@ -4,7 +4,7 @@ import * as path from 'node:path'
 
 import type { IPluginContext } from '@tarojs/service'
 
-export function execCommand(params: { command: string, args: string[], cwd: string }) {
+export function execCommand(params: { command: string; args: string[]; cwd: string }) {
   const { command, cwd, args } = params
 
   return new Promise((resolve, reject) => {

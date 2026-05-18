@@ -45,7 +45,7 @@ const createModifiedConfigError = (compilerType: CompilerType) =>
 /**
  * 更新配置文件
  */
-export async function updateConfig(options: { ctx: IPluginContext, compilerType: CompilerType }) {
+export async function updateConfig(options: { ctx: IPluginContext; compilerType: CompilerType }) {
   const { ctx, compilerType } = options
   const { fs } = ctx.helper
 
@@ -86,7 +86,7 @@ export async function updateConfig(options: { ctx: IPluginContext, compilerType:
 
 function modifyViteCompileConfig(config: t.ObjectExpression) {
   const legacyProp = config.properties.find(
-    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'legacy'
+    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'legacy',
   )
   if (!legacyProp) {
     config.properties.push(t.objectProperty(t.identifier('legacy'), t.booleanLiteral(true)))
@@ -100,11 +100,11 @@ function modifyViteCompileConfig(config: t.ObjectExpression) {
 function modifyWebpackCompileConfig(config: t.ObjectExpression) {
   ensureNestedObjectProperty(config, ['compile'])
   const compileProp = config.properties.find(
-    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'compile'
+    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'compile',
   ) as t.ObjectProperty | undefined
   if (compileProp && t.isObjectExpression(compileProp.value)) {
     const includeProp = compileProp.value.properties.find(
-      (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'include'
+      (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'include',
     )
 
     const include = t.arrowFunctionExpression(
@@ -113,12 +113,12 @@ function modifyWebpackCompileConfig(config: t.ObjectExpression) {
         t.memberExpression(
           t.regExpLiteral(
             String.raw`node_modules\/(?!(.pnpm|@babel|core-js|style-loader|css-loader|react|react-dom))(@?[^/]+)`,
-            ''
+            '',
           ),
-          t.identifier('test')
+          t.identifier('test'),
         ),
-        [t.identifier('filename')]
-      )
+        [t.identifier('filename')],
+      ),
     )
     include.params[0].typeAnnotation = t.tsTypeAnnotation(t.tsStringKeyword())
 
@@ -171,7 +171,7 @@ function insertBrowserlistEnv(ast: t.Node) {
       exit(program) {
         if (!hasEnv) {
           const env = parser.parseExpression(
-            'process.env.BROWSERSLIST_ENV = process.env.NODE_ENV'
+            'process.env.BROWSERSLIST_ENV = process.env.NODE_ENV',
           ) as unknown as t.ExpressionStatement
           const injectIndex = program.node.body.findIndex((stmt) => !t.isImportDeclaration(stmt))
           program.node.body.splice(injectIndex, 0, env)

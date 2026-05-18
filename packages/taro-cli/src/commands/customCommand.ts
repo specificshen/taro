@@ -1,14 +1,10 @@
 import { Kernel } from '@tarojs/service'
 
-export default function customCommand (
-  command: string,
-  kernel: Kernel,
-  args: { _: string[], [key: string]: any }
-) {
+export default function customCommand(command: string, kernel: Kernel, args: { _: string[]; [key: string]: any }) {
   if (typeof command === 'string') {
     const options: any = {}
     const excludeKeys = ['_', 'version', 'v', 'help', 'h', 'disable-global-config']
-    Object.keys(args).forEach(key => {
+    Object.keys(args).forEach((key) => {
       if (!excludeKeys.includes(key)) {
         options[key] = args[key]
       }
@@ -19,8 +15,8 @@ export default function customCommand (
       opts: {
         _: args._,
         options,
-        isHelp: args.h
-      }
+        isHelp: args.h,
+      },
     })
   }
 }

@@ -19,7 +19,11 @@ export interface ITemplates {
 
 const TEMP_DOWNLOAD_FOLDER = 'taro-temp'
 
-export default function fetchTemplate (templateSource: string, templateRootPath: string, clone?: boolean): Promise<ITemplates[]> {
+export default function fetchTemplate(
+  templateSource: string,
+  templateRootPath: string,
+  clone?: boolean,
+): Promise<ITemplates[]> {
   const type = getTemplateSourceType(templateSource)
   const tempPath = path.join(templateRootPath, TEMP_DOWNLOAD_FOLDER)
   let name: string
@@ -34,7 +38,7 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
 
     if (type === 'git') {
       name = path.basename(templateSource)
-      download(templateSource, path.join(tempPath, name), { clone }, async error => {
+      download(templateSource, path.join(tempPath, name), { clone }, async (error) => {
         if (error) {
           console.log(error)
           spinner.color = 'red'
@@ -51,8 +55,9 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
       name = 'from-remote-url'
       const zipPath = path.join(tempPath, name + '.zip')
       const unZipPath = path.join(tempPath, name)
-      axios.get<fs.ReadStream>(templateSource, { responseType: 'stream' })
-        .then(response => {
+      axios
+        .get<fs.ReadStream>(templateSource, { responseType: 'stream' })
+        .then((response) => {
           const ws = fs.createWriteStream(zipPath)
           response.data.pipe(ws)
           ws.on('finish', () => {
@@ -60,7 +65,7 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
             const zip = new AdmZip(zipPath)
             zip.extractAllTo(unZipPath, true)
             const files = readDirWithFileTypes(unZipPath).filter(
-              file => !file.name.startsWith('.') && file.isDirectory && file.name !== '__MACOSX'
+              (file) => !file.name.startsWith('.') && file.isDirectory && file.name !== '__MACOSX',
             )
 
             if (files.length !== 1) {
@@ -74,9 +79,11 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
             spinner.succeed(`${chalk.grey('拉取远程模板仓库成功！')}`)
             resolve()
           })
-          ws.on('error', error => { throw error })
+          ws.on('error', (error) => {
+            throw error
+          })
         })
-        .catch(async error => {
+        .catch(async (error) => {
           spinner.color = 'red'
           spinner.fail(chalk.red(`拉取远程模板仓库失败！\n${error}`))
           await fs.remove(tempPath)
@@ -97,32 +104,34 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
     if (isTemplateGroup) {
       // 模板组
       const files = readDirWithFileTypes(templateFolder)
-        .filter(file => !file.name.startsWith('.') && file.isDirectory && file.name !== '__MACOSX')
-        .map(file => file.name)
+        .filter((file) => !file.name.startsWith('.') && file.isDirectory && file.name !== '__MACOSX')
+        .map((file) => file.name)
       await Promise.all(
-        files.map(file => {
+        files.map((file) => {
           const src = path.join(templateFolder, file)
           const dest = path.join(templateRootPath, file)
           return fs.move(src, dest, { overwrite: true })
-        })
+        }),
       )
       await fs.remove(tempPath)
 
-      const res: ITemplates[] = files.map(name => {
-        const creatorFile = path.join(templateRootPath, name, TEMPLATE_CREATOR)
+      const res: ITemplates[] = files
+        .map((name) => {
+          const creatorFile = path.join(templateRootPath, name, TEMPLATE_CREATOR)
 
-        if (!fs.existsSync(creatorFile)) return { name, value: name }
-        const { name: displayName, platforms = '', desc = '', isPrivate = false, compiler } = require(creatorFile)
-        if (isPrivate) return null
+          if (!fs.existsSync(creatorFile)) return { name, value: name }
+          const { name: displayName, platforms = '', desc = '', isPrivate = false, compiler } = require(creatorFile)
+          if (isPrivate) return null
 
-        return {
-          name: displayName || name,
-          value: name,
-          platforms,
-          compiler,
-          desc
-        }
-      }).filter(Boolean) as ITemplates[]
+          return {
+            name: displayName || name,
+            value: name,
+            platforms,
+            compiler,
+            desc,
+          }
+        })
+        .filter(Boolean) as ITemplates[]
 
       return Promise.resolve(res)
     } else {
@@ -142,7 +151,7 @@ export default function fetchTemplate (templateSource: string, templateRootPath:
           value: name,
           platforms,
           compiler,
-          desc: desc || templateSource
+          desc: desc || templateSource,
         }
       }
 

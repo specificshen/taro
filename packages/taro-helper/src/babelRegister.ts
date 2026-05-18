@@ -5,8 +5,8 @@ import type { NodePath, parse, PluginItem } from '@babel/core'
  * require header at the top of a config file,
  * without the need to specifically require them
  * if they are used
-*/
-export function injectDefineConfigHeader (babel: { parse: typeof parse }): PluginItem {
+ */
+export function injectDefineConfigHeader(babel: { parse: typeof parse }): PluginItem {
   const appConfig = 'function defineAppConfig(config) { return config }'
   const pageConfig = 'function definePageConfig(config) { return config }'
   const importNative = "function importNativeComponent(path = '', name = '', exportName = '') { return name }"
@@ -20,7 +20,7 @@ export function injectDefineConfigHeader (babel: { parse: typeof parse }): Plugi
     const { scope, node } = nodePath
 
     scope.traverse(node, {
-      CallExpression (p) {
+      CallExpression(p) {
         const callee = p.node.callee
         // @ts-ignore
         switch (callee.name) {
@@ -32,13 +32,13 @@ export function injectDefineConfigHeader (babel: { parse: typeof parse }): Plugi
             return prependHeader(nodePath, importNative)
           default:
         }
-      }
+      },
     })
   }
 
   return {
     visitor: {
-      Program: { enter: enterHandler }
-    }
+      Program: { enter: enterHandler },
+    },
   }
 }

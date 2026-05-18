@@ -14,7 +14,7 @@ describe('Comment', () => {
   it('unimplemented comment-list', async () => {
     page = await newSpecPage({
       components: [CommentList],
-      template: () => (<taro-comment-list-core />),
+      template: () => <taro-comment-list-core />,
     })
     await page.waitForChanges()
 
@@ -27,7 +27,7 @@ describe('Comment', () => {
   it('unimplemented comment-detail', async () => {
     page = await newSpecPage({
       components: [CommentDetail],
-      template: () => (<taro-comment-detail-core />),
+      template: () => <taro-comment-detail-core />,
     })
     await page.waitForChanges()
 

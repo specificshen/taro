@@ -94,7 +94,7 @@ export interface PluginOptions {
   sourceMapRoot?: string
 }
 
-export type ImporterReturnType = { file: string } | { contents: string } | Error | null;
+export type ImporterReturnType = { file: string } | { contents: string } | Error | null
 
 export type Importer = (
   url: string,

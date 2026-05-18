@@ -65,8 +65,6 @@ describe('info', () => {
     // expect(info.npmPackages.hasOwnProperty('@tarojs/taroize')).toBeTruthy()
     // expect(info.npmPackages.hasOwnProperty('@tarojs/webpack-runner')).toBeTruthy()
     // expect(info.npmPackages.hasOwnProperty('babel-plugin-transform-taroapi')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('eslint-config-taro')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('eslint-plugin-taro')).toBeTruthy()
     // expect(info.npmPackages.hasOwnProperty('postcss-pxtransform')).toBeTruthy()
 
     logSpy.mockRestore()

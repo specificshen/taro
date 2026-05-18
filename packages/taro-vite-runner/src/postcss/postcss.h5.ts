@@ -8,10 +8,10 @@ const defaultConstparseOption = {
   constants: [
     {
       key: 'taro-tabbar-height',
-      val: '50PX'
-    }
+      val: '50PX',
+    },
   ],
-  platform
+  platform,
 }
 
 const taroModuleRgx = [/@tarojs[/\\_]components/, /\btaro-components\b/]
@@ -22,14 +22,14 @@ const defaultEsnextModuleRgx = [
   /@tarojs[/\\_]taro-h5/,
   /\btaro-h5\b/,
   /@tarojs[/\\_]router/,
-  /\btaro-router\b/
+  /\btaro-router\b/,
 ]
 
-const isTaroModule = (filename: string) => taroModuleRgx.some(reg => reg.test(filename))
+const isTaroModule = (filename: string) => taroModuleRgx.some((reg) => reg.test(filename))
 
 const isEsnextModule = (filename: string, esnextModules) => {
   const esnextModuleRules = [...defaultEsnextModuleRgx, ...esnextModules]
-  return esnextModuleRules.some(pattern => {
+  return esnextModuleRules.some((pattern) => {
     if (pattern instanceof RegExp) {
       return pattern.test(filename)
     } else {
@@ -38,7 +38,7 @@ const isEsnextModule = (filename: string, esnextModules) => {
   })
 }
 
-const getPostcssExclude = (esnextModules: string []): (fileName: string) => boolean => {
+const getPostcssExclude = (esnextModules: string[]): ((fileName: string) => boolean) => {
   return (filename) => {
     if (isTaroModule(filename)) {
       return true
@@ -54,7 +54,7 @@ export const getDefaultPostcssConfig = function ({
   designWidth,
   deviceRatio,
   option = {} as IPostcssOption<'h5'>,
-  esnextModules
+  esnextModules,
 }): [string, any, Func?][] {
   const { autoprefixer, htmltransform, pxtransform = {}, ...options } = option
   if (designWidth) {
@@ -72,6 +72,6 @@ export const getDefaultPostcssConfig = function ({
     ['postcss-pxtransform', pxtransform, require('postcss-pxtransform')],
     ['postcss-html-transform', htmltransform, require('postcss-html-transform')],
     ['postcss-plugin-constparse', defaultConstparseOption, require('postcss-plugin-constparse')],
-    ...Object.entries(options)
+    ...Object.entries(options),
   ]
 }

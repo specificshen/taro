@@ -13,7 +13,7 @@ describe('StickyHeader', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [StickyHeader],
-      template: () => (<taro-sticky-header-core />),
+      template: () => <taro-sticky-header-core />,
     })
     await page.waitForChanges()
 

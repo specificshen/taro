@@ -37,20 +37,20 @@ const hostConfig: HostConfig<
   // -------------------
   // required by @types/react-reconciler
   // -------------------
-  getPublicInstance (inst: TaroElement) {
+  getPublicInstance(inst: TaroElement) {
     return inst
   },
-  getRootHostContext () {
+  getRootHostContext() {
     return {}
   },
-  getChildHostContext (parentHostContext) {
+  getChildHostContext(parentHostContext) {
     return parentHostContext
   },
-  prepareForCommit (..._: any[]) {
+  prepareForCommit(..._: any[]) {
     return null
   },
   resetAfterCommit: noop,
-  createInstance (type, props: Props, _rootContainerInstance: any, _hostContext: any, internalInstanceHandle: Fiber) {
+  createInstance(type, props: Props, _rootContainerInstance: any, _hostContext: any, internalInstanceHandle: Fiber) {
     const element = document.createElement(type)
 
     precacheFiberNode(internalInstanceHandle, element)
@@ -58,13 +58,15 @@ const hostConfig: HostConfig<
 
     return element
   },
-  appendInitialChild (parent, child) {
+  appendInitialChild(parent, child) {
     parent.appendChild(child)
   },
-  finalizeInitialChildren (dom, type: string, props: any) {
+  finalizeInitialChildren(dom, type: string, props: any) {
     let newProps = props
     if (dom instanceof FormElement) {
-      const [defaultName, defaultKey] = ['switch', 'checkbox', 'radio'].includes(type) ? ['checked', 'defaultChecked'] : ['value', 'defaultValue']
+      const [defaultName, defaultKey] = ['switch', 'checkbox', 'radio'].includes(type)
+        ? ['checked', 'defaultChecked']
+        : ['value', 'defaultValue']
       if (props.hasOwnProperty(defaultKey)) {
         newProps = { ...newProps, [defaultName]: props[defaultKey] }
         delete newProps[defaultKey]
@@ -79,10 +81,10 @@ const hostConfig: HostConfig<
 
     return false
   },
-  shouldSetTextContent () {
+  shouldSetTextContent() {
     return false
   },
-  createTextInstance (text: string, _rootContainerInstance: any, _hostContext: any, internalInstanceHandle: Fiber) {
+  createTextInstance(text: string, _rootContainerInstance: any, _hostContext: any, internalInstanceHandle: Fiber) {
     const textNode = document.createTextNode(text)
 
     precacheFiberNode(internalInstanceHandle, textNode)
@@ -105,38 +107,38 @@ const hostConfig: HostConfig<
   getInstanceFromScope: () => null,
   NotPendingTransition: null,
   HostTransitionContext: createContext(null) as any,
-  setCurrentUpdatePriority (newPriority) {
+  setCurrentUpdatePriority(newPriority) {
     currentUpdatePriority = newPriority
   },
-  getCurrentUpdatePriority () {
+  getCurrentUpdatePriority() {
     return currentUpdatePriority
   },
-  resolveUpdatePriority () {
+  resolveUpdatePriority() {
     return DefaultEventPriority
   },
   resetFormInstance: noop,
-  requestPostPaintCallback (callback) {
+  requestPostPaintCallback(callback) {
     setTimeout(() => callback(Date.now()), 0)
   },
-  shouldAttemptEagerTransition () {
+  shouldAttemptEagerTransition() {
     return false
   },
   trackSchedulerEvent: noop,
-  resolveEventType () {
+  resolveEventType() {
     return null
   },
-  resolveEventTimeStamp () {
+  resolveEventTimeStamp() {
     return Date.now()
   },
-  maySuspendCommit () {
+  maySuspendCommit() {
     return false
   },
-  preloadInstance () {
+  preloadInstance() {
     return true
   },
   startSuspendingCommit: noop,
   suspendInstance: noop,
-  waitForCommitToBeReady () {
+  waitForCommitToBeReady() {
     return null
   },
   detachDeletedInstance: noop,
@@ -161,17 +163,17 @@ const hostConfig: HostConfig<
   //      Mutation
   //     (required if supportsMutation is true)
   // -------------------
-  appendChild (parent, child) {
+  appendChild(parent, child) {
     parent.appendChild(child)
   },
-  appendChildToContainer (parent, child) {
+  appendChildToContainer(parent, child) {
     parent.appendChild(child)
   },
-  commitTextUpdate (textInst, _, newText) {
+  commitTextUpdate(textInst, _, newText) {
     textInst.nodeValue = newText
   },
   commitMount: noop,
-  commitUpdate (dom, _type, oldProps, newProps) {
+  commitUpdate(dom, _type, oldProps, newProps) {
     const updatePayload = getUpdatePayload(dom, oldProps, newProps)
     if (!updatePayload) return
     // payload 只包含 children 的时候，不应该再继续触发后续的属性比较和更新的逻辑了
@@ -180,46 +182,46 @@ const hostConfig: HostConfig<
     updatePropsByPayload(dom, oldProps, updatePayload)
     updateFiberProps(dom, newProps)
   },
-  insertBefore (parent, child, refChild) {
+  insertBefore(parent, child, refChild) {
     parent.insertBefore(child, refChild)
   },
-  insertInContainerBefore (parent, child, refChild) {
+  insertInContainerBefore(parent, child, refChild) {
     parent.insertBefore(child, refChild)
   },
-  removeChild (parent, child) {
+  removeChild(parent, child) {
     parent.removeChild(child)
   },
-  removeChildFromContainer (parent, child) {
+  removeChildFromContainer(parent, child) {
     parent.removeChild(child)
   },
   resetTextContent: noop,
-  hideInstance (instance) {
+  hideInstance(instance) {
     const style = instance.style
     style.setProperty('display', 'none')
   },
-  hideTextInstance (textInstance) {
+  hideTextInstance(textInstance) {
     textInstance.nodeValue = ''
   },
-  unhideInstance (instance, props) {
+  unhideInstance(instance, props) {
     const styleProp = props.style as { display?: any }
     let display = styleProp?.hasOwnProperty('display') ? styleProp.display : null
     display = display == null || isBoolean(display) || display === '' ? '' : ('' + display).trim()
     // eslint-disable-next-line dot-notation
     instance.style['display'] = display
   },
-  unhideTextInstance (textInstance, text) {
+  unhideTextInstance(textInstance, text) {
     textInstance.nodeValue = text
   },
-  clearContainer (element) {
+  clearContainer(element) {
     if (element.childNodes.length > 0) {
       element.textContent = ''
     }
-  }
+  },
 }
 
 const TaroReconciler = Reconciler(hostConfig)
 
-export function runWithPriority<T> (priority, fn: () => T): T {
+export function runWithPriority<T>(priority, fn: () => T): T {
   const previousPriority = currentUpdatePriority
   currentUpdatePriority = priority
   try {
@@ -233,7 +235,7 @@ if (process.env.NODE_ENV !== 'production') {
   const foundDevTools = TaroReconciler.injectIntoDevTools({
     bundleType: 1,
     version: '18.0.0',
-    rendererPackageName: 'taro-react'
+    rendererPackageName: 'taro-react',
   })
   if (!foundDevTools) {
     // eslint-disable-next-line no-console
@@ -241,7 +243,7 @@ if (process.env.NODE_ENV !== 'production') {
       '%cDownload the React DevTools ' +
         'for a better development experience: ' +
         'https://reactjs.org/link/react-devtools',
-      'font-weight:bold'
+      'font-weight:bold',
     )
   }
 }

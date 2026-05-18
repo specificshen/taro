@@ -10,11 +10,7 @@ export type IPosition = 'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend'
  * An implementation of `Element.insertAdjacentHTML()` used by hydration
  * and some renderers that rely on direct HTML insertion.
  */
-export function insertAdjacentHTML (
-  this: TaroNode,
-  position: IPosition,
-  html: string
-) {
+export function insertAdjacentHTML(this: TaroNode, position: IPosition, html: string) {
   const parsedNodes = parser(html, this.ownerDocument)
 
   for (let i = 0; i < parsedNodes.length; i++) {
@@ -41,7 +37,7 @@ export function insertAdjacentHTML (
   }
 }
 
-export function cloneNode (this: TaroNode, isDeep = false) {
+export function cloneNode(this: TaroNode, isDeep = false) {
   const document = this.ownerDocument
   let newNode
 
@@ -65,15 +61,15 @@ export function cloneNode (this: TaroNode, isDeep = false) {
   }
 
   if (isDeep) {
-    newNode.childNodes = this.childNodes.map(node => (node as any).cloneNode(true))
+    newNode.childNodes = this.childNodes.map((node) => (node as any).cloneNode(true))
   }
 
   return newNode
 }
 
-export function contains (this: TaroNode, node: TaroNode & { id?: string }): boolean {
+export function contains(this: TaroNode, node: TaroNode & { id?: string }): boolean {
   let isContains = false
-  this.childNodes.some(childNode => {
+  this.childNodes.some((childNode) => {
     const { uid } = childNode
     if (uid === node.uid || uid === node.id || (childNode as any).contains(node)) {
       isContains = true

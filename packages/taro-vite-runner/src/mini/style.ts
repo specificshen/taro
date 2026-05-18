@@ -7,11 +7,11 @@ import type { PluginOption } from 'vite'
 export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOption {
   return {
     name: 'taro:vite-style',
-    generateBundle (_opts, bundle) {
+    generateBundle(_opts, bundle) {
       if (viteCompilerContext) {
         const nativeStyleExt = viteCompilerContext.fileType.style
         const appStyleFileName = `app${nativeStyleExt}`
-        const commonStyleChunks = viteCompilerContext.commonChunks.map(item => `${item}${nativeStyleExt}`)
+        const commonStyleChunks = viteCompilerContext.commonChunks.map((item) => `${item}${nativeStyleExt}`)
         const commonStyleFileNames: string[] = []
         let appStyleChunk: OutputAsset | null = null
 
@@ -41,7 +41,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           this.emitFile({
             type: 'asset',
             fileName: APP_STYLE_NAME,
-            source: appStyleChunk.source
+            source: appStyleChunk.source,
           })
           appStyleChunk.source = commonStyleFileNames.reduce((prev, current) => {
             return prev + `@import "${path.relative(sourceDir, path.join(sourceDir, current))}";\n`
@@ -54,10 +54,10 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             fileName: appStyleFileName,
             source: commonStyleFileNames
               .map((i) => `@import "${path.relative(sourceDir, path.join(sourceDir, i))}";`)
-              .join('\n')
+              .join('\n'),
           })
         }
       }
-    }
+    },
   }
 }

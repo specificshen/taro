@@ -23,7 +23,7 @@ const closingTagAncestorBreakers = {
   thead: ['table'],
   tfoot: ['table'],
   tr: ['table'],
-  td: ['table']
+  td: ['table'],
 }
 
 interface Node {
@@ -47,13 +47,13 @@ export interface Element extends Node {
   attributes: string[]
 }
 
-export interface ParsedTaroElement extends TaroElement{
+export interface ParsedTaroElement extends TaroElement {
   h5tagName?: string
 }
 
 type ChildNode = Comment | Text | Element
 
-function hasTerminalParent (tagName: string, stack: Element[]) {
+function hasTerminalParent(tagName: string, stack: Element[]) {
   const tagParents: undefined | string[] = closingTagAncestorBreakers[tagName]
   if (tagParents) {
     let currentIndex = stack.length - 1
@@ -71,7 +71,7 @@ function hasTerminalParent (tagName: string, stack: Element[]) {
   return false
 }
 
-function getTagName (tag: string) {
+function getTagName(tag: string) {
   if (options.html!.renderHTMLTag) {
     return tag
   }
@@ -89,7 +89,7 @@ function getTagName (tag: string) {
   return 'view'
 }
 
-function splitEqual (str: string) {
+function splitEqual(str: string) {
   const sep = '='
   const idx = str.indexOf(sep)
   if (idx === -1) return [str]
@@ -98,17 +98,17 @@ function splitEqual (str: string) {
   return [key, value]
 }
 
-function format (
+function format(
   children: ChildNode[],
   document: TaroDocument,
   styleOptions: {
     styleTagParser: StyleTagParser
     descendantList: number[]
   },
-  parent?: TaroElement
+  parent?: TaroElement,
 ) {
   return children
-    .filter(child => {
+    .filter((child) => {
       // 过滤注释和空文本节点
       if (child.type === 'comment') {
         return false
@@ -156,10 +156,15 @@ function format (
       el.setAttribute('style', style + el.style.cssText)
       // console.log('style, ', style)
 
-      format(child.children, document, {
-        styleTagParser,
-        descendantList: list
-      }, el)
+      format(
+        child.children,
+        document,
+        {
+          styleTagParser,
+          descendantList: list,
+        },
+        el,
+      )
 
       if (isFunction(options.html!.transformElement)) {
         return options.html!.transformElement(el, child)
@@ -169,7 +174,7 @@ function format (
     })
 }
 
-export function parser (html: string, document: TaroDocument) {
+export function parser(html: string, document: TaroDocument) {
   const styleTagParser = new StyleTagParser()
   html = styleTagParser.extractStyle(html)
 
@@ -182,11 +187,11 @@ export function parser (html: string, document: TaroDocument) {
 
   return format(root.children, document, {
     styleTagParser,
-    descendantList: Array(styleTagParser.styles.length).fill(0)
+    descendantList: Array(styleTagParser.styles.length).fill(0),
   })
 }
 
-function parse (state: State) {
+function parse(state: State) {
   const { tokens, stack } = state
   let { cursor } = state
 
@@ -262,7 +267,7 @@ function parse (state: State) {
       type: 'element',
       tagName: tagToken.content!,
       attributes,
-      children
+      children,
     }
     nodes.push(element)
 

@@ -4,8 +4,8 @@ import type { Func } from '@tarojs/taro/types/compile'
 import type { IPluginContext, TConfig } from '../utils/types'
 
 interface IWrapper {
-  init? (): void
-  close? (): void
+  init?(): void
+  close?(): void
 }
 
 const VALID_COMPILER = ['webpack5', 'vite']
@@ -16,23 +16,23 @@ const DEPRECATED_COMPILERS = new Set(['webpack5'])
 export class Transaction<T = TaroPlatform> {
   wrappers: IWrapper[] = []
 
-  async perform (fn: Func, scope: T, ...args: any[]) {
+  async perform(fn: Func, scope: T, ...args: any[]) {
     this.initAll(scope)
     await fn.call(scope, ...args)
     this.closeAll(scope)
   }
 
-  initAll (scope: T) {
+  initAll(scope: T) {
     const wrappers = this.wrappers
-    wrappers.forEach(wrapper => wrapper.init?.call(scope))
+    wrappers.forEach((wrapper) => wrapper.init?.call(scope))
   }
 
-  closeAll (scope: T) {
+  closeAll(scope: T) {
     const wrappers = this.wrappers
-    wrappers.forEach(wrapper => wrapper.close?.call(scope))
+    wrappers.forEach((wrapper) => wrapper.close?.call(scope))
   }
 
-  addWrapper (wrapper: IWrapper) {
+  addWrapper(wrapper: IWrapper) {
     this.wrappers.push(wrapper)
   }
 }
@@ -52,7 +52,7 @@ export default abstract class TaroPlatform<T extends TConfig = TConfig> {
   protected setupTransaction = new Transaction<this>()
   protected buildTransaction = new Transaction<this>()
 
-  constructor (ctx: IPluginContext, config: T) {
+  constructor(ctx: IPluginContext, config: T) {
     this.ctx = ctx
     this.helper = ctx.helper
     this.config = config
@@ -66,7 +66,7 @@ export default abstract class TaroPlatform<T extends TConfig = TConfig> {
     if (DEPRECATED_COMPILERS.has(this.compiler)) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[taro] compiler "${this.compiler}" 已被标记为 deprecated，React-only fork 仅长期维护 vite。请在 Taro 配置中切换 compiler 为 "vite"。`
+        `[taro] compiler "${this.compiler}" 已被标记为 deprecated，React-only fork 仅长期维护 vite。请在 Taro 配置中切换 compiler 为 "vite"。`,
       )
     }
   }
@@ -75,7 +75,7 @@ export default abstract class TaroPlatform<T extends TConfig = TConfig> {
     return this.config
   }
 
-  protected emptyOutputDir (excludes: Array<string | RegExp> = []) {
+  protected emptyOutputDir(excludes: Array<string | RegExp> = []) {
     const { outputPath } = this.ctx.paths
     this.helper.emptyDirectory(outputPath, { excludes })
   }
@@ -83,7 +83,7 @@ export default abstract class TaroPlatform<T extends TConfig = TConfig> {
   /**
    * 如果分端编译详情 webpack 配置了 output 则需更新 outputPath 位置
    */
-  private updateOutputPath (config: TConfig) {
+  private updateOutputPath(config: TConfig) {
     const platformPath = config.output?.path
     if (platformPath) {
       this.ctx.paths.outputPath = platformPath

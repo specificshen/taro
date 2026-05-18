@@ -11,32 +11,32 @@ interface IRun {
   (appPath: string, options?: IRunOptions): Promise<Kernel>
 }
 
-export function run (name: string, presets: string[] = []): IRun {
+export function run(name: string, presets: string[] = []): IRun {
   return async function (appPath, opts = {}) {
     const { options = {}, args = [] } = opts
 
     const config = new Config({
       appPath: appPath,
-      disableGlobalConfig: !!options.disableGlobalConfig
+      disableGlobalConfig: !!options.disableGlobalConfig,
     })
     await config.init({
       mode: (options.mode || process.env.NODE_ENV) as string,
-      command: name
+      command: name,
     })
 
     const kernel = new Kernel({
       appPath: appPath,
       presets: [
         path.resolve(__dirname, '../__mocks__', 'presets.ts'),
-        ...presets.map(e => path.isAbsolute(e) ? e : path.resolve(__dirname, '../../presets', `${e}.ts`))
+        ...presets.map((e) => (path.isAbsolute(e) ? e : path.resolve(__dirname, '../../presets', `${e}.ts`))),
       ],
       plugins: [],
-      config
+      config,
     })
     kernel.optsPlugins ||= []
 
     const type = options.type
-    if (typeof type === 'string' && !presets.some(e => e.includes(type))) {
+    if (typeof type === 'string' && !presets.some((e) => e.includes(type))) {
       kernel.optsPlugins.push(require.resolve(`@tarojs/plugin-platform-${options.type}`))
     }
 
@@ -45,8 +45,8 @@ export function run (name: string, presets: string[] = []): IRun {
       opts: {
         _: [name, ...args],
         options,
-        isHelp: false
-      }
+        isHelp: false,
+      },
     })
 
     return kernel

@@ -4,10 +4,7 @@ import { emptyDirectory } from '@tarojs/helper'
 
 import { run } from './utils'
 
-const runBuild = run('build', [
-  'commands/build',
-  require.resolve('@tarojs/plugin-platform-weapp')
-])
+const runBuild = run('build', ['commands/build', require.resolve('@tarojs/plugin-platform-weapp')])
 
 jest.mock('@tarojs/helper', () => {
   const helper = jest.requireActual('@tarojs/helper')
@@ -17,7 +14,7 @@ jest.mock('@tarojs/helper', () => {
     ...helper,
     emptyDirectory: jest.fn(),
     fs: {
-      ...fs
+      ...fs,
     },
   }
 })
@@ -53,8 +50,8 @@ describe('构建配置测试', () => {
         await runBuild(APP_PATH, {
           options: {
             type: 'weapp',
-            platform: 'weapp'
-          }
+            platform: 'weapp',
+          },
         })
       } catch (error) {
         // no handler

@@ -50,7 +50,7 @@ const styleProperties = [
   'width',
   'zIndex',
   'pointerEvents',
-  'aspectRatio'
+  'aspectRatio',
 
   /** 非常用 style */
   // 'azimuth',
@@ -84,9 +84,9 @@ const styleProperties = [
 ]
 
 // 减少文件体积
-function combine (prefix: string, list: string[], excludeSelf?: boolean) {
+function combine(prefix: string, list: string[], excludeSelf?: boolean) {
   !excludeSelf && styleProperties.push(prefix)
-  list.forEach(item => {
+  list.forEach((item) => {
     styleProperties.push(prefix + item)
     if (prefix === WEBKIT) {
       styleProperties.push('Webkit' + item)
@@ -146,7 +146,22 @@ combine('cue', after_before)
 combine('mask', ['Clip', 'Composite', image, 'Mode', 'Origin', 'Position', 'Repeat', size, 'Type'])
 combine('borderImage', ['Outset', 'Repeat', 'Slice', 'Source', 'Transform', width])
 combine('maskBorder', ['Mode', 'Outset', 'Repeat', 'Slice', 'Source', width])
-combine('font', ['Family', 'FeatureSettings', 'Kerning', 'LanguageOverride', 'MaxSize', 'MinSize', 'OpticalSizing', 'Palette', size, 'SizeAdjust', 'Stretch', style, 'Weight', 'VariationSettings'])
+combine('font', [
+  'Family',
+  'FeatureSettings',
+  'Kerning',
+  'LanguageOverride',
+  'MaxSize',
+  'MinSize',
+  'OpticalSizing',
+  'Palette',
+  size,
+  'SizeAdjust',
+  'Stretch',
+  style,
+  'Weight',
+  'VariationSettings',
+])
 combine('transform', ['Box', 'Origin', style])
 combine('background', [color, image, 'Attachment', 'BlendMode', 'Clip', 'Origin', 'Position', 'Repeat', size])
 combine('listStyle', [image, 'Position', 'Type'])
@@ -158,7 +173,16 @@ combine('transition', ['Delay', 'Duration', 'Property', 'TimingFunction'])
 combine('color', ['Adjust', 'InterpolationFilters', 'Scheme'])
 combine('textAlign', ['All', 'Last'])
 combine('page', ['BreakAfter', 'BreakBefore', 'BreakInside'])
-combine('animation', ['Delay', 'Direction', 'Duration', 'FillMode', 'IterationCount', 'Name', 'PlayState', 'TimingFunction'])
+combine('animation', [
+  'Delay',
+  'Direction',
+  'Duration',
+  'FillMode',
+  'IterationCount',
+  'Name',
+  'PlayState',
+  'TimingFunction',
+])
 combine('flex', ['Basis', 'Direction', 'Flow', 'Grow', 'Shrink', 'Wrap'])
 combine('offset', [...after_before, ...end_start, 'Anchor', 'Distance', 'Path', 'Position', 'Rotate'])
 combine('perspective', ['Origin'])
@@ -183,7 +207,26 @@ combine('max', [...blockSize_height_inlineSize_width, 'Lines'], true)
 combine('min', blockSize_height_inlineSize_width, true)
 combine('line', ['Break', 'Clamp', 'Grid', 'Height', 'Padding', 'Snap'], true)
 combine('inline', ['BoxAlign', size, 'Sizing'], true)
-combine('text', ['CombineUpright', 'GroupAlign', 'Height', 'Indent', 'Justify', 'Orientation', 'Overflow', 'Shadow', 'SpaceCollapse', 'SpaceTrim', 'Spacing', 'Transform', 'UnderlinePosition', 'Wrap'], true)
+combine(
+  'text',
+  [
+    'CombineUpright',
+    'GroupAlign',
+    'Height',
+    'Indent',
+    'Justify',
+    'Orientation',
+    'Overflow',
+    'Shadow',
+    'SpaceCollapse',
+    'SpaceTrim',
+    'Spacing',
+    'Transform',
+    'UnderlinePosition',
+    'Wrap',
+  ],
+  true,
+)
 combine('shape', ['ImageThreshold', 'Inside', 'Margin', 'Outside'], true)
 combine('word', ['Break', 'Spacing', 'Wrap'], true)
 combine('object', ['Fit', 'Position'], true)

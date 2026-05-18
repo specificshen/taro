@@ -6,7 +6,7 @@ describe('getBundleResult', () => {
   const filePath = path.resolve(__dirname, '.', 'styles/variables.scss')
   const fileConfig = {
     name: 'styles/variables.scss',
-    path: path.resolve(__dirname, '.')
+    path: path.resolve(__dirname, '.'),
   }
 
   test('test file path', async () => {
@@ -22,24 +22,21 @@ describe('getBundleResult', () => {
 
 describe('getBundleContent', () => {
   const sassResourcePath = {
-    resource: path.resolve(__dirname, '.', 'styles/variables.scss')
+    resource: path.resolve(__dirname, '.', 'styles/variables.scss'),
   }
   const sassResourcePathWithDirectory = {
     resource: 'styles/variables.scss',
-    projectDirectory: path.resolve(__dirname, '.')
+    projectDirectory: path.resolve(__dirname, '.'),
   }
   const sassResourceArray = {
     resource: [
       path.resolve(__dirname, '.', 'styles/variables.scss'),
-      path.resolve(__dirname, '.', 'styles/mixins.scss')
-    ]
+      path.resolve(__dirname, '.', 'styles/mixins.scss'),
+    ],
   }
   const sassResourceArrayWithDirectory = {
-    resource: [
-      'styles/variables.scss',
-      'styles/mixins.scss'
-    ],
-    projectDirectory: path.resolve(__dirname, '.')
+    resource: ['styles/variables.scss', 'styles/mixins.scss'],
+    projectDirectory: path.resolve(__dirname, '.'),
   }
 
   test('test sass resource path', async () => {
@@ -73,16 +70,13 @@ describe('getSassLoaderOption', () => {
     designWidth: 750,
     outputRoot: 'dist',
     sass: {
-      resource: [
-        'styles/variables.scss',
-        'styles/mixins.scss'
-      ],
-      projectDirectory: path.resolve(__dirname, '.')
+      resource: ['styles/variables.scss', 'styles/mixins.scss'],
+      projectDirectory: path.resolve(__dirname, '.'),
     },
     sassLoaderOption: {
-      implementation: 'dart-sass'
+      implementation: 'dart-sass',
     },
-    sourceRoot: 'src'
+    sourceRoot: 'src',
   }
 
   test('test get sass loader option', async () => {

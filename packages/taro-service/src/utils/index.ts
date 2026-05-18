@@ -9,18 +9,18 @@ import { PluginType } from './constants'
 import type { IProjectConfig, PluginItem } from '@tarojs/taro/types/compile'
 import type { IPlugin, IPluginsObject } from './types'
 
-export const isNpmPkg: (name: string) => boolean = name => !(/^(\.|\/)/.test(name))
+export const isNpmPkg: (name: string) => boolean = (name) => !/^(\.|\/)/.test(name)
 
-export function getPluginPath (pluginPath: string) {
+export function getPluginPath(pluginPath: string) {
   if (isNpmPkg(pluginPath) || path.isAbsolute(pluginPath)) return pluginPath
   throw new Error('plugin 和 preset 配置必须为绝对路径或者包名')
 }
 
-export function convertPluginsToObject (items: PluginItem[]): () => IPluginsObject {
+export function convertPluginsToObject(items: PluginItem[]): () => IPluginsObject {
   return () => {
     const obj: IPluginsObject = {}
     if (Array.isArray(items)) {
-      items.forEach(item => {
+      items.forEach((item) => {
         if (typeof item === 'string') {
           const name = getPluginPath(item)
           obj[name] = null
@@ -34,7 +34,7 @@ export function convertPluginsToObject (items: PluginItem[]): () => IPluginsObje
   }
 }
 
-export function mergePlugins (dist: PluginItem[], src: PluginItem[]) {
+export function mergePlugins(dist: PluginItem[], src: PluginItem[]) {
   return () => {
     const srcObj = convertPluginsToObject(src)()
     const distObj = convertPluginsToObject(dist)()
@@ -43,7 +43,12 @@ export function mergePlugins (dist: PluginItem[], src: PluginItem[]) {
 }
 
 // getModuleDefaultExport
-export function resolvePresetsOrPlugins (root: string, args: IPluginsObject, type: PluginType, skipError?: boolean): IPlugin[] {
+export function resolvePresetsOrPlugins(
+  root: string,
+  args: IPluginsObject,
+  type: PluginType,
+  skipError?: boolean,
+): IPlugin[] {
   // 全局的插件引入报错，不抛出 Error 影响主流程，而是通过 log 提醒然后把插件 filter 掉，保证主流程不变
   const resolvedPresetsOrPlugins: IPlugin[] = []
   const presetsOrPluginsNames = Object.keys(args) || []
@@ -53,7 +58,7 @@ export function resolvePresetsOrPlugins (root: string, args: IPluginsObject, typ
     try {
       fPath = resolve.sync(item, {
         basedir: root,
-        extensions: ['.js', '.ts']
+        extensions: ['.js', '.ts'],
       })
     } catch (err) {
       if (args[item]?.backup) {
@@ -73,7 +78,7 @@ export function resolvePresetsOrPlugins (root: string, args: IPluginsObject, typ
       path: fPath,
       type,
       opts: args[item] || {},
-      apply () {
+      apply() {
         try {
           return getModuleDefaultExport(require(fPath))
         } catch (error) {
@@ -85,7 +90,7 @@ export function resolvePresetsOrPlugins (root: string, args: IPluginsObject, typ
             throw new Error(`插件依赖 "${item}" 加载失败，请检查插件配置`)
           }
         }
-      }
+      },
     }
     resolvedPresetsOrPlugins.push(resolvedItem)
   }
@@ -93,18 +98,21 @@ export function resolvePresetsOrPlugins (root: string, args: IPluginsObject, typ
   return resolvedPresetsOrPlugins
 }
 
-function supplementBlank (length) {
-  return Array(length).map(() => '').join(' ')
+function supplementBlank(length) {
+  return Array(length)
+    .map(() => '')
+    .join(' ')
 }
 
-export function printHelpLog (command, optionsList: Map<string, string>, synopsisList?: Set<string>) {
+export function printHelpLog(command, optionsList: Map<string, string>, synopsisList?: Set<string>) {
   console.log(`Usage: taro ${command} [options]`)
   console.log()
   console.log('Options:')
   const keys = Array.from(optionsList.keys())
-  const maxLength = keys.reduce((v1, v2) => {
-    return v1.length > v2.length ? v1 : v2
-  }).length + 3
+  const maxLength =
+    keys.reduce((v1, v2) => {
+      return v1.length > v2.length ? v1 : v2
+    }).length + 3
   optionsList.forEach((v, k) => {
     const supplementBlankLength = maxLength - k.length
     console.log(`  ${k}${supplementBlank(supplementBlankLength)}${v}`)
@@ -112,20 +120,20 @@ export function printHelpLog (command, optionsList: Map<string, string>, synopsi
   if (synopsisList && synopsisList.size) {
     console.log()
     console.log('Synopsis:')
-    synopsisList.forEach(item => {
+    synopsisList.forEach((item) => {
       console.log(`  $ ${item}`)
     })
   }
 }
 
 const ExcludePluginTagsForNullCommand = ['@jdtaro/plugin-build-']
-export function filterGlobalConfig (globalConfig: IProjectConfig, command: string) {
+export function filterGlobalConfig(globalConfig: IProjectConfig, command: string) {
   const config = globalConfig
 
   if (!command) {
     if (config.plugins?.length) {
-      config.plugins = config.plugins.filter(pluginName => {
-        return !ExcludePluginTagsForNullCommand.some(tag => pluginName.includes(tag))
+      config.plugins = config.plugins.filter((pluginName) => {
+        return !ExcludePluginTagsForNullCommand.some((tag) => pluginName.includes(tag))
       })
     }
     return config
@@ -133,7 +141,7 @@ export function filterGlobalConfig (globalConfig: IProjectConfig, command: strin
 
   const RelatedPluginTag = `@jdtaro/plugin-${command}-`
   if (config.plugins?.length) {
-    config.plugins = config.plugins.filter(pluginName => {
+    config.plugins = config.plugins.filter((pluginName) => {
       return pluginName.includes(RelatedPluginTag)
     })
   }

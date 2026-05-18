@@ -11,7 +11,7 @@ interface IProcessApisIOptions {
   noPromiseApis?: Set<string>
   needPromiseApis?: Set<string>
   handleSyncApis?: (key: string, global: IObject, args: any[]) => any
-  transformMeta?: (key: string, options: IObject) => { key: string, options: IObject }
+  transformMeta?: (key: string, options: IObject) => { key: string; options: IObject }
   modifyApis?: (apis: Set<string>) => void
   modifyAsyncResult?: (key: string, res) => void
   isOnlyPromisify?: boolean
@@ -156,10 +156,10 @@ const needPromiseApis = new Set<string>([
   'uploadFile',
   'vibrateLong',
   'vibrateShort',
-  'writeBLECharacteristicValue'
+  'writeBLECharacteristicValue',
 ])
 
-function getCanIUseWebp (taro) {
+function getCanIUseWebp(taro) {
   return function () {
     const res = taro.getSystemInfoSync?.()
 
@@ -180,31 +180,25 @@ function getCanIUseWebp (taro) {
   }
 }
 
-function getNormalRequest (global) {
-  return function request (options) {
-    options = options
-      ? (
-        isString(options)
-          ? { url: options }
-          : options
-      )
-      : {}
+function getNormalRequest(global) {
+  return function request(options) {
+    options = options ? (isString(options) ? { url: options } : options) : {}
 
     const originSuccess = options.success
     const originFail = options.fail
     const originComplete = options.complete
     let requestTask
     const p: any = new Promise((resolve, reject) => {
-      options.success = res => {
+      options.success = (res) => {
         originSuccess && originSuccess(res)
         resolve(res)
       }
-      options.fail = res => {
+      options.fail = (res) => {
         originFail && originFail(res)
         reject(res)
       }
 
-      options.complete = res => {
+      options.complete = (res) => {
         originComplete && originComplete(res)
       }
 
@@ -224,7 +218,7 @@ function getNormalRequest (global) {
   }
 }
 
-function processApis (taro, global, config: IProcessApisIOptions = {}) {
+function processApis(taro, global, config: IProcessApisIOptions = {}) {
   const patchNeedPromiseApis = config.needPromiseApis || []
   const _needPromiseApis = new Set<string>([...patchNeedPromiseApis, ...needPromiseApis])
   const preserved = [
@@ -237,20 +231,18 @@ function processApis (taro, global, config: IProcessApisIOptions = {}) {
     'eventCenter',
     'Events',
     'preload',
-    'webpackJsonp'
+    'webpackJsonp',
   ]
 
   const apis = new Set(
-    !config.isOnlyPromisify
-      ? Object.keys(global).filter(api => preserved.indexOf(api) === -1)
-      : patchNeedPromiseApis
+    !config.isOnlyPromisify ? Object.keys(global).filter((api) => preserved.indexOf(api) === -1) : patchNeedPromiseApis,
   )
 
   if (config.modifyApis) {
     config.modifyApis(apis)
   }
 
-  apis.forEach(key => {
+  apis.forEach((key) => {
     if (_needPromiseApis.has(key)) {
       const originKey = key
       taro[originKey] = (options: Record<string, any> | string = {}, ...args) => {
@@ -268,7 +260,7 @@ function processApis (taro, global, config: IProcessApisIOptions = {}) {
         if (config.transformMeta) {
           const transformResult = config.transformMeta(key, options)
           key = transformResult.key
-          ; (options as Record<string, any>) = transformResult.options
+          ;(options as Record<string, any>) = transformResult.options
           // 新 key 可能不存在
           if (!global.hasOwnProperty(key)) {
             return nonsupport(key)()
@@ -283,22 +275,20 @@ function processApis (taro, global, config: IProcessApisIOptions = {}) {
 
         // Promise 化
         const p: any = new Promise((resolve, reject) => {
-          obj.success = res => {
+          obj.success = (res) => {
             config.modifyAsyncResult?.(key, res)
             options.success?.(res)
             if (key === 'connectSocket') {
-              resolve(
-                Promise.resolve().then(() => task ? Object.assign(task, res) : res)
-              )
+              resolve(Promise.resolve().then(() => (task ? Object.assign(task, res) : res)))
             } else {
               resolve(res)
             }
           }
-          obj.fail = res => {
+          obj.fail = (res) => {
             options.fail?.(res)
             reject(res)
           }
-          obj.complete = res => {
+          obj.complete = (res) => {
             options.complete?.(res)
           }
           if (args.length) {
@@ -311,11 +301,11 @@ function processApis (taro, global, config: IProcessApisIOptions = {}) {
         // 给 promise 对象挂载属性
         if (['uploadFile', 'downloadFile'].includes(key)) {
           equipTaskMethodsIntoPromise(task, p)
-          p.progress = cb => {
+          p.progress = (cb) => {
             task?.onProgressUpdate(cb)
             return p
           }
-          p.abort = cb => {
+          p.abort = (cb) => {
             cb?.()
             task?.abort()
             return p
@@ -358,7 +348,7 @@ function processApis (taro, global, config: IProcessApisIOptions = {}) {
  * @param taro Taro 对象
  * @param global 小程序全局对象，如微信的 wx，支付宝的 my
  */
-function equipCommonApis (taro, global, apis: Record<string, any> = {}) {
+function equipCommonApis(taro, global, apis: Record<string, any> = {}) {
   taro.canIUseWebp = getCanIUseWebp(taro)
   taro.getCurrentPages = getCurrentPages || nonsupport('getCurrentPages')
   taro.getApp = getApp || nonsupport('getApp')
@@ -372,7 +362,7 @@ function equipCommonApis (taro, global, apis: Record<string, any> = {}) {
 
   // request & interceptors
   const request = apis.request || getNormalRequest(global)
-  function taroInterceptor (chain) {
+  function taroInterceptor(chain) {
     return request(chain.requestParams)
   }
   const link = new taro.Link(taroInterceptor)
@@ -384,7 +374,7 @@ function equipCommonApis (taro, global, apis: Record<string, any> = {}) {
     return {
       platform: process.env.TARO_PLATFORM || 'MiniProgram',
       taroVersion: process.env.TARO_VERSION || 'unknown',
-      designWidth: taro.config.designWidth
+      designWidth: taro.config.designWidth,
     }
   }
   taro.createSelectorQuery = delayRef(taro, global, 'createSelectorQuery', 'exec')
@@ -396,17 +386,26 @@ function equipCommonApis (taro, global, apis: Record<string, any> = {}) {
  * @param task Task对象 {RequestTask | DownloadTask | UploadTask}
  * @param promise Promise
  */
-function equipTaskMethodsIntoPromise (task, promise) {
+function equipTaskMethodsIntoPromise(task, promise) {
   if (!task || !promise) return
-  const taskMethods = ['abort', 'onHeadersReceived', 'offHeadersReceived', 'onProgressUpdate', 'offProgressUpdate', 'onChunkReceived', 'offChunkReceived']
-  task && taskMethods.forEach(method => {
-    if (method in task) {
-      promise[method] = task[method].bind(task)
-    }
-  })
+  const taskMethods = [
+    'abort',
+    'onHeadersReceived',
+    'offHeadersReceived',
+    'onProgressUpdate',
+    'offProgressUpdate',
+    'onChunkReceived',
+    'offChunkReceived',
+  ]
+  task &&
+    taskMethods.forEach((method) => {
+      if (method in task) {
+        promise[method] = task[method].bind(task)
+      }
+    })
 }
 
-function delayRef (taro, global, name: string, method: string) {
+function delayRef(taro, global, name: string, method: string) {
   return function (...args) {
     const res = global[name](...args)
     const raw = res[method].bind(res)
@@ -417,6 +416,4 @@ function delayRef (taro, global, name: string, method: string) {
   }
 }
 
-export {
-  processApis
-}
+export { processApis }

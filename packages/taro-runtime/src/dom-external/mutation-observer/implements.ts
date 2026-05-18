@@ -34,7 +34,7 @@ export class MutationObserverImpl {
   public options: MutationObserverInit
   public records: MutationRecord[] = []
 
-  constructor (callback: MutationCallback) {
+  constructor(callback: MutationCallback) {
     this.callback = callback
   }
 
@@ -46,7 +46,7 @@ export class MutationObserverImpl {
    *
    * Options matching is to be implemented.
    */
-  observe (target: TaroNode, options?: MutationObserverInit): void {
+  observe(target: TaroNode, options?: MutationObserverInit): void {
     this.disconnect()
     this.target = target
     this.options = options || {}
@@ -59,7 +59,7 @@ export class MutationObserverImpl {
    * from receiving further notifications
    * until and unless observe() is called again.
    */
-  disconnect (): void {
+  disconnect(): void {
     this.target = null
 
     const index = observers.indexOf(this)
@@ -73,16 +73,13 @@ export class MutationObserverImpl {
    * from the MutationObserver's notification queue
    * and returns them in a new Array of MutationRecord objects.
    */
-  takeRecords (): MutationRecord[] {
+  takeRecords(): MutationRecord[] {
     return this.records.splice(0, this.records.length)
   }
 }
 
 /** Match two TaroNodes by sid. */
-const sidMatches = (
-  observerTarget: TaroNode | null,
-  target: TaroNode | null
-): boolean => {
+const sidMatches = (observerTarget: TaroNode | null, target: TaroNode | null): boolean => {
   return !!observerTarget && observerTarget.sid === target?.sid
 }
 
@@ -111,23 +108,21 @@ const isConcerned = (record: MutationRecord, options: MutationObserverInit) => {
 
 let pendingMuatations = false
 
-function logMutation (observer: MutationObserverImpl, record: MutationRecord) {
+function logMutation(observer: MutationObserverImpl, record: MutationRecord) {
   observer.records.push(record)
   if (!pendingMuatations) {
     pendingMuatations = true
-    Promise
-      .resolve()
-      .then(() => {
-        pendingMuatations = false
-        observers.forEach(observer => {
-          return observer.callback(observer.takeRecords())
-        })
+    Promise.resolve().then(() => {
+      pendingMuatations = false
+      observers.forEach((observer) => {
+        return observer.callback(observer.takeRecords())
       })
+    })
   }
 }
 
-export function recordMutation (record: MutationRecord) {
-  observers.forEach(observer => {
+export function recordMutation(record: MutationRecord) {
+  observers.forEach((observer) => {
     const { options } = observer
     for (let t: TaroNode | null = record.target; t; t = t.parentNode) {
       if (sidMatches(observer.target, t) && isConcerned(record, options)) {

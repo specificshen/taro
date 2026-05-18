@@ -7,14 +7,15 @@ module.exports = {
   testTimeout: 60000,
   transform: {
     '^.+\\.jsx?$': [require.resolve('babel-jest'), { rootMode: 'upward' }],
-    '^.+\\.tsx?$': ['ts-jest', {
-      diagnostics: false,
-      tsconfig: {
-        allowJs: true
-      }
-    }],
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        diagnostics: false,
+        tsconfig: {
+          allowJs: true,
+        },
+      },
+    ],
   },
-  transformIgnorePatterns: [
-    'node_modules',
-  ],
+  transformIgnorePatterns: ['node_modules'],
 }

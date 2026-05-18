@@ -15,21 +15,22 @@ module.exports = {
     '@tarojs/taro': '<rootDir>/src/index.ts',
     '@tarojs/api': '<rootDir>/src/index.ts',
     '@tarojs/shared': path.resolve(__dirname, '..', '..', 'packages/shared/src/index.ts'),
-    '@tarojs/runtime': path.resolve(__dirname, '..', '..', 'packages/taro-runtime/dist/runtime.esm.js')
+    '@tarojs/runtime': path.resolve(__dirname, '..', '..', 'packages/taro-runtime/dist/runtime.esm.js'),
   },
   preset: 'ts-jest',
   testEnvironment: 'node',
   testEnvironmentOptions: {
-    url: 'http://localhost/'
+    url: 'http://localhost/',
   },
   testMatch: ['**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)'],
-  testPathIgnorePatterns: [
-    'node_modules',
-  ],
+  testPathIgnorePatterns: ['node_modules'],
   transform: {
-    '^.+\\.m?[tj]sx?$': ['ts-jest', {
-      diagnostics: false,
-      tsconfig: 'tsconfig.test.json'
-    }],
-  }
+    '^.+\\.m?[tj]sx?$': [
+      'ts-jest',
+      {
+        diagnostics: false,
+        tsconfig: 'tsconfig.test.json',
+      },
+    ],
+  },
 }

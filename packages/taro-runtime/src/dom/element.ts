@@ -1,4 +1,15 @@
-import { EMPTY_OBJ, hooks, isArray, isFunction, isObject, isString, isUndefined, Shortcuts, toCamelCase, warn } from '@tarojs/shared'
+import {
+  EMPTY_OBJ,
+  hooks,
+  isArray,
+  isFunction,
+  isObject,
+  isString,
+  isUndefined,
+  Shortcuts,
+  toCamelCase,
+  warn,
+} from '@tarojs/shared'
 
 import {
   CATCH_VIEW,
@@ -12,7 +23,7 @@ import {
   PURE_VIEW,
   STATIC_VIEW,
   STYLE,
-  VIEW
+  VIEW,
 } from '../constants'
 import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer'
 import { extend, getComponentsAlias, isElement, isHasExtractProp, shortcutAttr } from '../utils'
@@ -34,14 +45,14 @@ export class TaroElement extends TaroNode {
   public dataset: Record<string, unknown> = EMPTY_OBJ
   public innerHTML: string
 
-  public constructor () {
+  public constructor() {
     super()
     this.nodeType = NodeType.ELEMENT_NODE
     this.style = new Style(this)
     hooks.call('patchElement', this)
   }
 
-  private _stopPropagation (event: TaroEvent) {
+  private _stopPropagation(event: TaroEvent) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let target = this
     // eslint-disable-next-line no-cond-assign
@@ -52,50 +63,50 @@ export class TaroElement extends TaroNode {
         continue
       }
 
-      for (let i = listeners.length; i--;) {
+      for (let i = listeners.length; i--; ) {
         const l = listeners[i]
         l._stop = true
       }
     }
   }
 
-  public get id (): string {
+  public get id(): string {
     return this.getAttribute(ID)!
   }
 
-  public set id (val: string) {
+  public set id(val: string) {
     this.setAttribute(ID, val)
   }
 
-  public get className (): string {
+  public get className(): string {
     return this.getAttribute(CLASS) || ''
   }
 
-  public set className (val: string) {
+  public set className(val: string) {
     this.setAttribute(CLASS, val)
   }
 
-  public get cssText (): string {
+  public get cssText(): string {
     return this.getAttribute(STYLE) || ''
   }
 
-  public get classList (): ClassList {
+  public get classList(): ClassList {
     return new ClassList(this.className, this)
   }
 
-  public get children (): TaroElement[] {
+  public get children(): TaroElement[] {
     return this.childNodes.filter(isElement)
   }
 
-  public get attributes (): Attributes[] {
+  public get attributes(): Attributes[] {
     const props = this.props
     const propKeys = Object.keys(props)
     const style = this.style.cssText
-    const attrs = propKeys.map(key => ({ name: key, value: props[key] }))
+    const attrs = propKeys.map((key) => ({ name: key, value: props[key] }))
     return attrs.concat(style ? { name: STYLE, value: style } : [])
   }
 
-  public get textContent (): string {
+  public get textContent(): string {
     let text = ''
     const childNodes = this.childNodes
 
@@ -106,38 +117,39 @@ export class TaroElement extends TaroNode {
     return text
   }
 
-  public set textContent (text: string) {
+  public set textContent(text: string) {
     super.textContent = text
   }
 
-  public hasAttribute (qualifiedName: string): boolean {
+  public hasAttribute(qualifiedName: string): boolean {
     return !isUndefined(this.props[qualifiedName])
   }
 
-  public hasAttributes (): boolean {
+  public hasAttributes(): boolean {
     return this.attributes.length > 0
   }
 
-  public get focus () {
+  public get focus() {
     return function () {
       this.setAttribute(FOCUS, true)
     }
   }
 
   // 兼容 Vue3，详情请见：https://github.com/NervJS/taro/issues/10579
-  public set focus (value) {
+  public set focus(value) {
     this.setAttribute(FOCUS, value)
   }
 
-  public blur () {
+  public blur() {
     this.setAttribute(FOCUS, false)
   }
 
-  public setAttribute (qualifiedName: string, value: any): void {
-    process.env.NODE_ENV !== 'production' && warn(
-      isString(value) && value.length > PROPERTY_THRESHOLD,
-      `元素 ${this.nodeName} 的 ${qualifiedName} 属性值数据量过大，可能会影响渲染性能。考虑降低图片转为 base64 的阈值或在 CSS 中使用 base64。`
-    )
+  public setAttribute(qualifiedName: string, value: any): void {
+    process.env.NODE_ENV !== 'production' &&
+      warn(
+        isString(value) && value.length > PROPERTY_THRESHOLD,
+        `元素 ${this.nodeName} 的 ${qualifiedName} 属性值数据量过大，可能会影响渲染性能。考虑降低图片转为 base64 的阈值或在 CSS 中使用 base64。`,
+      )
 
     const isPureView = this.nodeName === VIEW && !isHasExtractProp(this) && !this.isAnyEventBinded()
 
@@ -146,7 +158,7 @@ export class TaroElement extends TaroNode {
         target: this,
         type: MutationRecordType.ATTRIBUTES,
         attributeName: qualifiedName,
-        oldValue: this.getAttribute(qualifiedName)
+        oldValue: this.getAttribute(qualifiedName),
       })
     }
 
@@ -192,7 +204,7 @@ export class TaroElement extends TaroNode {
     const qualifiedNameInCamelCase = toCamelCase(qualifiedName)
     const payload = {
       path: `${_path}.${qualifiedNameInCamelCase}`,
-      value: isFunction(value) ? () => value : value
+      value: isFunction(value) ? () => value : value,
     }
 
     hooks.call('modifySetAttrPayload', this, qualifiedName, payload, componentsAlias)
@@ -210,28 +222,32 @@ export class TaroElement extends TaroNode {
         // catchMove = false: view or click-view or static-view
         this.enqueueUpdate({
           path: `${_path}.${Shortcuts.NodeName}`,
-          value: value ? catchViewAlias : (
-            this.isOnlyClickBinded() && !isHasExtractProp(this) ? clickViewAlias : (this.isAnyEventBinded() ? viewAlias : staticViewAlias)
-          )
+          value: value
+            ? catchViewAlias
+            : this.isOnlyClickBinded() && !isHasExtractProp(this)
+              ? clickViewAlias
+              : this.isAnyEventBinded()
+                ? viewAlias
+                : staticViewAlias,
         })
       } else if (isPureView && isHasExtractProp(this)) {
         // pure-view => static-view
         this.enqueueUpdate({
           path: `${_path}.${Shortcuts.NodeName}`,
-          value: staticViewAlias
+          value: staticViewAlias,
         })
       }
     }
   }
 
-  public removeAttribute (qualifiedName: string) {
+  public removeAttribute(qualifiedName: string) {
     const isStaticView = this.nodeName === VIEW && isHasExtractProp(this) && !this.isAnyEventBinded()
 
     MutationObserver.record({
       target: this,
       type: MutationRecordType.ATTRIBUTES,
       attributeName: qualifiedName,
-      oldValue: this.getAttribute(qualifiedName)
+      oldValue: this.getAttribute(qualifiedName),
     })
 
     if (qualifiedName === STYLE) {
@@ -264,7 +280,7 @@ export class TaroElement extends TaroNode {
     const qualifiedNameInCamelCase = toCamelCase(qualifiedName)
     const payload = {
       path: `${_path}.${qualifiedNameInCamelCase}`,
-      value: ''
+      value: '',
     }
 
     hooks.call('modifyRmAttrPayload', this, qualifiedName, payload, componentsAlias)
@@ -281,39 +297,46 @@ export class TaroElement extends TaroNode {
         // catch-view => view or click-view or static-view or pure-view
         this.enqueueUpdate({
           path: `${_path}.${Shortcuts.NodeName}`,
-          value: this.isOnlyClickBinded() && !isHasExtractProp(this) ? clickViewAlias : (this.isAnyEventBinded() ? viewAlias : (isHasExtractProp(this) ? staticViewAlias : pureViewAlias))
+          value:
+            this.isOnlyClickBinded() && !isHasExtractProp(this)
+              ? clickViewAlias
+              : this.isAnyEventBinded()
+                ? viewAlias
+                : isHasExtractProp(this)
+                  ? staticViewAlias
+                  : pureViewAlias,
         })
       } else if (isStaticView && !isHasExtractProp(this)) {
         // static-view => pure-view
         this.enqueueUpdate({
           path: `${_path}.${Shortcuts.NodeName}`,
-          value: pureViewAlias
+          value: pureViewAlias,
         })
       }
     }
   }
 
-  public getAttribute (qualifiedName: string): string {
+  public getAttribute(qualifiedName: string): string {
     const attr = qualifiedName === STYLE ? this.style.cssText : this.props[qualifiedName]
     return attr ?? ''
   }
 
-  public getElementsByTagName (tagName: string): TaroElement[] {
+  public getElementsByTagName(tagName: string): TaroElement[] {
     return treeToArray(this, (el) => {
       return el.nodeName === tagName || (tagName === '*' && this !== el)
     })
   }
 
-  public getElementsByClassName (className: string): TaroElement[] {
+  public getElementsByClassName(className: string): TaroElement[] {
     const classNames = className.trim().split(/\s+/)
 
     return treeToArray(this, (el) => {
       const classList = el.classList
-      return classNames.every(c => classList.contains(c))
+      return classNames.every((c) => classList.contains(c))
     })
   }
 
-  public dispatchEvent (event: TaroEvent): boolean {
+  public dispatchEvent(event: TaroEvent): boolean {
     const cancelable = event.cancelable
 
     const listeners = this.__handlers[event.type]
@@ -322,7 +345,7 @@ export class TaroElement extends TaroNode {
       return false
     }
 
-    for (let i = listeners.length; i--;) {
+    for (let i = listeners.length; i--; ) {
       const listener = listeners[i]
       let result: unknown
       if (listener._stop) {
@@ -337,7 +360,9 @@ export class TaroElement extends TaroNode {
 
       if (!isUndefined(result) && event.mpEvent) {
         const res = hooks.call('modifyTaroEventReturn', this, event, result)
-        if (res) { event.mpEvent[EVENT_CALLBACK_RESULT] = result }
+        if (res) {
+          event.mpEvent[EVENT_CALLBACK_RESULT] = result
+        }
       }
 
       if (event._end && event._stop) {
@@ -352,7 +377,7 @@ export class TaroElement extends TaroNode {
     return listeners != null
   }
 
-  public addEventListener (type, handler, options) {
+  public addEventListener(type, handler, options) {
     const name = this.nodeName
     const SPECIAL_NODES = hooks.call('getSpecialNodes')!
 
@@ -369,14 +394,14 @@ export class TaroElement extends TaroNode {
       const alias = componentsAlias[name]._num
       this.enqueueUpdate({
         path: `${this._path}.${Shortcuts.NodeName}`,
-        value: alias
+        value: alias,
       })
     }
 
     super.addEventListener(type, handler, options)
   }
 
-  public removeEventListener (type, handler, sideEffect = true) {
+  public removeEventListener(type, handler, sideEffect = true) {
     super.removeEventListener(type, handler)
 
     const name = this.nodeName
@@ -390,12 +415,12 @@ export class TaroElement extends TaroNode {
       const valueAlias = componentsAlias[value]._num
       this.enqueueUpdate({
         path: `${this._path}.${Shortcuts.NodeName}`,
-        value: valueAlias
+        value: valueAlias,
       })
     }
   }
 
-  static extend (methodName: string, options: TFunc | Record<string, any>) {
+  static extend(methodName: string, options: TFunc | Record<string, any>) {
     extend(TaroElement, methodName, options)
   }
 }

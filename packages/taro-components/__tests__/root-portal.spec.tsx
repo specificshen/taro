@@ -13,7 +13,7 @@ describe('RootPortal', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [RootPortal],
-      template: () => (<taro-root-portal-core />),
+      template: () => <taro-root-portal-core />,
     })
     await page.waitForChanges()
 

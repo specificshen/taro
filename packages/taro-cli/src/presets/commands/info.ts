@@ -9,11 +9,8 @@ import type { IPluginContext } from '@tarojs/service'
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
     name: 'info',
-    synopsisList: [
-      'taro info',
-      'taro info rn'
-    ],
-    async fn ({ _ }) {
+    synopsisList: ['taro info', 'taro info rn'],
+    async fn({ _ }) {
       const rn = _[1] === 'rn'
       const { fs, chalk, PROJECT_CONFIG } = ctx.helper
       const { appPath, configPath } = ctx.paths
@@ -31,7 +28,7 @@ export default (ctx: IPluginContext) => {
       }
 
       await info({}, ctx)
-    }
+    },
   })
 }
 
@@ -48,7 +45,7 @@ function getJdtaroPackages(ctx) {
       const dependencies = Object.assign({}, packageJson.dependencies || {}, packageJson.devDependencies || {})
 
       // 筛选出@jdtaro相关的包
-      return Object.keys(dependencies).filter(pkg => pkg.startsWith('@jdtaro/'))
+      return Object.keys(dependencies).filter((pkg) => pkg.startsWith('@jdtaro/'))
     }
   } catch (error) {
     // 记录错误但不中断程序执行（添加trycatch）
@@ -58,20 +55,27 @@ function getJdtaroPackages(ctx) {
   return []
 }
 
-async function info (options, ctx) {
+async function info(options, ctx) {
   let npmPackages = ctx.helper.UPDATE_PACKAGE_LIST.concat(['react', 'react-native', 'expo', 'taro-ui'])
 
   // 调用新函数获取@jdtaro相关包
   const jdtaroPackages = getJdtaroPackages(ctx)
   npmPackages = npmPackages.concat(jdtaroPackages)
 
-  const info = await envinfo.run(Object.assign({}, {
-    System: ['OS', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm'],
-    npmPackages,
-    npmGlobalPackages: ['typescript']
-  }, options), {
-    title: `Taro CLI ${getPkgVersion()} environment info`
-  })
+  const info = await envinfo.run(
+    Object.assign(
+      {},
+      {
+        System: ['OS', 'Shell'],
+        Binaries: ['Node', 'Yarn', 'npm'],
+        npmPackages,
+        npmGlobalPackages: ['typescript'],
+      },
+      options,
+    ),
+    {
+      title: `Taro CLI ${getPkgVersion()} environment info`,
+    },
+  )
   console.log(info)
 }

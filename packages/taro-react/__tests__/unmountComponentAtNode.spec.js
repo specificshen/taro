@@ -15,9 +15,7 @@ describe('unmountComponentAtNode', () => {
   it('throws when given a non-node', () => {
     expect(function () {
       unmountComponentAtNode(null)
-    }).toThrowError(
-      'unmountComponentAtNode(...): Target container is not a DOM element.'
-    )
+    }).toThrowError('unmountComponentAtNode(...): Target container is not a DOM element.')
   })
 
   it('returns false on non-React containers', () => {
@@ -55,7 +53,7 @@ describe('unmountComponentAtNode', () => {
     class Component extends React.Component {
       componentDidMount = mockMount
       componentWillUnmount = mockUnmount
-      render () {
+      render() {
         return <span>{this.props.text}</span>
       }
     }
@@ -95,14 +93,12 @@ describe('unmountComponentAtNode', () => {
 
     class Foo extends React.Component {
       state = { active: false }
-      componentDidMount () {
+      componentDidMount() {
         this.setState({ active: true })
       }
 
-      render () {
-        return (
-          <div>{this.props.children + (this.state.active ? '!' : '')}</div>
-        )
+      render() {
+        return <div>{this.props.children + (this.state.active ? '!' : '')}</div>
       }
     }
 

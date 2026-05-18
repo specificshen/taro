@@ -14,12 +14,14 @@ describe('Tabs', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Tabs, TabItem],
-      template: () => (<taro-tabs-core>
-        <taro-tab-item-core />
-        <taro-tab-item-core />
-        <taro-tab-item-core />
-        <taro-tab-item-core />
-      </taro-tabs-core>),
+      template: () => (
+        <taro-tabs-core>
+          <taro-tab-item-core />
+          <taro-tab-item-core />
+          <taro-tab-item-core />
+          <taro-tab-item-core />
+        </taro-tabs-core>
+      ),
     })
     await page.waitForChanges()
 

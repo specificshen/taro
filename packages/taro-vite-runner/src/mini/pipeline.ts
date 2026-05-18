@@ -10,7 +10,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
   return {
     name: 'taro:vite-mini-pipeline',
     enforce: 'pre',
-    async buildStart () {
+    async buildStart() {
       await this.load({ id: VITE_COMPILER_LABEL })
       const info = this.getModuleInfo(VITE_COMPILER_LABEL)
       if (info) {
@@ -19,30 +19,30 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       }
       const { template, baseLevel = 16, experimental } = taroConfig
       if (template.isSupportRecursive === false && baseLevel > 0) {
-        (template as UnRecursiveTemplate).baseLevel = baseLevel
+        ;(template as UnRecursiveTemplate).baseLevel = baseLevel
       }
 
       if (experimental?.useXsForTemplate === false) {
-        (template as UnRecursiveTemplate).isUseXS = false
+        ;(template as UnRecursiveTemplate).isUseXS = false
       }
 
       if (experimental?.compileMode === true) {
         template.isUseCompileMode = true
       }
     },
-    load (id) {
+    load(id) {
       if (id === VITE_COMPILER_LABEL) return ''
     },
-    closeBundle () {
+    closeBundle() {
       const onBuildFinish = taroConfig.onBuildFinish
       if (isFunction(onBuildFinish)) {
         onBuildFinish({
           error: null,
           stats: {},
-          isWatch: taroConfig.isWatch
+          isWatch: taroConfig.isWatch,
         })
       }
       // console.log('this.watchFiles: ', this.getWatchFiles())
-    }
+    },
   }
 }

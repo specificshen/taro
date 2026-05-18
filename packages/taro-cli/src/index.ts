@@ -9,16 +9,7 @@ export default {
   Project,
   Creator,
   defineConfig,
-  getRootPath
+  getRootPath,
 }
 
-export {
-  type ConfigEnv,
-  type UserConfigExport,
-  type UserConfigFn,
-  Creator,
-  defineConfig,
-  doctor,
-  getRootPath,
-  Project
-}
+export { type ConfigEnv, type UserConfigExport, type UserConfigFn, Creator, defineConfig, doctor, getRootPath, Project }

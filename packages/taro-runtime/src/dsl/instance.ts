@@ -41,9 +41,9 @@ export interface PageLifeCycle extends Show {
   onReady?(): void
   onResize?(options: unknown): void
   onSaveExitState?(): void
-  onShareAppMessage?(obj: { from: string, target?: TaroElement, webViewUrl: string }): void
+  onShareAppMessage?(obj: { from: string; target?: TaroElement; webViewUrl: string }): void
   onShareTimeline?(): void
-  onTabItemTap?(obj: { index: string, pagePath: string, text: string }): void
+  onTabItemTap?(obj: { index: string; pagePath: string; text: string }): void
   onTitleClick?(): void
   onUnload?(): void
 }
@@ -76,15 +76,20 @@ interface Show {
 
 export interface AppInstance extends Show {
   componentDidShow?(options?: Record<string, unknown>): void
-  mount? (component: React.ComponentClass, id: string, cb: (...args: any[]) => void): void
-  mount? (component: React.ComponentClass, id: string, getCtx:(...args: any[]) => void, cb: (...args: any[]) => void): void
-  onError? (error: string): void
-  onLaunch? (options?: Record<string, unknown>): void
-  onPageNotFound? (res: any): void
-  onUnhandledRejection? (error: any): void
+  mount?(component: React.ComponentClass, id: string, cb: (...args: any[]) => void): void
+  mount?(
+    component: React.ComponentClass,
+    id: string,
+    getCtx: (...args: any[]) => void,
+    cb: (...args: any[]) => void,
+  ): void
+  onError?(error: string): void
+  onLaunch?(options?: Record<string, unknown>): void
+  onPageNotFound?(res: any): void
+  onUnhandledRejection?(error: any): void
   onShow?(options?: Record<string, unknown>): void
   onHide?(options?: Record<string, unknown>): void
-  unmount? (id: string, cb?: () => void): void
+  unmount?(id: string, cb?: () => void): void
   taroGlobalData?: Record<any, any>
   config?: Record<any, any>
 }

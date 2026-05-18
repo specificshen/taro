@@ -1,12 +1,6 @@
 import path from 'node:path'
 
-import {
-  fs,
-  isEmptyObject,
-  readConfig,
-  resolveMainFilePath,
-  SCRIPT_EXT,
-} from '@tarojs/helper'
+import { fs, isEmptyObject, readConfig, resolveMainFilePath, SCRIPT_EXT } from '@tarojs/helper'
 import { VITE_COMPILER_LABEL } from '@tarojs/runner-utils'
 
 import { stripMultiPlatformExt } from '../../utils'
@@ -20,11 +14,13 @@ import type {
   ViteH5BuildConfig,
   ViteHarmonyBuildConfig,
   ViteMiniBuildConfig,
-  VitePageMeta
+  VitePageMeta,
 } from '@tarojs/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 
-export class CompilerContext <T extends ViteH5BuildConfig | ViteHarmonyBuildConfig | ViteMiniBuildConfig> implements ViteCompilerContext<T> {
+export class CompilerContext<T extends ViteH5BuildConfig | ViteHarmonyBuildConfig | ViteMiniBuildConfig>
+  implements ViteCompilerContext<T>
+{
   static label = VITE_COMPILER_LABEL
   cwd: string
   sourceDir: string
@@ -59,21 +55,21 @@ class App extends React.Component {
   configFileList: string[] = []
   compilePage: (pageName: string) => VitePageMeta
 
-  constructor (appPath: string, rawTaroConfig: T) {
+  constructor(appPath: string, rawTaroConfig: T) {
     this.cwd = appPath
     this.rawTaroConfig = rawTaroConfig
     this.process()
   }
 
-  protected process () {
+  protected process() {
     this.processConfig()
     this.sourceDir = path.resolve(this.cwd, this.taroConfig.sourceRoot as string)
     this.frameworkExts = this.taroConfig.frameworkExts || SCRIPT_EXT
   }
 
-  protected processConfig () {}
+  protected processConfig() {}
 
-  async collectedDeps (rollupCtx: PluginContext, id: string, filter, cache = new Set<string>()): Promise<Set<string>> {
+  async collectedDeps(rollupCtx: PluginContext, id: string, filter, cache = new Set<string>()): Promise<Set<string>> {
     if (!/\.m?[jt]sx?$/.test(id) || !filter(id) || cache.has(id)) return cache
 
     cache.add(id)
@@ -82,22 +78,24 @@ class App extends React.Component {
       resolveDependencies: true,
     })
 
-    await Promise.all(moduleInfo.importedIds.map(async (importedId) => {
-      return this.collectedDeps(rollupCtx, importedId, filter, cache)
-    }))
+    await Promise.all(
+      moduleInfo.importedIds.map(async (importedId) => {
+        return this.collectedDeps(rollupCtx, importedId, filter, cache)
+      }),
+    )
 
     return cache
   }
 
-  watchConfigFile (rollupCtx: PluginContext) {
+  watchConfigFile(rollupCtx: PluginContext) {
     this.configFileList.forEach((configFile) => rollupCtx.addWatchFile(configFile))
   }
 
-  getAppScriptPath (): string {
+  getAppScriptPath(): string {
     return this.taroConfig.entry.app[0]
   }
 
-  getApp (): ViteAppMeta {
+  getApp(): ViteAppMeta {
     const scriptPath = this.getAppScriptPath()
     const configPath = this.getConfigFilePath(scriptPath)
     const config: AppConfig = readConfig(configPath, this.taroConfig)
@@ -117,17 +115,17 @@ class App extends React.Component {
       scriptPath,
       configPath,
       config,
-      isNative: false
+      isNative: false,
     }
 
     this.filesConfig[this.getConfigFilePath(appMeta.name)] = {
       path: configPath,
-      content: config
+      content: config,
     }
     return appMeta
   }
 
-  getPages (): VitePageMeta[] {
+  getPages(): VitePageMeta[] {
     const appConfig = this.app.config
 
     if (this.taroConfig.isBuildNativeComp) return []
@@ -137,16 +135,16 @@ class App extends React.Component {
       process.exit(1)
     }
 
-    const pagesList = appConfig.pages.map<VitePageMeta>(pageName => this.compilePage(pageName))
+    const pagesList = appConfig.pages.map<VitePageMeta>((pageName) => this.compilePage(pageName))
 
     const subPackages = appConfig.subPackages || appConfig.subpackages || []
-    subPackages.forEach(item => {
+    subPackages.forEach((item) => {
       // 兼容 pages: [''] 等非法情况
-      const pages = (item.pages || []).filter(item => !!item)
+      const pages = (item.pages || []).filter((item) => !!item)
 
       if (pages.length > 0) {
         const root = item.root
-        pages.forEach(page => {
+        pages.forEach((page) => {
           const subPageName = `${root}/${page}`.replace(/\/{2,}/g, '/')
 
           for (const mainPage of pagesList) {
@@ -162,7 +160,7 @@ class App extends React.Component {
     return pagesList
   }
 
-  getComponents (): VitePageMeta[] {
+  getComponents(): VitePageMeta[] {
     const appConfig = this.app.config
 
     if (!appConfig.components?.length) {
@@ -170,50 +168,48 @@ class App extends React.Component {
       process.exit(1)
     }
 
-    return appConfig.components.map<VitePageMeta>(pageName => this.compilePage(pageName))
+    return appConfig.components.map<VitePageMeta>((pageName) => this.compilePage(pageName))
   }
 
   /** 工具函数 */
 
-  isApp (id: string): boolean {
+  isApp(id: string): boolean {
     return this.app.scriptPath === id
   }
 
-  isPage (id: string): boolean {
-    return this.pages.findIndex(page => page.scriptPath === id) > -1
+  isPage(id: string): boolean {
+    return this.pages.findIndex((page) => page.scriptPath === id) > -1
   }
 
-  isComponent (id: string): boolean {
+  isComponent(id: string): boolean {
     if (this.components && this.components.length) {
-      return this.components.findIndex(component => component.scriptPath === id) > -1
+      return this.components.findIndex((component) => component.scriptPath === id) > -1
     }
 
     return false
   }
 
-  isNativePageORComponent (templatePath: string): boolean {
+  isNativePageORComponent(templatePath: string): boolean {
     return fs.existsSync(templatePath)
   }
 
-  getPageById (id: string) {
-    return this.pages.find(page => page.scriptPath === id)
+  getPageById(id: string) {
+    return this.pages.find((page) => page.scriptPath === id)
   }
 
-  getComponentById (id: string) {
+  getComponentById(id: string) {
     if (this.components && this.components.length) {
-      return this.components.find(component => component.scriptPath === id)
+      return this.components.find((component) => component.scriptPath === id)
     }
   }
 
-  getConfigFilePath (filePath: string) {
+  getConfigFilePath(filePath: string) {
     const cleanedPath = stripMultiPlatformExt(filePath.replace(path.extname(filePath), ''))
     return resolveMainFilePath(`${cleanedPath}.config`)
   }
 
-  getTargetFilePath (filePath: string, targetExtName: string) {
+  getTargetFilePath(filePath: string, targetExtName: string) {
     const extname = path.extname(filePath)
-    return extname
-      ? filePath.replace(extname, targetExtName)
-      : filePath + targetExtName
+    return extname ? filePath.replace(extname, targetExtName) : filePath + targetExtName
   }
 }

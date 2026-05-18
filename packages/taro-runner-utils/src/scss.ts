@@ -25,8 +25,9 @@ interface BuildConfig {
  * Used for resolving tilde imports.
  * @returns Bundle result.
  */
-export async function getBundleResult (url: string,
-  projectDirectory: string | undefined = undefined
+export async function getBundleResult(
+  url: string,
+  projectDirectory: string | undefined = undefined,
 ): Promise<BundleResult> {
   let bundler: Bundler = new Bundler()
   if (projectDirectory) {
@@ -43,8 +44,9 @@ export async function getBundleResult (url: string,
  * Used for resolving tilde imports.
  * @returns Bundle result.
  */
-export async function getBundleContent (resource: string | string[],
-  projectDirectory: string | undefined = undefined
+export async function getBundleContent(
+  resource: string | string[],
+  projectDirectory: string | undefined = undefined,
 ): Promise<string | undefined> {
   let result: string | undefined = ''
 
@@ -73,9 +75,9 @@ export async function getBundleContent (resource: string | string[],
  * @param {(string | string[])} resource
  * @param {(string | undefined)} rootDir
  */
-function checkPath (resource: string | string[], rootDir: string | undefined) {
+function checkPath(resource: string | string[], rootDir: string | undefined) {
   if (Array.isArray(resource)) {
-    resource.forEach(item => {
+    resource.forEach((item) => {
       const url = rootDir ? path.resolve(rootDir, item) : item
       if (!fs.existsSync(url)) {
         throw new Error(`全局注入 scss 文件路径错误: ${url}`)
@@ -94,9 +96,7 @@ function checkPath (resource: string | string[], rootDir: string | undefined) {
  * @param {BuildConfig} param0 Build config.
  * @returns Merged sass loader option.
  */
-export async function getSassLoaderOption (
-  { sass, sassLoaderOption }: BuildConfig
-): Promise<LoaderOption> {
+export async function getSassLoaderOption({ sass, sassLoaderOption }: BuildConfig): Promise<LoaderOption> {
   sassLoaderOption = sassLoaderOption || {}
 
   let bundledContent = ''
@@ -117,7 +117,7 @@ export async function getSassLoaderOption (
   }
   return {
     ...sassLoaderOption,
-    additionalData: sassLoaderOption.data ? `${sassLoaderOption.data}${bundledContent}` : bundledContent
+    additionalData: sassLoaderOption.data ? `${sassLoaderOption.data}${bundledContent}` : bundledContent,
   }
 }
 

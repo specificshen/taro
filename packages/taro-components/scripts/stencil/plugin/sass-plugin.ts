@@ -17,7 +17,7 @@ import type { LegacyException, LegacyResult } from 'sass'
  * @param opts options to configure the plugin
  * @return the configured plugin
  */
-export default function sassPlugin (opts: d.PluginOptions = {}): d.Plugin {
+export default function sassPlugin(opts: d.PluginOptions = {}): d.Plugin {
   return {
     name: 'sass',
     pluginType: 'css',
@@ -29,11 +29,8 @@ export default function sassPlugin (opts: d.PluginOptions = {}): d.Plugin {
      * in-memory FS, etc.
      * @returns the results of the Sass file compilation
      */
-    transform (sourceText: string, fileName: string, context: d.PluginCtx): Promise<d.PluginTransformResults> {
-      if (
-        !usePlugin(fileName) ||
-        typeof sourceText !== 'string'
-      ) {
+    transform(sourceText: string, fileName: string, context: d.PluginCtx): Promise<d.PluginTransformResults> {
+      if (!usePlugin(fileName) || typeof sourceText !== 'string') {
         // @ts-ignore
         return null
       }

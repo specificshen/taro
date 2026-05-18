@@ -15,21 +15,21 @@ const catchStart = 'catch'
 const eventStart = 'on'
 
 type AST = parser.ParseResult<t.File>
-type PROP_MAP = Partial<Record<typeof MINI_APP_TYPES[number], string[]>>
+type PROP_MAP = Partial<Record<(typeof MINI_APP_TYPES)[number], string[]>>
 type PROP = Record<string, string[]>
 
 class GenerateTypes {
   jsonSchemas: Record<string, any> = {}
   componentName: string
 
-  constructor (componentName: string) {
+  constructor(componentName: string) {
     this.componentName = componentName
 
     MINI_APP_TYPES.forEach((type) => {
       try {
-        const json = require(`miniapp-types/dist/schema/${type}/${
-          componentName === 'AD' ? 'ad' : paramCase(componentName)
-        }.json`)
+        const json = require(
+          `miniapp-types/dist/schema/${type}/${componentName === 'AD' ? 'ad' : paramCase(componentName)}.json`,
+        )
 
         if (!json) {
           return
@@ -48,7 +48,7 @@ class GenerateTypes {
   }
 
   // 获取不存在的属性
-  getMissingProps (props: PROP_MAP) {
+  getMissingProps(props: PROP_MAP) {
     const obj: PROP = {}
     const jsonSchema = this.jsonSchemas[this.componentName]
     if (!jsonSchema) {
@@ -58,7 +58,7 @@ class GenerateTypes {
       const filteredList = xorWith(props[key], Object.keys(this.jsonSchemas[this.componentName][key].properties))
       if (filteredList.length > 0) {
         obj[key] = filteredList.map((item) =>
-          item.match(/^bind/) ? camelCase(item.replace(/^bind/, eventStart), { transform: camelCaseEnhance }) : item
+          item.match(/^bind/) ? camelCase(item.replace(/^bind/, eventStart), { transform: camelCaseEnhance }) : item,
         )
       }
     })
@@ -67,7 +67,7 @@ class GenerateTypes {
   }
 
   // 转换不存在的属性，便于添加到已有的类型声明中
-  convertProps (props: PROP = {}) {
+  convertProps(props: PROP = {}) {
     const array = Array.from(new Set(flattenDeep(toArray(props))))
     const reverseProps: PROP = {}
     array.forEach((prop) => {
@@ -76,27 +76,25 @@ class GenerateTypes {
     return reverseProps
   }
 
-  updateComment (ast: AST) {
+  updateComment(ast: AST) {
     const componentName = this.componentName
     const jsonSchemas = this.jsonSchemas[this.componentName]
     const existProps: PROP_MAP = {}
 
     traverse(ast, {
-      TSInterfaceDeclaration (astPath) {
+      TSInterfaceDeclaration(astPath) {
         if (astPath.node.id.name !== `${componentName}Props`) {
           return
         }
         astPath.traverse({
-          TSPropertySignature (astPath) {
+          TSPropertySignature(astPath) {
             const { name } = astPath.node.key as any
             if (!name) {
               return
             }
             const supportedPlatforms: string[] = []
 
-            const convertedName = name.match(/^on/)
-              ? name.replace(/^on/, 'bind')
-              : paramCase(name)
+            const convertedName = name.match(/^on/) ? name.replace(/^on/, 'bind') : paramCase(name)
             MINI_APP_TYPES.forEach((type) => {
               if (jsonSchemas[type]?.properties[name]) {
                 if (isEmpty(existProps[type])) {
@@ -118,7 +116,11 @@ class GenerateTypes {
               return
             }
             const value = astPath.node.leadingComments?.[0]?.value || ''
-            const preSupportedPlatforms = value.match(/@supported\s+(.+)/)?.[1].toLowerCase().split(/\s?[,，]\s?/) || []
+            const preSupportedPlatforms =
+              value
+                .match(/@supported\s+(.+)/)?.[1]
+                .toLowerCase()
+                .split(/\s?[,，]\s?/) || []
             const isUnique = value.indexOf('@unique') !== -1
             const isIgnore = value.indexOf('@ignore') !== -1
 
@@ -140,7 +142,7 @@ class GenerateTypes {
             } else {
               astPath.node.leadingComments[0].value = value.replace(
                 /@supported .*?\n/,
-                `@supported ${uniq(supportedPlatforms).join(', ')}\n`
+                `@supported ${uniq(supportedPlatforms).join(', ')}\n`,
               )
             }
           },
@@ -154,22 +156,27 @@ class GenerateTypes {
   }
 
   // 添加不存在的属性
-  addProps (ast: AST, props: PROP = {}) {
+  addProps(ast: AST, props: PROP = {}) {
     const componentName = this.componentName
     const jsonSchemas = this.jsonSchemas[this.componentName]
     traverse(ast, {
-      TSInterfaceDeclaration (astPath) {
+      TSInterfaceDeclaration(astPath) {
         if (astPath.node.id.name !== `${componentName}Props`) {
           return
         }
         const addedProps: string[] = []
         astPath.traverse({
-          TSInterfaceBody (astPath) {
+          TSInterfaceBody(astPath) {
             Object.keys(props).forEach((prop) => {
               if (OMIT_PROPS.includes(prop)) {
                 return
               }
-              const emptySignature = { type: 'TSPropertySignature', key: t.identifier(''), leadingComments: [], kind: 'get' } as t.TSPropertySignature
+              const emptySignature = {
+                type: 'TSPropertySignature',
+                key: t.identifier(''),
+                leadingComments: [],
+                kind: 'get',
+              } as t.TSPropertySignature
               const list = astPath.node.body as t.TSPropertySignature[]
               const node = t.cloneNode(list[0] || emptySignature)
               node.key = t.identifier(camelCase(prop, { transform: camelCaseEnhance }))
@@ -205,8 +212,13 @@ class GenerateTypes {
                 if (!isNil(defaultValue)) {
                   if (defaultValue instanceof Array) {
                     commentValue += `* @default ${defaultValue.join(',')}\n`
-                  } else if (typeof defaultValue === 'string' && !defaultValue.startsWith('"') && !['none', '无'].includes(defaultValue) && type === 'string') {
-                    commentValue += `* @default "${propSchema.defaultValue.replace(/(^')|('$)/ig, '')}"\n`
+                  } else if (
+                    typeof defaultValue === 'string' &&
+                    !defaultValue.startsWith('"') &&
+                    !['none', '无'].includes(defaultValue) &&
+                    type === 'string'
+                  ) {
+                    commentValue += `* @default "${propSchema.defaultValue.replace(/(^')|('$)/gi, '')}"\n`
                   } else {
                     commentValue += `* @default ${defaultValue}\n`
                   }
@@ -225,9 +237,9 @@ class GenerateTypes {
     })
   }
 
-  formatJSDoc (ast: AST) {
+  formatJSDoc(ast: AST) {
     traverse(ast, {
-      enter (astPath) {
+      enter(astPath) {
         if (astPath.node.trailingComments) {
           astPath.node.trailingComments = []
         }
@@ -236,15 +248,15 @@ class GenerateTypes {
   }
 
   // 属性排序
-  sortProps (ast: AST) {
+  sortProps(ast: AST) {
     const componentName = this.componentName
     traverse(ast, {
-      TSInterfaceDeclaration (astPath) {
+      TSInterfaceDeclaration(astPath) {
         if (astPath.node.id.name !== `${componentName}Props`) {
           return
         }
         astPath.traverse({
-          TSInterfaceBody (astPath) {
+          TSInterfaceBody(astPath) {
             astPath.node.body.sort((a: any, b: any) => {
               const aName = a.key?.name
               const bName = b.key?.name
@@ -263,7 +275,7 @@ class GenerateTypes {
     })
   }
 
-  exec () {
+  exec() {
     const filePath = getTypeFilePath(this.componentName)
     const codeStr = fs.readFileSync(filePath, 'utf8')
     const ast = parser.parse(codeStr, {
@@ -282,7 +294,7 @@ class GenerateTypes {
       parser: 'typescript',
       semi: false,
       singleQuote: true,
-      printWidth: 120
+      printWidth: 120,
     })
     fs.writeFileSync(filePath, code)
   }

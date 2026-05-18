@@ -13,7 +13,7 @@ describe('FunctionalPageNavigator', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [FunctionalPageNavigator],
-      template: () => (<taro-functional-page-navigator-core />),
+      template: () => <taro-functional-page-navigator-core />,
     })
     await page.waitForChanges()
 

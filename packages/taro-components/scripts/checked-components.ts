@@ -15,14 +15,17 @@ import { getTypesList } from './utils'
  * export { [ComponentName], [ComponentName]Props }
  * ```
  */
-export function findMissingComponents () {
-  const existComponents = ['Index', ...getTypesList().map(fileName => {
-    return fileName.replace(/\.d\.ts$/, '')
-  })]
+export function findMissingComponents() {
+  const existComponents = [
+    'Index',
+    ...getTypesList().map((fileName) => {
+      return fileName.replace(/\.d\.ts$/, '')
+    }),
+  ]
   const missingComponents: Record<string, string[]> = {}
   MINI_APP_TYPES.forEach((type) => {
     const typeComponents = getTypesList(type)
-    typeComponents.forEach(typePath => {
+    typeComponents.forEach((typePath) => {
       const componentName = pascalCase(typePath.replace(/\.d\.ts$/, ''))
       if (!existComponents.includes(componentName)) {
         missingComponents[componentName] ||= []

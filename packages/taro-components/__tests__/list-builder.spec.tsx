@@ -13,7 +13,7 @@ describe('ListBuilder', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ListBuilder],
-      template: () => (<taro-list-builder-core />),
+      template: () => <taro-list-builder-core />,
     })
     await page.waitForChanges()
 

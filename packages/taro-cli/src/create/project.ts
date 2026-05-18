@@ -9,7 +9,7 @@ import {
   getUserHomeDir,
   SOURCE_DIR,
   TARO_BASE_CONFIG,
-  TARO_CONFIG_FOLDER
+  TARO_CONFIG_FOLDER,
 } from '@tarojs/helper'
 import { isArray } from '@tarojs/shared'
 import axios from 'axios'
@@ -46,9 +46,12 @@ export interface IProjectConf {
   ask?: (config: object) => Promise<void> | void
 }
 
-type CustomPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+type CustomPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
-type IProjectConfOptions = CustomPartial<IProjectConf, 'projectName' | 'projectDir' | 'template' | 'css' | 'npm' | 'framework' | 'templateSource'>
+type IProjectConfOptions = CustomPartial<
+  IProjectConf,
+  'projectName' | 'projectDir' | 'template' | 'css' | 'npm' | 'framework' | 'templateSource'
+>
 
 interface AskMethods {
   (conf: IProjectConfOptions, prompts: Record<string, unknown>[], choices?: ITemplates[]): void
@@ -62,7 +65,7 @@ export default class Project extends Creator {
   public rootPath: string
   public conf: IProjectConfOptions
 
-  constructor (options: IProjectConfOptions) {
+  constructor(options: IProjectConfOptions) {
     super(options.sourceRoot)
     const unSupportedVer = semver.lt(process.version, 'v18.0.0')
     if (unSupportedVer) {
@@ -76,20 +79,20 @@ export default class Project extends Creator {
         projectDir: '',
         template: '',
         description: '',
-        npm: ''
+        npm: '',
       },
-      options
+      options,
     )
   }
 
-  init () {
+  init() {
     clearConsole()
     console.log(chalk.green('Taro 即将创建一个新项目!'))
     console.log(`Need help? Go and open issue: ${chalk.blueBright('https://tls.jd.com/taro-issue-helper')}`)
     console.log()
   }
 
-  async create () {
+  async create() {
     try {
       const answers = await this.ask()
       const date = new Date()
@@ -101,7 +104,7 @@ export default class Project extends Creator {
     }
   }
 
-  async ask () {
+  async ask() {
     let prompts: Record<string, unknown>[] = []
     const conf = this.conf
 
@@ -145,17 +148,17 @@ export default class Project extends Creator {
     return {
       ...answers,
       ...compilerAndTemplateSourceAnswer,
-      ...templateChoiceAnswer
+      ...templateChoiceAnswer,
     }
   }
 
   askProjectName: AskMethods = function (conf, prompts) {
-    if ((typeof conf.projectName) !== 'string') {
+    if (typeof conf.projectName !== 'string') {
       prompts.push({
         type: 'input',
         name: 'projectName',
         message: '请输入项目名称！',
-        validate (input) {
+        validate(input) {
           if (!input) {
             return '项目名不能为空！'
           }
@@ -163,14 +166,14 @@ export default class Project extends Creator {
             return '当前目录已经存在同名项目，请换一个项目名！'
           }
           return true
-        }
+        },
       })
     } else if (fs.existsSync(conf.projectName!)) {
       prompts.push({
         type: 'input',
         name: 'projectName',
         message: '当前目录已经存在同名项目，请换一个项目名！',
-        validate (input) {
+        validate(input) {
           if (!input) {
             return '项目名不能为空！'
           }
@@ -178,7 +181,7 @@ export default class Project extends Creator {
             return '项目名依然重复！'
           }
           return true
-        }
+        },
       })
     }
   }
@@ -188,7 +191,7 @@ export default class Project extends Creator {
       prompts.push({
         type: 'input',
         name: 'description',
-        message: '请输入项目介绍'
+        message: '请输入项目介绍',
       })
     }
   }
@@ -198,7 +201,7 @@ export default class Project extends Creator {
       prompts.push({
         type: 'confirm',
         name: 'typescript',
-        message: '是否需要使用 TypeScript ？'
+        message: '是否需要使用 TypeScript ？',
       })
     }
   }
@@ -209,7 +212,7 @@ export default class Project extends Creator {
         type: 'confirm',
         name: 'buildEs5',
         message: '是否需要编译为 ES5 ？',
-        default: false
+        default: false,
       })
     }
   }
@@ -218,20 +221,20 @@ export default class Project extends Creator {
     const cssChoices = [
       {
         name: 'Sass',
-        value: CSSType.Sass
+        value: CSSType.Sass,
       },
       {
         name: 'Less',
-        value: CSSType.Less
+        value: CSSType.Less,
       },
       {
         name: 'Stylus',
-        value: CSSType.Stylus
+        value: CSSType.Stylus,
       },
       {
         name: '无',
-        value: CSSType.None
-      }
+        value: CSSType.None,
+      },
     ]
 
     if (typeof conf.css !== 'string') {
@@ -239,7 +242,7 @@ export default class Project extends Creator {
         type: 'list',
         name: 'css',
         message: '请选择 CSS 预处理器（Sass/Less/Stylus）',
-        choices: cssChoices
+        choices: cssChoices,
       })
     }
   }
@@ -248,12 +251,12 @@ export default class Project extends Creator {
     const compilerChoices = [
       {
         name: 'Webpack5',
-        value: CompilerType.Webpack5
+        value: CompilerType.Webpack5,
       },
       {
         name: 'Vite',
-        value: CompilerType.Vite
-      }
+        value: CompilerType.Vite,
+      },
     ]
 
     if (typeof conf.compiler !== 'string') {
@@ -261,7 +264,7 @@ export default class Project extends Creator {
         type: 'list',
         name: 'compiler',
         message: '请选择编译工具',
-        choices: compilerChoices
+        choices: compilerChoices,
       })
     }
   }
@@ -270,20 +273,20 @@ export default class Project extends Creator {
     const frameworks = [
       {
         name: 'React',
-        value: FrameworkType.React
+        value: FrameworkType.React,
       },
       {
         name: 'PReact',
-        value: FrameworkType.Preact
+        value: FrameworkType.Preact,
       },
       {
         name: 'Vue3',
-        value: FrameworkType.Vue3
+        value: FrameworkType.Vue3,
       },
       {
         name: 'Solid',
-        value: FrameworkType.Solid
-      }
+        value: FrameworkType.Solid,
+      },
     ]
 
     if (typeof conf.framework !== 'string') {
@@ -291,7 +294,7 @@ export default class Project extends Creator {
         type: 'list',
         name: 'framework',
         message: '请选择框架',
-        choices: frameworks
+        choices: frameworks,
       })
     }
   }
@@ -320,71 +323,79 @@ export default class Project extends Creator {
     const choices = [
       {
         name: 'Gitee（最快）',
-        value: DEFAULT_TEMPLATE_SRC_GITEE
+        value: DEFAULT_TEMPLATE_SRC_GITEE,
       },
       {
         name: 'Github（最新）',
-        value: DEFAULT_TEMPLATE_SRC
+        value: DEFAULT_TEMPLATE_SRC,
       },
       {
         name: 'CLI 内置默认模板',
-        value: 'default-template'
+        value: 'default-template',
       },
       {
         name: '自定义',
-        value: 'self-input'
+        value: 'self-input',
       },
       {
         name: '社区优质模板源',
-        value: 'open-source'
-      }
+        value: 'open-source',
+      },
     ]
 
-    if (localTemplateSource && localTemplateSource !== DEFAULT_TEMPLATE_SRC && localTemplateSource !== DEFAULT_TEMPLATE_SRC_GITEE) {
+    if (
+      localTemplateSource &&
+      localTemplateSource !== DEFAULT_TEMPLATE_SRC &&
+      localTemplateSource !== DEFAULT_TEMPLATE_SRC_GITEE
+    ) {
       choices.unshift({
         name: `本地模板源：${localTemplateSource}`,
-        value: localTemplateSource
+        value: localTemplateSource,
       })
     }
 
-    prompts.push({
-      type: 'list',
-      name: 'templateSource',
-      message: '请选择模板源',
-      choices
-    }, {
-      type: 'input',
-      name: 'templateSource',
-      message: '请输入模板源！',
-      askAnswered: true,
-      when (answers) {
-        return answers.templateSource === 'self-input'
-      }
-    }, {
-      type: 'list',
-      name: 'templateSource',
-      message: '请选择社区模板源',
-      async choices (answers) {
-        const choices = await getOpenSourceTemplates(answers.framework)
-        return choices
+    prompts.push(
+      {
+        type: 'list',
+        name: 'templateSource',
+        message: '请选择模板源',
+        choices,
       },
-      askAnswered: true,
-      when (answers) {
-        return answers.templateSource === 'open-source'
-      }
-    })
+      {
+        type: 'input',
+        name: 'templateSource',
+        message: '请输入模板源！',
+        askAnswered: true,
+        when(answers) {
+          return answers.templateSource === 'self-input'
+        },
+      },
+      {
+        type: 'list',
+        name: 'templateSource',
+        message: '请选择社区模板源',
+        async choices(answers) {
+          const choices = await getOpenSourceTemplates(answers.framework)
+          return choices
+        },
+        askAnswered: true,
+        when(answers) {
+          return answers.templateSource === 'open-source'
+        },
+      },
+    )
   }
 
   askTemplate: AskMethods = function (conf, prompts, list = []) {
-    const choices = list.map(item => ({
+    const choices = list.map((item) => ({
       name: item.desc ? `${item.name}（${item.desc}）` : item.name,
-      value: item.value || item.name
+      value: item.value || item.name,
     }))
 
     if (!conf.hideDefaultTemplate) {
       choices.unshift({
         name: '默认模板',
-        value: 'default'
+        value: 'default',
       })
     }
 
@@ -393,7 +404,7 @@ export default class Project extends Creator {
         type: 'list',
         name: 'template',
         message: '请选择模板',
-        choices
+        choices,
       })
     }
   }
@@ -402,20 +413,20 @@ export default class Project extends Creator {
     const packages = [
       {
         name: 'yarn',
-        value: NpmType.Yarn
+        value: NpmType.Yarn,
       },
       {
         name: 'pnpm',
-        value: NpmType.Pnpm
+        value: NpmType.Pnpm,
       },
       {
         name: 'npm',
-        value: NpmType.Npm
+        value: NpmType.Npm,
       },
       {
         name: 'cnpm',
-        value: NpmType.Cnpm
-      }
+        value: NpmType.Cnpm,
+      },
     ]
 
     if ((typeof conf.npm as string | undefined) !== 'string') {
@@ -423,12 +434,12 @@ export default class Project extends Creator {
         type: 'list',
         name: 'npm',
         message: '请选择包管理工具',
-        choices: packages
+        choices: packages,
       })
     }
   }
 
-  async fetchTemplates (answers: IProjectConf): Promise<ITemplates[]> {
+  async fetchTemplates(answers: IProjectConf): Promise<ITemplates[]> {
     const { templateSource, framework, compiler } = answers
     this.conf.framework = this.conf.framework || framework || ''
     this.conf.templateSource = this.conf.templateSource || templateSource
@@ -438,7 +449,8 @@ export default class Project extends Creator {
       this.conf.template = 'default'
       answers.templateSource = DEFAULT_TEMPLATE_SRC_GITEE
     }
-    if (this.conf.template === 'default' || answers.templateSource === NONE_AVAILABLE_TEMPLATE) return Promise.resolve([])
+    if (this.conf.template === 'default' || answers.templateSource === NONE_AVAILABLE_TEMPLATE)
+      return Promise.resolve([])
 
     // 从模板源下载模板
     const isClone = /gitee/.test(this.conf.templateSource) || this.conf.clone
@@ -450,7 +462,7 @@ export default class Project extends Creator {
       if (typeof _framework === 'string' && _framework) {
         return current === _framework.toLowerCase()
       } else if (isArray(_framework)) {
-        return _framework?.map(name => name.toLowerCase()).includes(current)
+        return _framework?.map((name) => name.toLowerCase()).includes(current)
       } else {
         return true
       }
@@ -464,49 +476,52 @@ export default class Project extends Creator {
     }
 
     // 根据用户选择的框架筛选模板
-    const newTemplateChoices: ITemplates[] = templateChoices
-      .filter(templateChoice => {
-        const { platforms, compiler } = templateChoice
-        return filterFramework(platforms) && filterCompiler(compiler)
-      })
+    const newTemplateChoices: ITemplates[] = templateChoices.filter((templateChoice) => {
+      const { platforms, compiler } = templateChoice
+      return filterFramework(platforms) && filterCompiler(compiler)
+    })
 
     return newTemplateChoices
   }
 
-  write (cb?: () => void) {
+  write(cb?: () => void) {
     this.conf.src = SOURCE_DIR
     const { projectName, projectDir, template, autoInstall = true, framework, npm } = this.conf as IProjectConf
     // 引入模板编写者的自定义逻辑
     const templatePath = this.templatePath(template)
     const handlerPath = path.join(templatePath, TEMPLATE_CREATOR)
     const handler = fs.existsSync(handlerPath) ? require(handlerPath).handler : {}
-    createProject({
-      projectRoot: projectDir,
-      projectName,
-      template,
-      npm,
-      framework,
-      css: this.conf.css || CSSType.None,
-      autoInstall: autoInstall,
-      templateRoot: getRootPath(),
-      version: getPkgVersion(),
-      typescript: this.conf.typescript,
-      buildEs5: this.conf.buildEs5,
-      date: this.conf.date,
-      description: this.conf.description,
-      compiler: this.conf.compiler,
-      period: PeriodType.CreateAPP,
-    }, handler).then(() => {
+    createProject(
+      {
+        projectRoot: projectDir,
+        projectName,
+        template,
+        npm,
+        framework,
+        css: this.conf.css || CSSType.None,
+        autoInstall: autoInstall,
+        templateRoot: getRootPath(),
+        version: getPkgVersion(),
+        typescript: this.conf.typescript,
+        buildEs5: this.conf.buildEs5,
+        date: this.conf.date,
+        description: this.conf.description,
+        compiler: this.conf.compiler,
+        period: PeriodType.CreateAPP,
+      },
+      handler,
+    ).then(() => {
       cb && cb()
     })
   }
 }
 
-function getOpenSourceTemplates (platform: string) {
+function getOpenSourceTemplates(platform: string) {
   return new Promise((resolve, reject) => {
     const spinner = ora({ text: '正在拉取开源模板列表...', discardStdin: false }).start()
-    axios.get('https://gitee.com/NervJS/awesome-taro/raw/next/index.json')
-      .then(response => {
+    axios
+      .get('https://gitee.com/NervJS/awesome-taro/raw/next/index.json')
+      .then((response) => {
         spinner.succeed(`${chalk.grey('拉取开源模板列表成功！')}`)
         const collection = response.data
         switch (platform.toLowerCase()) {
@@ -516,7 +531,7 @@ function getOpenSourceTemplates (platform: string) {
             return resolve([NONE_AVAILABLE_TEMPLATE])
         }
       })
-      .catch(_error => {
+      .catch((_error) => {
         spinner.fail(chalk.red('拉取开源模板列表失败！'))
         return reject(new Error())
       })

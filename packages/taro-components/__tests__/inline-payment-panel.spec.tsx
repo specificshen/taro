@@ -13,7 +13,7 @@ describe('InlinePaymentPanel', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [InlinePaymentPanel],
-      template: () => (<taro-inline-payment-panel-core />),
+      template: () => <taro-inline-payment-panel-core />,
     })
     await page.waitForChanges()
 

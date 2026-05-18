@@ -9,7 +9,7 @@ import { GeneratorError, GeneratorErrorType } from '../../utils/error'
 
 import type { IPluginContext } from '@tarojs/service'
 
-export async function updateConfig(options: { ctx: IPluginContext, compilerType: 'webpack5' | 'vite' }) {
+export async function updateConfig(options: { ctx: IPluginContext; compilerType: 'webpack5' | 'vite' }) {
   const { ctx, compilerType } = options
   const { fs } = ctx.helper
   const sourceCode = await fs.readFile(ctx.paths.configPath, { encoding: 'utf-8' })
@@ -30,7 +30,7 @@ export async function updateConfig(options: { ctx: IPluginContext, compilerType:
 
 function processImportDecl(
   ast: parser.ParseResult<t.File>,
-  pkgMap: Map<string, { defaultImport?: string, namedImport?: Set<string> }>
+  pkgMap: Map<string, { defaultImport?: string; namedImport?: Set<string> }>,
 ) {
   const alias = new Map<string, string>()
   const importedModule = new Map<string, t.ImportDeclaration>()
@@ -79,8 +79,8 @@ function processImportDecl(
               path.node.body.unshift(
                 t.importDeclaration(
                   [t.importDefaultSpecifier(t.identifier(defaultImport))],
-                  t.stringLiteral(moduleName)
-                )
+                  t.stringLiteral(moduleName),
+                ),
               )
             }
           }
@@ -95,10 +95,10 @@ function processImportDecl(
               path.node.body.unshift(
                 t.importDeclaration(
                   Array.from(namedImport).map((importName) =>
-                    t.importSpecifier(t.identifier(importName), t.identifier(importName))
+                    t.importSpecifier(t.identifier(importName), t.identifier(importName)),
                   ),
-                  t.stringLiteral(moduleName)
-                )
+                  t.stringLiteral(moduleName),
+                ),
               )
             }
           }
@@ -127,7 +127,7 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
               if (t.isIdentifier(prop.node.key, { name: 'mini' }) && t.isObjectExpression(prop.node.value)) {
                 const props = prop.node.value.properties
                 const webpackChainMethod = props.find(
-                  (p) => t.isObjectMethod(p) && t.isIdentifier(p.key, { name: 'webpackChain' })
+                  (p) => t.isObjectMethod(p) && t.isIdentifier(p.key, { name: 'webpackChain' }),
                 ) as t.ObjectMethod | undefined
 
                 const installPluginCode = dedent(`
@@ -172,8 +172,8 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                                   (ip) =>
                                     t.isObjectProperty(ip) &&
                                     t.isIdentifier(ip.key, { name: 'plugin' }) &&
-                                    t.isIdentifier(ip.value, { name: alias.get(importName) ?? importName })
-                                )
+                                    t.isIdentifier(ip.value, { name: alias.get(importName) ?? importName }),
+                                ),
                             )
                             if (installProp) {
                               pluginAlreadyExists = true
@@ -196,8 +196,8 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                       [t.identifier('chain'), t.identifier('webpack')],
                       t.blockStatement([t.expressionStatement(installPluginStmt)]),
                       false,
-                      false
-                    )
+                      false,
+                    ),
                   )
                 }
                 updated = true
@@ -205,7 +205,7 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
               }
             },
           },
-          path.scope
+          path.scope,
         )
         path.stop()
       }
@@ -252,7 +252,7 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
     new Map([
       [weappTailwindCSS, { namedImport: new Set([importPluginName]) }],
       [tailwindcss, { defaultImport: importTailwindcss }],
-    ])
+    ]),
   )
 
   function createUnifiedVitePluginNode() {
@@ -302,7 +302,7 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                   t.objectProperty(t.identifier('type'), t.stringLiteral('vite')),
                   t.objectProperty(
                     t.identifier('vitePlugins'),
-                    t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()])
+                    t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()]),
                   ),
                 ])
                 updated = true
@@ -331,8 +331,8 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                   compilerProps.push(
                     t.objectProperty(
                       t.identifier('vitePlugins'),
-                      t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()])
-                    )
+                      t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()]),
+                    ),
                   )
                   updated = true
                   prop.stop()
@@ -348,14 +348,14 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                       (prop) =>
                         t.isObjectProperty(prop) &&
                         t.isIdentifier(prop.key, { name: 'name' }) &&
-                        t.isStringLiteral(prop.value, { value: 'postcss-config-loader-plugin' })
-                    )
+                        t.isStringLiteral(prop.value, { value: 'postcss-config-loader-plugin' }),
+                    ),
                 )
 
                 const hasUnifiedPlugin = elements.some(
                   (el) =>
                     t.isCallExpression(el) &&
-                    t.isIdentifier(el.callee, { name: alias.get(importPluginName) ?? importPluginName })
+                    t.isIdentifier(el.callee, { name: alias.get(importPluginName) ?? importPluginName }),
                 )
 
                 if (!hasPostcssPlugin) {
@@ -370,7 +370,7 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
               }
             },
           },
-          path.scope
+          path.scope,
         )
         path.stop()
       }

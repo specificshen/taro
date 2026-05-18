@@ -3,7 +3,7 @@ export interface EventOptions {
   cancelable: boolean
 }
 
-type Target = Record<string, unknown> & { dataset: Record<string, unknown>, id: string }
+type Target = Record<string, unknown> & { dataset: Record<string, unknown>; id: string }
 
 export interface MpEvent {
   type: string

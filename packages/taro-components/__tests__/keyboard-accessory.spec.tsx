@@ -13,7 +13,7 @@ describe('KeyboardAccessory', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [KeyboardAccessory],
-      template: () => (<taro-keyboard-accessory-core />),
+      template: () => <taro-keyboard-accessory-core />,
     })
     await page.waitForChanges()
 

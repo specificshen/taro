@@ -40,7 +40,7 @@ const STOP_CHARS = [
  * @param filePath the path of the file that led to an error being raised
  * @returns the created diagnostic, or `null` if one could not be generated
  */
-export function loadDiagnostic (
+export function loadDiagnostic(
   context: d.PluginCtx,
   sassError: LegacyException,
   filePath: string,
@@ -49,7 +49,7 @@ export function loadDiagnostic (
     return null
   }
 
-  type TErrorLine = d.PrintLine & { text: string, errorLength: number }
+  type TErrorLine = d.PrintLine & { text: string; errorLength: number }
   const diagnostic: d.Diagnostic & { lines: TErrorLine[] } = {
     level: 'error',
     type: 'css',
@@ -148,7 +148,7 @@ export function loadDiagnostic (
  * @param input the numeric error code to convert
  * @returns the stringified error code
  */
-function formatCode (input: number): string {
+function formatCode(input: number): string {
   let output = ''
   if (input != null) {
     output = String(input)
@@ -162,7 +162,7 @@ function formatCode (input: number): string {
  * @param input the Sass message to split
  * @returns the split message
  */
-function formatMessage (input: string): string {
+function formatMessage(input: string): string {
   let output = ''
   if (typeof input === 'string') {
     output = input.split('╷')[0]
@@ -177,7 +177,7 @@ function formatMessage (input: string): string {
  * @param fileName the filename to format for pretty printing
  * @returns the formatted filename
  */
-function formatFileName (rootDir: string, fileName: string): string {
+function formatFileName(rootDir: string, fileName: string): string {
   if (!rootDir || !fileName) return ''
 
   fileName = fileName.replace(rootDir, '')

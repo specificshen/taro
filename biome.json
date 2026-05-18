@@ -58,5 +58,8 @@
     "rules": {
       "recommended": false
     }
+  },
+  "assist": {
+    "enabled": false
   }
 }

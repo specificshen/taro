@@ -1,13 +1,13 @@
 import type * as BabelCore from '@babel/core'
 
 export default (id = '') => {
-  return function pluginRemovePageConfig (babel: typeof BabelCore): BabelCore.PluginObj<BabelCore.PluginPass> {
+  return function pluginRemovePageConfig(babel: typeof BabelCore): BabelCore.PluginObj<BabelCore.PluginPass> {
     const { types: t } = babel
 
     return {
       name: 'plugin:remove_pageconfig',
       visitor: {
-        CallExpression (nodePath, state) {
+        CallExpression(nodePath, state) {
           if (!/\.config\.(t|j)sx?$/.test(state.filename || id)) return
 
           const { callee } = nodePath.node
@@ -15,8 +15,8 @@ export default (id = '') => {
           if (!['defineAppConfig', 'definePageConfig'].includes(callee.name)) return
 
           nodePath.remove()
-        }
-      }
+        },
+      },
     }
   }
 }

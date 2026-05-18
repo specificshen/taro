@@ -1,4 +1,4 @@
-export function convertStyle (style?: string): Record<string, string> | undefined {
+export function convertStyle(style?: string): Record<string, string> | undefined {
   if (style) {
     const regex = /([\w-]*)\s*:\s*([^;]*)/g
     const properties: Record<string, string> = {}

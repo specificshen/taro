@@ -1,11 +1,6 @@
 import { hooks, isArray, isFunction, isUndefined, Shortcuts } from '@tarojs/shared'
 
-import {
-  CUSTOM_WRAPPER,
-  PAGE_INIT,
-  ROOT_STR,
-  SET_DATA
-} from '../constants'
+import { CUSTOM_WRAPPER, PAGE_INIT, ROOT_STR, SET_DATA } from '../constants'
 import { options } from '../options'
 import { perf } from '../perf'
 import { customWrapperCache, isComment } from '../utils'
@@ -13,7 +8,7 @@ import { TaroElement } from './element'
 
 import type { HydratedData, MpInstance, TFunc, UpdatePayload, UpdatePayloadValue } from '../interface'
 
-function findCustomWrapper (root: TaroRootElement, dataPathArr: string[]) {
+function findCustomWrapper(root: TaroRootElement, dataPathArr: string[]) {
   // ['root', 'cn', '[0]'] remove 'root' => ['cn', '[0]']
   const list = dataPathArr.slice(1)
   let currentData: any = root
@@ -30,7 +25,7 @@ function findCustomWrapper (root: TaroRootElement, dataPathArr: string[]) {
     currentData = currentData[key]
 
     if (isArray(currentData)) {
-      currentData = currentData.filter(el => !isComment(el))
+      currentData = currentData.filter((el) => !isComment(el))
     }
 
     if (isUndefined(currentData)) return true
@@ -47,7 +42,7 @@ function findCustomWrapper (root: TaroRootElement, dataPathArr: string[]) {
   if (customWrapper) {
     return {
       customWrapper,
-      splitedPath
+      splitedPath,
     }
   }
 }
@@ -61,17 +56,17 @@ export class TaroRootElement extends TaroElement {
 
   public ctx: null | MpInstance = null
 
-  public constructor () {
+  public constructor() {
     super()
     this.nodeName = ROOT_STR
     this.tagName = ROOT_STR.toUpperCase()
   }
 
-  public get _path (): string {
+  public get _path(): string {
     return ROOT_STR
   }
 
-  public get _root (): TaroRootElement {
+  public get _root(): TaroRootElement {
     return this
   }
 
@@ -80,7 +75,7 @@ export class TaroRootElement extends TaroElement {
     setTimeout(fn)
   }
 
-  public enqueueUpdate (payload: UpdatePayload): void {
+  public enqueueUpdate(payload: UpdatePayload): void {
     this.updatePayloads.push(payload)
 
     if (!this.pendingUpdate && this.ctx) {
@@ -88,7 +83,7 @@ export class TaroRootElement extends TaroElement {
     }
   }
 
-  public performUpdate (initRender = false, prerender?: TFunc) {
+  public performUpdate(initRender = false, prerender?: TFunc) {
     this.pendingUpdate = true
 
     const ctx = hooks.call('proxyToRaw', this.ctx)!
@@ -97,11 +92,7 @@ export class TaroRootElement extends TaroElement {
       const setDataMark = `${SET_DATA} 开始时间戳 ${Date.now()}`
       perf.start(setDataMark)
       const data: Record<string, UpdatePayloadValue | ReturnType<HydratedData>> = Object.create(null)
-      const resetPaths = new Set<string>(
-        initRender
-          ? ['root.cn.[0]', 'root.cn[0]']
-          : []
-      )
+      const resetPaths = new Set<string>(initRender ? ['root.cn.[0]', 'root.cn[0]'] : [])
 
       while (this.updatePayloads.length > 0) {
         const { path, value } = this.updatePayloads.shift()!
@@ -112,7 +103,7 @@ export class TaroRootElement extends TaroElement {
       }
 
       for (const path in data) {
-        resetPaths.forEach(p => {
+        resetPaths.forEach((p) => {
           // 已经重置了数组，就不需要分别再设置了
           if (path.includes(p) && path !== p) {
             delete data[path]
@@ -147,7 +138,7 @@ export class TaroRootElement extends TaroElement {
             // 合并同一个 customWrapper 的相关更新到一次 setData 中
             customWrapperMap.set(customWrapper, {
               ...(customWrapperMap.get(customWrapper) || {}),
-              [`i.${splitedPath}`]: data[p]
+              [`i.${splitedPath}`]: data[p],
             })
           } else {
             // 此项数据使用页面去更新
@@ -191,13 +182,13 @@ export class TaroRootElement extends TaroElement {
     })
   }
 
-  public enqueueUpdateCallback (cb: TFunc, ctx?: Record<string, any>) {
+  public enqueueUpdateCallback(cb: TFunc, ctx?: Record<string, any>) {
     this.updateCallbacks.push(() => {
       ctx ? cb.call(ctx) : cb()
     })
   }
 
-  public flushUpdateCallback () {
+  public flushUpdateCallback() {
     const updateCallbacks = this.updateCallbacks
     if (!updateCallbacks.length) return
 

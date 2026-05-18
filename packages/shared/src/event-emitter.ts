@@ -5,11 +5,11 @@ export class Events {
   protected callbacks?: EventCallbacks
   static eventSplitter = ',' // Note: Harmony ACE API 8 开发板不支持使用正则 split 字符串 /\s+/
 
-  constructor (opts?) {
+  constructor(opts?) {
     this.callbacks = opts?.callbacks ?? {}
   }
 
-  on (eventName: EventName, callback: (...args: any[]) => void, context?: any): this {
+  on(eventName: EventName, callback: (...args: any[]) => void, context?: any): this {
     let event: EventName | undefined, tail, _eventName: EventName[]
     if (!callback) {
       return this
@@ -29,13 +29,13 @@ export class Events {
       node.callback = callback
       calls[event] = {
         tail,
-        next: list ? list.next : node
+        next: list ? list.next : node,
       }
     }
     return this
   }
 
-  once (events: EventName, callback: (...r: any[]) => void, context?: any): this {
+  once(events: EventName, callback: (...r: any[]) => void, context?: any): this {
     const wrapper = (...args: any[]) => {
       callback.apply(this, args)
       this.off(events, wrapper, context)
@@ -46,7 +46,7 @@ export class Events {
     return this
   }
 
-  off (events?: EventName, callback?: (...args: any[]) => void, context?: any) {
+  off(events?: EventName, callback?: (...args: any[]) => void, context?: any) {
     let event: EventName | undefined, calls: EventCallbacks | undefined, _events: EventName[]
     if (!(calls = this.callbacks)) {
       return this
@@ -78,7 +78,7 @@ export class Events {
     return this
   }
 
-  trigger (events: EventName, ...args: any[]) {
+  trigger(events: EventName, ...args: any[]) {
     let event: EventName | undefined, node, calls: EventCallbacks | undefined, _events: EventName[]
     if (!(calls = this.callbacks)) {
       return this

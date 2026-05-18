@@ -1,16 +1,6 @@
 import { hooks, Shortcuts, toCamelCase } from '@tarojs/shared'
 
-import {
-  CATCH_VIEW,
-  CATCHMOVE,
-  CLASS,
-  CLICK_VIEW,
-  COMPILE_MODE,
-  ID,
-  PURE_VIEW,
-  STYLE,
-  VIEW
-} from './constants'
+import { CATCH_VIEW, CATCHMOVE, CLASS, CLICK_VIEW, COMPILE_MODE, ID, PURE_VIEW, STYLE, VIEW } from './constants'
 import { getComponentsAlias, isComment, isHasExtractProp, isText } from './utils'
 
 import type { TaroElement } from './dom/element'
@@ -26,7 +16,7 @@ let componentsAlias
  * actually, `hydrate` basicly do the `render()` thing, but ignore some properties,
  * it's a vnode traverser and modifier: that's exactly what Taro's doing in here.
  */
-export function hydrate (node: TaroElement | TaroText): MiniData {
+export function hydrate(node: TaroElement | TaroText): MiniData {
   // 初始化 componentsAlias
   componentsAlias ||= getComponentsAlias()
 
@@ -40,13 +30,13 @@ export function hydrate (node: TaroElement | TaroText): MiniData {
     return {
       sid: node.sid,
       [Shortcuts.Text]: node.nodeValue,
-      [Shortcuts.NodeName]: componentsAlias[nodeName]?._num || '8'
+      [Shortcuts.NodeName]: componentsAlias[nodeName]?._num || '8',
     }
   }
 
   const data: MiniElementData = {
     [Shortcuts.NodeName]: nodeName,
-    sid: node.sid
+    sid: node.sid,
   }
 
   if (node.uid !== node.sid) {
@@ -93,7 +83,7 @@ export function hydrate (node: TaroElement | TaroText): MiniData {
   }
 
   // Children
-  data[Shortcuts.Childnodes] = node.childNodes.filter(node => !isComment(node)).map(hydrate)
+  data[Shortcuts.Childnodes] = node.childNodes.filter((node) => !isComment(node)).map(hydrate)
 
   if (node.className !== '') {
     data[Shortcuts.Class] = node.className

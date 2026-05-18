@@ -13,33 +13,25 @@ import type { IPluginContext } from '@tarojs/service'
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
     name: 'update',
-    synopsisList: [
-      'taro update self [version]',
-      'taro update project [version]'
-    ],
+    synopsisList: ['taro update self [version]', 'taro update project [version]'],
     optionsMap: {
       '--npm [npm]': '包管理工具',
-      '-h, --help': 'output usage information'
+      '-h, --help': 'output usage information',
     },
-    async fn ({ _, options }) {
+    async fn({ _, options }) {
       const { npm } = options
       const [, updateType, version] = _ as [string, ('self' | 'project')?, string?]
       const { appPath, configPath } = ctx.paths
-      const {
-        chalk,
-        fs,
-        PROJECT_CONFIG,
-        UPDATE_PACKAGE_LIST
-      } = ctx.helper
+      const { chalk, fs, PROJECT_CONFIG, UPDATE_PACKAGE_LIST } = ctx.helper
 
       const pkgPath = path.join(appPath, 'package.json')
       const pkgName = getPkgItemByKey('name')
       const conf = {
-        npm: null
+        npm: null,
       }
       const prompts: Record<string, unknown>[] = []
 
-      async function getTargetVersion () {
+      async function getTargetVersion() {
         let targetTaroVersion
 
         if (version) {
@@ -47,7 +39,7 @@ export default (ctx: IPluginContext) => {
         } else {
           try {
             targetTaroVersion = await getLatestVersion(pkgName, {
-              version: 'latest'
+              version: 'latest',
             })
           } catch (e) {
             targetTaroVersion = await getLatestVersion(pkgName)
@@ -60,25 +52,25 @@ export default (ctx: IPluginContext) => {
         return targetTaroVersion
       }
 
-      function execUpdate (command: string, version: string, isSelf = false) {
+      function execUpdate(command: string, version: string, isSelf = false) {
         const updateTarget = isSelf ? ' CLI ' : ' Taro 项目依赖'
         const spinString = `正在更新${updateTarget}到 v${version} ...`
         const spinner = ora(spinString).start()
         execCommand({
           command,
-          successCallback (data) {
+          successCallback(data) {
             spinner.stop()
             console.log(data.replace(/\n$/, ''))
           },
-          failCallback (data) {
+          failCallback(data) {
             spinner.stop()
             spinner.warn(data.replace(/\n$/, ''))
-          }
+          },
         })
       }
 
       /** 更新全局的 Taro CLI */
-      async function updateSelf () {
+      async function updateSelf() {
         const spinner = ora('正在获取最新版本信息...').start()
         const targetTaroVersion = await getTargetVersion()
         spinner.stop()
@@ -92,7 +84,7 @@ export default (ctx: IPluginContext) => {
       }
 
       /** 更新当前项目中的 Taro 相关依赖 */
-      async function updateProject () {
+      async function updateProject() {
         if (!configPath || !fs.existsSync(configPath)) {
           console.log(chalk.red(`找不到项目配置文件 ${PROJECT_CONFIG}，请确定当前目录是 Taro 项目根目录!`))
           process.exit(1)
@@ -121,7 +113,9 @@ export default (ctx: IPluginContext) => {
         // 写入package.json
         try {
           await fs.writeJson(pkgPath, packageMap, { spaces: '\t' })
-          console.log(chalk.green(`项目当前 Taro 版本：${oldVersion}，Taro 最新版本：${version}，更新项目 package.json 成功！`))
+          console.log(
+            chalk.green(`项目当前 Taro 版本：${oldVersion}，Taro 最新版本：${version}，更新项目 package.json 成功！`),
+          )
           console.log()
         } catch (err) {
           console.error(err)
@@ -135,24 +129,24 @@ export default (ctx: IPluginContext) => {
         execUpdate(command, version)
       }
 
-      function askNpm (conf, prompts) {
+      function askNpm(conf, prompts) {
         const packages = [
           {
             name: 'yarn',
-            value: 'yarn'
+            value: 'yarn',
           },
           {
             name: 'pnpm',
-            value: 'pnpm'
+            value: 'pnpm',
           },
           {
             name: 'npm',
-            value: 'npm'
+            value: 'npm',
           },
           {
             name: 'cnpm',
-            value: 'cnpm'
-          }
+            value: 'cnpm',
+          },
         ]
 
         if ((typeof conf.npm as string | undefined) !== 'string') {
@@ -160,7 +154,7 @@ export default (ctx: IPluginContext) => {
             type: 'list',
             name: 'npm',
             message: '请选择包管理工具',
-            choices: packages
+            choices: packages,
           })
         }
       }
@@ -170,10 +164,12 @@ export default (ctx: IPluginContext) => {
       if (updateType === 'project') return updateProject()
 
       console.log(chalk.red('命令错误:'))
-      console.log(`${chalk.green(
-        'taro update self [version]')} 更新 Taro 开发工具 taro-cli 到指定版本或 Taro3 的最新版本`)
-      console.log(`${chalk.green(
-        'taro update project [version]')} 更新项目所有 Taro 相关依赖到指定版本或 Taro3 的最新版本`)
-    }
+      console.log(
+        `${chalk.green('taro update self [version]')} 更新 Taro 开发工具 taro-cli 到指定版本或 Taro3 的最新版本`,
+      )
+      console.log(
+        `${chalk.green('taro update project [version]')} 更新项目所有 Taro 相关依赖到指定版本或 Taro3 的最新版本`,
+      )
+    },
   })
 }

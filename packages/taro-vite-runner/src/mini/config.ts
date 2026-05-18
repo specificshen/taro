@@ -2,7 +2,14 @@ import path from 'node:path'
 
 import { babel } from '@rollup/plugin-babel'
 import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
-import { defaultMainFields, fs, PLATFORMS, recursiveMerge, REG_NODE_MODULES_DIR, REG_TARO_SCOPED_PACKAGE } from '@tarojs/helper'
+import {
+  defaultMainFields,
+  fs,
+  PLATFORMS,
+  recursiveMerge,
+  REG_NODE_MODULES_DIR,
+  REG_TARO_SCOPED_PACKAGE,
+} from '@tarojs/helper'
 import { getSassLoaderOption } from '@tarojs/runner-utils'
 import { isArray, PLATFORM_TYPE } from '@tarojs/shared'
 
@@ -13,7 +20,7 @@ import {
   getMinify,
   getMode,
   getPostcssPlugins,
-  stripMultiPlatformExt
+  stripMultiPlatformExt,
 } from '../utils'
 import { DEFAULT_TERSER_OPTIONS, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME } from '../utils/constants'
 import { logger } from '../utils/logger'
@@ -152,24 +159,22 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
   })
 
   // Note: 分 chunks, commonjs 的循环依赖令人头疼，需要把根据不同的框架，把 taro 和 框架的依赖，打成一个 base chunk（命名为 taro），保证这个 chunk 不会去引用别的 chunk
-  function getManualChunks (): GetManualChunk {
+  function getManualChunks(): GetManualChunk {
     const { framework } = taroConfig
     const reactRelatedDeps: RegExp[] = [
       /node_modules[\\/]react-reconciler[\\/]/,
       /node_modules[\\/]react[\\/]/,
-      /node_modules[\\/]scheduler[\\/]/
+      /node_modules[\\/]scheduler[\\/]/,
     ]
-    const vueRelatedDeps: RegExp[] = [
-      /node_modules[\\/]@vue[\\/]/,
-      /node_modules[\\/]vue[\\/]/
-    ]
+    const vueRelatedDeps: RegExp[] = [/node_modules[\\/]@vue[\\/]/, /node_modules[\\/]vue[\\/]/]
     const taroDeps: RegExp[] = [REG_TARO_SCOPED_PACKAGE]
     const taroViteRunnerDeps: RegExp[] = [/node_modules[\\/]@tarojs[\\/]vite-runner/]
     const nodeModulesDeps: RegExp[] = [REG_NODE_MODULES_DIR]
     const babelDeps: RegExp[] = [/node_modules[\\/]@babel[\\/]/]
     const commonjsHelpersDeps: RegExp[] = [/commonjsHelpers\.js$/]
-    const tslibDeps: RegExp [] = [/node_modules[\\/]tslib[\\/]/]
-    const testByReg2DExpList = (reg2DExpList: RegExp[][]) => (id: string) => reg2DExpList.some(regExpList => regExpList.some(regExp => regExp.test(id)))
+    const tslibDeps: RegExp[] = [/node_modules[\\/]tslib[\\/]/]
+    const testByReg2DExpList = (reg2DExpList: RegExp[][]) => (id: string) =>
+      reg2DExpList.some((regExpList) => regExpList.some((regExp) => regExp.test(id)))
     switch (framework) {
       case 'react':
         return (id, { getModuleInfo }) => {
@@ -236,13 +241,12 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           },
           plugins: [
             inject(getInjectOption()) as InputPluginOption,
-            babel(getBabelOption(
-              taroConfig,
-              {
+            babel(
+              getBabelOption(taroConfig, {
                 defaultExclude: [],
-                defaultInclude: [sourceDir, /(?<=node_modules[\\/]).*taro/]
-              }
-            )) as InputPluginOption,
+                defaultInclude: [sourceDir, /(?<=node_modules[\\/]).*taro/],
+              }),
+            ) as InputPluginOption,
           ],
         },
         commonjsOptions: {
@@ -265,7 +269,15 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           { find: /@tarojs\/components$/, replacement: taroConfig.taroComponentsPath },
           ...getAliasOption(),
         ],
-        dedupe: ['@tarojs/shared', '@tarojs/runtime', 'react', 'react-dom', 'react/jsx-runtime', 'react-reconciler', 'scheduler'],
+        dedupe: [
+          '@tarojs/shared',
+          '@tarojs/runtime',
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+          'react-reconciler',
+          'scheduler',
+        ],
       },
       esbuild: {
         jsxDev: false,

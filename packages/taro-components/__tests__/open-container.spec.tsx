@@ -13,7 +13,7 @@ describe('OpenContainer', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [OpenContainer],
-      template: () => (<taro-open-container-core />),
+      template: () => <taro-open-container-core />,
     })
     await page.waitForChanges()
 

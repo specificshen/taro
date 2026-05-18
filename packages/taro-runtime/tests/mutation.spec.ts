@@ -32,14 +32,16 @@ describe('MutationObserver', () => {
 
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
-        expect(mutations).toEqual([{
-          target: target,
-          type: 'childList',
-          previousSibling: null,
-          nextSibling: null,
-          removedNodes: [],
-          addedNodes: [child]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: target,
+            type: 'childList',
+            previousSibling: null,
+            nextSibling: null,
+            removedNodes: [],
+            addedNodes: [child],
+          },
+        ])
       })
     })
 
@@ -55,14 +57,16 @@ describe('MutationObserver', () => {
 
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
-        expect(mutations).toEqual([{
-          target: target,
-          type: 'childList',
-          previousSibling: sibling,
-          nextSibling: null,
-          removedNodes: [],
-          addedNodes: [child]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: target,
+            type: 'childList',
+            previousSibling: sibling,
+            nextSibling: null,
+            removedNodes: [],
+            addedNodes: [child],
+          },
+        ])
       })
     })
 
@@ -78,14 +82,16 @@ describe('MutationObserver', () => {
 
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
-        expect(mutations).toEqual([{
-          target: child,
-          type: 'childList',
-          previousSibling: null,
-          nextSibling: null,
-          removedNodes: [],
-          addedNodes: [div]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: child,
+            type: 'childList',
+            previousSibling: null,
+            nextSibling: null,
+            removedNodes: [],
+            addedNodes: [div],
+          },
+        ])
       })
     })
   })
@@ -104,14 +110,16 @@ describe('MutationObserver', () => {
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
         expect(target.childNodes.length).toBe(1)
-        expect(mutations).toEqual([{
-          target: target,
-          type: 'childList',
-          previousSibling: null,
-          nextSibling: null,
-          addedNodes: [div],
-          removedNodes: [view]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: target,
+            type: 'childList',
+            previousSibling: null,
+            nextSibling: null,
+            addedNodes: [div],
+            removedNodes: [view],
+          },
+        ])
       })
     })
 
@@ -130,14 +138,16 @@ describe('MutationObserver', () => {
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
         expect(target.childNodes.length).toBe(2)
-        expect(mutations).toEqual([{
-          target: target,
-          type: 'childList',
-          previousSibling: null,
-          nextSibling: last,
-          addedNodes: [newNode],
-          removedNodes: [first]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: target,
+            type: 'childList',
+            previousSibling: null,
+            nextSibling: last,
+            addedNodes: [newNode],
+            removedNodes: [first],
+          },
+        ])
       })
     })
 
@@ -156,14 +166,16 @@ describe('MutationObserver', () => {
       return Promise.resolve().then(() => {
         expect(mutations.length).toBe(1)
         expect(target.childNodes.length).toBe(2)
-        expect(mutations).toEqual([{
-          target: target,
-          type: 'childList',
-          previousSibling: first,
-          nextSibling: null,
-          addedNodes: [newNode],
-          removedNodes: [last]
-        }])
+        expect(mutations).toEqual([
+          {
+            target: target,
+            type: 'childList',
+            previousSibling: first,
+            nextSibling: null,
+            addedNodes: [newNode],
+            removedNodes: [last],
+          },
+        ])
       })
     })
   })
@@ -187,8 +199,8 @@ describe('MutationObserver', () => {
             type: 'childList',
             previousSibling: null,
             nextSibling: null,
-            removedNodes: [first]
-          }
+            removedNodes: [first],
+          },
         ])
       })
     })
@@ -213,8 +225,8 @@ describe('MutationObserver', () => {
             type: 'childList',
             previousSibling: null,
             nextSibling: last,
-            removedNodes: [first]
-          }
+            removedNodes: [first],
+          },
         ])
       })
     })
@@ -242,15 +254,15 @@ describe('MutationObserver', () => {
             type: 'childList',
             previousSibling: first,
             nextSibling: last,
-            removedNodes: [second]
+            removedNodes: [second],
           },
           {
             target: target,
             type: 'childList',
             previousSibling: first,
             nextSibling: null,
-            removedNodes: [last]
-          }
+            removedNodes: [last],
+          },
         ])
       })
     })
@@ -275,8 +287,8 @@ describe('MutationObserver', () => {
             type: 'childList',
             previousSibling: null,
             nextSibling: null,
-            removedNodes: [view]
-          }
+            removedNodes: [view],
+          },
         ])
       })
     })

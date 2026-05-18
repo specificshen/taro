@@ -1,5 +1,5 @@
 class HLS {
-  isSupported () {
+  isSupported() {
     return false
   }
 }

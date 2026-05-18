@@ -67,7 +67,8 @@ describe('Textarea', () => {
     expect(onBlur).toHaveReceivedEventTimes(1)
     // expect(onBlur).toHaveReceivedEventDetail({ value })
 
-    value = 'tarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotaro'
+    value =
+      'tarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotarotaro'
     el.setProperty('value', value)
     await page.waitForChanges()
     // expect(onLineChange).toHaveReceivedEventTimes(1)

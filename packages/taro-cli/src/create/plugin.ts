@@ -13,28 +13,28 @@ export interface IPluginConf {
   projectDir: string
   projectName: string
   template: string
-  version:string
+  version: string
 }
 
 export default class Plugin extends Creator {
   public conf: IPluginConf
 
-  constructor (options: IPluginConf) {
+  constructor(options: IPluginConf) {
     super()
     this.conf = {
       ...options,
       projectName: path.basename(options.projectDir),
-      version: this.getCliVersion()
+      version: this.getCliVersion(),
     }
   }
 
-  getCliVersion () {
+  getCliVersion() {
     const pkgPath = path.join(this._rootPath, 'package.json')
     const pkg = fs.readJSONSync(pkgPath)
     return pkg.version
   }
 
-  async create () {
+  async create() {
     const { projectDir, template, pluginName } = this.conf
     const templatePath = this.templatePath(template)
 

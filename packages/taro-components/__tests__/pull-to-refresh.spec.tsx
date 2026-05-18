@@ -9,7 +9,7 @@ describe('PullToRefresh', () => {
   it('base', async () => {
     page = await newSpecPage({
       components: [PullToRefresh],
-      template: () => (<taro-pull-to-refresh-core />),
+      template: () => <taro-pull-to-refresh-core />,
     })
     expect(page.root).toMatchSnapshot()
   })

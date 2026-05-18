@@ -11,7 +11,7 @@ describe('WebView', () => {
   it('should show an iframe', async () => {
     page = await newSpecPage({
       components: [WebView],
-      template: () => (<taro-web-view-core src={TARO_WEBSITE} />),
+      template: () => <taro-web-view-core src={TARO_WEBSITE} />,
     })
     await page.waitForChanges()
     expect(page.root?.src).toEqual(TARO_WEBSITE)
@@ -21,7 +21,7 @@ describe('WebView', () => {
     const onLoad = jest.fn()
     page = await newSpecPage({
       components: [WebView],
-      template: () => (<taro-web-view-core src={TARO_WEBSITE} onLoad={onLoad} />),
+      template: () => <taro-web-view-core src={TARO_WEBSITE} onLoad={onLoad} />,
     })
     await page.waitForChanges()
     page.root?.dispatchEvent(new Event('load'))

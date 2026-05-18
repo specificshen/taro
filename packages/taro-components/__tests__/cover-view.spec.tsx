@@ -11,11 +11,13 @@ describe('CoverView', () => {
     const text = 'i m div'
     page = await newSpecPage({
       components: [CoverView],
-      template: () => (<taro-cover-view-core>
-        <div />
-        <div />
-        {text}
-      </taro-cover-view-core>),
+      template: () => (
+        <taro-cover-view-core>
+          <div />
+          <div />
+          {text}
+        </taro-cover-view-core>
+      ),
     })
 
     expect(page.root?.textContent).toEqual(text)
@@ -28,9 +30,7 @@ describe('CoverView', () => {
 
     page = await newSpecPage({
       components: [CoverView],
-      template: () => (<taro-cover-view-core
-        hoverClass={hoverClass}
-      />),
+      template: () => <taro-cover-view-core hoverClass={hoverClass} />,
     })
     page.root?.dispatchEvent(new Event('touchstart'))
     await delay(hoverStartTime + 30)
@@ -50,7 +50,7 @@ describe('CoverView', () => {
     const onLongPress = jest.fn()
     page = await newSpecPage({
       components: [CoverView],
-      template: () => (<taro-cover-view-core onlongpress={onLongPress} />),
+      template: () => <taro-cover-view-core onlongpress={onLongPress} />,
     })
     await page.waitForChanges()
 

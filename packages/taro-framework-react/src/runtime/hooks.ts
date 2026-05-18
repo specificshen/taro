@@ -18,7 +18,7 @@ const createTaroHook = (lifecycle: keyof PageLifeCycle | keyof AppInstance) => {
     if (fnRef.current !== fn) fnRef.current = fn
 
     React.useLayoutEffect(() => {
-      let inst = instRef.current = getPageInstance(id)
+      let inst = (instRef.current = getPageInstance(id))
       let first = false
       if (!inst) {
         first = true
@@ -30,12 +30,9 @@ const createTaroHook = (lifecycle: keyof PageLifeCycle | keyof AppInstance) => {
       const callback = (...args: any) => fnRef.current(...args)
 
       if (isFunction(inst[lifecycle])) {
-        (inst[lifecycle]) = [inst[lifecycle], callback]
+        inst[lifecycle] = [inst[lifecycle], callback]
       } else {
-        (inst[lifecycle]) = [
-          ...((inst[lifecycle]) || []),
-          callback
-        ]
+        inst[lifecycle] = [...(inst[lifecycle] || []), callback]
       }
 
       if (first) {
@@ -46,9 +43,9 @@ const createTaroHook = (lifecycle: keyof PageLifeCycle | keyof AppInstance) => {
         if (!inst) return
         const list = inst![lifecycle]
         if (list === callback) {
-          (inst[lifecycle]) = undefined
+          inst[lifecycle] = undefined
         } else if (isArray(list)) {
-          (inst[lifecycle]) = list.filter(item => item !== callback)
+          inst[lifecycle] = list.filter((item) => item !== callback)
         }
         instRef.current = undefined
       }

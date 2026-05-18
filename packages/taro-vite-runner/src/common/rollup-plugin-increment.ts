@@ -31,27 +31,29 @@ export default function ({ include = [], comparisonId, force = false }: IOption 
       const chunks = Object.values(bundle) as Array<any>
       for (const chunk of chunks) {
         if (files.has(chunk.fileName)) continue
-        if (include.some(f => {
-          if (typeof f === 'string') return chunk.fileName === f
-          else return f.test(chunk.fileName)
-        })) {
+        if (
+          include.some((f) => {
+            if (typeof f === 'string') return chunk.fileName === f
+            else return f.test(chunk.fileName)
+          })
+        ) {
           files.add(chunk.fileName)
         } else if (chunk.type === 'chunk') {
           const moduleIds = Object.keys(chunk.modules)
-          if (moduleIds.some(id => files.has(id) || (isFunction(comparisonId) && comparisonId(id, files)))) {
+          if (moduleIds.some((id) => files.has(id) || (isFunction(comparisonId) && comparisonId(id, files)))) {
             files.add(chunk.fileName)
             files.add(`${chunk.fileName}.map`)
           }
         }
       }
 
-      chunks.forEach(chunk => {
+      chunks.forEach((chunk) => {
         if (!files.has(chunk.fileName)) {
           delete bundle[chunk.fileName]
         }
       })
 
       files.clear()
-    }
+    },
   }
 }

@@ -5,7 +5,7 @@ process.env.SUPPORT_TARO_POLYFILL = 'disabled'
 
 // @ts-ignore
 globalThis.MutationObserver = class {
-  constructor (_callback) {}
-  disconnect () {}
-  observe (_element, _initObject) {}
+  constructor(_callback) {}
+  disconnect() {}
+  observe(_element, _initObject) {}
 }

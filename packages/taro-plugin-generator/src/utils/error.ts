@@ -10,7 +10,7 @@ type GeneratorErrorType = (typeof GeneratorErrorType)[keyof typeof GeneratorErro
 export class GeneratorError extends Error {
   type: GeneratorErrorType
   targetFile?: string
-  constructor(options: { type: GeneratorErrorType, message?: string, targetFile?: string }) {
+  constructor(options: { type: GeneratorErrorType; message?: string; targetFile?: string }) {
     const { type, message, targetFile } = options
     super(message)
     this.type = type
@@ -28,7 +28,7 @@ export async function safely<T>(
   options?: {
     fallback?: T
     onError?: (err: unknown) => void
-  }
+  },
 ) {
   try {
     return await fn()

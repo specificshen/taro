@@ -18,7 +18,7 @@ interface PageEvt extends Events {
 class PageEvts extends Events {
   exeList = []
 
-  on (eventName, callback) {
+  on(eventName, callback) {
     super.on(eventName, callback, this)
     this.exeList = this.exeList.reduce((prev: any, item: ExeListItem) => {
       if (item.eventName === eventName) {
@@ -31,7 +31,7 @@ class PageEvts extends Events {
     return this
   }
 
-  emit (events, data) {
+  emit(events, data) {
     // eslint-disable-next-line
     routeChannel.trigger(events, data)
   }
@@ -40,17 +40,17 @@ class PageEvts extends Events {
 const pageChannel: PageEvt = new PageEvts()
 
 class RouteEvts extends Events {
-  emit (events, data) {
+  emit(events, data) {
     pageChannel.off(events)
     pageChannel.exeList.push({
       eventName: events,
-      data
+      data,
     })
   }
 
-  addEvents (events) {
+  addEvents(events) {
     if (!events || typeof events !== 'object') return
-    Object.keys(events).forEach(key => {
+    Object.keys(events).forEach((key) => {
       this.off(key)
       this.on(key, events[key], this)
     })

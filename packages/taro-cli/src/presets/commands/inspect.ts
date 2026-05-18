@@ -1,11 +1,6 @@
 import * as path from 'node:path'
 
-import {
-  ENTRY,
-  OUTPUT_DIR,
-  resolveScriptPath,
-  SOURCE_DIR
-} from '@tarojs/helper'
+import { ENTRY, OUTPUT_DIR, resolveScriptPath, SOURCE_DIR } from '@tarojs/helper'
 import { getPlatformType } from '@tarojs/shared'
 
 import * as hooks from '../constant'
@@ -17,15 +12,15 @@ export default (ctx: IPluginContext) => {
     name: 'inspect',
     optionsMap: {
       '-t, --type [typeName]': 'Build type, weapp',
-      '-o, --output [outputPath]': 'output config to outputPath'
+      '-o, --output [outputPath]': 'output config to outputPath',
     },
     synopsisList: [
       'taro inspect --type weapp',
       'taro inspect --type weapp --output inspect.config.js',
       'taro inspect --type weapp plugins',
-      'taro inspect --type weapp module.rules.0'
+      'taro inspect --type weapp module.rules.0',
     ],
-    async fn ({ _, options }) {
+    async fn({ _, options }) {
       const { fs, chalk } = ctx.helper
       const platform = options.type || options.t
 
@@ -39,7 +34,7 @@ export default (ctx: IPluginContext) => {
       let config = getConfig(ctx, platform)
       config = {
         ...config,
-        ...config[configName]
+        ...config[configName],
       }
       delete config.mini
       delete config.h5
@@ -56,18 +51,18 @@ export default (ctx: IPluginContext) => {
             ...config,
             isWatch: !isProduction,
             mode: isProduction ? 'production' : 'development',
-            async modifyWebpackChain (chain, webpack, data) {
+            async modifyWebpackChain(chain, webpack, data) {
               await ctx.applyPlugins({
                 name: hooks.MODIFY_WEBPACK_CHAIN,
                 initialVal: chain,
                 opts: {
                   chain,
                   webpack,
-                  data
-                }
+                  data,
+                },
               })
             },
-            onWebpackChainReady (chain) {
+            onWebpackChainReady(chain) {
               const webpackConfig = chain.toConfig()
               const { toString } = chain.constructor
               const config = extractConfig(webpackConfig, extractPath)
@@ -81,16 +76,16 @@ export default (ctx: IPluginContext) => {
               }
 
               process.exit(0)
-            }
-          }
-        }
+            },
+          },
+        },
       })
-    }
+    },
   })
 }
 
 /** 是否 Taro 项目根路径 */
-function verifyIsTaroProject (ctx: IPluginContext) {
+function verifyIsTaroProject(ctx: IPluginContext) {
   const { fs, chalk, PROJECT_CONFIG } = ctx.helper
   const { configPath } = ctx.paths
 
@@ -101,7 +96,7 @@ function verifyIsTaroProject (ctx: IPluginContext) {
 }
 
 /** 检查平台类型 */
-function verifyPlatform (platform, chalk) {
+function verifyPlatform(platform, chalk) {
   if (typeof platform !== 'string') {
     console.log(chalk.red('请传入正确的编译类型！'))
     process.exit(0)
@@ -113,7 +108,7 @@ function verifyPlatform (platform, chalk) {
 }
 
 /** 整理 config */
-function getConfig (ctx: IPluginContext, platform: string) {
+function getConfig(ctx: IPluginContext, platform: string) {
   const { initialConfig } = ctx
   const sourceDirName = initialConfig.sourceRoot || SOURCE_DIR
   const outputDirName = initialConfig.outputRoot || OUTPUT_DIR
@@ -121,7 +116,7 @@ function getConfig (ctx: IPluginContext, platform: string) {
   const entryFilePath = resolveScriptPath(path.join(sourceDir, ENTRY))
 
   const entry = {
-    [ENTRY]: [entryFilePath]
+    [ENTRY]: [entryFilePath],
   }
 
   return {
@@ -129,12 +124,12 @@ function getConfig (ctx: IPluginContext, platform: string) {
     entry,
     sourceRoot: sourceDirName,
     outputRoot: outputDirName,
-    platform
+    platform,
   }
 }
 
 /** 按路径取出 webpackConfig 内的对应值 */
-function extractConfig (webpackConfig, extractPath: string | undefined) {
+function extractConfig(webpackConfig, extractPath: string | undefined) {
   if (!extractPath) return webpackConfig
 
   const list = extractPath.split('.')

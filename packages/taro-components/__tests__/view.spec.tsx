@@ -10,7 +10,7 @@ describe('View', () => {
   it('default props', async () => {
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core />),
+      template: () => <taro-view-core />,
     })
 
     expect(page.root?.hoverClass).toEqual(undefined)
@@ -22,11 +22,13 @@ describe('View', () => {
     const text = 'i m div'
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core>
-        <div />
-        <div />
-        {text}
-      </taro-view-core>),
+      template: () => (
+        <taro-view-core>
+          <div />
+          <div />
+          {text}
+        </taro-view-core>
+      ),
     })
 
     expect(page.root?.textContent).toEqual(text)
@@ -38,11 +40,9 @@ describe('View', () => {
     let hoverStayTime = 300
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core
-        hoverClass={hoverClass}
-        hoverStartTime={hoverStartTime}
-        hoverStayTime={hoverStayTime}
-      />),
+      template: () => (
+        <taro-view-core hoverClass={hoverClass} hoverStartTime={hoverStartTime} hoverStayTime={hoverStayTime} />
+      ),
     })
 
     expect(page.root?.hoverClass).toEqual(hoverClass)
@@ -69,9 +69,7 @@ describe('View', () => {
     const hoverStayTime = 400
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core
-        hoverClass={hoverClass}
-      />),
+      template: () => <taro-view-core hoverClass={hoverClass} />,
     })
     page.root?.dispatchEvent(new Event('touchstart'))
     await delay(hoverStartTime + 30)
@@ -91,7 +89,7 @@ describe('View', () => {
     const onLongPress = jest.fn()
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core onlongpress={onLongPress} />),
+      template: () => <taro-view-core onlongpress={onLongPress} />,
     })
 
     page.root?.dispatchEvent(new Event('touchstart'))
@@ -103,7 +101,7 @@ describe('View', () => {
   it('should support animation-iteration-count as number', async () => {
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core style={{ animationIterationCount: '1' }} />),
+      template: () => <taro-view-core style={{ animationIterationCount: '1' }} />,
     })
     await page.waitForChanges()
     expect(page.root?.style.animationIterationCount).toBe('1')
@@ -112,7 +110,7 @@ describe('View', () => {
   it('should not add "px" suffix for custom properties', async () => {
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core style={{ '--taro': '100px' }} />),
+      template: () => <taro-view-core style={{ '--taro': '100px' }} />,
     })
 
     expect(page.root?.style.cssText).toBe('--taro: 100px;')
@@ -122,7 +120,7 @@ describe('View', () => {
   it('should not add "px" suffix for custom properties for numeric', async () => {
     page = await newSpecPage({
       components: [View],
-      template: () => (<taro-view-core style={{ '--taro': '100' }} />),
+      template: () => <taro-view-core style={{ '--taro': '100' }} />,
     })
 
     expect(page.root?.style.cssText).toBe('--taro: 100;')

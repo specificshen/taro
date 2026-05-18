@@ -4,10 +4,10 @@ import CLI from '../cli'
 import { getPkgVersion } from '../util'
 
 jest.mock('@tarojs/service')
-const MockedKernel = (Kernel as unknown) as (jest.Mock<Kernel>)
+const MockedKernel = Kernel as unknown as jest.Mock<Kernel>
 const APP_PATH = '/a/b/c'
 
-function setProcessArgv (cmd: string) {
+function setProcessArgv(cmd: string) {
   // @ts-ignore
   process.argv = [null, ...cmd.split(' ')]
 }
@@ -35,9 +35,7 @@ describe('inspect', () => {
 
   describe('build', () => {
     const baseOpts = {
-      _: [
-        'build'
-      ],
+      _: ['build'],
       options: {
         args: expect.any(Object),
         platform: undefined,
@@ -57,7 +55,7 @@ describe('inspect', () => {
         sourcemapOutput: undefined,
         sourcemapSourcesRoot: undefined,
       },
-      isHelp: false
+      isHelp: false,
     }
 
     it('should make configs', async () => {
@@ -73,12 +71,12 @@ describe('inspect', () => {
         port: 8080,
         deviceType: undefined,
         resetCache: false,
-        qr: false
+        qr: false,
       })
 
       expect(ins.run).toHaveBeenCalledWith({
         name: 'build',
-        opts
+        opts,
       })
     })
 
@@ -97,8 +95,8 @@ describe('inspect', () => {
         name: 'build',
         opts: Object.assign({}, baseOpts, {
           platform: 'plugin',
-          plugin: 'weapp'
-        })
+          plugin: 'weapp',
+        }),
       })
       expect(process.env.NODE_ENV).toEqual('production')
       expect(process.env.TARO_ENV).toEqual('plugin')
@@ -117,10 +115,7 @@ describe('inspect', () => {
       expect(ins.run).toHaveBeenCalledWith({
         name: 'init',
         opts: {
-          _: [
-            'init',
-            'temp'
-          ],
+          _: ['init', 'temp'],
           options: {
             appPath: APP_PATH,
             projectName,
@@ -129,10 +124,10 @@ describe('inspect', () => {
             description: undefined,
             clone: true,
             template,
-            css
+            css,
           },
-          isHelp: false
-        }
+          isHelp: false,
+        },
       })
     })
 
@@ -144,9 +139,7 @@ describe('inspect', () => {
       expect(ins.run).toHaveBeenCalledWith({
         name: 'init',
         opts: {
-          _: [
-            'init'
-          ],
+          _: ['init'],
           options: {
             appPath: APP_PATH,
             projectName,
@@ -155,10 +148,10 @@ describe('inspect', () => {
             description: undefined,
             clone: false,
             template: undefined,
-            css: undefined
+            css: undefined,
           },
-          isHelp: false
-        }
+          isHelp: false,
+        },
       })
     })
   })
@@ -177,8 +170,8 @@ describe('inspect', () => {
             check: true,
             'inject-global-style': true,
           },
-          isHelp: false
-        }
+          isHelp: false,
+        },
       })
     })
   })
@@ -199,10 +192,10 @@ describe('inspect', () => {
             build: true,
             check: true,
             'inject-global-style': true,
-            type
+            type,
           },
-          isHelp: true
-        }
+          isHelp: true,
+        },
       })
     })
   })

@@ -6,15 +6,15 @@ export default (ctx: IPluginContext) => {
   ctx.registerCommand({
     name: 'config',
     optionsMap: {
-      '--json': '以 JSON 形式输出'
+      '--json': '以 JSON 形式输出',
     },
     synopsisList: [
       'taro config set <key> <value>',
       'taro config get <key>',
       'taro config delete <key>',
-      'taro config list [--json]'
+      'taro config list [--json]',
     ],
-    fn ({ _, options }) {
+    fn({ _, options }) {
       const [, cmd, key, value] = _
       const json = !!options.json
       const { fs, getUserHomeDir, TARO_CONFIG_FOLDER, TARO_BASE_CONFIG } = ctx.helper
@@ -22,7 +22,7 @@ export default (ctx: IPluginContext) => {
       const configPath = path.join(homedir, `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`)
       if (!homedir) return console.log('找不到用户根目录')
 
-      function displayConfigPath (configPath) {
+      function displayConfigPath(configPath) {
         console.log(`Config path: ${configPath}`)
         console.log()
       }
@@ -47,7 +47,7 @@ export default (ctx: IPluginContext) => {
           } else {
             fs.ensureFileSync(configPath)
             fs.writeJSONSync(configPath, {
-              [key]: value
+              [key]: value,
             })
           }
           console.log(`set key: ${key}, value: ${value}`)
@@ -81,6 +81,6 @@ export default (ctx: IPluginContext) => {
         default:
           break
       }
-    }
+    },
   })
 }

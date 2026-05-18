@@ -31,15 +31,19 @@ describe('Checkbox', () => {
       { value: 'Brazil' },
       { value: 'Japan' },
       { value: 'Britain' },
-      { value: 'French' }
+      { value: 'French' },
     ]
     page = await newE2EPage({
       html: `<taro-checkbox-group-core name="checkbox">
-        ${list.map(item => `<taro-checkbox-core
+        ${list
+          .map(
+            (item) => `<taro-checkbox-core
           key="${item.value}"
           value="${item.value}"
           ${item.checked ? 'checked' : ''}
-        />`).join('')}
+        />`,
+          )
+          .join('')}
       </taro-checkbox-group-core>`,
     })
 

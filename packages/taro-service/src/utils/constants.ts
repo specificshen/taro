@@ -12,10 +12,10 @@ export const presetOrPluginPrefixReg = new RegExp(`^${PRESET_PREFIX}|${PLUGIN_PR
 
 export enum PluginType {
   Preset = 'Preset',
-  Plugin = 'Plugin'
+  Plugin = 'Plugin',
 }
 
 export const PluginNamePrefix = {
   [PluginType.Preset]: PLUGIN_PREFIX,
-  [PluginType.Plugin]: PLUGIN_PREFIX
+  [PluginType.Plugin]: PLUGIN_PREFIX,
 }

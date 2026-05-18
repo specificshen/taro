@@ -10,7 +10,7 @@ describe('Progress', () => {
   it('props', async () => {
     page = await newSpecPage({
       components: [Progress],
-      template: () => (<taro-progress-core />),
+      template: () => <taro-progress-core />,
     })
 
     let bar = page.root?.querySelector<AnyHTMLElement>('.weui-progress__bar')
@@ -59,7 +59,7 @@ describe('Progress', () => {
   it('should percent between 0~100', async () => {
     page = await newSpecPage({
       components: [Progress],
-      template: () => (<taro-progress-core percent={-18} showInfo />),
+      template: () => <taro-progress-core percent={-18} showInfo />,
     })
 
     let innerBar = page.root?.querySelector<AnyHTMLElement>('.weui-progress__inner-bar')

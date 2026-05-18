@@ -20,7 +20,7 @@ interface Current {
 export const Current: Current = {
   app: null,
   router: null,
-  page: null
+  page: null,
 }
 
 export const getCurrentInstance = () => Current

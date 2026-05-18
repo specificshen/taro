@@ -13,7 +13,7 @@ describe('FollowSwan', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [FollowSwan],
-      template: () => (<taro-follow-swan-core />),
+      template: () => <taro-follow-swan-core />,
     })
     await page.waitForChanges()
 

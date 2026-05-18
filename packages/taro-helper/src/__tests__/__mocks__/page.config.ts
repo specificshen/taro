@@ -1,5 +1,5 @@
 const config = {
-  navigationBarTitleText: 'index'
+  navigationBarTitleText: 'index',
 }
 
 export default config

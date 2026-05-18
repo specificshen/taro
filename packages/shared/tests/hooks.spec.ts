@@ -9,9 +9,11 @@ describe('taro hooks', () => {
   beforeAll(() => {
     hook = new TaroHooks({
       hookA: TaroHook(HOOK_TYPE.SINGLE),
-      hookAWithDefault: TaroHook(HOOK_TYPE.SINGLE, function (name) { return 'name: ' + name }),
+      hookAWithDefault: TaroHook(HOOK_TYPE.SINGLE, function (name) {
+        return 'name: ' + name
+      }),
       hookB: TaroHook(HOOK_TYPE.MULTI),
-      hookC: TaroHook(HOOK_TYPE.WATERFALL)
+      hookC: TaroHook(HOOK_TYPE.WATERFALL),
     })
   })
 
@@ -51,7 +53,7 @@ describe('taro hooks', () => {
     const fnB = vi.fn()
     const fnC = vi.fn()
     const hook = new TaroHooks({
-      hookBWithDefault: TaroHook(HOOK_TYPE.MULTI, fnA)
+      hookBWithDefault: TaroHook(HOOK_TYPE.MULTI, fnA),
     })
     hook.tap('hookBWithDefault', fnB)
     hook.tap('hookBWithDefault', fnC)
@@ -83,7 +85,7 @@ describe('taro hooks', () => {
     const hooks = new TaroHooks({
       hookA: TaroHook(HOOK_TYPE.SINGLE, () => 'default'),
       hookB: TaroHook(HOOK_TYPE.MULTI),
-      hookC: TaroHook(HOOK_TYPE.WATERFALL)
+      hookC: TaroHook(HOOK_TYPE.WATERFALL),
     })
 
     // pluginA
@@ -91,7 +93,7 @@ describe('taro hooks', () => {
     const reconcilerA = {
       hookA: () => 'pluginA',
       hookB: fnA,
-      hookC: [n => n + 1, n => n + 2]
+      hookC: [(n) => n + 1, (n) => n + 2],
     }
     mergeReconciler(reconcilerA, hooks)
 
@@ -100,7 +102,7 @@ describe('taro hooks', () => {
     const reconcilerB = {
       hookA: () => 'pluginB',
       hookB: fnB,
-      hookC: [n => n + 3, n => n + 4]
+      hookC: [(n) => n + 3, (n) => n + 4],
     }
     mergeReconciler(reconcilerB, hooks)
 

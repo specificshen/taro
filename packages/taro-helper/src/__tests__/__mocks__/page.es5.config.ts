@@ -1,5 +1,5 @@
 const config = definePageConfig({
-  navigationBarTitleText: 'index'
+  navigationBarTitleText: 'index',
 })
 
 module.exports = config

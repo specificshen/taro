@@ -4,11 +4,11 @@ import env from '../env'
 import { URLSearchParams } from './URLSearchParams'
 
 class TaroURL {
-  static createObjectURL () {
+  static createObjectURL() {
     throw new Error('Oops, not support URL.createObjectURL() in miniprogram.')
   }
 
-  static revokeObjectURL () {
+  static revokeObjectURL() {
     throw new Error('Oops, not support URL.revokeObjectURL() in miniprogram.')
   }
 
@@ -20,7 +20,7 @@ class TaroURL {
   #protocol = ''
   #search: URLSearchParams
 
-  constructor (url: string, base?: string) {
+  constructor(url: string, base?: string) {
     if (!isString(url)) url = String(url)
 
     const parseResult = parseUrlBase(url, base)
@@ -35,19 +35,19 @@ class TaroURL {
   }
 
   /* public property */
-  get protocol () {
+  get protocol() {
     return this.#protocol
   }
 
-  set protocol (val: string) {
+  set protocol(val: string) {
     isString(val) && (this.#protocol = val.trim())
   }
 
-  get host () {
+  get host() {
     return this.hostname + (this.port ? ':' + this.port : '')
   }
 
-  set host (val: string) {
+  set host(val: string) {
     if (val && isString(val)) {
       val = val.trim()
       const { hostname, port } = parseUrl(`//${val}`)
@@ -56,27 +56,27 @@ class TaroURL {
     }
   }
 
-  get hostname () {
+  get hostname() {
     return this.#hostname
   }
 
-  set hostname (val: string) {
+  set hostname(val: string) {
     val && isString(val) && (this.#hostname = val.trim())
   }
 
-  get port () {
+  get port() {
     return this.#port
   }
 
-  set port (val: string) {
+  set port(val: string) {
     isString(val) && (this.#port = val.trim())
   }
 
-  get pathname () {
+  get pathname() {
     return this.#pathname
   }
 
-  set pathname (val: string) {
+  set pathname(val: string) {
     if (isString(val)) {
       val = val.trim()
       const HEAD_REG = /^(\/|\.\/|\.\.\/)/
@@ -89,23 +89,23 @@ class TaroURL {
     }
   }
 
-  get search () {
+  get search() {
     const val = this.#search.toString()
-    return (val.length === 0 || val.startsWith('?')) ? val : `?${val}`
+    return val.length === 0 || val.startsWith('?') ? val : `?${val}`
   }
 
-  set search (val: string) {
+  set search(val: string) {
     if (isString(val)) {
       val = val.trim()
       this.#search = new URLSearchParams(val)
     }
   }
 
-  get hash () {
+  get hash() {
     return this.#hash
   }
 
-  set hash (val: string) {
+  set hash(val: string) {
     if (isString(val)) {
       val = val.trim()
       if (val) this.#hash = val.startsWith('#') ? val : `#${val}`
@@ -113,11 +113,11 @@ class TaroURL {
     }
   }
 
-  get href () {
+  get href() {
     return `${this.protocol}//${this.host}${this.pathname}${this.search}${this.hash}`
   }
 
-  set href (val: string) {
+  set href(val: string) {
     if (val && isString(val)) {
       val = val.trim()
       const { protocol, hostname, port, hash, search, pathname } = parseUrl(val)
@@ -130,11 +130,11 @@ class TaroURL {
     }
   }
 
-  get origin () {
+  get origin() {
     return `${this.protocol}//${this.host}`
   }
 
-  set origin (val: string) {
+  set origin(val: string) {
     if (val && isString(val)) {
       val = val.trim()
       const { protocol, hostname, port } = parseUrl(val)
@@ -144,21 +144,21 @@ class TaroURL {
     }
   }
 
-  get searchParams () {
+  get searchParams() {
     return this.#search
   }
 
   // public method
-  toString () {
+  toString() {
     return this.href
   }
 
-  toJSON () {
+  toJSON() {
     return this.toString()
   }
 
   // convenient for deconstructor
-  _toRaw () {
+  _toRaw() {
     return {
       protocol: this.protocol,
       port: this.port,
@@ -178,7 +178,7 @@ export type { TaroURL }
 // Note: 小程序端 vite 打包成 commonjs，const URL = xxx 会报错，所以把 URL 改为 TaroURLProvider
 export const TaroURLProvider: typeof TaroURL = process.env.TARO_PLATFORM === 'web' ? env.window.URL : TaroURL
 
-export function parseUrl (url = '') {
+export function parseUrl(url = '') {
   const result = {
     href: '',
     origin: '',
@@ -188,7 +188,7 @@ export function parseUrl (url = '') {
     port: '',
     pathname: '',
     search: '',
-    hash: ''
+    hash: '',
   }
   if (!url || !isString(url)) return result
 
@@ -212,7 +212,7 @@ export function parseUrl (url = '') {
   return result
 }
 
-function parseUrlBase (url: string, base?: string) {
+function parseUrlBase(url: string, base?: string) {
   const VALID_URL = /^(https?:)\/\//i
 
   let fullUrl = ''

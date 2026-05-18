@@ -1,11 +1,6 @@
 import { controlledComponent, isUndefined, toCamelCase } from '@tarojs/shared'
 
-import {
-  A,
-  COMMENT,
-  DOCUMENT_ELEMENT_NAME,
-  ROOT_STR
-} from '../constants'
+import { A, COMMENT, DOCUMENT_ELEMENT_NAME, ROOT_STR } from '../constants'
 import { TaroElement } from '../dom/element'
 import { createEvent } from '../dom/event'
 import { eventSource } from '../dom/event-source'
@@ -24,13 +19,13 @@ export class TaroDocument extends TaroElement {
   public createEvent = createEvent
   cookie?: string
 
-  public constructor () {
+  public constructor() {
     super()
     this.nodeType = NodeType.DOCUMENT_NODE
     this.nodeName = DOCUMENT_ELEMENT_NAME
   }
 
-  public createElement (type: string): TaroElement | TaroRootElement | FormElement {
+  public createElement(type: string): TaroElement | TaroRootElement | FormElement {
     const nodeName = type.toLowerCase()
 
     let element: TaroElement
@@ -61,20 +56,20 @@ export class TaroDocument extends TaroElement {
 
   // Minimal createElementNS shim — kept as no-op for renderers that
   // attempt to mount into an SVG container before falling back.
-  public createElementNS (_svgNS: string, type: string): TaroElement | TaroRootElement | FormElement {
+  public createElementNS(_svgNS: string, type: string): TaroElement | TaroRootElement | FormElement {
     return this.createElement(type)
   }
 
-  public createTextNode (text: string): TaroText {
+  public createTextNode(text: string): TaroText {
     return new TaroText(text)
   }
 
-  public getElementById<T extends TaroElement> (id: string | undefined | null): T | null {
+  public getElementById<T extends TaroElement>(id: string | undefined | null): T | null {
     const el = eventSource.get(id)
-    return isUndefined(el) ? null : el as T
+    return isUndefined(el) ? null : (el as T)
   }
 
-  public querySelector<T extends TaroElement> (query: string): T | null {
+  public querySelector<T extends TaroElement>(query: string): T | null {
     // Minimal id-selector shim — only `#id` is supported.
     if (/^#/.test(query)) {
       return this.getElementById<T>(query.slice(1))
@@ -82,19 +77,19 @@ export class TaroDocument extends TaroElement {
     return null
   }
 
-  public querySelectorAll () {
+  public querySelectorAll() {
     // fake hack
     return []
   }
 
   // @TODO: @PERF: 在 hydrate 移除掉空的 node
-  public createComment (): TaroText {
+  public createComment(): TaroText {
     const textnode = new TaroText('')
     textnode.nodeName = COMMENT
     return textnode
   }
 
-  get defaultView () {
+  get defaultView() {
     return env.window
   }
 }

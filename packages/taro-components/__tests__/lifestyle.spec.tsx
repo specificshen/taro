@@ -13,7 +13,7 @@ describe('Lifestyle', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Lifestyle],
-      template: () => (<taro-lifestyle-core />),
+      template: () => <taro-lifestyle-core />,
     })
     await page.waitForChanges()
 

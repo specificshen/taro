@@ -10,11 +10,8 @@ export default (ctx: IPluginContext) => {
   ctx.registerPlatform({
     name: 'plugin',
     useConfigName: configName,
-    async fn ({ config }) {
-      const {
-        options,
-        _
-      } = ctx.runOpts
+    async fn({ config }) {
+      const { options, _ } = ctx.runOpts
       const { chalk, PLATFORMS } = ctx.helper
       const { WEAPP } = PLATFORMS
       const typeMap = {
@@ -26,7 +23,7 @@ export default (ctx: IPluginContext) => {
         return
       }
       console.log(chalk.green(`开始编译${typeMap[plugin]}小程序插件`))
-      async function buildPlugin (platform) {
+      async function buildPlugin(platform) {
         process.env.TARO_ENV = platform
         process.env.TARO_PLATFORM = getPlatformType(platform, configName)
         await ctx.applyPlugins({
@@ -37,13 +34,13 @@ export default (ctx: IPluginContext) => {
               isBuildPlugin: true,
               isWatch,
               outputRoot: `${config.outputRoot}/plugin`,
-              platform
+              platform,
             },
             options: Object.assign({}, options, {
-              platform
+              platform,
             }),
-            _
-          }
+            _,
+          },
         })
         await ctx.applyPlugins({
           name: 'build',
@@ -54,13 +51,13 @@ export default (ctx: IPluginContext) => {
               isWatch,
               outputRoot: `${config.outputRoot}/miniprogram`,
               platform,
-              output: { ...(config.output || {}), clean: false }
+              output: { ...(config.output || {}), clean: false },
             },
             options: Object.assign({}, options, {
-              platform
+              platform,
             }),
-            _
-          }
+            _,
+          },
         })
       }
 
@@ -73,6 +70,6 @@ export default (ctx: IPluginContext) => {
       } catch (err) {
         console.error('[@tarojs/cli] build plugin doc failed: ', err)
       }
-    }
+    },
   })
 }

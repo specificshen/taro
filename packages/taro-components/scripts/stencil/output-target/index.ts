@@ -4,7 +4,7 @@ import { normalizeOutputTarget as normalizeReactOutputTarget } from '@stencil/re
 import type { CompilerCtx, ComponentCompilerMeta, Config, OutputTargetCustom } from '@stencil/core/internal'
 import type { OutputTargetReact } from '@stencil/react-output-target'
 
-export function sortBy<T> (array: ReadonlyArray<T>, prop: (item: T) => string): ReadonlyArray<T> {
+export function sortBy<T>(array: ReadonlyArray<T>, prop: (item: T) => string): ReadonlyArray<T> {
   return array.slice().sort((a, b) => {
     const nameA = prop(a)
     const nameB = prop(b)
@@ -14,18 +14,18 @@ export function sortBy<T> (array: ReadonlyArray<T>, prop: (item: T) => string): 
   })
 }
 
-function getFilteredComponents (
+function getFilteredComponents(
   excludeComponents: ReadonlyArray<string> = [],
-  cmpList: ReadonlyArray<ComponentCompilerMeta>
+  cmpList: ReadonlyArray<ComponentCompilerMeta>,
 ): ReadonlyArray<ComponentCompilerMeta> {
   return sortBy(cmpList, (cmp) => cmp.tagName).filter((c) => !excludeComponents.includes(c.tagName) && !c.internal)
 }
 
-export async function reactProxyOutput (
+export async function reactProxyOutput(
   config: Config,
   compilerCtx: CompilerCtx,
   outputTarget: OutputTargetReact,
-  components: ReadonlyArray<ComponentCompilerMeta>
+  components: ReadonlyArray<ComponentCompilerMeta>,
 ): Promise<void> {
   const filteredComponents = getFilteredComponents(outputTarget.excludeComponents, components)
   const rootDir = config.rootDir
@@ -38,10 +38,10 @@ export async function reactProxyOutput (
 export const reactOutputTarget = (outputTarget: OutputTargetReact): OutputTargetCustom => ({
   type: 'custom',
   name: 'react-library',
-  validate (config) {
+  validate(config) {
     return normalizeReactOutputTarget(config, outputTarget)
   },
-  async generator (config, compilerCtx, buildCtx) {
+  async generator(config, compilerCtx, buildCtx) {
     const timeSpan = buildCtx.createTimeSpan(`generate react started`, true)
     await reactProxyOutput(config, compilerCtx, outputTarget, buildCtx.components)
     timeSpan.finish(`generate react finished`)

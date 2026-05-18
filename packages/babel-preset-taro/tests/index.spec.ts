@@ -5,18 +5,24 @@ import babelPresetTaro from '../index.js'
 
 describe('babel-preset-taro', () => {
   test('react', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react'
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
   })
 
   test('typescript react', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -28,12 +34,15 @@ describe('babel-preset-taro', () => {
   })
 
   test('can change env options', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true,
-      spec: false,
-      loose: false
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+        spec: false,
+        loose: false,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -45,12 +54,15 @@ describe('babel-preset-taro', () => {
   })
 
   test('default env options', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true,
-      spec: true,
-      loose: true
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+        spec: true,
+        loose: true,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -64,15 +76,18 @@ describe('babel-preset-taro', () => {
       modules: 'commonjs',
       targets: { node: 'current' },
       useBuiltIns: false,
-      ignoreBrowserslistConfig: true
+      ignoreBrowserslistConfig: true,
     })
   })
 
   test('has dynamic-import-node', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -83,11 +98,14 @@ describe('babel-preset-taro', () => {
   })
 
   test('disable dynamic-import-node', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true,
-      'dynamic-import-node': false
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+        'dynamic-import-node': false,
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 
@@ -98,13 +116,16 @@ describe('babel-preset-taro', () => {
   })
 
   test('can react preset change', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'react',
-      ts: true,
-      react: {
-        throwIfNamespace: false
-      }
-    })
+    const config = babelPresetTaro(
+      {},
+      {
+        framework: 'react',
+        ts: true,
+        react: {
+          throwIfNamespace: false,
+        },
+      },
+    )
 
     expect(config.sourceType).toBe('unambiguous')
 

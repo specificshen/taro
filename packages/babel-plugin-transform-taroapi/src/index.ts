@@ -20,7 +20,7 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
 
   let referTaro: any[]
 
-  function canIUse (definition, scheme = '') {
+  function canIUse(definition, scheme = '') {
     if (!scheme) return false
     const o = setWith({}, scheme, true, Object)
     return isMatchWith(definition, o, (a, b) => {
@@ -28,7 +28,7 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
     })
   }
 
-  function replaceCanIUse (ast: BabelCore.NodePath<BabelCore.types.CallExpression>, definition) {
+  function replaceCanIUse(ast: BabelCore.NodePath<BabelCore.types.CallExpression>, definition) {
     const args = ast.node.arguments
 
     if (args.length < 1) return
@@ -42,56 +42,54 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
 
   return {
     name: 'babel-plugin-transform-taro-api',
-    pre () {
+    pre() {
       const { opts = {} as any } = this
       const { apis = new Set<string>(), bindingName = 'Taro', packageName = '@tarojs/taro', definition = {} } = opts
       this.definition = {
         ...definition.apis,
         ...definition.components,
-        [this.canIUse]: '*'
+        [this.canIUse]: '*',
       }
       this.bindingName = bindingName
       this.packageName = packageName
       this.canIUse = 'canIUse'
       if (apis.size < 1) {
         apis.add(this.canIUse)
-        Object.keys(definition.apis || {}).forEach(key => apis.add(key))
+        Object.keys(definition.apis || {}).forEach((key) => apis.add(key))
       }
       this.apis = apis
     },
     visitor: {
-      ImportDeclaration (ast: BabelCore.NodePath<any>) {
+      ImportDeclaration(ast: BabelCore.NodePath<any>) {
         if (ast.node.source.value !== this.packageName) return
 
-        ast.node.specifiers.forEach(node => {
+        ast.node.specifiers.forEach((node) => {
           if (t.isImportDefaultSpecifier(node)) {
             needDefault = true
             taroName = node.local.name
           } else if (t.isImportSpecifier(node)) {
             const { imported } = node
             const propertyName = t.isIdentifier(imported) ? imported.name : imported.value
-            if (this.apis.has(propertyName)) { // 记录 api 名字
+            if (this.apis.has(propertyName)) {
+              // 记录 api 名字
               ast.scope.rename(node.local.name)
               invokedApis.set(propertyName, node.local.name)
-            } else { // 如果是未实现的 api 改成 Taro.xxx
+            } else {
+              // 如果是未实现的 api 改成 Taro.xxx
               needDefault = true
               const localName = node.local.name
               const binding = ast.scope.getBinding(localName)
               const idn = t.identifier(taroName)
               referTaro.push(idn)
-              binding && binding.referencePaths.forEach(reference => {
-                reference.replaceWith(
-                  t.memberExpression(
-                    idn,
-                    t.identifier(propertyName)
-                  ) as any
-                )
-              })
+              binding &&
+                binding.referencePaths.forEach((reference) => {
+                  reference.replaceWith(t.memberExpression(idn, t.identifier(propertyName)) as any)
+                })
             }
           }
         })
       },
-      MemberExpression (ast: BabelCore.NodePath<any>) {
+      MemberExpression(ast: BabelCore.NodePath<any>) {
         /* 处理 Taro.xxx */
         const isTaro = t.isIdentifier(ast.node.object, { name: taroName })
         const property = ast.node.property
@@ -129,7 +127,7 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
           needDefault = true
         }
       },
-      CallExpression (ast: BabelCore.NodePath<any>) {
+      CallExpression(ast: BabelCore.NodePath<any>) {
         if (!ast.scope.hasReference(this.canIUse)) return
         const callee = ast.node.callee
         if (t.isMemberExpression(callee) && t.isIdentifier(callee.object, { name: taroName })) {
@@ -153,42 +151,39 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
         }
       },
       Program: {
-        enter (ast) {
+        enter(ast) {
           needDefault = false
           referTaro = []
           invokedApis.clear()
 
-          taroName = ast.scope.getBinding(this.bindingName)
-            ? ast.scope.generateUid(this.bindingName)
-            : this.bindingName
+          taroName = ast.scope.getBinding(this.bindingName) ? ast.scope.generateUid(this.bindingName) : this.bindingName
         },
-        exit (ast) {
+        exit(ast) {
           const that = this
           // 防止重复引入
           let isTaroApiImported = false
-          referTaro.forEach(node => {
+          referTaro.forEach((node) => {
             node.name = taroName
           })
 
           ast.traverse({
-            ImportDeclaration (ast) {
+            ImportDeclaration(ast) {
               const isImportingTaroApi = ast.node.source.value === that.packageName
               if (!isImportingTaroApi) return
               if (isTaroApiImported) return ast.remove()
               isTaroApiImported = true
-              const namedImports = Array.from(invokedApis.entries()).map(([imported, local]) => t.importSpecifier(t.identifier(local), t.identifier(imported)))
+              const namedImports = Array.from(invokedApis.entries()).map(([imported, local]) =>
+                t.importSpecifier(t.identifier(local), t.identifier(imported)),
+              )
               if (needDefault) {
                 const defaultImport = t.importDefaultSpecifier(t.identifier(taroName))
-                ast.node.specifiers = [
-                  defaultImport,
-                  ...namedImports
-                ]
+                ast.node.specifiers = [defaultImport, ...namedImports]
                 needDefault = false
               } else {
                 ast.node.specifiers = namedImports
               }
             },
-            CallExpression (ast: BabelCore.NodePath<any>) {
+            CallExpression(ast: BabelCore.NodePath<any>) {
               if (!invokedApis.has(that.canIUse)) return
               const callee = ast.node.callee
               const { name } = t.identifier(invokedApis.get(that.canIUse)!)
@@ -199,9 +194,9 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
               }
             },
           })
-        }
-      }
-    }
+        },
+      },
+    },
   }
 }
 

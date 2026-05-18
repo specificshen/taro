@@ -16,11 +16,11 @@ export default (ctx: IPluginContext) => {
         toolName: 'Taro',
         toolCliVersion: getPkgVersion(),
         toolFrameworkVersion: frameworkVersion,
-        createTime: date ? new Date(date).getTime() : Date.now()
+        createTime: date ? new Date(date).getTime() : Date.now(),
       }
       ctx.writeFileToDist({
         filePath: frameworkInfoFileName,
-        content: JSON.stringify(frameworkinfo, null, 2)
+        content: JSON.stringify(frameworkinfo, null, 2),
       })
       printLog(processTypeEnum.GENERATE, '框架信息', `${outputRoot}/${frameworkInfoFileName}`)
     } else {

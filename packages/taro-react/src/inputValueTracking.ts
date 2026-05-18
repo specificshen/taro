@@ -1,21 +1,17 @@
 import type { FormElement } from '@tarojs/runtime'
 
-function isCheckable (elem: FormElement) {
+function isCheckable(elem: FormElement) {
   const type = elem.type
   const nodeName = elem.nodeName
 
-  return (
-    nodeName &&
-    nodeName.toLowerCase() === 'input' &&
-    (type === 'checkbox' || type === 'radio')
-  )
+  return nodeName && nodeName.toLowerCase() === 'input' && (type === 'checkbox' || type === 'radio')
 }
 
-function getTracker (node) {
+function getTracker(node) {
   return node._valueTracker
 }
 
-function detachTracker (node) {
+function detachTracker(node) {
   node._valueTracker = null
 }
 
@@ -23,12 +19,9 @@ function detachTracker (node) {
 // 比如 type=checkbox 或者 type=radio，就需要监听 checked，而不是 value
 // 虽然目前还未实现 checkbox 和 radio 的 finishEventHandle，但后续不好说，所以先统一和 react 一样的写法
 // 需要特别注意的是，tracker 初始化时的值为 node 的初始值，但后续会变更为事件的 detail.value 值
-function trackValueOnNode (node: any) {
+function trackValueOnNode(node: any) {
   const valueField = isCheckable(node) ? 'checked' : 'value'
-  const descriptor = Object.getOwnPropertyDescriptor(
-    node.constructor.prototype,
-    valueField,
-  )
+  const descriptor = Object.getOwnPropertyDescriptor(node.constructor.prototype, valueField)
 
   let currentValue = '' + node[valueField]
 
@@ -56,13 +49,13 @@ function trackValueOnNode (node: any) {
   })
 
   const tracker = {
-    getValue () {
+    getValue() {
       return currentValue
     },
-    setValue (value) {
+    setValue(value) {
       currentValue = '' + value
     },
-    stopTracking () {
+    stopTracking() {
       detachTracker(node)
       delete node[valueField]
     },
@@ -70,7 +63,7 @@ function trackValueOnNode (node: any) {
   return tracker
 }
 
-export function track (node) {
+export function track(node) {
   if (getTracker(node)) {
     return
   }
@@ -78,7 +71,7 @@ export function track (node) {
   node._valueTracker = trackValueOnNode(node)
 }
 
-export function updateValueIfChanged (node, nextValue: string) {
+export function updateValueIfChanged(node, nextValue: string) {
   if (!node) {
     return false
   }
@@ -98,7 +91,7 @@ export function updateValueIfChanged (node, nextValue: string) {
   return false
 }
 
-export function stopTracking (node) {
+export function stopTracking(node) {
   const tracker = getTracker(node)
   if (tracker) {
     tracker.stopTracking()

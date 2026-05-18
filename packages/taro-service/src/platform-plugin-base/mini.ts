@@ -30,12 +30,12 @@ export abstract class TaroPlatformBase<T extends TConfig = TConfig> extends Taro
    * 2. 输出编译提示
    * 3. 生成 project.config.json
    */
-  private async setup () {
+  private async setup() {
     await this.setupTransaction.perform(this.setupImpl, this)
     this.ctx.onSetupClose?.(this)
   }
 
-  private setupImpl () {
+  private setupImpl() {
     const { output } = this.config
     // webpack5 原生支持 output.clean 选项，但是 webpack4 不支持， 为统一行为，这里做一下兼容
     // （在 packages/taro-mini-runner/src/webpack/chain.ts 和 packages/taro-webpack-runner/src/utils/chain.ts 的 makeConfig 中对 clean 选项做了过滤）
@@ -57,7 +57,7 @@ export abstract class TaroPlatformBase<T extends TConfig = TConfig> extends Taro
     // Webpack5 已在 Vite-only fork 中移除，HMR 由 vite-runner 自身负责
   }
 
-  protected printDevelopmentTip (platform: string) {
+  protected printDevelopmentTip(platform: string) {
     const tips: string[] = []
     const config = this.config
     const { chalk } = this.helper
@@ -68,9 +68,11 @@ export abstract class TaroPlatformBase<T extends TConfig = TConfig> extends Taro
         ? `$ set NODE_ENV=production && taro build --type ${platform} --watch`
         : `$ NODE_ENV=production taro build --type ${platform} --watch`
 
-      tips.push(chalk.yellowBright(`预览模式生成的文件较大，设置 NODE_ENV 为 production 可以开启压缩。
+      tips.push(
+        chalk.yellowBright(`预览模式生成的文件较大，设置 NODE_ENV 为 production 可以开启压缩。
 Example:
-${exampleCommand}`))
+${exampleCommand}`),
+      )
     }
 
     if (this.compiler === 'webpack5' && !config.cache?.enable) {
@@ -87,7 +89,7 @@ ${exampleCommand}`))
   /**
    * 返回当前项目内的 runner 包
    */
-  protected async getRunner () {
+  protected async getRunner() {
     const { appPath } = this.ctx.paths
     const { npm } = this.helper
 
@@ -102,7 +104,7 @@ ${exampleCommand}`))
    * 准备 runner 参数
    * @param extraOptions 需要额外合入 Options 的配置项
    */
-  protected getOptions (extraOptions = {}) {
+  protected getOptions(extraOptions = {}) {
     const { ctx, globalObject, fileType, template } = this
 
     const config = recursiveMerge(Object.assign({}, this.config), {
@@ -110,8 +112,8 @@ ${exampleCommand}`))
         FRAMEWORK: JSON.stringify(this.config.framework),
         TARO_ENV: JSON.stringify(this.platform),
         TARO_PLATFORM: JSON.stringify(this.platformType),
-        TARO_VERSION: JSON.stringify(getPkgVersion())
-      }
+        TARO_VERSION: JSON.stringify(getPkgVersion()),
+      },
     })
 
     return {
@@ -122,7 +124,7 @@ ${exampleCommand}`))
       globalObject,
       fileType,
       template,
-      ...extraOptions
+      ...extraOptions,
     }
   }
 
@@ -130,12 +132,12 @@ ${exampleCommand}`))
    * 调用 runner 开始编译
    * @param extraOptions 需要额外传入 runner 的配置项
    */
-  private async build (extraOptions = {}) {
+  private async build(extraOptions = {}) {
     this.ctx.onBuildInit?.(this)
     await this.buildTransaction.perform(this.buildImpl, this, extraOptions)
   }
 
-  private async buildImpl (extraOptions = {}) {
+  private async buildImpl(extraOptions = {}) {
     const runner = await this.getRunner()
     const options = this.getOptions(
       Object.assign(
@@ -144,8 +146,8 @@ ${exampleCommand}`))
           taroComponentsPath: this.taroComponentsPath,
           behaviorsName: this.behaviorsName,
         },
-        extraOptions
-      )
+        extraOptions,
+      ),
     )
     await runner(options)
   }
@@ -155,18 +157,18 @@ ${exampleCommand}`))
    * @param src 项目源码中配置文件的名称
    * @param dist 编译后配置文件的名称，默认为 'project.config.json'
    */
-  protected generateProjectConfig (src: string, dist = 'project.config.json') {
+  protected generateProjectConfig(src: string, dist = 'project.config.json') {
     if (this.config.isBuildNativeComp) return
     this.ctx.generateProjectConfig({
       srcConfigName: src,
-      distConfigName: dist
+      distConfigName: dist,
     })
   }
 
   /**
    * 递归替换对象的 key 值
    */
-  protected recursiveReplaceObjectKeys (obj, keyMap) {
+  protected recursiveReplaceObjectKeys(obj, keyMap) {
     Object.keys(obj).forEach((key) => {
       if (keyMap[key]) {
         obj[keyMap[key]] = obj[key]
@@ -185,7 +187,7 @@ ${exampleCommand}`))
   /**
    * 调用 runner 开启编译
    */
-  public async start () {
+  public async start() {
     await this.setup()
     await this.build()
   }

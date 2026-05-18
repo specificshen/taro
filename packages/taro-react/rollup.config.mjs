@@ -9,18 +9,15 @@ const cwd = path.dirname(__filename)
 
 const baseConfig = {
   input: path.join(cwd, 'src/index.ts'),
-  plugins: [
-    externals(),
-    typescript()
-  ]
+  plugins: [externals(), typescript()],
 }
 
 const esmConfig = Object.assign({}, baseConfig, {
   output: {
     sourcemap: true,
     format: 'es',
-    file: path.join(cwd, 'dist/react.esm.js')
-  }
+    file: path.join(cwd, 'dist/react.esm.js'),
+  },
 })
 
 export default [esmConfig]

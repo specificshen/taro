@@ -15,23 +15,25 @@ describe('PickerView', () => {
     }
     page = await newSpecPage({
       components: [PickerView, PickerViewColumn],
-      template: () => (<taro-view-core>
-        <taro-picker-view-core
-          indicatorStyle='height: 60px;'
-          indicatorClass='test_indicatorClass'
-          style='width: 100%; height: 300px; position: absolute; bottom: 0px;'
-          maskClass='test_maskClass'
-          maskStyle="background-color: rgba(33, 33, 33, 0.5);"
-        >
-          <taro-picker-view-column-core>
-            {years.map(item => (
-              <taro-view-core key={item} style='height: 60px; line-height: 60px; text-align: center;'>
-                {item}年
-              </taro-view-core>
-            ))}
-          </taro-picker-view-column-core>
-        </taro-picker-view-core>
-      </taro-view-core>),
+      template: () => (
+        <taro-view-core>
+          <taro-picker-view-core
+            indicatorStyle="height: 60px;"
+            indicatorClass="test_indicatorClass"
+            style="width: 100%; height: 300px; position: absolute; bottom: 0px;"
+            maskClass="test_maskClass"
+            maskStyle="background-color: rgba(33, 33, 33, 0.5);"
+          >
+            <taro-picker-view-column-core>
+              {years.map((item) => (
+                <taro-view-core key={item} style="height: 60px; line-height: 60px; text-align: center;">
+                  {item}年
+                </taro-view-core>
+              ))}
+            </taro-picker-view-column-core>
+          </taro-picker-view-core>
+        </taro-view-core>
+      ),
     })
 
     const indicatorEle = page.root?.querySelector('.taro-picker-view-mask-indicator')
@@ -49,15 +51,19 @@ describe('PickerView', () => {
     const startY = 0
     const endY = 200
 
-    pickerViewColumnEle?.dispatchEvent(new Event('mousedown', {
-      // @ts-ignore
-      clientY: startY
-    }))
+    pickerViewColumnEle?.dispatchEvent(
+      new Event('mousedown', {
+        // @ts-ignore
+        clientY: startY,
+      }),
+    )
 
-    pickerViewColumnEle?.dispatchEvent(new Event('mousemove', {
-      // @ts-ignore
-      clientY: endY
-    }))
+    pickerViewColumnEle?.dispatchEvent(
+      new Event('mousemove', {
+        // @ts-ignore
+        clientY: endY,
+      }),
+    )
 
     expect(page.root).toMatchSnapshot()
   })

@@ -12,7 +12,7 @@ describe('findDOMNode', () => {
     process.env.FRAMEWORK = undefined
   })
 
-  function renderIntoDetachedNode (children) {
+  function renderIntoDetachedNode(children) {
     const div = document.createElement('div')
     return render(children, div)
   }
@@ -23,7 +23,7 @@ describe('findDOMNode', () => {
 
   it('findDOMNode should find dom element', () => {
     class MyNode extends React.Component {
-      render () {
+      render() {
         return (
           <div>
             <span>Noise</span>
@@ -40,14 +40,14 @@ describe('findDOMNode', () => {
   })
 
   it('findDOMNode should find dom element after an update from null', () => {
-    function Bar ({ flag }) {
+    function Bar({ flag }) {
       if (flag) {
         return <span>A</span>
       }
       return null
     }
     class MyNode extends React.Component {
-      render () {
+      render() {
         return <Bar flag={this.props.flag} />
       }
     }
@@ -73,7 +73,7 @@ describe('findDOMNode', () => {
 
   it('findDOMNode should reject unmounted objects with render func', () => {
     class Foo extends React.Component {
-      render () {
+      render() {
         return <div />
       }
     }
@@ -82,18 +82,16 @@ describe('findDOMNode', () => {
     const inst = render(<Foo />, container)
     unmountComponentAtNode(container)
 
-    expect(() => findDOMNode(inst)).toThrowError(
-      'Unable to find node on an unmounted component.'
-    )
+    expect(() => findDOMNode(inst)).toThrowError('Unable to find node on an unmounted component.')
   })
 
   it('findDOMNode should not throw an error when called within a component that is not mounted', () => {
     class Bar extends React.Component {
-      UNSAFE_componentWillMount () {
+      UNSAFE_componentWillMount() {
         expect(findDOMNode(this)).toBeNull()
       }
 
-      render () {
+      render() {
         return <div />
       }
     }

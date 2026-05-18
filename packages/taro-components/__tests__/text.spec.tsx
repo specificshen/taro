@@ -10,7 +10,7 @@ describe('Text', () => {
     const text = 'Taro Next'
     page = await newSpecPage({
       components: [Text],
-      template: () => (<taro-text-core>{text}</taro-text-core>),
+      template: () => <taro-text-core>{text}</taro-text-core>,
     })
     expect(page.root?.textContent).toEqual(text)
   })

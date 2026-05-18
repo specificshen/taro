@@ -33,7 +33,7 @@ describe('pxtransform', () => {
         750: 1,
         828: 1.81 / 2,
       },
-      targetUnit: 'px'
+      targetUnit: 'px',
     })
     expect(Taro.pxTransform(20)).toBe('10px')
   })
@@ -46,7 +46,7 @@ describe('pxtransform', () => {
         750: 1,
         828: 1.81 / 2,
       },
-      targetUnit: 'px'
+      targetUnit: 'px',
     })
     expect(Taro.pxTransform(20)).toBe('11.7px')
   })
@@ -59,7 +59,7 @@ describe('pxtransform', () => {
         750: 1,
         828: 1.81 / 2,
       },
-      targetUnit: 'rem'
+      targetUnit: 'rem',
     })
     expect(Taro.pxTransform(20)).toBe('0.5rem')
   })
@@ -72,7 +72,7 @@ describe('pxtransform', () => {
         750: 1,
         828: 1.81 / 2,
       },
-      targetUnit: 'rem'
+      targetUnit: 'rem',
     })
     expect(Taro.pxTransform(20)).toBe('0.585rem')
   })

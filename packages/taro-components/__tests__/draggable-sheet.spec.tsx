@@ -13,7 +13,7 @@ describe('DraggableSheet', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [DraggableSheet],
-      template: () => (<taro-draggable-sheet-core />),
+      template: () => <taro-draggable-sheet-core />,
     })
     await page.waitForChanges()
 

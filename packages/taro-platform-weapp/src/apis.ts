@@ -4,23 +4,25 @@ import { needPromiseApis } from './apis-list'
 
 declare const wx: any
 
-export function initNativeApi (taro) {
+export function initNativeApi(taro) {
   processApis(taro, wx, {
     needPromiseApis,
-    modifyApis (apis) {
+    modifyApis(apis) {
       // fix https://github.com/NervJS/taro/issues/9899
       apis.delete('lanDebug')
     },
-    transformMeta (api: string, options: Record<string, any>) {
+    transformMeta(api: string, options: Record<string, any>) {
       if (api === 'showShareMenu') {
-        options.menus = options.showShareItems?.map(item => item === 'wechatFriends' ? 'shareAppMessage' : item === 'wechatMoment' ? 'shareTimeline' : item)
+        options.menus = options.showShareItems?.map((item) =>
+          item === 'wechatFriends' ? 'shareAppMessage' : item === 'wechatMoment' ? 'shareTimeline' : item,
+        )
       }
 
       return {
         key: api,
-        options
+        options,
       }
-    }
+    },
   })
   taro.cloud = wx.cloud
   taro.getTabBar = function (pageCtx) {

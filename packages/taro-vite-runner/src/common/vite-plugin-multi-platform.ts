@@ -4,7 +4,11 @@ import { REG_NODE_MODULES, SCRIPT_EXT } from '@tarojs/helper'
 
 import { isVirtualModule } from '../utils'
 
-import type { ViteH5CompilerContext, ViteHarmonyCompilerContext, ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type {
+  ViteH5CompilerContext,
+  ViteHarmonyCompilerContext,
+  ViteMiniCompilerContext,
+} from '@tarojs/taro/types/compile/viteCompilerContext'
 import type { ResolvedId } from 'rollup'
 import type { PluginOption } from 'vite'
 
@@ -12,29 +16,31 @@ function isViteDepsPath(filePath: string) {
   const normalizedPath = path.normalize(filePath)
 
   // 判断路径是否包含 node_modules/.vite/deps
-  const isViteDeps = normalizedPath.includes(
-    path.join('node_modules', '.vite', 'deps')
-  )
+  const isViteDeps = normalizedPath.includes(path.join('node_modules', '.vite', 'deps'))
 
   return isViteDeps
 }
 
-export default function (compiler: ViteH5CompilerContext | ViteHarmonyCompilerContext | ViteMiniCompilerContext): PluginOption {
+export default function (
+  compiler: ViteH5CompilerContext | ViteHarmonyCompilerContext | ViteMiniCompilerContext,
+): PluginOption {
   const { taroConfig } = compiler
 
   return {
     name: 'taro:vite-multi-platform-plugin',
     enforce: 'pre',
-    async resolveId (source, importer, options) {
+    async resolveId(source, importer, options) {
       if (isVirtualModule(source)) return null
       if (REG_NODE_MODULES.test(source)) return null
 
       // example: 'js|jsx|ts|tsx|vue'
       const allowedExts = Array.from(new Set(SCRIPT_EXT.concat(taroConfig.frameworkExts || [])))
-        .map((item : string) => item.replace(/^\./, ''))
+        .map((item: string) => item.replace(/^\./, ''))
         .join('|')
       // example: /\.(weapp|mini)\.(js|jsx|ts|tsx|vue)/
-      const multiPlatformReg = new RegExp(`\\.(${process.env.TARO_ENV}|${process.env.TARO_PLATFORM})\\.(${allowedExts})`)
+      const multiPlatformReg = new RegExp(
+        `\\.(${process.env.TARO_ENV}|${process.env.TARO_PLATFORM})\\.(${allowedExts})`,
+      )
       if (multiPlatformReg.test(source)) return null
       if (!importer) return null
 
@@ -63,15 +69,16 @@ export default function (compiler: ViteH5CompilerContext | ViteHarmonyCompilerCo
           importer,
           {
             ...options,
-            skipSelf: true
-          })
+            skipSelf: true,
+          },
+        )
         if (resolution) break
       }
 
       if (!resolution) {
         resolution = await this.resolve(source, importer, {
           ...options,
-          skipSelf: true
+          skipSelf: true,
         })
       }
 

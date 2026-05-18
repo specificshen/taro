@@ -39,17 +39,18 @@ function getMatcherString(id, resolutionBase) {
 
 export default function createFilter(include, exclude, options?) {
   const resolutionBase = options && options.resolve
-  const getMatcher = (id) => id instanceof RegExp
-    ? id
-    : {
-      test: (what) => {
-        // this refactor is a tad overly verbose but makes for easy debugging
-        const pattern = getMatcherString(id, resolutionBase)
-        const fn = pm(pattern, { dot: true })
-        const result = fn(what)
-        return result
-      }
-    }
+  const getMatcher = (id) =>
+    id instanceof RegExp
+      ? id
+      : {
+          test: (what) => {
+            // this refactor is a tad overly verbose but makes for easy debugging
+            const pattern = getMatcherString(id, resolutionBase)
+            const fn = pm(pattern, { dot: true })
+            const result = fn(what)
+            return result
+          },
+        }
   const includeMatchers = ensureArray(include).map(getMatcher)
   const excludeMatchers = ensureArray(exclude).map(getMatcher)
   return function result(id) {
@@ -76,12 +77,16 @@ export default function createFilter(include, exclude, options?) {
   }
 }
 
-export function createFilterWithCompileOptions(compile: {
-  exclude?: any[]
-  include?: any[]
-  /** 对应 @rollup/plugin-babel 插件的 filter 配置。只在 vite 编译模式下有效 */
-  filter?: (filename: string) => boolean
-} = {}, defaultInclude: any[] = [], defaultExclude: any[] = []) {
+export function createFilterWithCompileOptions(
+  compile: {
+    exclude?: any[]
+    include?: any[]
+    /** 对应 @rollup/plugin-babel 插件的 filter 配置。只在 vite 编译模式下有效 */
+    filter?: (filename: string) => boolean
+  } = {},
+  defaultInclude: any[] = [],
+  defaultExclude: any[] = [],
+) {
   if (isFunction(compile.filter)) {
     return compile.filter
   } else {

@@ -27,8 +27,11 @@ const unstable_batchedUpdates = (fn, a) => {
   }
 }
 
-function unmountComponentAtNode (dom: TaroElement) {
-  ensure(dom && [1, 8, 9, 11].includes(dom.nodeType), 'unmountComponentAtNode(...): Target container is not a DOM element.')
+function unmountComponentAtNode(dom: TaroElement) {
+  ensure(
+    dom && [1, 8, 9, 11].includes(dom.nodeType),
+    'unmountComponentAtNode(...): Target container is not a DOM element.',
+  )
 
   const root = ContainerMap.get(dom)
 
@@ -43,7 +46,7 @@ function unmountComponentAtNode (dom: TaroElement) {
   return true
 }
 
-function findDOMNode (comp?: TaroElement | ReactNode) {
+function findDOMNode(comp?: TaroElement | ReactNode) {
   if (comp == null) {
     return null
   }
@@ -56,21 +59,15 @@ function findDOMNode (comp?: TaroElement | ReactNode) {
   return TaroReconciler.findHostInstance(comp as Record<string, any>)
 }
 
-const portalType = isFunction(Symbol) && Symbol.for
-  ? Symbol.for('react.portal')
-  : 0xeaca
+const portalType = isFunction(Symbol) && Symbol.for ? Symbol.for('react.portal') : 0xeaca
 
-function createPortal (
-  children: ReactNode,
-  containerInfo: TaroElement,
-  key?: string
-) {
+function createPortal(children: ReactNode, containerInfo: TaroElement, key?: string) {
   return {
     $$typeof: portalType,
     key: key == null ? null : String(key),
     children,
     containerInfo,
-    implementation: null
+    implementation: null,
   }
 }
 
@@ -95,5 +92,5 @@ export default {
   unmountComponentAtNode,
   findDOMNode,
   createPortal,
-  internalInstanceKey
+  internalInstanceKey,
 }

@@ -39,7 +39,7 @@ const modifyConfigError = new GeneratorError({
                 }
             ]
         ]
-    }`
+    }`,
   ),
   targetFile: 'babel.config.js',
 })
@@ -94,7 +94,7 @@ export async function updateBabelConfig(ctx: IPluginContext) {
           ]
         }
       `),
-      { encoding: 'utf-8', flag: 'w' }
+      { encoding: 'utf-8', flag: 'w' },
     )
     return
   }
@@ -117,12 +117,12 @@ export async function updateBabelConfig(ctx: IPluginContext) {
       ) {
         if (t.isObjectExpression(node.right)) {
           const presetsProp = node.right.properties.find(
-            (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'presets'
+            (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'presets',
           ) as t.ObjectProperty
           // 没有 presets 属性，直接创建
           if (!presetsProp) {
             node.right.properties.push(
-              t.objectProperty(t.identifier('presets'), t.arrayExpression([parser.parseExpression(config)]))
+              t.objectProperty(t.identifier('presets'), t.arrayExpression([parser.parseExpression(config)])),
             )
           }
           // presets: [...]
@@ -240,7 +240,7 @@ function handlePresets(presets: t.ArrayExpression, nodePath: NodePath) {
 
 function insertUseBuiltInsProp(obj: t.ObjectExpression) {
   const useBuiltInProp = obj.properties.find(
-    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === USE_BUILT_INS
+    (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === USE_BUILT_INS,
   ) as t.ObjectProperty
   const builtInValue = parser.parseExpression("process.env.TARO_ENV === 'h5' ? 'usage' : false")
   // 如果有 useBuiltIns 属性，直接替换值

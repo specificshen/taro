@@ -14,12 +14,11 @@ describe('Button', () => {
     const disabled = false
     page = await newSpecPage({
       components: [Button],
-      template: () => (<taro-button-core
-        size={size}
-        plain={plain}
-        loading={loading}
-        disabled={disabled}
-      >button</taro-button-core>),
+      template: () => (
+        <taro-button-core size={size} plain={plain} loading={loading} disabled={disabled}>
+          button
+        </taro-button-core>
+      ),
     })
 
     expect(page.root?.type).not.toBeUndefined()

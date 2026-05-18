@@ -1,28 +1,22 @@
 import { DEFAULT_COMPONENTS, isEnableTTDom, TT_SPECIFIC_COMPONENTS } from '@tarojs/shared'
 
-import {
-  APP,
-  BODY,
-  CONTAINER,
-  HEAD,
-  HTML
-} from '../constants'
+import { APP, BODY, CONTAINER, HEAD, HTML } from '../constants'
 import { TaroDocument } from '../dom/document'
 import env from '../env'
 
-function createDocument (): TaroDocument {
+function createDocument(): TaroDocument {
   /**
-     * <document>
-     *   <html>
-     *     <head></head>
-     *     <body>
-     *       <container>
-     *         <app id="app" />
-     *       </container>
-     *     </body>
-     *   </html>
-     * </document>
-     */
+   * <document>
+   *   <html>
+   *     <head></head>
+   *     <body>
+   *       <container>
+   *         <app id="app" />
+   *       </container>
+   *     </body>
+   *   </html>
+   * </document>
+   */
   const doc = new TaroDocument()
   const documentCreateElement = doc.createElement.bind(doc)
   const html = documentCreateElement(HTML)
@@ -99,10 +93,10 @@ export function createTTDomDocument(): TaroDocument {
       const el = builtInComponents.has(type)
         ? Object.getPrototypeOf(this).createElement.call(this, type, ...args)
         : Object.getPrototypeOf(this).createNativeComponent.call(this, type, {
-          __tt__inner__options__: {
-            name: type,
-          },
-        })
+            __tt__inner__options__: {
+              name: type,
+            },
+          })
       // 给元素加上 scopeId
       el.setAttribute('class', '')
 
@@ -141,5 +135,7 @@ export function createTTDomDocument(): TaroDocument {
 }
 
 // Note: 小程序端 vite 打包成 commonjs，const document = xxx 会报错，所以把 document 改为 taroDocumentProvider
-export const taroDocumentProvider: TaroDocument = process.env.TARO_PLATFORM === 'web' ? env.document : (env.document =
-  isEnableTTDom() ? createTTDomDocument() : createDocument())
+export const taroDocumentProvider: TaroDocument =
+  process.env.TARO_PLATFORM === 'web'
+    ? env.document
+    : (env.document = isEnableTTDom() ? createTTDomDocument() : createDocument())

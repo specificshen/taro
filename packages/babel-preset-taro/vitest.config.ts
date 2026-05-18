@@ -7,6 +7,6 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
       include: ['./index.js'],
-    }
-  }
+    },
+  },
 })

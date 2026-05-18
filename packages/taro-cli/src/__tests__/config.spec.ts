@@ -1,15 +1,7 @@
 import * as path from 'node:path'
 
-import {
-  fs,
-  getUserHomeDir,
-  TARO_BASE_CONFIG,
-  TARO_CONFIG_FOLDER
-} from '@tarojs/helper'
-import {
-  CONFIG_DIR_NAME,
-  DEFAULT_CONFIG_FILE
-} from '@tarojs/service/src/utils/constants'
+import { fs, getUserHomeDir, TARO_BASE_CONFIG, TARO_CONFIG_FOLDER } from '@tarojs/helper'
+import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from '@tarojs/service/src/utils/constants'
 
 import { run } from './utils'
 
@@ -25,8 +17,8 @@ jest.mock('@tarojs/helper', () => {
       existsSync: jest.fn(),
       readJSONSync: jest.fn(),
       writeJSONSync: jest.fn(),
-      ensureFileSync: jest.fn()
-    }
+      ensureFileSync: jest.fn(),
+    },
   }
 })
 
@@ -43,8 +35,8 @@ describe('config', () => {
   beforeEach(() => {
     getUserHomeDirMocked.mockReturnValue(appPath)
     // Note: 设置项目配置文件为不存在，config 指令不一定在项目内执行，故而当前测试跳过配置（与过往配置保持一致，后续可视情况调整）
-    existsSyncMocked.mockImplementation((filePath = '') =>
-      !filePath.includes(path.join(appPath, CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE))
+    existsSyncMocked.mockImplementation(
+      (filePath = '') => !filePath.includes(path.join(appPath, CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE)),
     )
   })
 
@@ -53,7 +45,7 @@ describe('config', () => {
     existsSyncMocked.mockReset()
   })
 
-  it('should exit because can\'t find home dir', async () => {
+  it("should exit because can't find home dir", async () => {
     const logSpy = jest.spyOn(console, 'log')
     logSpy.mockImplementation(() => {})
 
@@ -83,7 +75,7 @@ describe('config', () => {
     const logSpy = jest.spyOn(console, 'log')
     logSpy.mockImplementation(() => {})
     readJSONSyncMocked.mockImplementation(() => ({
-      [key]: value
+      [key]: value,
     }))
 
     await runConfig(appPath, { args: ['get', key] })
@@ -119,7 +111,7 @@ describe('config', () => {
 
     expect(writeJSONSyncMocked).toBeCalledWith(configPath, {
       a: 1,
-      [key]: value
+      [key]: value,
     })
     expect(logSpy).nthCalledWith(1, `Config path: ${configPath}`)
     expect(logSpy).nthCalledWith(2)
@@ -169,7 +161,7 @@ describe('config', () => {
     logSpy.mockImplementation(() => {})
     readJSONSyncMocked.mockReturnValue({
       a: 1,
-      [key]: 'v'
+      [key]: 'v',
     })
 
     await runConfig(appPath, { args: ['delete', key] })
@@ -190,7 +182,7 @@ describe('config', () => {
     logSpy.mockImplementation(() => {})
     readJSONSyncMocked.mockReturnValue({
       a: 1,
-      b: 2
+      b: 2,
     })
 
     await runConfig(appPath, { args: ['list'] })
@@ -211,14 +203,14 @@ describe('config', () => {
     logSpy.mockImplementation(() => {})
     readJSONSyncMocked.mockReturnValue({
       a: 1,
-      b: 2
+      b: 2,
     })
 
     await runConfig(appPath, {
       args: ['list'],
       options: {
-        json: true
-      }
+        json: true,
+      },
     })
 
     expect(logSpy).nthCalledWith(1, `Config path: ${configPath}`)

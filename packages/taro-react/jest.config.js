@@ -15,21 +15,21 @@ module.exports = {
   setupFiles: [path.resolve(__dirname, './__tests__/setup.js')],
   testEnvironment: 'node',
   testEnvironmentOptions: {
-    url: 'http://localhost'
+    url: 'http://localhost',
   },
   testMatch: ['**/__tests__/?(*.)+(spec|test).[jt]s?(x)'],
-  testPathIgnorePatterns: [
-    'node_modules',
-    'utils'
-  ],
+  testPathIgnorePatterns: ['node_modules', 'utils'],
   transform: {
-    '^.+\\.m?[tj]sx?$': ['ts-jest', {
-      diagnostics: false,
-      tsconfig: {
-        jsx: 'react',
-        allowJs: true,
-        target: 'ES6'
-      }
-    }]
-  }
+    '^.+\\.m?[tj]sx?$': [
+      'ts-jest',
+      {
+        diagnostics: false,
+        tsconfig: {
+          jsx: 'react',
+          allowJs: true,
+          target: 'ES6',
+        },
+      },
+    ],
+  },
 }

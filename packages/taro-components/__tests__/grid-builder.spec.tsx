@@ -13,7 +13,7 @@ describe('GridBuilder', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [GridBuilder],
-      template: () => (<taro-grid-builder-core />),
+      template: () => <taro-grid-builder-core />,
     })
     await page.waitForChanges()
 

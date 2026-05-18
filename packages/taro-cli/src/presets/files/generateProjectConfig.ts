@@ -30,7 +30,7 @@ export default (ctx: IPluginContext) => {
     }
     ctx.writeFileToDist({
       filePath: distConfigName,
-      content: JSON.stringify(distProjectConfig, null, 2)
+      content: JSON.stringify(distProjectConfig, null, 2),
     })
 
     if (ctx.initialConfig.logger?.quiet === false) {

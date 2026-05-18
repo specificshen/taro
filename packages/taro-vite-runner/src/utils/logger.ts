@@ -2,23 +2,23 @@ import { createLogger } from 'vite'
 
 const viteLogger = createLogger('info', {
   prefix: '[taro]',
-  allowClearScreen: false
+  allowClearScreen: false,
 })
 
 export const logger = {
-  info (msg: string) {
+  info(msg: string) {
     viteLogger.info(msg, {
-      timestamp: true
+      timestamp: true,
     })
   },
-  warn (msg: string) {
+  warn(msg: string) {
     viteLogger.warn(msg, {
-      timestamp: true
+      timestamp: true,
     })
   },
-  error (msg: string) {
+  error(msg: string) {
     viteLogger.error(msg, {
-      timestamp: true
+      timestamp: true,
     })
-  }
+  },
 }

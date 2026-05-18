@@ -5,7 +5,10 @@ import { describe, expect, test } from 'vitest'
 import plugin from '../src'
 import * as definition from './__mocks__/h5-definition.json'
 
-type ImportType = babel.types.ImportSpecifier | babel.types.ImportDefaultSpecifier | babel.types.ImportNamespaceSpecifier
+type ImportType =
+  | babel.types.ImportSpecifier
+  | babel.types.ImportDefaultSpecifier
+  | babel.types.ImportNamespaceSpecifier
 
 const packageName = '@tarojs/taro-h5'
 const pluginOptions = [
@@ -13,9 +16,11 @@ const pluginOptions = [
   {
     packageName,
     definition,
-  }
+  },
 ]
-const getNamedImports = (importSpecifiers: (t.ImportSpecifier | t.ImportDefaultSpecifier | t.ImportNamespaceSpecifier)[]) => {
+const getNamedImports = (
+  importSpecifiers: (t.ImportSpecifier | t.ImportDefaultSpecifier | t.ImportNamespaceSpecifier)[],
+) => {
   return importSpecifiers.reduce((prev, curr) => {
     if (t.isImportSpecifier(curr)) {
       prev.add(((curr as t.ImportSpecifier).imported as babel.types.Identifier).name)
@@ -52,7 +57,7 @@ describe('babel-plugin-transform-taroapi', () => {
     const body = ast.program.body as [t.ImportDeclaration, t.ExpressionStatement]
     expect(t.isImportDeclaration(body[0])).toBeTruthy()
     expect(t.isExpressionStatement(body[1])).toBeTruthy()
-    const defaultImport = body[0].specifiers.find(v => t.isImportDefaultSpecifier(v)) as ImportType
+    const defaultImport = body[0].specifiers.find((v) => t.isImportDefaultSpecifier(v)) as ImportType
     expect(defaultImport).toBeTruthy()
 
     const taroName = defaultImport.local.name
@@ -60,13 +65,10 @@ describe('babel-plugin-transform-taroapi', () => {
     expect(namedImports).toEqual(new Set())
     expect(t.isMemberExpression(body[1].expression)).toBeTruthy()
 
-    const obj = t.memberExpression(
-      t.identifier(taroName),
-      t.identifier('noop'),
-    )
+    const obj = t.memberExpression(t.identifier(taroName), t.identifier('noop'))
     delete obj.optional
 
-    expect((body[1].expression as t.MemberExpression)).toMatchObject(obj)
+    expect(body[1].expression as t.MemberExpression).toMatchObject(obj)
   })
 
   test('should move static apis under "Taro"', function () {
@@ -83,7 +85,7 @@ describe('babel-plugin-transform-taroapi', () => {
     const body = ast.program.body as [t.ImportDeclaration, t.ExpressionStatement]
     expect(t.isImportDeclaration(body[0])).toBeTruthy()
     expect(t.isExpressionStatement(body[1])).toBeTruthy()
-    const defaultImport = body[0].specifiers.find(v => t.isImportDefaultSpecifier(v))
+    const defaultImport = body[0].specifiers.find((v) => t.isImportDefaultSpecifier(v))
     expect(defaultImport).toBeTruthy()
 
     const taroName = defaultImport!.local.name
@@ -91,10 +93,7 @@ describe('babel-plugin-transform-taroapi', () => {
     if (t.isCallExpression(body[1])) {
       memberExpression = ((body[1] as t.ExpressionStatement).expression as t.CallExpression).callee
     }
-    expect(memberExpression).toMatchObject(t.memberExpression(
-      t.identifier(taroName),
-      t.identifier('noop')
-    ))
+    expect(memberExpression).toMatchObject(t.memberExpression(t.identifier(taroName), t.identifier('noop')))
   })
 
   test('should not import taro duplicity', function () {

@@ -13,7 +13,7 @@ describe('NestedScrollBody', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [NestedScrollBody],
-      template: () => (<taro-nested-scroll-body-core />),
+      template: () => <taro-nested-scroll-body-core />,
     })
     await page.waitForChanges()
 

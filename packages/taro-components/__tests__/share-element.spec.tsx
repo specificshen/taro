@@ -13,7 +13,7 @@ describe('ShareElement', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [ShareElement],
-      template: () => (<taro-share-element-core />),
+      template: () => <taro-share-element-core />,
     })
     await page.waitForChanges()
 

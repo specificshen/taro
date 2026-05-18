@@ -13,7 +13,7 @@ describe('Lottie', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Lottie],
-      template: () => (<taro-lottie-core />),
+      template: () => <taro-lottie-core />,
     })
     await page.waitForChanges()
 

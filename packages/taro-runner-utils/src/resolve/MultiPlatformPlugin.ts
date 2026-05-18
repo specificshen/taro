@@ -27,61 +27,59 @@ export class MultiPlatformPlugin {
   private target: string
   private options: IOptions
 
-  constructor (source: string, target: string, options?: IOptions) {
+  constructor(source: string, target: string, options?: IOptions) {
     this.source = source
     this.target = target
     this.options = options || {}
   }
 
-  public apply (resolver) {
+  public apply(resolver) {
     const target = resolver.ensureHook(this.target)
-    resolver
-      .getHook(this.source)
-      .tapAsync('MultiPlatformPlugin', (request, resolveContext, callback) => {
-        const innerRequest: string = request.request || request.path
-        if (!innerRequest || (request.context.hasOwnProperty('issuer') && !request.context.issuer)) return callback()
+    resolver.getHook(this.source).tapAsync('MultiPlatformPlugin', (request, resolveContext, callback) => {
+      const innerRequest: string = request.request || request.path
+      if (!innerRequest || (request.context.hasOwnProperty('issuer') && !request.context.issuer)) return callback()
 
-        if (!path.extname(innerRequest)) {
-          let srcRequest: string
-          if (path.isAbsolute(innerRequest)) {
-            // absolute path
-            srcRequest = innerRequest
-          } else if (!path.isAbsolute(innerRequest) && /^\./.test(innerRequest)) {
-            // relative path
-            srcRequest = path.resolve(request.path, request.request)
-          } else {
-            return callback()
-          }
-
-          if (REG_NODE_MODULES.test(srcRequest) && !this.includes(srcRequest)) {
-            return callback()
-          }
-
-          const extensions = this.options.chain?.resolve?.extensions?.values()
-
-          const newRequestStr = helper.resolveMainFilePath(srcRequest, extensions)
-          if (newRequestStr === innerRequest) return callback()
-          const obj = Object.assign({}, request, {
-            request: newRequestStr
-          })
-          return resolver.doResolve(target, obj, 'resolve multi platform file path', resolveContext, (err, result) => {
-            if (err) return callback(err)
-
-            if (result === undefined) return callback(null, null)
-            return callback(null, result)
-          })
+      if (!path.extname(innerRequest)) {
+        let srcRequest: string
+        if (path.isAbsolute(innerRequest)) {
+          // absolute path
+          srcRequest = innerRequest
+        } else if (!path.isAbsolute(innerRequest) && /^\./.test(innerRequest)) {
+          // relative path
+          srcRequest = path.resolve(request.path, request.request)
+        } else {
+          return callback()
         }
 
-        callback()
-      })
+        if (REG_NODE_MODULES.test(srcRequest) && !this.includes(srcRequest)) {
+          return callback()
+        }
+
+        const extensions = this.options.chain?.resolve?.extensions?.values()
+
+        const newRequestStr = helper.resolveMainFilePath(srcRequest, extensions)
+        if (newRequestStr === innerRequest) return callback()
+        const obj = Object.assign({}, request, {
+          request: newRequestStr,
+        })
+        return resolver.doResolve(target, obj, 'resolve multi platform file path', resolveContext, (err, result) => {
+          if (err) return callback(err)
+
+          if (result === undefined) return callback(null, null)
+          return callback(null, result)
+        })
+      }
+
+      callback()
+    })
   }
 
-  private includes (filePath: string): boolean {
+  private includes(filePath: string): boolean {
     if (!this.options.include || !this.options.include.length) return false
 
     filePath = filePath.replace(/[\\/]/g, '/')
 
-    const res = this.options.include.find(item => filePath.includes(item))
+    const res = this.options.include.find((item) => filePath.includes(item))
     return Boolean(res)
   }
 }

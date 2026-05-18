@@ -12,10 +12,7 @@ describe('Slider', () => {
     const current = 300
     page = await newSpecPage({
       components: [Slider],
-      template: () => (<taro-slider-core
-        max={max}
-        value={current}
-      />),
+      template: () => <taro-slider-core max={max} value={current} />,
     })
     await page.waitForChanges()
 
@@ -29,10 +26,7 @@ describe('Slider', () => {
     const current = 0
     page = await newSpecPage({
       components: [Slider],
-      template: () => (<taro-slider-core
-        min={min}
-        value={current}
-      />),
+      template: () => <taro-slider-core min={min} value={current} />,
     })
 
     expect(page.root?.value).toEqual(min)
@@ -43,7 +37,7 @@ describe('Slider', () => {
   it('steps', async () => {
     page = await newSpecPage({
       components: [Slider],
-      template: () => (<taro-slider-core min={50} max={200} step={2} value={79} />),
+      template: () => <taro-slider-core min={50} max={200} step={2} value={79} />,
     })
     const track = page.root?.querySelector<AnyHTMLElement>('.weui-slider__track')
     const handler = page.root?.querySelector<AnyHTMLElement>('.weui-slider__handler')
@@ -60,7 +54,7 @@ describe('Slider', () => {
     const onChanging = jest.fn()
     page = await newSpecPage({
       components: [Slider],
-      template: () => (<taro-slider-core onChange={onChange} onChanging={onChanging} />),
+      template: () => <taro-slider-core onChange={onChange} onChanging={onChanging} />,
     })
 
     const inner = page.root?.querySelector<AnyHTMLElement>('.weui-slider__inner')
@@ -70,23 +64,31 @@ describe('Slider', () => {
     const centerPoint = (rect.left + rect.right) / 2
 
     await page.waitForChanges()
-    handler?.dispatchEvent(new Event('touchstart', {
-      // @ts-ignore
-      targetTouches: [{
-        identifier: 0,
-        target: handler,
-        pageX: centerPoint
-      }]
-    }))
+    handler?.dispatchEvent(
+      new Event('touchstart', {
+        // @ts-ignore
+        targetTouches: [
+          {
+            identifier: 0,
+            target: handler,
+            pageX: centerPoint,
+          },
+        ],
+      }),
+    )
 
-    handler?.dispatchEvent(new Event('touchmove', {
-      // @ts-ignore
-      targetTouches: [{
-        identifier: 0,
-        target: handler,
-        pageX: centerPoint + innerWidth / 2
-      }]
-    }))
+    handler?.dispatchEvent(
+      new Event('touchmove', {
+        // @ts-ignore
+        targetTouches: [
+          {
+            identifier: 0,
+            target: handler,
+            pageX: centerPoint + innerWidth / 2,
+          },
+        ],
+      }),
+    )
 
     handler?.dispatchEvent(new Event('touchend'))
 

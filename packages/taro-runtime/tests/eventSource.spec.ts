@@ -26,7 +26,7 @@ describe('eventSource', () => {
   /**
    * <div id='target' />
    */
-  test('eventSource.removeNode should remove node\' sid & uid', () => {
+  test("eventSource.removeNode should remove node' sid & uid", () => {
     const node = createDiv('target')
 
     const { sid, uid } = node

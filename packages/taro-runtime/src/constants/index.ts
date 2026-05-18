@@ -55,5 +55,5 @@ export enum CONTEXT_ACTIONS {
   INIT = '0',
   RESTORE = '1',
   RECOVER = '2',
-  DESTROY = '3'
+  DESTROY = '3',
 }

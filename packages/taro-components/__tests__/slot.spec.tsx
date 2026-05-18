@@ -14,7 +14,7 @@ describe('Slot', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Slot],
-      template: () => (<taro-slot-core />),
+      template: () => <taro-slot-core />,
     })
     await page.waitForChanges()
 
@@ -27,7 +27,7 @@ describe('Slot', () => {
   it('unimplemented native-slot', async () => {
     page = await newSpecPage({
       components: [NativeSlot],
-      template: () => (<taro-native-slot-core />),
+      template: () => <taro-native-slot-core />,
     })
     await page.waitForChanges()
 

@@ -7,7 +7,7 @@ import { SwiperItem } from '../src/components/swiper/swiper-item'
 describe('Swiper', () => {
   let page: SpecPage
   const itemStyle = {
-    height: '100%'
+    height: '100%',
   }
 
   it('props', async () => {
@@ -16,11 +16,19 @@ describe('Swiper', () => {
     const duration = 100
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core duration={duration}>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core duration={duration}>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const swiper = wrapper.find('.swiper-wrapper')
@@ -61,11 +69,19 @@ describe('Swiper', () => {
     const interval = 1500
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core autoplay interval={interval}>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core autoplay interval={interval}>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const wrapper = await mount(app, scratch)
@@ -85,11 +101,19 @@ describe('Swiper', () => {
   it('should be circular', async () => {
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core circular>
-        <taro-swiper-item-core><div /></taro-swiper-item-core>
-        <taro-swiper-item-core><div /></taro-swiper-item-core>
-        <taro-swiper-item-core><div /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core circular>
+          <taro-swiper-item-core>
+            <div />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const wrapper = await mount(app, scratch)
@@ -104,11 +128,19 @@ describe('Swiper', () => {
     const interval = 1500
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core current={1} vertical autoplay interval={interval}>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core current={1} vertical autoplay interval={interval}>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const container = wrapper.find('.swiper-container')
@@ -131,11 +163,19 @@ describe('Swiper', () => {
     const previousMargin = 10
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core previousMargin={`${previousMargin}px`}>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core previousMargin={`${previousMargin}px`}>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const wrapper = await mount(app, scratch)
@@ -151,11 +191,19 @@ describe('Swiper', () => {
     // TODO
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core displayMultipleItems={2}>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={itemStyle} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core displayMultipleItems={2}>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={itemStyle} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // const swiper = wrapper.find('.swiper-wrapper')
@@ -173,11 +221,19 @@ describe('Swiper', () => {
     const onAnimationFinish = jest.fn()
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
-      template: () => (<taro-swiper-core onChange={onChange} onAnimationFinish={onAnimationFinish}>
-        <taro-swiper-item-core><div style={Object.assign({}, itemStyle, { background: 'green' })} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={Object.assign({}, itemStyle, { background: 'yellow' })} /></taro-swiper-item-core>
-        <taro-swiper-item-core><div style={Object.assign({}, itemStyle, { background: 'green' })} /></taro-swiper-item-core>
-      </taro-swiper-core>),
+      template: () => (
+        <taro-swiper-core onChange={onChange} onAnimationFinish={onAnimationFinish}>
+          <taro-swiper-item-core>
+            <div style={Object.assign({}, itemStyle, { background: 'green' })} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={Object.assign({}, itemStyle, { background: 'yellow' })} />
+          </taro-swiper-item-core>
+          <taro-swiper-item-core>
+            <div style={Object.assign({}, itemStyle, { background: 'green' })} />
+          </taro-swiper-item-core>
+        </taro-swiper-core>
+      ),
     })
 
     // await wrapper.setProps({

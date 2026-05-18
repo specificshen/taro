@@ -16,17 +16,17 @@ export interface Token {
   close?: boolean
 }
 
-function initPosition (): Position {
+function initPosition(): Position {
   return {
     index: 0,
     column: 0,
-    line: 0
+    line: 0,
   }
 }
 
-function feedPosition (position: Position, str: string, len: number) {
+function feedPosition(position: Position, str: string, len: number) {
   const start = position.index
-  const end = position.index = start + len
+  const end = (position.index = start + len)
   for (let i = start; i < end; i++) {
     const char = str.charAt(i)
     if (char === '\n') {
@@ -38,30 +38,30 @@ function feedPosition (position: Position, str: string, len: number) {
   }
 }
 
-function jumpPosition (position: Position, str: string, end: number) {
+function jumpPosition(position: Position, str: string, end: number) {
   const len = end - position.index
   return feedPosition(position, str, len)
 }
 
-function copyPosition (position: Position) {
+function copyPosition(position: Position) {
   return {
     index: position.index,
     line: position.line,
-    column: position.column
+    column: position.column,
   }
 }
 
 const whitespace = /\s/
-function isWhitespaceChar (char: string) {
+function isWhitespaceChar(char: string) {
   return whitespace.test(char)
 }
 
 const equalSign = /=/
-function isEqualSignChar (char: string) {
+function isEqualSignChar(char: string) {
   return equalSign.test(char)
 }
 
-function shouldBeIgnore (tagName: string) {
+function shouldBeIgnore(tagName: string) {
   const name = tagName.toLowerCase()
   if (options.html!.skipElements.has(name)) {
     return true
@@ -71,7 +71,7 @@ function shouldBeIgnore (tagName: string) {
 
 const alphanumeric = /[A-Za-z0-9]/
 
-function findTextEnd (str: string, index: number) {
+function findTextEnd(str: string, index: number) {
   while (true) {
     const textEnd = str.indexOf('<', index)
     if (textEnd === -1) {
@@ -85,7 +85,7 @@ function findTextEnd (str: string, index: number) {
   }
 }
 
-function isWordEnd (cursor: number, wordBegin: number, html: string) {
+function isWordEnd(cursor: number, wordBegin: number, html: string) {
   if (!isWhitespaceChar(html.charAt(cursor))) return false
 
   const len = html.length
@@ -116,11 +116,11 @@ export class Scanner {
 
   private html: string
 
-  constructor (html: string) {
+  constructor(html: string) {
     this.html = html
   }
 
-  public scan (): Token[] {
+  public scan(): Token[] {
     const { html, position } = this
     const len = html.length
 
@@ -143,7 +143,7 @@ export class Scanner {
     return this.tokens
   }
 
-  private scanText () {
+  private scanText() {
     const type = 'text'
     const { html, position } = this
     let textEnd = findTextEnd(html, position.index)
@@ -161,7 +161,7 @@ export class Scanner {
     this.tokens.push({ type, content, position: { start, end } })
   }
 
-  private scanComment () {
+  private scanComment() {
     const type = 'comment'
     const { html, position } = this
     const start = copyPosition(position)
@@ -179,12 +179,12 @@ export class Scanner {
       content,
       position: {
         start,
-        end: copyPosition(position)
-      }
+        end: copyPosition(position),
+      },
     })
   }
 
-  private scanTag () {
+  private scanTag() {
     this.scanTagStart()
     const tagName = this.scanTagName()
     this.scanAttrs()
@@ -193,7 +193,7 @@ export class Scanner {
     return tagName
   }
 
-  private scanTagStart () {
+  private scanTagStart() {
     const type = 'tag-start'
     const { html, position } = this
 
@@ -204,7 +204,7 @@ export class Scanner {
     this.tokens.push({ type, close, position: { start } })
   }
 
-  private scanTagEnd () {
+  private scanTagEnd() {
     const type = 'tag-end'
     const { html, position } = this
 
@@ -215,7 +215,7 @@ export class Scanner {
     this.tokens.push({ type, close, position: { end } })
   }
 
-  private scanTagName (): string {
+  private scanTagName(): string {
     const type = 'tag'
     const { html, position } = this
     const len = html.length
@@ -239,13 +239,13 @@ export class Scanner {
     const tagName = html.slice(start, end)
     this.tokens.push({
       type,
-      content: tagName
+      content: tagName,
     })
 
     return tagName
   }
 
-  private scanAttrs () {
+  private scanAttrs() {
     const { html, position, tokens } = this
     let cursor = position.index
     let quote: string | null = null // null, single-, or double-quote
@@ -280,7 +280,7 @@ export class Scanner {
         continue
       }
 
-      const isQuoteStart = char === '\'' || char === '"'
+      const isQuoteStart = char === "'" || char === '"'
       if (isQuoteStart) {
         quote = char
         cursor++
@@ -334,7 +334,7 @@ export class Scanner {
     }
   }
 
-  private scanSkipTag (tagName: string) {
+  private scanSkipTag(tagName: string) {
     const { html, position } = this
     const safeTagName = tagName.toLowerCase()
     const len = html.length

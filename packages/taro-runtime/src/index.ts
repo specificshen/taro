@@ -14,7 +14,11 @@ export { nav as navigator } from './bom/navigator'
 export { caf as cancelAnimationFrame, now, raf as requestAnimationFrame } from './bom/raf'
 export { parseUrl, TaroURLProvider as URL } from './bom/URL'
 export { URLSearchParams } from './bom/URLSearchParams'
-export { taroHistoryProvider as history, taroLocationProvider as location, taroWindowProvider as window } from './bom/window'
+export {
+  taroHistoryProvider as history,
+  taroLocationProvider as location,
+  taroWindowProvider as window,
+} from './bom/window'
 // dom
 export { TaroElement } from './dom/element'
 export { createEvent, eventHandler, eventHandlerTTDom, TaroEvent } from './dom/event'
@@ -43,7 +47,7 @@ export {
   injectPageInstance,
   removePageInstance,
   safeExecute,
-  stringify
+  stringify,
 } from './dsl/common'
 export * from './emitter/emitter'
 export { hydrate } from './hydrate'

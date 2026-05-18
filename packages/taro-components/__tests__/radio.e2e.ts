@@ -29,15 +29,19 @@ describe('Radio', () => {
       { value: 'Brazil' },
       { value: 'Japan' },
       { value: 'Britain' },
-      { value: 'French' }
+      { value: 'French' },
     ]
     page = await newE2EPage({
       html: `<taro-radio-group-core name="radio">
-        ${list.map(item => `<taro-radio-core
+        ${list
+          .map(
+            (item) => `<taro-radio-core
           key="${item.value}"
           value="${item.value}"
           ${item.checked ? 'checked' : ''}
-        />`).join('')}
+        />`,
+          )
+          .join('')}
       </taro-radio-group-core>`,
     })
 

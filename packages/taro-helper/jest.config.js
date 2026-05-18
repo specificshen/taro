@@ -7,19 +7,19 @@ module.exports = {
   setupFiles: [path.resolve(__dirname, './src/__tests__/setup.js')],
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)'],
-  testPathIgnorePatterns: [
-    'node_modules',
-    'utils'
-  ],
+  testPathIgnorePatterns: ['node_modules', 'utils'],
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
-    '^.+\\.tsx?$': ['ts-jest', {
-      diagnostics: false,
-      tsconfig: {
-        jsx: 'react',
-        allowJs: true
-      }
-    }],
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        diagnostics: false,
+        tsconfig: {
+          jsx: 'react',
+          allowJs: true,
+        },
+      },
+    ],
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/']
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
 }

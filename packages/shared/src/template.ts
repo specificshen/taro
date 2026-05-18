@@ -10,15 +10,9 @@
  *  - 不支持：使用纯 *xml 语法
  *
  * ^1: packages/taro-runtime/src/hydrate.ts
-*/
+ */
 
-import {
-  focusComponents,
-  internalComponents,
-  nestElements,
-  singleQuote,
-  voidElements
-} from './components'
+import { focusComponents, internalComponents, nestElements, singleQuote, voidElements } from './components'
 import { COMPILE_MODE_IDENTIFIER_PREFIX } from './constants'
 import { isBooleanStringLiteral, isFunction, isNumber, isObjectStringLiteral, isString } from './is'
 import { Shortcuts } from './shortcuts'
@@ -57,11 +51,11 @@ export type Attributes = Record<string, string>
 
 export const styles = {
   style: `i.${Shortcuts.Style}`,
-  class: `i.${Shortcuts.Class}`
+  class: `i.${Shortcuts.Class}`,
 }
 
 export const events = {
-  bindtap: 'eh'
+  bindtap: 'eh',
 }
 
 const weixinAdapter: IAdapter = {
@@ -73,7 +67,7 @@ const weixinAdapter: IAdapter = {
   forIndex: 'wx:for-index',
   key: 'wx:key',
   xs: 'wxs',
-  type: 'weapp'
+  type: 'weapp',
 }
 
 export class BaseTemplate {
@@ -102,42 +96,45 @@ export class BaseTemplate {
   public nestElements: Map<string, number> = nestElements
   public componentsAlias
 
-  set baseLevel (lv) {
+  set baseLevel(lv) {
     this._baseLevel = lv
   }
 
-  get baseLevel () {
+  get baseLevel() {
     return this._baseLevel
   }
 
-  set isUseCompileMode (isUse) {
+  set isUseCompileMode(isUse) {
     this._isUseCompileMode = isUse
   }
 
-  get isUseCompileMode () {
+  get isUseCompileMode() {
     return this._isUseCompileMode
   }
 
-  set isUseXS (isUse) {
+  set isUseXS(isUse) {
     this._isUseXS = this.supportXS && isUse
   }
 
-  get isUseXS () {
+  get isUseXS() {
     return this._isUseXS
   }
 
-  private buildAttribute (attrs: Attributes, nodeName: string): string {
+  private buildAttribute(attrs: Attributes, nodeName: string): string {
     return Object.keys(attrs)
-      .map(k => `${k}="${k.startsWith('bind') || k.startsWith('on') || k.startsWith('catch') ? attrs[k] : `{${this.getAttrValue(attrs[k], k, nodeName)}}`}" `)
+      .map(
+        (k) =>
+          `${k}="${k.startsWith('bind') || k.startsWith('on') || k.startsWith('catch') ? attrs[k] : `{${this.getAttrValue(attrs[k], k, nodeName)}}`}" `,
+      )
       .join('')
   }
 
-  protected replacePropName (name: string, value: string, _componentName?: string, _componentAlias?) {
+  protected replacePropName(name: string, value: string, _componentName?: string, _componentAlias?) {
     if (value === 'eh') return name.toLowerCase()
     return name
   }
 
-  public createMiniComponents (components: Components) {
+  public createMiniComponents(components: Components) {
     const result: Components = Object.create(null)
     const skipProps = ['$duplicateFromComponent']
 
@@ -190,7 +187,7 @@ export class BaseTemplate {
         if (compName === 'view') {
           const reg = /^(bind|on)(touchmove|TouchMove)$/
           const comp = { ...newComp }
-          Object.keys(comp).forEach(originKey => {
+          Object.keys(comp).forEach((originKey) => {
             if (!reg.test(originKey)) return
 
             const key = originKey.replace(reg, 'catch$2')
@@ -203,7 +200,7 @@ export class BaseTemplate {
 
         if (compName === 'view' || compName === 'text' || compName === 'image') {
           const comp: Record<any, any> = {}
-          Object.keys(newComp).forEach(key => {
+          Object.keys(newComp).forEach((key) => {
             const value = newComp[key]
             if (value !== 'eh') comp[key] = value
           })
@@ -211,13 +208,13 @@ export class BaseTemplate {
           if (compName === 'view') {
             result['pure-view'] = {
               style: comp.style,
-              class: comp.class
+              class: comp.class,
             }
 
             result['click-view'] = {
               style: comp.style,
               class: comp.class,
-              ...this.getClickEvent()
+              ...this.getClickEvent(),
             }
           }
         }
@@ -225,7 +222,7 @@ export class BaseTemplate {
         if (compName === 'slot' || compName === 'slot-view') {
           result[compName] = {
             slot: newComp?.name,
-            ...styles
+            ...styles,
           }
         } else if (compName === 'native-slot') {
           result[compName] = {
@@ -245,17 +242,18 @@ export class BaseTemplate {
     return result
   }
 
-  protected buildBaseTemplate () {
+  protected buildBaseTemplate() {
     const Adapter = this.Adapter
-    const data = !this.isSupportRecursive && this.isUseXS
-      ? `${this.dataKeymap(`i:item,c:1,l:xs.f('',item.${Shortcuts.NodeName})`)}`
-      : this.isSupportRecursive
-        ? this.dataKeymap('i:item')
-        : this.dataKeymap('i:item,c:1')
+    const data =
+      !this.isSupportRecursive && this.isUseXS
+        ? `${this.dataKeymap(`i:item,c:1,l:xs.f('',item.${Shortcuts.NodeName})`)}`
+        : this.isSupportRecursive
+          ? this.dataKeymap('i:item')
+          : this.dataKeymap('i:item,c:1')
     const xs = this.isUseXS
-      ? (this.isSupportRecursive
+      ? this.isSupportRecursive
         ? `xs.a(0, item.${Shortcuts.NodeName})`
-        : `xs.a(0, item.${Shortcuts.NodeName}, '')`)
+        : `xs.a(0, item.${Shortcuts.NodeName}, '')`
       : `'tmpl_0_' + item.${Shortcuts.NodeName}`
     return `${this.buildXsImportTemplate()}<template name="taro_tmpl">
   <template is="{{${xs}}}" data="{{${data}}}" ${Adapter.for}="{{root.${Shortcuts.Childnodes}}}" ${Adapter.key}="${Shortcuts.Sid}" />
@@ -263,7 +261,7 @@ export class BaseTemplate {
 `
   }
 
-  protected buildThirdPartyAttr (attrs: Set<string>, patcher: Record<string, string> = {}) {
+  protected buildThirdPartyAttr(attrs: Set<string>, patcher: Record<string, string> = {}) {
     return Array.from(attrs).reduce((str, attr) => {
       if (attr.startsWith('@')) {
         // vue2
@@ -307,7 +305,7 @@ export class BaseTemplate {
     }, '')
   }
 
-  protected buildComponentTemplate (comp: Component, level: number) {
+  protected buildComponentTemplate(comp: Component, level: number) {
     const { $duplicateFromComponent } = this.internalComponents[capitalize(toCamelCase(comp.nodeName))] || {}
     if ($duplicateFromComponent) {
       comp.nodeName = toDashed($duplicateFromComponent)
@@ -318,7 +316,7 @@ export class BaseTemplate {
       : this.buildStandardComponentTemplate(comp, level)
   }
 
-  private getChildrenTemplate (level: number, useSlotItem = false) {
+  private getChildrenTemplate(level: number, useSlotItem = false) {
     const { isSupportRecursive, isUseXS, Adapter, isUseCompileMode = true } = this
     const isLastRecursiveComp = !isSupportRecursive && level + 1 === this.baseLevel
     const isUnRecursiveXs = !this.isSupportRecursive && isUseXS
@@ -340,9 +338,9 @@ export class BaseTemplate {
       return tmpl
     } else {
       const data = isUnRecursiveXs
-        // TODO: 此处直接 c+1，不是最优解，变量 c 的作用是监测组件嵌套的层级是否大于 baselevel
-        // 但目前的监测方法用于所有组件嵌套的总和，应该分开组件计算，单个组件嵌套层级大于 baselevel 时，再进入 comp 组件中进行新的嵌套
-        ? `${this.dataKeymap(`i:item,c:c+1,l:xs.f(l,item.${Shortcuts.NodeName})`)}`
+        ? // TODO: 此处直接 c+1，不是最优解，变量 c 的作用是监测组件嵌套的层级是否大于 baselevel
+          // 但目前的监测方法用于所有组件嵌套的总和，应该分开组件计算，单个组件嵌套层级大于 baselevel 时，再进入 comp 组件中进行新的嵌套
+          `${this.dataKeymap(`i:item,c:c+1,l:xs.f(l,item.${Shortcuts.NodeName})`)}`
         : this.isSupportRecursive
           ? `${this.dataKeymap('i:item')}`
           : `${this.dataKeymap('i:item,c:c+1')}`
@@ -366,7 +364,7 @@ export class BaseTemplate {
     }
   }
 
-  private getChildren (comp: Component, level: number): string {
+  private getChildren(comp: Component, level: number): string {
     const { isSupportRecursive } = this
     const nextLevel = isSupportRecursive ? 0 : level + 1
     const isListBuilder = comp.nodeName === 'list-builder'
@@ -389,7 +387,7 @@ export class BaseTemplate {
     return children
   }
 
-  protected buildFocusComponentTemplate (comp: Component, level: number) {
+  protected buildFocusComponentTemplate(comp: Component, level: number) {
     const children = this.getChildren(comp, level)
     const nodeName = comp.nodeName
     const nodeAlias = comp.nodeAlias
@@ -419,7 +417,7 @@ export class BaseTemplate {
     return res
   }
 
-  protected buildStandardComponentTemplate (comp: Component, level: number) {
+  protected buildStandardComponentTemplate(comp: Component, level: number) {
     const children = this.getChildren(comp, level)
     const nodeAlias = comp.nodeAlias
 
@@ -460,7 +458,7 @@ export class BaseTemplate {
     return res
   }
 
-  protected buildPlainTextTemplate (level: number): string {
+  protected buildPlainTextTemplate(level: number): string {
     return `
 <template name="tmpl_${level}_${this.componentsAlias['#text']._num}">
   <block>{{i.${Shortcuts.Text}}}</block>
@@ -468,7 +466,7 @@ export class BaseTemplate {
 `
   }
 
-  protected buildThirdPartyTemplate (level: number, componentConfig: ComponentConfig) {
+  protected buildThirdPartyTemplate(level: number, componentConfig: ComponentConfig) {
     const { isSupportRecursive, isUseXS, nestElements } = this
     const nextLevel = isSupportRecursive ? 0 : level + 1
     let template = ''
@@ -482,7 +480,8 @@ export class BaseTemplate {
 </template>
   `
       } else {
-        if (!isSupportRecursive && isUseXS && nestElements.has(compName) && level + 1 > nestElements.get(compName)!) return
+        if (!isSupportRecursive && isUseXS && nestElements.has(compName) && level + 1 > nestElements.get(compName)!)
+          return
 
         let child = this.getChildrenTemplate(nextLevel)
 
@@ -508,7 +507,7 @@ export class BaseTemplate {
   }
 
   // 最后一层的 comp 需要引用 container 进行重新的模版循环，其他情况不需要 container
-  protected buildContainerTemplate (level: number) {
+  protected buildContainerTemplate(level: number) {
     const tmpl = `<block ${this.Adapter.if}="{{i.nn === '${this.componentsAlias['#text']._num}'}}">
     <template is="tmpl_0_${this.componentsAlias['#text']._num}" data="{{${this.dataKeymap('i:i')}}}" />
   </block>
@@ -523,31 +522,31 @@ export class BaseTemplate {
 `
   }
 
-  protected dataKeymap (keymap: string) {
+  protected dataKeymap(keymap: string) {
     return keymap
   }
 
-  protected getEvents (): any {
+  protected getEvents(): any {
     return events
   }
 
-  protected getClickEvent (): any {
+  protected getClickEvent(): any {
     return { bindtap: 'eh' }
   }
 
-  protected getAttrValue (value: string, _key: string, _nodeName: string) {
+  protected getAttrValue(value: string, _key: string, _nodeName: string) {
     return `{${value}}`
   }
 
-  public buildXsTemplate (_filePath?: string) {
+  public buildXsTemplate(_filePath?: string) {
     return ''
   }
 
-  public buildXsImportTemplate (_filePath?: string) {
+  public buildXsImportTemplate(_filePath?: string) {
     return this.isUseXS ? this.buildXsTemplate(_filePath) + '\n' : ''
   }
 
-  public buildPageTemplate = (baseTempPath: string, _page?: { content: Record<string, any>, path: string }) => {
+  public buildPageTemplate = (baseTempPath: string, _page?: { content: Record<string, any>; path: string }) => {
     const template = `<import src="${baseTempPath}"/>
 <template is="taro_tmpl" data="{{${this.dataKeymap('root:root')}}}" />`
 
@@ -555,11 +554,12 @@ export class BaseTemplate {
   }
 
   public buildBaseComponentTemplate = (ext: string) => {
-    const data = !this.isSupportRecursive && this.isUseXS
-      ? this.dataKeymap(`i:i,c:1,l:xs.f('',i.${Shortcuts.NodeName})`)
-      : this.isSupportRecursive
-        ? this.dataKeymap('i:i')
-        : this.dataKeymap('i:i,c:1')
+    const data =
+      !this.isSupportRecursive && this.isUseXS
+        ? this.dataKeymap(`i:i,c:1,l:xs.f('',i.${Shortcuts.NodeName})`)
+        : this.isSupportRecursive
+          ? this.dataKeymap('i:i')
+          : this.dataKeymap('i:i,c:1')
 
     // 此处需要重新引入 xs 函数，否则会出现 ws.f() 在 comp.wxml 和 custom-wrapper.wxml 中永远返回 undefined 的问题 #14599
     return `<import src="./base${ext}" />
@@ -568,11 +568,12 @@ ${this.buildXsImportTemplate()}<template is="{{'tmpl_0_' + i.${Shortcuts.NodeNam
 
   public buildCustomComponentTemplate = (ext: string) => {
     const Adapter = this.Adapter
-    const data = !this.isSupportRecursive && this.isUseXS
-      ? `${this.dataKeymap(`i:item,c:1,l:xs.f('',item.${Shortcuts.NodeName})`)}`
-      : this.isSupportRecursive
-        ? this.dataKeymap('i:item')
-        : this.dataKeymap('i:item,c:1')
+    const data =
+      !this.isSupportRecursive && this.isUseXS
+        ? `${this.dataKeymap(`i:item,c:1,l:xs.f('',item.${Shortcuts.NodeName})`)}`
+        : this.isSupportRecursive
+          ? this.dataKeymap('i:item')
+          : this.dataKeymap('i:item,c:1')
 
     // 此处需要重新引入 xs 函数，否则会出现 ws.f() 在 comp.wxml 和 custom-wrapper.wxml 中永远返回 undefined 的问题 #14599
     return `<import src="./base${ext}" />
@@ -597,28 +598,28 @@ ${this.buildXsImportTemplate()}<template is="{{'tmpl_0_' + item.${Shortcuts.Node
 }`
   }
 
-  public mergeComponents (ctx, patch: Record<string, Record<string, string>>) {
+  public mergeComponents(ctx, patch: Record<string, Record<string, string>>) {
     ctx.helper.recursiveMerge(this.internalComponents, patch)
   }
 
-  public mergeThirdPartyComponents (patch: Record<string, Record<string, string>>) {
+  public mergeThirdPartyComponents(patch: Record<string, Record<string, string>>) {
     this.thirdPartyPatcher = patch
   }
 
-  protected buildXSTmplName () {
+  protected buildXSTmplName() {
     return `function (l, n) {
     return 'tmpl_' + l + '_' + n
   }`
   }
 
-  protected buildXSTepFocus (nn: string) {
+  protected buildXSTepFocus(nn: string) {
     return `function(i, prefix) {
     var s = i.focus !== undefined ? 'focus' : 'blur'
     return prefix + i.${nn} + '_' + s
   }`
   }
 
-  protected buildXSTmpExtra () {
+  protected buildXSTmpExtra() {
     return ''
   }
 }
@@ -633,8 +634,9 @@ export class RecursiveTemplate extends BaseTemplate {
       this.miniComponents = this.createMiniComponents(this.internalComponents)
     }
     const ZERO_FLOOR = 0
-    const components = Object.keys(this.miniComponents)
-      .filter(c => componentConfig.includes.size && !componentConfig.includeAll ? componentConfig.includes.has(c) : true)
+    const components = Object.keys(this.miniComponents).filter((c) =>
+      componentConfig.includes.size && !componentConfig.includeAll ? componentConfig.includes.has(c) : true,
+    )
 
     template = components.reduce((current, nodeName) => {
       const attributes: Attributes = this.miniComponents[nodeName]
@@ -660,8 +662,9 @@ export class UnRecursiveTemplate extends BaseTemplate {
       this.componentsAlias = getComponentsAlias(this.internalComponents)
       this.miniComponents = this.createMiniComponents(this.internalComponents)
     }
-    const components = Object.keys(this.miniComponents)
-      .filter(c => componentConfig.includes.size && !componentConfig.includeAll ? componentConfig.includes.has(c) : true)
+    const components = Object.keys(this.miniComponents).filter((c) =>
+      componentConfig.includes.size && !componentConfig.includeAll ? componentConfig.includes.has(c) : true,
+    )
 
     let template = this.buildBaseTemplate()
     for (let i = 0; i < this.baseLevel; i++) {
@@ -673,7 +676,7 @@ export class UnRecursiveTemplate extends BaseTemplate {
     return template
   }
 
-  protected buildFloor (level: number, components: string[], restart = false) {
+  protected buildFloor(level: number, components: string[], restart = false) {
     if (restart) return this.buildContainerTemplate(level)
 
     let template = components.reduce((current, nodeName) => {
@@ -688,7 +691,7 @@ export class UnRecursiveTemplate extends BaseTemplate {
     return template
   }
 
-  protected buildOptimizeFloor (level: number, components: string[], restart = false) {
+  protected buildOptimizeFloor(level: number, components: string[], restart = false) {
     if (restart) return this.buildContainerTemplate(level)
 
     let template = components.reduce((current, nodeName) => {
@@ -715,10 +718,10 @@ export class UnRecursiveTemplate extends BaseTemplate {
     return template
   }
 
-  protected buildXSTmplName () {
+  protected buildXSTmplName() {
     const isLoopComps = [
       ...Array.from(this.nestElements.keys()),
-      ...Array.from(this.componentConfig.thirdPartyComponents.keys())
+      ...Array.from(this.componentConfig.thirdPartyComponents.keys()),
     ]
     const isLoopCompsSet = new Set(isLoopComps)
     const hasMaxComps: string[] = []
@@ -731,8 +734,8 @@ export class UnRecursiveTemplate extends BaseTemplate {
     })
 
     const componentsAlias = this.componentsAlias
-    const listA = Array.from(isLoopCompsSet).map(item => componentsAlias[item]?._num || item)
-    const listB = hasMaxComps.map(item => componentsAlias[item]?._num || item)
+    const listA = Array.from(isLoopCompsSet).map((item) => componentsAlias[item]?._num || item)
+    const listB = hasMaxComps.map((item) => componentsAlias[item]?._num || item)
     const containerLevel = this.baseLevel - 1
 
     // l >= containerLevel 是为了避免 baselevel 倒数两三层几层组件恰好不是 listA 中的组件，而最后一个组件又刚好是 listA 的组件，导致出现 l >= baselevel 却没有走入新的嵌套循环的问题 #14883
@@ -757,14 +760,14 @@ export class UnRecursiveTemplate extends BaseTemplate {
   }`
   }
 
-  protected buildXSTmpExtra () {
+  protected buildXSTmpExtra() {
     const hasMaxComps: string[] = []
     this.nestElements.forEach((max, comp) => {
       if (max > 1) hasMaxComps.push(comp)
     })
 
     const componentsAlias = this.componentsAlias
-    const listA = hasMaxComps.map(item => componentsAlias[item]?._num || item)
+    const listA = hasMaxComps.map((item) => componentsAlias[item]?._num || item)
 
     return `f: function (l, n) {
     var b = ${JSON.stringify(listA)}
@@ -777,9 +780,4 @@ export class UnRecursiveTemplate extends BaseTemplate {
   }
 }
 
-export {
-  capitalize,
-  internalComponents,
-  Shortcuts,
-  toCamelCase
-}
+export { capitalize, internalComponents, Shortcuts, toCamelCase }

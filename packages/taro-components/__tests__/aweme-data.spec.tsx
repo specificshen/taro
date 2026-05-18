@@ -13,7 +13,7 @@ describe('AwemeData', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [AwemeData],
-      template: () => (<taro-aweme-data-core />),
+      template: () => <taro-aweme-data-core />,
     })
     await page.waitForChanges()
 

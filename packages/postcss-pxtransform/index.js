@@ -9,7 +9,7 @@ const defaults = {
   propList: ['*'],
   replace: true,
   mediaQuery: false,
-  minPixelValue: 0
+  minPixelValue: 0,
 }
 
 const legacyOptions = {
@@ -18,20 +18,20 @@ const legacyOptions = {
   selector_black_list: 'selectorBlackList',
   prop_white_list: 'propList',
   media_query: 'mediaQuery',
-  propWhiteList: 'propList'
+  propWhiteList: 'propList',
 }
 
 const deviceRatio = {
   375: 2,
   640: 2.34 / 2,
   750: 1,
-  828: 1.81 / 2
+  828: 1.81 / 2,
 }
 
 const DEFAULT_WEAPP_OPTIONS = {
   platform: 'weapp',
   designWidth: 750,
-  deviceRatio
+  deviceRatio,
 }
 
 const processed = Symbol('processed')
@@ -118,12 +118,12 @@ module.exports = (options = {}) => {
 
   return {
     postcssPlugin: 'postcss-pxtransform',
-    prepare (result) {
+    prepare(result) {
       const pxReplace = createPxReplace(
         opts.rootValue,
         opts.unitPrecision,
         opts.minPixelValue,
-        onePxTransform
+        onePxTransform,
       )(result.root.source.input)
 
       /** 是否跳过当前文件不处理 */
@@ -135,7 +135,7 @@ module.exports = (options = {}) => {
 
       return {
         // 注意：钩子在节点变动时会重新执行，Once，OnceExit只执行一次，https://github.com/NervJS/taro/issues/13238
-        Comment (comment) {
+        Comment(comment) {
           if (comment.text === 'postcss-pxtransform disable') {
             skip = true
             return
@@ -198,7 +198,7 @@ module.exports = (options = {}) => {
             }
           }
         },
-        Declaration (decl) {
+        Declaration(decl) {
           if (skip) return
           if (!opts.methods.includes('size')) return
 
@@ -217,7 +217,7 @@ module.exports = (options = {}) => {
           if (isBlacklisted) {
             // 如果是harmony平台，黑名单的样式单位做特殊处理
             if (platform === 'harmony') {
-              value = decl.value.replace(pxRgx, (m, $1) => $1 ? $1 + unConvertTargetUnit : m)
+              value = decl.value.replace(pxRgx, (m, $1) => ($1 ? $1 + unConvertTargetUnit : m))
             } else {
               // 如果是其他平台，黑名单的样式单位不做处理
               return
@@ -249,15 +249,11 @@ module.exports = (options = {}) => {
   }
 }
 
-function convertLegacyOptions (options) {
+function convertLegacyOptions(options) {
   if (typeof options !== 'object') return
   if (
-    (
-      (typeof options.prop_white_list !== 'undefined' &&
-        options.prop_white_list.length === 0) ||
-      (typeof options.propWhiteList !== 'undefined' &&
-        options.propWhiteList.length === 0)
-    ) &&
+    ((typeof options.prop_white_list !== 'undefined' && options.prop_white_list.length === 0) ||
+      (typeof options.propWhiteList !== 'undefined' && options.propWhiteList.length === 0)) &&
     typeof options.propList === 'undefined'
   ) {
     options.propList = ['*']
@@ -272,7 +268,7 @@ function convertLegacyOptions (options) {
   })
 }
 
-function createPxReplace (rootValue, unitPrecision, minPixelValue, onePxTransform) {
+function createPxReplace(rootValue, unitPrecision, minPixelValue, onePxTransform) {
   const specialPxRgx = pxRegex(SPECIAL_PIXEL)
   return function (input) {
     return function (m, $1) {
@@ -284,12 +280,16 @@ function createPxReplace (rootValue, unitPrecision, minPixelValue, onePxTransfor
       }
 
       if (!onePxTransform && parseInt($1, 10) === 1) {
-        if (platform === 'harmony') { return $1 + unConvertTargetUnit }
+        if (platform === 'harmony') {
+          return $1 + unConvertTargetUnit
+        }
         return m
       }
       const pixels = parseFloat($1)
       if (pixels < minPixelValue) {
-        if (platform === 'harmony') { return $1 + unConvertTargetUnit }
+        if (platform === 'harmony') {
+          return $1 + unConvertTargetUnit
+        }
         return m
       }
 
@@ -303,19 +303,19 @@ function createPxReplace (rootValue, unitPrecision, minPixelValue, onePxTransfor
   }
 }
 
-function toFixed (number, precision) {
+function toFixed(number, precision) {
   const multiplier = Math.pow(10, precision + 1)
   const wholeNumber = Math.floor(number * multiplier)
   return (Math.round(wholeNumber / 10) * 10) / multiplier
 }
 
-function declarationExists (decls, prop, value) {
+function declarationExists(decls, prop, value) {
   return decls.some(function (decl) {
     return decl.prop === prop && decl.value === value
   })
 }
 
-function blacklistedSelector (blacklist, selector) {
+function blacklistedSelector(blacklist, selector) {
   if (typeof selector !== 'string') return
   return blacklist.some(function (regex) {
     if (typeof regex === 'string') return selector.indexOf(regex) !== -1
@@ -323,7 +323,7 @@ function blacklistedSelector (blacklist, selector) {
   })
 }
 
-function createPropListMatcher (propList) {
+function createPropListMatcher(propList) {
   const hasWild = propList.indexOf('*') > -1
   const matchAll = hasWild && propList.length === 1
   const lists = {
@@ -334,13 +334,12 @@ function createPropListMatcher (propList) {
     notExact: filterPropList.notExact(propList),
     notContain: filterPropList.notContain(propList),
     notStartWith: filterPropList.notStartWith(propList),
-    notEndWith: filterPropList.notEndWith(propList)
+    notEndWith: filterPropList.notEndWith(propList),
   }
   return function (prop) {
     if (matchAll) return true
     return (
-      (
-        hasWild ||
+      (hasWild ||
         lists.exact.indexOf(prop) > -1 ||
         lists.contain.some(function (m) {
           return prop.indexOf(m) > -1
@@ -350,8 +349,7 @@ function createPropListMatcher (propList) {
         }) ||
         lists.endWith.some(function (m) {
           return prop.indexOf(m) === prop.length - m.length
-        })
-      ) &&
+        })) &&
       !(
         lists.notExact.indexOf(prop) > -1 ||
         lists.notContain.some(function (m) {

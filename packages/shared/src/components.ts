@@ -8,7 +8,7 @@ export const touchEvents = {
   bindTouchMove: NO_DEFAULT_VALUE,
   bindTouchEnd: NO_DEFAULT_VALUE,
   bindTouchCancel: NO_DEFAULT_VALUE,
-  bindLongTap: NO_DEFAULT_VALUE
+  bindLongTap: NO_DEFAULT_VALUE,
 }
 
 export const animation = {
@@ -16,10 +16,10 @@ export const animation = {
   bindAnimationStart: NO_DEFAULT_VALUE,
   bindAnimationIteration: NO_DEFAULT_VALUE,
   bindAnimationEnd: NO_DEFAULT_VALUE,
-  bindTransitionEnd: NO_DEFAULT_VALUE
+  bindTransitionEnd: NO_DEFAULT_VALUE,
 }
 
-export function singleQuote (s: string) {
+export function singleQuote(s: string) {
   return `'${s}'`
 }
 
@@ -29,13 +29,13 @@ const View = {
   'hover-start-time': '50',
   'hover-stay-time': '400',
   ...touchEvents,
-  ...animation
+  ...animation,
 }
 
 const Icon = {
   type: NO_DEFAULT_VALUE,
   size: '23',
-  color: NO_DEFAULT_VALUE
+  color: NO_DEFAULT_VALUE,
 }
 
 const MapComp = {
@@ -54,7 +54,7 @@ const MapComp = {
   bindControlTap: NO_DEFAULT_VALUE,
   bindCalloutTap: NO_DEFAULT_VALUE,
   bindUpdated: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const Progress = {
@@ -65,18 +65,18 @@ const Progress = {
   backgroundColor: singleQuote('#EBEBEB'),
   active: DEFAULT_FALSE,
   'active-mode': singleQuote('backwards'),
-  'show-info': DEFAULT_FALSE
+  'show-info': DEFAULT_FALSE,
 }
 
 const RichText = {
-  nodes: DEFAULT_EMPTY_ARRAY
+  nodes: DEFAULT_EMPTY_ARRAY,
 }
 
 const Text = {
   selectable: DEFAULT_FALSE,
   space: NO_DEFAULT_VALUE,
   decode: DEFAULT_FALSE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const Button = {
@@ -93,7 +93,7 @@ const Button = {
   'hover-stay-time': '70',
   name: NO_DEFAULT_VALUE,
   bindagreeprivacyauthorization: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const Checkbox = {
@@ -101,19 +101,19 @@ const Checkbox = {
   disabled: NO_DEFAULT_VALUE,
   checked: DEFAULT_FALSE,
   color: singleQuote('#09BB07'),
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const CheckboxGroup = {
   bindChange: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Form = {
   'report-submit': DEFAULT_FALSE,
   bindSubmit: NO_DEFAULT_VALUE,
   bindReset: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Input = {
@@ -136,13 +136,13 @@ const Input = {
   bindFocus: NO_DEFAULT_VALUE,
   bindBlur: NO_DEFAULT_VALUE,
   bindConfirm: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Label = {
   for: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const Picker = {
@@ -158,7 +158,7 @@ const Picker = {
   name: NO_DEFAULT_VALUE,
   bindCancel: NO_DEFAULT_VALUE,
   bindChange: NO_DEFAULT_VALUE,
-  bindColumnChange: NO_DEFAULT_VALUE
+  bindColumnChange: NO_DEFAULT_VALUE,
 }
 
 const PickerView = {
@@ -168,11 +168,11 @@ const PickerView = {
   'mask-style': NO_DEFAULT_VALUE,
   'mask-class': NO_DEFAULT_VALUE,
   bindChange: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const PickerViewColumn = {
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Radio = {
@@ -180,12 +180,12 @@ const Radio = {
   checked: DEFAULT_FALSE,
   disabled: NO_DEFAULT_VALUE,
   color: singleQuote('#09BB07'),
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const RadioGroup = {
   bindChange: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Slider = {
@@ -201,7 +201,7 @@ const Slider = {
   'show-value': DEFAULT_FALSE,
   bindChange: NO_DEFAULT_VALUE,
   bindChanging: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Switch = {
@@ -210,7 +210,7 @@ const Switch = {
   type: singleQuote('switch'),
   color: singleQuote('#04BE02'),
   bindChange: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Textarea = {
@@ -233,22 +233,22 @@ const Textarea = {
   bindLineChange: NO_DEFAULT_VALUE,
   bindInput: NO_DEFAULT_VALUE,
   bindConfirm: NO_DEFAULT_VALUE,
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const CoverImage = {
   src: NO_DEFAULT_VALUE,
   bindLoad: 'eh',
-  bindError: 'eh'
+  bindError: 'eh',
 }
 
 const CoverView = {
   'scroll-top': DEFAULT_FALSE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const MovableArea = {
-  'scale-area': DEFAULT_FALSE
+  'scale-area': DEFAULT_FALSE,
 }
 
 const MovableView = {
@@ -271,7 +271,7 @@ const MovableView = {
   width: singleQuote('10px'),
   height: singleQuote('10px'),
   ...touchEvents,
-  ...animation
+  ...animation,
 }
 
 const ScrollView = {
@@ -288,7 +288,7 @@ const ScrollView = {
   bindScrollToLower: NO_DEFAULT_VALUE,
   bindScroll: NO_DEFAULT_VALUE,
   ...touchEvents,
-  ...animation
+  ...animation,
 }
 
 const Swiper = {
@@ -307,11 +307,11 @@ const Swiper = {
   bindChange: NO_DEFAULT_VALUE,
   bindTransition: NO_DEFAULT_VALUE,
   bindAnimationFinish: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const SwiperItem = {
-  'item-id': NO_DEFAULT_VALUE
+  'item-id': NO_DEFAULT_VALUE,
 }
 
 const Navigator = {
@@ -324,7 +324,7 @@ const Navigator = {
   'hover-stay-time': '600',
   bindSuccess: NO_DEFAULT_VALUE,
   bindFail: NO_DEFAULT_VALUE,
-  bindComplete: NO_DEFAULT_VALUE
+  bindComplete: NO_DEFAULT_VALUE,
 }
 
 const Audio = {
@@ -339,14 +339,14 @@ const Audio = {
   bindPlay: NO_DEFAULT_VALUE,
   bindPause: NO_DEFAULT_VALUE,
   bindTimeUpdate: NO_DEFAULT_VALUE,
-  bindEnded: NO_DEFAULT_VALUE
+  bindEnded: NO_DEFAULT_VALUE,
 }
 
 const Camera = {
   'device-position': singleQuote('back'),
   flash: singleQuote('auto'),
   bindStop: NO_DEFAULT_VALUE,
-  bindError: NO_DEFAULT_VALUE
+  bindError: NO_DEFAULT_VALUE,
 }
 
 const Image = {
@@ -355,7 +355,7 @@ const Image = {
   'lazy-load': DEFAULT_FALSE,
   bindError: NO_DEFAULT_VALUE,
   bindLoad: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const LivePlayer = {
@@ -370,7 +370,7 @@ const LivePlayer = {
   bindStateChange: NO_DEFAULT_VALUE,
   bindFullScreenChange: NO_DEFAULT_VALUE,
   bindNetStatus: NO_DEFAULT_VALUE,
-  ...animation
+  ...animation,
 }
 
 const Video = {
@@ -401,14 +401,14 @@ const Video = {
   bindFullScreenChange: NO_DEFAULT_VALUE,
   bindWaiting: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
-  ...animation
+  ...animation,
 }
 
 const Canvas = {
   'canvas-id': NO_DEFAULT_VALUE,
   'disable-scroll': DEFAULT_FALSE,
   bindError: NO_DEFAULT_VALUE,
-  ...touchEvents
+  ...touchEvents,
 }
 
 const Ad = {
@@ -416,21 +416,21 @@ const Ad = {
   'ad-intervals': NO_DEFAULT_VALUE,
   bindLoad: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
-  bindClose: NO_DEFAULT_VALUE
+  bindClose: NO_DEFAULT_VALUE,
 }
 
 const WebView = {
   src: NO_DEFAULT_VALUE,
   bindMessage: NO_DEFAULT_VALUE,
   bindLoad: NO_DEFAULT_VALUE,
-  bindError: NO_DEFAULT_VALUE
+  bindError: NO_DEFAULT_VALUE,
 }
 
 const Block = {}
 
 // For Vue，因为 slot 标签被 vue 占用了
 const SlotView = {
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 // For React
@@ -438,11 +438,11 @@ const SlotView = {
 // 因为 <slot name="{{ i.name }}" /> 适用性没有前者高（无法添加类和样式）
 // 不给 View 直接加 slot 属性的原因是性能损耗
 const Slot = {
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const NativeSlot = {
-  name: NO_DEFAULT_VALUE
+  name: NO_DEFAULT_VALUE,
 }
 
 const Script = {}
@@ -499,13 +499,10 @@ export const controlledComponent = new Set([
   'radio',
   'slider',
   'switch',
-  'textarea'
+  'textarea',
 ])
 
-export const focusComponents = new Set([
-  'input',
-  'textarea'
-])
+export const focusComponents = new Set(['input', 'textarea'])
 
 export const voidElements = new Set([
   'progress',
@@ -519,7 +516,7 @@ export const voidElements = new Set([
   'ad',
   'official-account',
   'open-data',
-  'navigation-bar'
+  'navigation-bar',
 ])
 
 export const nestElements = new Map([

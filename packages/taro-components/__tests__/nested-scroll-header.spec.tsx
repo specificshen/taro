@@ -13,7 +13,7 @@ describe('NestedScrollHeader', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [NestedScrollHeader],
-      template: () => (<taro-nested-scroll-header-core />),
+      template: () => <taro-nested-scroll-header-core />,
     })
     await page.waitForChanges()
 

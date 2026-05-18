@@ -11,7 +11,7 @@ export const defaultEsbuildLoader: Record<string, Loader> = {
   '.js': 'js',
   '.jsx': 'tsx',
   '.ts': 'ts',
-  '.json': 'json'
+  '.json': 'json',
 }
 
 export interface IRequireWithEsbuildOptions {
@@ -23,7 +23,7 @@ export interface IRequireWithEsbuildOptions {
 /** 基于 esbuild 的 require 实现 */
 export function requireWithEsbuild(
   id: string,
-  { customConfig = {}, customSwcConfig = {}, cwd = process.cwd() }: IRequireWithEsbuildOptions = {}
+  { customConfig = {}, customSwcConfig = {}, cwd = process.cwd() }: IRequireWithEsbuildOptions = {},
 ) {
   const { outputFiles = [] } = esbuild.buildSync(
     defaults(omit(customConfig, ['alias', 'define', 'loader', 'plugins']), {
@@ -42,7 +42,7 @@ export function requireWithEsbuild(
       loader: defaults(customConfig.loader, defaultEsbuildLoader),
       mainFields: [...defaultMainFields],
       write: false,
-    })
+    }),
   )
 
   // Note: esbuild.buildSync 模式下不支持引入插件，所以这里需要手动转换
@@ -50,7 +50,7 @@ export function requireWithEsbuild(
     outputFiles[0].text,
     defaults(customSwcConfig, {
       jsc: { target: 'es2015' },
-    })
+    }),
   )
   return requireFromString(code, id)
 }

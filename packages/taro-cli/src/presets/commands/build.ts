@@ -1,7 +1,4 @@
-import {
-  MessageKind,
-  validateConfig
-} from '@tarojs/plugin-doctor'
+import { MessageKind, validateConfig } from '@tarojs/plugin-doctor'
 
 import { extractCompileEntry } from '../../util/appConfig'
 import * as hooks from '../constant'
@@ -21,7 +18,8 @@ export default (ctx: IPluginContext) => {
       '-p, --port [port]': 'Specified port',
       '--no-build': 'Do not build project',
       '--blended': 'Blended Taro project in an original MiniApp project',
-      '--new-blended': 'Blended Taro project in an original MiniApp project while supporting building components independently',
+      '--new-blended':
+        'Blended Taro project in an original MiniApp project while supporting building components independently',
       '--plugin [typeName]': 'Build Taro plugin project, weapp',
       '--env-prefix [envPrefix]': "Provide the dotEnv varables's prefix",
       '--no-check': 'Do not check config is valid or not',
@@ -60,7 +58,7 @@ export default (ctx: IPluginContext) => {
       if (!noCheck) {
         const checkResult = await checkConfig({
           projectConfig: ctx.initialConfig,
-          helper: ctx.helper
+          helper: ctx.helper,
         })
         if (!checkResult.isValid) {
           const ERROR = chalk.red('[✗] ')
@@ -114,17 +112,17 @@ export default (ctx: IPluginContext) => {
             withoutBuild,
             newBlended,
             noInjectGlobalStyle,
-            async modifyAppConfig (appConfig) {
+            async modifyAppConfig(appConfig) {
               extractCompileEntry(appConfig, args, ctx)
 
               await ctx.applyPlugins({
                 name: hooks.MODIFY_APP_CONFIG,
                 opts: {
-                  appConfig
-                }
+                  appConfig,
+                },
               })
             },
-            async modifyWebpackChain (chain, webpack, data) {
+            async modifyWebpackChain(chain, webpack, data) {
               await ctx.applyPlugins({
                 name: hooks.MODIFY_WEBPACK_CHAIN,
                 initialVal: chain,
@@ -142,7 +140,7 @@ export default (ctx: IPluginContext) => {
                 opts: {
                   viteConfig,
                   data,
-                  viteCompilerContext
+                  viteCompilerContext,
                 },
               })
             },
@@ -211,7 +209,7 @@ export default (ctx: IPluginContext) => {
   })
 }
 
-async function checkConfig ({ projectConfig, helper }) {
+async function checkConfig({ projectConfig, helper }) {
   const result = await validateConfig(projectConfig, helper)
   return result
 }

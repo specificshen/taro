@@ -26,9 +26,7 @@
     { "name": "system.sms" }
   ],
   "icon": "logo.png",
-  "permissions": [
-    { "origin": "*" }
-  ],
+  "permissions": [{ "origin": "*" }],
   "config": {
     "logLevel": "debug"
   }

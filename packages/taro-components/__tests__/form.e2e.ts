@@ -6,20 +6,26 @@ describe('Form e2e', () => {
   const sliderValue = 0
   const inputValue = ''
   const textareaValue = ''
-  const radioList = [{
-    value: 'radio1',
-    checked: false
-  }, {
-    value: 'radio2',
-    checked: false
-  }]
-  const checkboxList = [{
-    value: 'checkbox1',
-    checked: false
-  }, {
-    value: 'checkbox2',
-    checked: false
-  }]
+  const radioList = [
+    {
+      value: 'radio1',
+      checked: false,
+    },
+    {
+      value: 'radio2',
+      checked: false,
+    },
+  ]
+  const checkboxList = [
+    {
+      value: 'checkbox1',
+      checked: false,
+    },
+    {
+      value: 'checkbox2',
+      checked: false,
+    },
+  ]
   const pickerValue = 0
 
   it('events', async () => {
@@ -64,8 +70,8 @@ describe('Form e2e', () => {
         'my-textarea': '',
         'my-radio-group': '',
         'my-checkbox-group': [],
-        'my-picker': '0'
-      }
+        'my-picker': '0',
+      },
     })
 
     formSwitch.setProperty('checked', true)
@@ -92,8 +98,8 @@ describe('Form e2e', () => {
         'my-textarea': 'taro-textarea',
         'my-radio-group': 'radio1',
         'my-checkbox-group': ['checkbox1', 'checkbox2'],
-        'my-picker': '1'
-      }
+        'my-picker': '1',
+      },
     })
 
     reset.triggerEvent('touchend')
@@ -111,8 +117,8 @@ describe('Form e2e', () => {
         'my-checkbox-group': [],
         // Slider 和 Picker 的 input type 为 hidden，form.reset() 不能重置它们，需要再想想办法
         'my-slider': '60',
-        'my-picker': '1'
-      }
+        'my-picker': '1',
+      },
     })
 
     expect(page).toMatchSnapshot()

@@ -9,7 +9,7 @@ describe('Map', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Map],
-      template: () => (<taro-map-core />),
+      template: () => <taro-map-core />,
     })
     await page.waitForChanges()
 

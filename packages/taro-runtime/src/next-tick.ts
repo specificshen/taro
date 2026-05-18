@@ -26,7 +26,7 @@ export const nextTick = (cb: TFunc, ctx?: Record<string, any>) => {
    *   2. 调用 nextTick 时，pendingUpdate 为 true，那么刚好可以搭上便车
    *   3. 调用 nextTick 时，pendingUpdate 还是 false，框架仍未启动更新逻辑，这时最多轮询 100ms，等待 pendingUpdate 变为 true。
    */
-  function next () {
+  function next() {
     const pageElement: TaroRootElement | null = env.document.getElementById<TaroRootElement>(path)
     if (pageElement?.pendingUpdate) {
       if (process.env.TARO_PLATFORM === 'web') {

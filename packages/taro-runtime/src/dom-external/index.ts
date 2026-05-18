@@ -17,12 +17,12 @@ declare const ENABLE_TEMPLATE_CONTENT: boolean
 if (process.env.TARO_PLATFORM !== PLATFORM_TYPE.WEB) {
   if (ENABLE_INNER_HTML) {
     TaroNode.extend('innerHTML', {
-      set (html: string) {
+      set(html: string) {
         setInnerHTML.call(this, this, html)
       },
-      get (): string {
+      get(): string {
         return ''
-      }
+      },
     })
 
     if (ENABLE_ADJACENT_HTML) {
@@ -44,9 +44,9 @@ if (process.env.TARO_PLATFORM !== PLATFORM_TYPE.WEB) {
 
   if (ENABLE_TEMPLATE_CONTENT) {
     TaroElement.extend('content', {
-      get () {
+      get() {
         return getTemplateContent(this)
-      }
+      },
     })
   }
 }

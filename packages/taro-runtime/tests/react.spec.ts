@@ -14,12 +14,15 @@ describe('react', () => {
     const div = document.createElement('div')
     const spy = vi.fn()
     div.addEventListener('tap', spy, null)
-    const event = runtime.createEvent({
-      type: 'tap',
-      detail: {},
-      target: { dataset: {}, id: '' },
-      currentTarget: { dataset: {}, id: '' }
-    }, div)
+    const event = runtime.createEvent(
+      {
+        type: 'tap',
+        detail: {},
+        target: { dataset: {}, id: '' },
+        currentTarget: { dataset: {}, id: '' },
+      },
+      div,
+    )
     div.dispatchEvent(event)
     expect(spy).toBeCalledTimes(1)
   })

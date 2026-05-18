@@ -8,4 +8,5 @@
 // Any digit followed by px
 // !singlequotes|!doublequotes|!url()|pixelunit
 
-module.exports = (units = ['px']) => new RegExp(`"[^"]+"|'[^']+'|url\\([^\\)]+\\)|(\\d*\\.?\\d+)(${units.join('|')})`, 'g')
+module.exports = (units = ['px']) =>
+  new RegExp(`"[^"]+"|'[^']+'|url\\([^\\)]+\\)|(\\d*\\.?\\d+)(${units.join('|')})`, 'g')

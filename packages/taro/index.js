@@ -2,7 +2,7 @@ const { Current, getPageInstance, hooks, injectPageInstance } = require('@tarojs
 const taro = require('@tarojs/api').default
 const React = require('react')
 
-function initWeappNativeApiFallback (taro) {
+function initWeappNativeApiFallback(taro) {
   if (typeof wx === 'undefined' || typeof taro.addInterceptor === 'function') return
 
   const { processApis } = require('@tarojs/shared')
@@ -42,19 +42,21 @@ function initWeappNativeApiFallback (taro) {
 
   processApis(taro, wx, {
     needPromiseApis,
-    modifyApis (apis) {
+    modifyApis(apis) {
       apis.delete('lanDebug')
     },
-    transformMeta (api, options) {
+    transformMeta(api, options) {
       if (api === 'showShareMenu') {
-        options.menus = options.showShareItems?.map(item => item === 'wechatFriends' ? 'shareAppMessage' : item === 'wechatMoment' ? 'shareTimeline' : item)
+        options.menus = options.showShareItems?.map((item) =>
+          item === 'wechatFriends' ? 'shareAppMessage' : item === 'wechatMoment' ? 'shareTimeline' : item,
+        )
       }
 
       return {
         key: api,
-        options
+        options,
       }
-    }
+    },
   })
 
   taro.cloud = wx.cloud
@@ -68,10 +70,10 @@ function initWeappNativeApiFallback (taro) {
   }
 }
 
-function initReactHooksFallback (taro) {
+function initReactHooksFallback(taro) {
   if (typeof taro.useShareAppMessage === 'function') return
 
-  const createHook = lifecycle => fn => {
+  const createHook = (lifecycle) => (fn) => {
     const router = Current.router
     const id = router?.$taroPath || router?.path || 'taro-app'
     const instRef = React.useRef()
@@ -79,7 +81,7 @@ function initReactHooksFallback (taro) {
     if (fnRef.current !== fn) fnRef.current = fn
 
     React.useLayoutEffect(() => {
-      let inst = instRef.current = getPageInstance(id)
+      let inst = (instRef.current = getPageInstance(id))
       if (!inst) {
         inst = instRef.current = Object.create(null)
         injectPageInstance(inst, id)
@@ -100,7 +102,7 @@ function initReactHooksFallback (taro) {
         if (list === callback) {
           inst[lifecycle] = undefined
         } else if (Array.isArray(list)) {
-          inst[lifecycle] = list.filter(item => item !== callback)
+          inst[lifecycle] = list.filter((item) => item !== callback)
         }
         instRef.current = undefined
       }
@@ -132,16 +134,16 @@ function initReactHooksFallback (taro) {
     useUnload: 'onUnload',
   }
 
-  Object.keys(hooksMap).forEach(key => {
+  Object.keys(hooksMap).forEach((key) => {
     taro[key] = createHook(hooksMap[key])
   })
 
-  taro.useRouter = function useRouter (dynamic = false) {
+  taro.useRouter = function useRouter(dynamic = false) {
     if (dynamic) return Current.router
     return React.useMemo(() => Current.router, [])
   }
 
-  taro.useScope = function useScope () {
+  taro.useScope = function useScope() {
     return undefined
   }
 }

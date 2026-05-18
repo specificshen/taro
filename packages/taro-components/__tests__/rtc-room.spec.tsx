@@ -14,12 +14,14 @@ describe('RtcRoom', () => {
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [RtcRoom, RtcRoomItem],
-      template: () => (<taro-rtc-room-core>
-        <taro-rtc-room-item-core />
-        <taro-rtc-room-item-core />
-        <taro-rtc-room-item-core />
-        <taro-rtc-room-item-core />
-      </taro-rtc-room-core>),
+      template: () => (
+        <taro-rtc-room-core>
+          <taro-rtc-room-item-core />
+          <taro-rtc-room-item-core />
+          <taro-rtc-room-item-core />
+          <taro-rtc-room-item-core />
+        </taro-rtc-room-core>
+      ),
     })
     await page.waitForChanges()
 

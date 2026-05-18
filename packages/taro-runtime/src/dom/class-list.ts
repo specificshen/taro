@@ -5,20 +5,23 @@ export class ClassList {
 
   private tokenList: string[] = []
 
-  constructor (className: string, el: TaroElement) {
+  constructor(className: string, el: TaroElement) {
     this.el = el
-    className.trim().split(/\s+/).forEach(token => this.tokenList.push(token))
+    className
+      .trim()
+      .split(/\s+/)
+      .forEach((token) => this.tokenList.push(token))
   }
 
-  public get value () {
+  public get value() {
     return this.toString()
   }
 
-  public get length () {
+  public get length() {
     return this.tokenList.length
   }
 
-  add () {
+  add() {
     let index = 0
     let updated = false
 
@@ -41,7 +44,7 @@ export class ClassList {
     }
   }
 
-  remove () {
+  remove() {
     let i = 0
     let updated = false
 
@@ -68,13 +71,13 @@ export class ClassList {
     }
   }
 
-  contains (token: string) {
+  contains(token: string) {
     if (!this.checkTokenIsValid(token)) return false
 
     return !!~this.tokenList.indexOf(token)
   }
 
-  toggle (token: string, force: boolean) {
+  toggle(token: string, force: boolean) {
     const result = this.contains(token)
     const method = result ? force !== true && 'remove' : force !== false && 'add'
 
@@ -90,7 +93,7 @@ export class ClassList {
     }
   }
 
-  replace (token: string, replacement_token: string) {
+  replace(token: string, replacement_token: string) {
     if (!this.checkTokenIsValid(token) || !this.checkTokenIsValid(replacement_token)) return
 
     const index = this.tokenList.indexOf(token)
@@ -101,17 +104,17 @@ export class ClassList {
     }
   }
 
-  toString () {
-    return this.tokenList.filter(v => v !== '').join(' ')
+  toString() {
+    return this.tokenList.filter((v) => v !== '').join(' ')
   }
 
-  private checkTokenIsValid (token: string) {
+  private checkTokenIsValid(token: string) {
     if (token === '' || /\s/.test(token)) return false
 
     return true
   }
 
-  private _update () {
+  private _update() {
     this.el.className = this.value
   }
 }

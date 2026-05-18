@@ -35,11 +35,11 @@ export const box = <T>(v: T) => ({ v })
  */
 export const unbox = <T>(b: Box<T>) => b.v
 
-export function toDashed (s: string) {
+export function toDashed(s: string) {
   return s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 }
 
-export function toCamelCase (s: string) {
+export function toCamelCase(s: string) {
   let camel = ''
   let nextCap = false
   for (let i = 0; i < s.length; i++) {
@@ -57,16 +57,13 @@ export const toKebabCase = function (string) {
   return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 }
 
-export function capitalize (s: string) {
+export function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 
-export const hasOwn = (
-  val: Record<any, any>,
-  key: string | symbol
-) => hasOwnProperty.call(val, key)
+export const hasOwn = (val: Record<any, any>, key: string | symbol) => hasOwnProperty.call(val, key)
 
 /**
  * ensure takes a condition and throw a error if the condition fails,
@@ -74,7 +71,7 @@ export const hasOwn = (
  * @param condition condition.
  * @param msg error message.
  */
-export function ensure (condition: boolean, msg: string): asserts condition {
+export function ensure(condition: boolean, msg: string): asserts condition {
   if (!condition) {
     if (process.env.NODE_ENV !== 'production') {
       const reportIssue = '\n如有疑问，请提交 issue 至：https://github.com/nervjs/taro/issues'
@@ -85,7 +82,7 @@ export function ensure (condition: boolean, msg: string): asserts condition {
   }
 }
 
-export function warn (condition: boolean, msg: string) {
+export function warn(condition: boolean, msg: string) {
   if (process.env.NODE_ENV !== 'production') {
     if (condition) {
       console.warn(`[taro warn] ${msg}`)
@@ -93,7 +90,7 @@ export function warn (condition: boolean, msg: string) {
   }
 }
 
-export function queryToJson (str) {
+export function queryToJson(str) {
   const dec = decodeURIComponent
   const qp = str.split('&')
   const ret = {}
@@ -110,7 +107,8 @@ export function queryToJson (str) {
         name = dec(item.slice(0, s))
         val = dec(item.slice(s + 1))
       }
-      if (typeof ret[name] === 'string') { // inline'd type check
+      if (typeof ret[name] === 'string') {
+        // inline'd type check
         ret[name] = [ret[name]]
       }
 
@@ -125,30 +123,30 @@ export function queryToJson (str) {
 }
 
 let _uniqueId = 1
-const _loadTime = (new Date()).getTime().toString()
+const _loadTime = new Date().getTime().toString()
 
-export function getUniqueKey () {
-  return _loadTime + (_uniqueId++)
+export function getUniqueKey() {
+  return _loadTime + _uniqueId++
 }
 
 const cacheData = {}
 
-export function cacheDataSet (key, val) {
+export function cacheDataSet(key, val) {
   cacheData[key] = val
 }
 
-export function cacheDataGet (key, delelteAfterGet?) {
+export function cacheDataGet(key, delelteAfterGet?) {
   const temp = cacheData[key]
   delelteAfterGet && delete cacheData[key]
   return temp
 }
 
-export function cacheDataHas (key) {
+export function cacheDataHas(key) {
   return key in cacheData
 }
 
-export function mergeInternalComponents (components) {
-  Object.keys(components).forEach(name => {
+export function mergeInternalComponents(components) {
+  Object.keys(components).forEach((name) => {
     if (name in internalComponents) {
       Object.assign(internalComponents[name], components[name])
     } else {
@@ -158,7 +156,7 @@ export function mergeInternalComponents (components) {
   return internalComponents
 }
 
-export function getComponentsAlias (origin: typeof internalComponents) {
+export function getComponentsAlias(origin: typeof internalComponents) {
   const mapping = {}
   const viewAttrs = origin.View
   const extraList = {
@@ -188,10 +186,10 @@ export function getComponentsAlias (origin: typeof internalComponents) {
     })
     .forEach((key, num) => {
       const obj = {
-        _num: String(num)
+        _num: String(num),
       }
       Object.keys(origin[key])
-        .filter(attr => !(/^bind/.test(attr)) && !['focus', 'blur', '$duplicateFromComponent'].includes(attr))
+        .filter((attr) => !/^bind/.test(attr) && !['focus', 'blur', '$duplicateFromComponent'].includes(attr))
         .sort()
         .forEach((attr, index) => {
           obj[toCamelCase(attr)] = 'p' + index
@@ -202,7 +200,7 @@ export function getComponentsAlias (origin: typeof internalComponents) {
   return mapping
 }
 
-export function getPlatformType (platform = 'weapp', configNameOrType: string = PLATFORM_TYPE.MINI): PLATFORM_TYPE {
+export function getPlatformType(platform = 'weapp', configNameOrType: string = PLATFORM_TYPE.MINI): PLATFORM_TYPE {
   if (Object.keys(PLATFORM_CONFIG_MAP).includes(platform)) {
     configNameOrType = platform
   }
@@ -210,39 +208,35 @@ export function getPlatformType (platform = 'weapp', configNameOrType: string = 
   return param.type || configNameOrType
 }
 
-export function mergeReconciler (hostConfig, hooksForTest?) {
+export function mergeReconciler(hostConfig, hooksForTest?) {
   const obj = hooksForTest || hooks
   const keys = Object.keys(hostConfig)
-  keys.forEach(key => {
+  keys.forEach((key) => {
     obj.tap(key, hostConfig[key])
   })
 }
 
-export function nonsupport (api) {
+export function nonsupport(api) {
   return function () {
     console.warn(`小程序暂不支持 ${api}`)
   }
 }
 
-export function setUniqueKeyToRoute (key: string, obj) {
+export function setUniqueKeyToRoute(key: string, obj) {
   const routerParamsPrivateKey = '__key_'
-  const useDataCacheApis = [
-    'navigateTo',
-    'redirectTo',
-    'reLaunch',
-    'switchTab'
-  ]
+  const useDataCacheApis = ['navigateTo', 'redirectTo', 'reLaunch', 'switchTab']
 
   if (useDataCacheApis.indexOf(key) > -1) {
-    const url = obj.url = obj.url || ''
+    const url = (obj.url = obj.url || '')
     const hasMark = url.indexOf('?') > -1
     const cacheKey = getUniqueKey()
     obj.url += (hasMark ? '&' : '?') + `${routerParamsPrivateKey}=${cacheKey}`
   }
 }
 
-export function indent (str: string, size: number): string {
-  return str.split('\n')
+export function indent(str: string, size: number): string {
+  return str
+    .split('\n')
     .map((line, index) => {
       const indent = index === 0 ? '' : Array(size).fill(' ').join('')
       return indent + line

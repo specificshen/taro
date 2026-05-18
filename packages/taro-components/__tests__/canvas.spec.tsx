@@ -10,7 +10,7 @@ describe('Canvas', () => {
     const canvasId = 'my-canvas'
     page = await newSpecPage({
       components: [Canvas],
-      template: () => (<taro-canvas-core canvasId={canvasId} />),
+      template: () => <taro-canvas-core canvasId={canvasId} />,
     })
     await page.waitForChanges()
     const canvas = page.root?.firstChild as HTMLCanvasElement

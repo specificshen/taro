@@ -9,7 +9,7 @@ type TFunc = (...args: any[]) => any
 export enum HOOK_TYPE {
   SINGLE,
   MULTI,
-  WATERFALL
+  WATERFALL,
 }
 
 interface Hook {
@@ -24,24 +24,17 @@ interface Node {
 }
 
 interface MiniLifecycle {
-  app: [
-    string, /** onLaunch */
-    string, /** onShow */
-    string /** onHide */
-  ]
+  app: [string /** onLaunch */, string /** onShow */, string /** onHide */]
   page: [
-    string, /** onLoad */
-    string, /** onUnload */
-    string, /** onReady */
-    string, /** onShow */
-    string, /** onHide */
-    string[], /** others */
-    string[] /** side-effects */
+    string /** onLoad */,
+    string /** onUnload */,
+    string /** onReady */,
+    string /** onShow */,
+    string /** onHide */,
+    string[] /** others */,
+    string[] /** side-effects */,
   ]
-  component: [
-    string, /** attached */
-    string, /** detached */
-  ]
+  component: [string /** attached */, string /** detached */]
 }
 
 interface MiniElementData {
@@ -66,7 +59,7 @@ interface UpdatePayload {
   value: string | boolean | (() => MiniData | MiniData[])
 }
 
-type Target = Record<string, unknown> & { dataset: Record<string, unknown>, id: string }
+type Target = Record<string, unknown> & { dataset: Record<string, unknown>; id: string }
 
 interface MpEvent {
   type: string
@@ -76,11 +69,7 @@ interface MpEvent {
 }
 
 const defaultMiniLifecycle: MiniLifecycle = {
-  app: [
-    'onLaunch',
-    'onShow',
-    'onHide'
-  ],
+  app: ['onLaunch', 'onShow', 'onHide'],
   page: [
     'onLoad',
     'onUnload',
@@ -98,30 +87,24 @@ const defaultMiniLifecycle: MiniLifecycle = {
       'events:onKeyboardHeight', // events: 支付宝平台需要挂载到 config.events 上
       'onPopMenuClick',
       'onPullIntercept',
-      'onAddToFavorites'
+      'onAddToFavorites',
     ],
-    [
-      'onShareAppMessage',
-      'onShareTimeline'
-    ]
+    ['onShareAppMessage', 'onShareTimeline'],
   ],
-  component: [
-    'attached',
-    'detached'
-  ]
+  component: ['attached', 'detached'],
 }
 
-export function TaroHook (type: HOOK_TYPE, initial?: TFunc): Hook {
+export function TaroHook(type: HOOK_TYPE, initial?: TFunc): Hook {
   return {
     type,
-    initial: initial || null
+    initial: initial || null,
   }
 }
 
 export class TaroHooks<T extends Record<string, TFunc> = any> extends Events {
   hooks: Record<keyof T, Hook>
 
-  constructor (hooks: Record<keyof T, Hook>, opts?) {
+  constructor(hooks: Record<keyof T, Hook>, opts?) {
     super(opts)
     this.hooks = hooks
     for (const hookName in hooks) {
@@ -132,12 +115,12 @@ export class TaroHooks<T extends Record<string, TFunc> = any> extends Events {
     }
   }
 
-  private tapOneOrMany<K extends Extract<keyof T, string>> (hookName: K, callback: T[K] | T[K][]) {
+  private tapOneOrMany<K extends Extract<keyof T, string>>(hookName: K, callback: T[K] | T[K][]) {
     const list = isFunction(callback) ? [callback] : callback
-    list.forEach(cb => this.on(hookName, cb))
+    list.forEach((cb) => this.on(hookName, cb))
   }
 
-  tap<K extends Extract<keyof T, string>> (hookName: K, callback: T[K] | T[K][]) {
+  tap<K extends Extract<keyof T, string>>(hookName: K, callback: T[K] | T[K][]) {
     const hooks = this.hooks
     const { type, initial } = hooks[hookName]
     if (type === HOOK_TYPE.SINGLE) {
@@ -149,7 +132,7 @@ export class TaroHooks<T extends Record<string, TFunc> = any> extends Events {
     }
   }
 
-  call<K extends Extract<keyof T, string>> (hookName: K, ...rest: Parameters<T[K]>): ReturnType<T[K]> | undefined {
+  call<K extends Extract<keyof T, string>>(hookName: K, ...rest: Parameters<T[K]>): ReturnType<T[K]> | undefined {
     const hook = this.hooks[hookName]
     if (!hook) return
 
@@ -158,7 +141,7 @@ export class TaroHooks<T extends Record<string, TFunc> = any> extends Events {
     const calls = this.callbacks
     if (!calls) return
 
-    const list = calls[hookName] as { tail: Node, next: Node }
+    const list = calls[hookName] as { tail: Node; next: Node }
 
     if (list) {
       const tail = list.tail
@@ -178,7 +161,7 @@ export class TaroHooks<T extends Record<string, TFunc> = any> extends Events {
     }
   }
 
-  isExist (hookName: string) {
+  isExist(hookName: string) {
     return Boolean(this.callbacks?.[hookName])
   }
 }
@@ -190,7 +173,7 @@ type ITaroHooks = {
   /** 解决 React 生命周期名称的兼容问题 */
   getLifecycle: (instance, lifecyle) => TFunc | Array<TFunc> | undefined
   /** 提供Hook，为不同平台提供修改生命周期配置 */
-  modifyRecursiveComponentConfig: (defaultConfig:MiniLifecycle, options:any) => any
+  modifyRecursiveComponentConfig: (defaultConfig: MiniLifecycle, options: any) => any
   /** 解决百度小程序的模版语法问题 */
   getPathIndex: (indexOfNode: number) => string
   /** 解决支付宝小程序分包时全局作用域不一致的问题 */
@@ -212,25 +195,25 @@ type ITaroHooks = {
    * @todo: multi
    * 修改 Taro DOM 序列化数据
    **/
-  modifyHydrateData:(data: Record<string, any>, node) => void
+  modifyHydrateData: (data: Record<string, any>, node) => void
   /**
    * 自定义处理 Taro DOM 序列化数据，如使其脱离 data 树
    */
   transferHydrateData: (data: Record<string, any>, element, componentsAlias: Record<string, any>) => void
   /**
-    * @todo: multi
-    * 修改 Taro DOM 序列化数据
-    **/
+   * @todo: multi
+   * 修改 Taro DOM 序列化数据
+   **/
   modifySetAttrPayload: (element, key: string, payload: UpdatePayload, componentsAlias: Record<string, any>) => void
   /**
-    * @todo: multi
-    * 修改 Taro DOM 序列化数据
-    **/
+   * @todo: multi
+   * 修改 Taro DOM 序列化数据
+   **/
   modifyRmAttrPayload: (element, key: string, payload: UpdatePayload, componentsAlias: Record<string, any>) => void
   /**
-    * @todo: multi
-    * 调用 addEventListener 时触发
-    **/
+   * @todo: multi
+   * 调用 addEventListener 时触发
+   **/
   onAddEvent: (type: string, handler, options: any, node) => void
   /** 用于修改小程序原生事件对象 */
   modifyMpEvent: (event: MpEvent) => void
@@ -258,7 +241,7 @@ type ITaroHooks = {
 }
 
 export const hooks = new TaroHooks<ITaroHooks>({
-  getMiniLifecycle: TaroHook(HOOK_TYPE.SINGLE, defaultConfig => defaultConfig),
+  getMiniLifecycle: TaroHook(HOOK_TYPE.SINGLE, (defaultConfig) => defaultConfig),
 
   getMiniLifecycleImpl: TaroHook(HOOK_TYPE.SINGLE, function (this: TaroHooks<ITaroHooks>) {
     return this.call('getMiniLifecycle', defaultMiniLifecycle)
@@ -268,11 +251,11 @@ export const hooks = new TaroHooks<ITaroHooks>({
 
   modifyRecursiveComponentConfig: TaroHook(HOOK_TYPE.SINGLE, (defaultConfig) => defaultConfig),
 
-  getPathIndex: TaroHook(HOOK_TYPE.SINGLE, indexOfNode => `[${indexOfNode}]`),
+  getPathIndex: TaroHook(HOOK_TYPE.SINGLE, (indexOfNode) => `[${indexOfNode}]`),
 
-  getEventCenter: TaroHook(HOOK_TYPE.SINGLE, Events => new Events()),
+  getEventCenter: TaroHook(HOOK_TYPE.SINGLE, (Events) => new Events()),
 
-  isBubbleEvents: TaroHook(HOOK_TYPE.SINGLE, eventName => {
+  isBubbleEvents: TaroHook(HOOK_TYPE.SINGLE, (eventName) => {
     /**
      * 支持冒泡的事件, 除 支付宝小程序外，其余的可冒泡事件都和微信保持一致
      * 详见 见 https://developers.weixin.qq.com/miniprogram/dev/framework/view/wxml/event.html
@@ -289,7 +272,7 @@ export const hooks = new TaroHooks<ITaroHooks>({
       'transitionend',
       'animationstart',
       'animationiteration',
-      'animationend'
+      'animationend',
     ])
 
     return BUBBLE_EVENTS.has(eventName)

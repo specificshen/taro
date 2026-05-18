@@ -18,8 +18,8 @@ declare const enum createTemplateTypeEnum {
   PLUGIN_BUILD = 'plugin-build',
   /**
    * taro插件，用于扩展 taro create 自定义模版
-  */
-  PLUGIN_TEMPLATE = 'plugin-template'
+   */
+  PLUGIN_TEMPLATE = 'plugin-template',
 }
 
 export default (ctx: IPluginContext) => {
@@ -30,14 +30,14 @@ export default (ctx: IPluginContext) => {
       '--dir [dir]': '路径',
       '--subpkg [subpkg]': '分包路径',
       '--description [description]': '介绍',
-      '--type [type]': '模版类型(page(默认)|plugin-command|plugin-build|plugin-template)'
+      '--type [type]': '模版类型(page(默认)|plugin-command|plugin-build|plugin-template)',
     },
     synopsisList: [
       'taro create page',
       'taro create --name=page --description=desc',
       'taro create my-plugin --type=plugin-command',
     ],
-    fn ({ _, options }) {
+    fn({ _, options }) {
       const type = options.type || createTemplateTypeEnum.PAGE
       const name = _[1] || options.name
       const description = options.description || ''
@@ -69,9 +69,9 @@ export default (ctx: IPluginContext) => {
             description,
             templateSource,
             afterCreate,
-            async modifyCustomTemplateConfig (cb: TSetCustomTemplateConfig) {
+            async modifyCustomTemplateConfig(cb: TSetCustomTemplateConfig) {
               await ctx.applyPlugins({ name: hooks.MODIFY_CREATE_TEMPLATE, opts: cb })
-            }
+            },
           })
 
           page.create()
@@ -79,8 +79,7 @@ export default (ctx: IPluginContext) => {
         }
         case createTemplateTypeEnum.PLUGIN_COMMAND:
         case createTemplateTypeEnum.PLUGIN_BUILD:
-        case createTemplateTypeEnum.PLUGIN_TEMPLATE:
-        {
+        case createTemplateTypeEnum.PLUGIN_TEMPLATE: {
           if (typeof name !== 'string') {
             return console.log(chalk.red('请输入需要创建的插件名称'))
           }
@@ -91,7 +90,7 @@ export default (ctx: IPluginContext) => {
             projectDir: appPath,
             type,
             description,
-            template: 'plugin-compile'
+            template: 'plugin-compile',
           })
 
           plugin.create()
@@ -100,6 +99,6 @@ export default (ctx: IPluginContext) => {
         default:
           break
       }
-    }
+    },
   })
 }

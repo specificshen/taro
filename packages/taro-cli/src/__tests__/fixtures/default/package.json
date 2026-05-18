@@ -8,13 +8,15 @@
     "@tarojs/cli": "3.0.0-beta.6",
     "@tarojs/components": "3.0.0-beta.6",
     "@tarojs/helper": "3.0.0-beta.6",
-    "@tarojs/taro-loader": "3.0.0-beta.6",
     "@tarojs/react": "3.0.0-beta.6",
-    "@tarojs/router": "3.0.0-beta.6",
     "@tarojs/runner-utils": "3.0.0-beta.6",
     "@tarojs/runtime": "3.0.0-beta.6",
     "@tarojs/service": "3.0.0-beta.6",
-    "@tarojs/plugin-platform-weapp": "3.0.0-beta.6"
+    "@tarojs/plugin-platform-weapp": "3.0.0-beta.6",
+    "@tarojs/plugin-framework-react": "3.0.0-beta.6",
+    "@tarojs/plugin-generator": "3.0.0-beta.6",
+    "@tarojs/vite-runner": "3.0.0-beta.6",
+    "@tarojs/binding": "3.0.0-beta.6"
   },
   "devDependencies": {
     "babel-preset-taro": "2.0.0",

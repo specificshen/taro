@@ -16,7 +16,7 @@ const getDeps = (version: TailwindCSSVersion): Deps => {
   return deps
 }
 
-export async function updateDeps(options: { ctx: IPluginContext, tailwindcssVersion: TailwindCSSVersion }) {
+export async function updateDeps(options: { ctx: IPluginContext; tailwindcssVersion: TailwindCSSVersion }) {
   const { ctx, tailwindcssVersion } = options
   const patch: PackageJson = { ...getDeps(tailwindcssVersion) }
   if (tailwindcssVersion === '4x') {

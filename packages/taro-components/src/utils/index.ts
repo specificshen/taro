@@ -1,4 +1,4 @@
-export function throttle (fn, threshold = 250, scope?) {
+export function throttle(fn, threshold = 250, scope?) {
   let lastTime = 0
   let deferTimer: ReturnType<typeof setTimeout>
   return function (...args) {
@@ -17,7 +17,7 @@ export function throttle (fn, threshold = 250, scope?) {
   }
 }
 
-export function debounce (fn, ms = 250, scope?) {
+export function debounce(fn, ms = 250, scope?) {
   let timer: ReturnType<typeof setTimeout>
 
   return function (...args) {
@@ -33,17 +33,17 @@ export * from './helper'
 export * from './style'
 export * from './url'
 
-export function isVisible (e: HTMLElement) {
+export function isVisible(e: HTMLElement) {
   return !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length)
 }
 
-export function isElement (e: HTMLElement) {
+export function isElement(e: HTMLElement) {
   return typeof HTMLElement === 'object'
     ? e instanceof HTMLElement
     : e && typeof e === 'object' && e !== null && e.nodeType === 1 && typeof e.nodeName === 'string'
 }
 
-export function isNode (e: Node) {
+export function isNode(e: Node) {
   return typeof Node === 'object'
     ? e instanceof Node
     : e && typeof e === 'object' && e !== null && typeof e.nodeType === 'number' && typeof e.nodeName === 'string'

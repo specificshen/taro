@@ -27,12 +27,12 @@ class Root {
   private renderer: Renderer
   public internalRoot: OpaqueRoot
 
-  public constructor (renderer: Renderer, domContainer: TaroElement, options?: CreateRootOptions) {
+  public constructor(renderer: Renderer, domContainer: TaroElement, options?: CreateRootOptions) {
     this.renderer = renderer
     this.initInternalRoot(renderer, domContainer, options)
   }
 
-  private initInternalRoot (renderer: Renderer, domContainer: TaroElement, options?: CreateRootOptions) {
+  private initInternalRoot(renderer: Renderer, domContainer: TaroElement, options?: CreateRootOptions) {
     // Since react-reconciler v0.27, createContainer need more parameters
     // @see:https://github.com/facebook/react/blob/0b974418c9a56f6c560298560265dcf4b65784bc/packages/react-reconciler/src/ReactFiberReconciler.js#L248
     const containerInfo = domContainer
@@ -61,7 +61,7 @@ class Root {
         onRecoverableError,
         onRecoverableError,
         onRecoverableError,
-        () => {}
+        () => {},
       )
     } else {
       const tag = 0 // LegacyRoot
@@ -75,23 +75,23 @@ class Root {
         () => {}, // onRecoverableError, this isn't reachable because onRecoverableError isn't called in the legacy API.
         () => {},
         () => {},
-        () => {}
+        () => {},
       )
     }
   }
 
-  public render (children: ReactNode, cb: Callback) {
+  public render(children: ReactNode, cb: Callback) {
     const { renderer, internalRoot } = this
     renderer.updateContainer(children, internalRoot, null, cb)
     return renderer.getPublicRootInstance(internalRoot)
   }
 
-  public unmount (cb: Callback) {
+  public unmount(cb: Callback) {
     this.renderer.updateContainer(null, this.internalRoot, null, cb)
   }
 }
 
-export function render (element: ReactNode, domContainer: TaroElement, cb: Callback) {
+export function render(element: ReactNode, domContainer: TaroElement, cb: Callback) {
   const oldRoot = ContainerMap.get(domContainer)
   if (oldRoot != null) {
     return oldRoot.render(element, cb)
@@ -102,7 +102,7 @@ export function render (element: ReactNode, domContainer: TaroElement, cb: Callb
   return root.render(element, cb)
 }
 
-export function createRoot (domContainer: TaroElement, options: CreateRootOptions = {}) {
+export function createRoot(domContainer: TaroElement, options: CreateRootOptions = {}) {
   const oldRoot = ContainerMap.get(domContainer)
   if (oldRoot != null) {
     return oldRoot

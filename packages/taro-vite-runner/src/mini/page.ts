@@ -40,14 +40,14 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         nativeUniqueKeyMap.set(viteConfig, nCompUniqueKeyMap)
       }
     },
-    resolveId (source, _importer, options) {
+    resolveId(source, _importer, options) {
       if (viteCompilerContext?.isPage(source) && options.isEntry) {
         if (viteCompilerContext.getPageById(source)?.isNative) return null
         return appendVirtualModulePrefix(source + PAGE_SUFFIX)
       }
       return null
     },
-    load (id) {
+    load(id) {
       if (viteCompilerContext && id.endsWith(PAGE_SUFFIX)) {
         const rawId = stripVirtualModulePrefix(id).replace(PAGE_SUFFIX, '')
         const page = viteCompilerContext.getPageById(rawId)
@@ -65,9 +65,9 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           instantiatePage = viteCompilerContext.loaderMeta.modifyInstantiate(instantiatePage, 'page')
         }
 
-        viteCompilerContext.collectedDeps(this, escapePath(rawId), filter).then(deps => {
+        viteCompilerContext.collectedDeps(this, escapePath(rawId), filter).then((deps) => {
           const ncObj: Record<string, string> = {}
-          deps.forEach(dep => {
+          deps.forEach((dep) => {
             Object.entries(nCompCache.get(dep) || {}).forEach(([key, value]) => {
               const absPath = value
               const ext = path.extname(absPath)
@@ -82,7 +82,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             }
           }
           const nativeComps = viteCompilerContext.collectNativeComponents(page)
-          nativeComps.forEach(comp => {
+          nativeComps.forEach((comp) => {
             viteCompilerContext.generateNativeComponent(this, comp, [rawId])
           })
         })
@@ -105,10 +105,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         const result = transformSync(code, {
           filename: id,
           parserOpts: {
-            plugins: [
-              'jsx',
-              'typescript',
-            ],
+            plugins: ['jsx', 'typescript'],
           },
           plugins: [
             pluginRemovePageConfig(id),
@@ -123,7 +120,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
               scopeNativeComp.set(key, path)
               return key
             }),
-          ]
+          ],
         })
 
         if (enableImportComponent) {
@@ -134,6 +131,6 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           }
         }
       }
-    }
+    },
   }
 }

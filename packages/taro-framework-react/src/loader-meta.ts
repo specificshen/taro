@@ -5,20 +5,20 @@ import { Frameworks } from './index'
 
 import type { ILoaderMeta } from '@tarojs/taro/types/compile/config/plugin'
 
-function addConfig (source) {
+function addConfig(source) {
   const configsMap = {
     enableShareAppMessage: ['onShareAppMessage', 'useShareAppMessage'],
-    enableShareTimeline: ['onShareTimeline', 'useShareTimeline']
+    enableShareTimeline: ['onShareTimeline', 'useShareTimeline'],
   }
   const ast = acorn.parse(source, {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   })
 
   const additionConfig: Record<string, any> = {}
 
-  function check (name: string) {
-    Object.keys(configsMap).forEach(configName => {
+  function check(name: string) {
+    Object.keys(configsMap).forEach((configName) => {
       const apis: string[] = configsMap[configName]
       if (apis.includes(name)) {
         additionConfig[configName] = true
@@ -88,7 +88,7 @@ function addConfig (source) {
   return additionConfig
 }
 
-export function getLoaderMeta (_framework: Frameworks): ILoaderMeta {
+export function getLoaderMeta(_framework: Frameworks): ILoaderMeta {
   return {
     importFrameworkStatement: `
 import * as React from 'react'
@@ -107,8 +107,8 @@ class App extends React.Component {
     importFrameworkName: 'React',
     extraImportForWeb: '',
     execBeforeCreateWebApp: '',
-    modifyConfig (config, source) {
+    modifyConfig(config, source) {
       Object.assign(config, addConfig(source))
-    }
+    },
   }
 }

@@ -9,10 +9,12 @@ describe('CustomWrapper', () => {
   it('有一个空的占位元素，并且 slot 能够使用', async () => {
     page = await newSpecPage({
       components: [CustomWrapper],
-      template: () => (<taro-custom-wrapper-core>
-        <div />
-        <div />
-      </taro-custom-wrapper-core>),
+      template: () => (
+        <taro-custom-wrapper-core>
+          <div />
+          <div />
+        </taro-custom-wrapper-core>
+      ),
     })
     await page.waitForChanges()
 

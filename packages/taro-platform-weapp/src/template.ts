@@ -14,22 +14,22 @@ export class Template extends UnRecursiveTemplate {
     forIndex: 'wx:for-index',
     key: 'wx:key',
     xs: 'wxs',
-    type: 'weapp'
+    type: 'weapp',
   }
 
   transferComponents: Record<string, Record<string, string>> = {}
 
-  constructor (pluginOptions?: IOptions) {
+  constructor(pluginOptions?: IOptions) {
     super()
     this.pluginOptions = pluginOptions || {}
     this.nestElements.set('root-portal', 3)
   }
 
-  buildXsTemplate (filePath = './utils') {
+  buildXsTemplate(filePath = './utils') {
     return `<wxs module="xs" src="${filePath}.wxs" />`
   }
 
-  createMiniComponents (components): any {
+  createMiniComponents(components): any {
     const result = super.createMiniComponents(components)
 
     // PageMeta & NavigationBar
@@ -41,7 +41,7 @@ export class Template extends UnRecursiveTemplate {
     return result
   }
 
-  replacePropName (name: string, value: string, componentName: string, componentAlias) {
+  replacePropName(name: string, value: string, componentName: string, componentAlias) {
     if (value === 'eh') {
       const nameLowerCase = name.toLowerCase()
       if (nameLowerCase === 'bindlongtap' && componentName !== 'canvas') return 'bindlongpress'
@@ -54,7 +54,7 @@ export class Template extends UnRecursiveTemplate {
     return name
   }
 
-  buildXSTepFocus (nn: string) {
+  buildXSTepFocus(nn: string) {
     if (this.pluginOptions.enablekeyboardAccessory) {
       const textarea = this.componentsAlias.textarea._num
       const input = this.componentsAlias.input._num

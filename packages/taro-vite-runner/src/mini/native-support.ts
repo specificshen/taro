@@ -23,16 +23,16 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
   return {
     name: 'taro:vite-native-support',
     enforce: 'pre',
-    buildEnd () {
+    buildEnd() {
       viteCompilerContext = undefined
     },
-    resolveId (id) {
+    resolveId(id) {
       if (!viteCompilerContext) return
       if (IS_NATIVE_STYLE_REG.test(id)) {
         return id
       }
     },
-    async load (id) {
+    async load(id) {
       if (!viteCompilerContext) return
 
       if (IS_NATIVE_SCRIPT_REG.test(id)) {
@@ -62,10 +62,9 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
 
         if (stylePath) {
           return {
-            code: [
-              `import "${target}";\n`,
-              stylePath ? `import "${stylePath}${QUERY_IS_NATIVE_STYLE}";\n` : ''
-            ].join('')
+            code: [`import "${target}";\n`, stylePath ? `import "${stylePath}${QUERY_IS_NATIVE_STYLE}";\n` : ''].join(
+              '',
+            ),
           }
         }
       } else if (IS_NATIVE_STYLE_REG.test(id)) {
@@ -73,11 +72,11 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
         source = viteCompilerContext.getTargetFilePath(source, viteCompilerContext.fileType.style)
         const code = fs.readFileSync(source, 'utf-8')
         return {
-          code
+          code,
         }
       }
     },
-    moduleParsed (moduleInfo) {
+    moduleParsed(moduleInfo) {
       const { id } = moduleInfo
       let ast
       try {
@@ -90,7 +89,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
         const walk = require('acorn-walk')
 
         walk.simple(ast, {
-          CallExpression: node => {
+          CallExpression: (node) => {
             const callee = node.callee
             if (callee.type === 'MemberExpression') {
               if (callee.property.name !== 'createElement') {
@@ -100,13 +99,13 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
               const nameOfCallee = callee.name
               if (
                 // 兼容 react17 new jsx transtrom
-                !(/_?jsxs?/.test(nameOfCallee)) &&
+                !/_?jsxs?/.test(nameOfCallee) &&
                 // 兼容 Vue 3.0 渲染函数及 JSX
-                !(nameOfCallee?.includes('createVNode')) &&
-                !(nameOfCallee?.includes('createBlock')) &&
-                !(nameOfCallee?.includes('createElementVNode')) &&
-                !(nameOfCallee?.includes('createElementBlock')) &&
-                !(nameOfCallee?.includes('resolveComponent')) // 收集使用解析函数的组件名称
+                !nameOfCallee?.includes('createVNode') &&
+                !nameOfCallee?.includes('createBlock') &&
+                !nameOfCallee?.includes('createElementVNode') &&
+                !nameOfCallee?.includes('createElementBlock') &&
+                !nameOfCallee?.includes('resolveComponent') // 收集使用解析函数的组件名称
               ) {
                 return
               }
@@ -130,16 +129,22 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
             }
 
             prop.properties
-              .filter(p => p.type === 'Property' && p.key.type === 'Identifier' && p.key.name !== 'children' && p.key.name !== 'id')
-              .forEach(p => attrs.add(p.key.name))
-          }
+              .filter(
+                (p) =>
+                  p.type === 'Property' &&
+                  p.key.type === 'Identifier' &&
+                  p.key.name !== 'children' &&
+                  p.key.name !== 'id',
+              )
+              .forEach((p) => attrs.add(p.key.name))
+          },
         })
       }
     },
   }
 }
 
-export function miniTemplateLoader (ctx: PluginContext, templatePath: string, sourceDir: string): string {
+export function miniTemplateLoader(ctx: PluginContext, templatePath: string, sourceDir: string): string {
   const source = fs.readFileSync(templatePath).toString()
   /**
    * 两种fix方案：
@@ -165,7 +170,7 @@ export function miniTemplateLoader (ctx: PluginContext, templatePath: string, so
       ctx.emitFile({
         type: 'asset',
         fileName: requests[i].replace(sourceDir, '').replace(/^\//, ''),
-        source: Uint8Array.from(fs.readFileSync(requests[i]))
+        source: Uint8Array.from(fs.readFileSync(requests[i])),
       })
       ctx.addWatchFile(requests[i])
     }

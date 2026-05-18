@@ -35,13 +35,13 @@ describe('Context', () => {
 
     it('className should works as class', () => {
       const container = document.createElement('div')
-      render(<input type="button" className='test' />, container)
+      render(<input type="button" className="test" />, container)
       expect(container.firstChild.getAttribute('class')).toBe('test')
     })
 
     it('string style', () => {
       const container = document.createElement('div')
-      render(<input type="button" style='color: red' />, container)
+      render(<input type="button" style="color: red" />, container)
       expect(container.firstChild.getAttribute('style')).toBe('color: red;')
     })
 
@@ -79,23 +79,27 @@ describe('Context', () => {
     it('can dispatch event', () => {
       const container = document.createElement('div')
       const spy = jest.fn()
-      render(<view type="button" onClick={spy} id='fork' />, container)
-      const event = createEvent({ type: 'tap', currentTarget: { id: container.firstChild.uid }, target: { id: container.firstChild.uid } })
+      render(<view type="button" onClick={spy} id="fork" />, container)
+      const event = createEvent({
+        type: 'tap',
+        currentTarget: { id: container.firstChild.uid },
+        target: { id: container.firstChild.uid },
+      })
       container.firstChild.dispatchEvent(event)
       expect(spy).toBeCalled()
     })
 
     it('should patch properies properly', () => {
       const container = document.createElement('div')
-      render(<div id='1' />, container)
-      render(<div id='2' />, container)
+      render(<div id="1" />, container)
+      render(<div id="2" />, container)
       expect(container.firstChild.id).toBe('2')
     })
 
     it('should patch properies properly 2', () => {
       const container = document.createElement('div')
-      render(<div id='1' a='a' />, container)
-      render(<div id='2' b='b' />, container)
+      render(<div id="1" a="a" />, container)
+      render(<div id="2" b="b" />, container)
       expect(container.firstChild.id).toBe('2')
       expect(container.firstChild.getAttribute('a')).toBe('')
       expect(container.firstChild.getAttribute('b')).toBe('b')

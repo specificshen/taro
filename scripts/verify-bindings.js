@@ -9,38 +9,38 @@ const BINDINGS = [
     name: '@tarojs/binding-darwin-x64',
     path: 'npm/darwin-x64',
     nodeFile: 'taro.darwin-x64.node',
-    minSize: 1024 * 1024
+    minSize: 1024 * 1024,
   },
   {
     name: '@tarojs/binding-darwin-arm64',
     path: 'npm/darwin-arm64',
     nodeFile: 'taro.darwin-arm64.node',
-    minSize: 1024 * 1024
+    minSize: 1024 * 1024,
   },
   {
     name: '@tarojs/binding-linux-x64-gnu',
     path: 'npm/linux-x64-gnu',
     nodeFile: 'taro.linux-x64-gnu.node',
-    minSize: 1024 * 1024
+    minSize: 1024 * 1024,
   },
   {
     name: '@tarojs/binding-linux-x64-musl',
     path: 'npm/linux-x64-musl',
     nodeFile: 'taro.linux-x64-musl.node',
-    minSize: 1024 * 1024
+    minSize: 1024 * 1024,
   },
   {
     name: '@tarojs/binding-linux-arm64-gnu',
     path: 'npm/linux-arm64-gnu',
     nodeFile: 'taro.linux-arm64-gnu.node',
-    minSize: 1024 * 1024
+    minSize: 1024 * 1024,
   },
   {
     name: '@tarojs/binding-win32-x64-msvc',
     path: 'npm/win32-x64-msvc',
     nodeFile: 'taro.win32-x64-msvc.node',
-    minSize: 1024 * 1024
-  }
+    minSize: 1024 * 1024,
+  },
 ]
 
 const rootDir = path.resolve(__dirname, '..')
@@ -77,9 +77,7 @@ for (const binding of BINDINGS) {
   const fileSizeMB = (stats.size / (1024 * 1024)).toFixed(2)
 
   if (stats.size < binding.minSize) {
-    errors.push(
-      `❌ ${binding.name}: ${binding.nodeFile} 文件太小 (${fileSizeMB}MB)，可能构建失败`
-    )
+    errors.push(`❌ ${binding.name}: ${binding.nodeFile} 文件太小 (${fileSizeMB}MB)，可能构建失败`)
     hasErrors = true
     continue
   }
@@ -88,7 +86,7 @@ for (const binding of BINDINGS) {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
     if (packageJson.main !== binding.nodeFile) {
       warnings.push(
-        `⚠️  ${binding.name}: package.json 的 main 字段 (${packageJson.main}) 与预期不符 (${binding.nodeFile})`
+        `⚠️  ${binding.name}: package.json 的 main 字段 (${packageJson.main}) 与预期不符 (${binding.nodeFile})`,
       )
     }
   } catch (error) {
@@ -104,13 +102,13 @@ console.log('')
 
 if (warnings.length > 0) {
   console.log('⚠️  警告:\n')
-  warnings.forEach(warning => console.log(warning))
+  warnings.forEach((warning) => console.log(warning))
   console.log('')
 }
 
 if (hasErrors) {
   console.log('❌ 验证失败:\n')
-  errors.forEach(error => console.log(error))
+  errors.forEach((error) => console.log(error))
   console.log('\n💡 提示:')
   console.log('   1. 确保已运行构建命令: pnpm build:binding:release')
   console.log('   2. 确保 CI 构建产物已正确下载')
