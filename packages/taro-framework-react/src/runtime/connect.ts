@@ -156,7 +156,7 @@ export function createReactApp (
       container.id = appId
       appContainer?.appendChild(container)
     }
-    if ((react.version || '').startsWith('18')) {
+    if (typeof ReactDOM.createRoot === 'function') {
       const root = ReactDOM.createRoot((container as unknown as Element))
       root.render?.(h(AppWrapper))
     } else {

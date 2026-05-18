@@ -10,8 +10,8 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
   return {
     name: 'taro:vite-mini-pipeline',
     enforce: 'pre',
-    buildStart () {
-      this.load({ id: VITE_COMPILER_LABEL })
+    async buildStart () {
+      await this.load({ id: VITE_COMPILER_LABEL })
       const info = this.getModuleInfo(VITE_COMPILER_LABEL)
       if (info) {
         info.meta = { viteCompilerContext }

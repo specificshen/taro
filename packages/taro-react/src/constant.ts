@@ -1,3 +1,9 @@
+import {
+  ContinuousEventPriority,
+  DefaultEventPriority,
+  DiscreteEventPriority,
+} from 'react-reconciler/constants'
+
 export const supportedInputTypes: { [key: string]: boolean } = {
   color: true,
   date: true,
@@ -15,13 +21,6 @@ export const supportedInputTypes: { [key: string]: boolean } = {
   url: true,
   week: true,
 }
-
-const SyncLane = 1
-const InputContinuousLane = 4
-const DefaultLane = 16
-const DiscreteEventPriority = SyncLane
-const ContinuousEventPriority = InputContinuousLane
-const DefaultEventPriority = DefaultLane
 
 export function getEventPriority (domEventName) {
   switch (domEventName) {

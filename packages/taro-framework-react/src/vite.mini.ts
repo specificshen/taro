@@ -46,7 +46,7 @@ function aliasPlugin (ctx: IPluginContext): PluginOption {
       if (!isProd && ctx.initialConfig.mini?.debugReact !== true) {
         // 开发模式下默认使用 production 版本的 react 减小体积。debugReact 时保留 dev 版本。
         alias.push({ find: /react-reconciler$/, replacement: 'react-reconciler/cjs/react-reconciler.production.min.js' })
-        alias.push({ find: /^(?!.*mobx-react$).*react$/, replacement: 'react/cjs/react.production.min.js' })
+        alias.push({ find: /^react$/, replacement: 'react/cjs/react.production.min.js' })
         alias.push({ find: /scheduler$/, replacement: 'scheduler/cjs/scheduler.production.min.js' })
         alias.push({ find: /react\/jsx-runtime$/, replacement: 'react/cjs/react-jsx-runtime.production.min.js' })
 

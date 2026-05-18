@@ -3,7 +3,7 @@ import { hooks } from '@tarojs/shared'
 import { markContainerAsRoot } from './componentTree'
 import { getEventPriority } from './constant'
 import { enqueueStateRestore, getTargetInstForInputOrChangeEvent, RestoreType } from './event'
-import { TaroReconciler } from './reconciler'
+import { runWithPriority, TaroReconciler } from './reconciler'
 
 import type { TaroElement, TaroEvent } from '@tarojs/runtime'
 import type { ReactNode } from 'react'
@@ -42,7 +42,6 @@ class Root {
       let isStrictMode = false
       let identifierPrefix = ''
       let onRecoverableError = (error: any) => console.error(error)
-      let transitionCallbacks = null
       if (options.unstable_strictMode === true) {
         isStrictMode = true
       }
@@ -52,10 +51,6 @@ class Root {
       if (options.onRecoverableError !== undefined) {
         onRecoverableError = options.onRecoverableError
       }
-      if (options.unstable_transitionCallbacks !== undefined) {
-        transitionCallbacks = options.unstable_transitionCallbacks
-      }
-
       this.internalRoot = renderer.createContainer(
         containerInfo,
         tag,
@@ -64,7 +59,9 @@ class Root {
         concurrentUpdatesByDefaultOverride,
         identifierPrefix,
         onRecoverableError,
-        transitionCallbacks
+        onRecoverableError,
+        onRecoverableError,
+        () => {}
       )
     } else {
       const tag = 0 // LegacyRoot
@@ -76,7 +73,9 @@ class Root {
         false, // concurrentUpdatesByDefaultOverride,
         '', // identifierPrefix
         () => {}, // onRecoverableError, this isn't reachable because onRecoverableError isn't called in the legacy API.
-        null // transitionCallbacks
+        () => {},
+        () => {},
+        () => {}
       )
     }
   }
@@ -117,7 +116,7 @@ export function createRoot (domContainer: TaroElement, options: CreateRootOption
   hooks.tap('dispatchTaroEvent', (e: TaroEvent, node: TaroElement) => {
     const eventPriority = getEventPriority(e.type)
 
-    TaroReconciler.runWithPriority(eventPriority, () => {
+    runWithPriority(eventPriority, () => {
       node.dispatchEvent(e)
     })
   })

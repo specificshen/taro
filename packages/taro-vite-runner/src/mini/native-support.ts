@@ -77,7 +77,15 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
         }
       }
     },
-    moduleParsed ({ id, ast }) {
+    moduleParsed (moduleInfo) {
+      const { id } = moduleInfo
+      let ast
+      try {
+        ast = moduleInfo.ast
+      } catch {
+        return
+      }
+
       if (!isVirtualModule(id) && /\.[jt]sx/.test(id)) {
         const walk = require('acorn-walk')
 

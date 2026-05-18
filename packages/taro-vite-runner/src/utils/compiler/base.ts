@@ -34,7 +34,26 @@ export class CompilerContext <T extends ViteH5BuildConfig | ViteHarmonyBuildConf
   app: ViteAppMeta
   pages: VitePageMeta[]
   components?: VitePageMeta[]
-  loaderMeta: any
+  loaderMeta: any = {
+    importFrameworkStatement: `
+import * as React from 'react'
+import ReactDOM from 'react-dom'
+`,
+    mockAppStatement: `
+class App extends React.Component {
+  render () {
+    return this.props.children
+  }
+}
+`,
+    frameworkArgs: 'React, ReactDOM, config',
+    creator: 'createReactApp',
+    creatorLocation: '@tarojs/plugin-framework-react/dist/runtime',
+    importFrameworkName: 'React',
+    extraImportForWeb: '',
+    execBeforeCreateWebApp: '',
+  }
+
   logger = logger
   filesConfig: IMiniFilesConfig = {}
   configFileList: string[] = []

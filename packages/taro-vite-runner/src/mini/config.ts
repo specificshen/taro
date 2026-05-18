@@ -179,7 +179,8 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null
           // Note: react 中用到了 for of等新的语法，babel相关依赖会被打包到 vendors 中，但taro中会打包react相关依赖，从而会引入 vendors 中的 babel 相关依赖，导致循环引用
           if (testByReg2DExpList([babelDeps, commonjsHelpersDeps])(id)) return 'babelHelpers'
-          if (testByReg2DExpList([taroDeps, reactRelatedDeps, tslibDeps])(id)) return 'taro'
+          if (testByReg2DExpList([reactRelatedDeps])(id)) return 'common'
+          if (testByReg2DExpList([taroDeps, tslibDeps])(id)) return 'taro'
           if (testByReg2DExpList([nodeModulesDeps])(id)) return 'vendors'
           if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common'
         }
@@ -264,7 +265,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           { find: /@tarojs\/components$/, replacement: taroConfig.taroComponentsPath },
           ...getAliasOption(),
         ],
-        dedupe: ['@tarojs/shared', '@tarojs/runtime'],
+        dedupe: ['@tarojs/shared', '@tarojs/runtime', 'react', 'react-dom', 'react/jsx-runtime', 'react-reconciler', 'scheduler'],
       },
       esbuild: {
         jsxDev: false,

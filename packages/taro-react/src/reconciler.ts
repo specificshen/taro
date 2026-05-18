@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/indent */
 import { document, FormElement } from '@tarojs/runtime'
 import { isBoolean, isUndefined, noop } from '@tarojs/shared'
+import { createContext } from 'react'
 import Reconciler from 'react-reconciler'
-import { DefaultEventPriority } from 'react-reconciler/constants'
+import { DefaultEventPriority, NoEventPriority } from 'react-reconciler/constants'
 
 import { precacheFiberNode, updateFiberProps } from './componentTree'
 import { track } from './inputValueTracking'
@@ -10,6 +11,8 @@ import { getUpdatePayload, Props, updateProps, updatePropsByPayload } from './pr
 
 import type { TaroElement, TaroText } from '@tarojs/runtime'
 import type { Fiber, HostConfig } from 'react-reconciler'
+
+let currentUpdatePriority = NoEventPriority
 
 const hostConfig: HostConfig<
   string, // Type
@@ -19,12 +22,13 @@ const hostConfig: HostConfig<
   TaroText, // TextInstance
   TaroElement, // SuspenseInstance
   TaroElement, // HydratableInstance
+  TaroElement, // FormInstance
   TaroElement, // PublicInstance
   Record<string, any>, // HostContext
-  string[], // UpdatePayload
   unknown, // ChildSet
   unknown, // TimeoutHandle
-  unknown // NoTimeout
+  unknown, // NoTimeout
+  unknown // TransitionStatus
 > & {
   supportsMicrotasks: boolean // 待官方类型文件修复后删除
 } = {
@@ -75,9 +79,6 @@ const hostConfig: HostConfig<
 
     return false
   },
-  prepareUpdate (instance, _, oldProps, newProps) {
-    return getUpdatePayload(instance, oldProps, newProps)
-  },
   shouldSetTextContent () {
     return false
   },
@@ -102,8 +103,41 @@ const hostConfig: HostConfig<
   preparePortalMount: noop,
   prepareScopeUpdate: noop,
   getInstanceFromScope: () => null,
-  getCurrentEventPriority () {
+  NotPendingTransition: null,
+  HostTransitionContext: createContext(null) as any,
+  setCurrentUpdatePriority (newPriority) {
+    currentUpdatePriority = newPriority
+  },
+  getCurrentUpdatePriority () {
+    return currentUpdatePriority
+  },
+  resolveUpdatePriority () {
     return DefaultEventPriority
+  },
+  resetFormInstance: noop,
+  requestPostPaintCallback (callback) {
+    setTimeout(() => callback(Date.now()), 0)
+  },
+  shouldAttemptEagerTransition () {
+    return false
+  },
+  trackSchedulerEvent: noop,
+  resolveEventType () {
+    return null
+  },
+  resolveEventTimeStamp () {
+    return Date.now()
+  },
+  maySuspendCommit () {
+    return false
+  },
+  preloadInstance () {
+    return true
+  },
+  startSuspendingCommit: noop,
+  suspendInstance: noop,
+  waitForCommitToBeReady () {
+    return null
   },
   detachDeletedInstance: noop,
 
@@ -137,7 +171,8 @@ const hostConfig: HostConfig<
     textInst.nodeValue = newText
   },
   commitMount: noop,
-  commitUpdate (dom, updatePayload, _, oldProps, newProps) {
+  commitUpdate (dom, _type, oldProps, newProps) {
+    const updatePayload = getUpdatePayload(dom, oldProps, newProps)
     if (!updatePayload) return
     // payload 只包含 children 的时候，不应该再继续触发后续的属性比较和更新的逻辑了
     if (updatePayload.length === 2 && updatePayload.includes('children')) return
@@ -183,6 +218,16 @@ const hostConfig: HostConfig<
 }
 
 const TaroReconciler = Reconciler(hostConfig)
+
+export function runWithPriority<T> (priority, fn: () => T): T {
+  const previousPriority = currentUpdatePriority
+  currentUpdatePriority = priority
+  try {
+    return fn()
+  } finally {
+    currentUpdatePriority = previousPriority
+  }
+}
 
 if (process.env.NODE_ENV !== 'production') {
   const foundDevTools = TaroReconciler.injectIntoDevTools({

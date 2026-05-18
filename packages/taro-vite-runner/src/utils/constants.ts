@@ -39,7 +39,7 @@ export const DEFAULT_TERSER_OPTIONS = {
     directives: false,
     evaluate: true,
   },
-  output: {
+  format: {
     ecma: 5,
     comments: false,
     ascii_only: true,
