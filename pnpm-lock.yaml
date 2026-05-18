@@ -9,7 +9,7 @@ overrides:
 
 packageExtensionsChecksum: sha256-s6Fza1zaRJEPi8l0Geaeod4flK+xTvtIU9nqKjgU0Io=
 
-pnpmfileChecksum: sha256-1DOFWPxjuE6OZBagIpCC+G/pb5Y870aU0i7jkVV05NA=
+pnpmfileChecksum: sha256-lki8UBpCP5NC7BR4N2Pd+P1VV7SZOvL8JeABoUbgMbs=
 
 importers:
 
@@ -494,9 +494,6 @@ importers:
       '@babel/types':
         specifier: ^7.23.0
         version: 7.24.0
-      '@stencil/react-output-target':
-        specifier: 0.4.0
-        version: 0.4.0(@stencil/core@2.22.3(ts-node@10.9.2(@swc/core@1.3.96)(@types/node@22.19.19)(typescript@5.4.5)))
       '@tarojs/helper':
         specifier: workspace:*
         version: link:../taro-helper
@@ -551,6 +548,8 @@ importers:
       tsconfig-paths:
         specifier: ^3.14.1
         version: 3.15.0
+
+  packages/taro-components/loader: {}
 
   packages/taro-framework-react:
     dependencies:
@@ -3187,11 +3186,6 @@ packages:
     resolution: {integrity: sha512-kmVA0M/HojwsfkeHsifvHVIYe4l5tin7J5+DLgtl8h6WWfiMClND5K3ifCXXI2ETDNKiEk21p6jql3Fx9o2rng==}
     engines: {node: '>=12.10.0', npm: '>=6.0.0'}
     hasBin: true
-
-  '@stencil/react-output-target@0.4.0':
-    resolution: {integrity: sha512-X7XW6aHSU7ZypkFj4wX/XL7ROj2GXcdTL+Emo1mKNg5laBcuTVtt8zPR4ERG/grq8ec8wav+FxBuSlQ3cH0qcg==}
-    peerDependencies:
-      '@stencil/core': ^2.9.0 || ^3.0.0-beta.0
 
   '@swc/core-darwin-arm64@1.3.96':
     resolution: {integrity: sha512-8hzgXYVd85hfPh6mJ9yrG26rhgzCmcLO0h1TIl8U31hwmTbfZLzRitFQ/kqMJNbIBCwmNH1RU2QcJnL3d7f69A==}
@@ -12376,10 +12370,6 @@ snapshots:
       - supports-color
       - ts-node
       - utf-8-validate
-
-  '@stencil/react-output-target@0.4.0(@stencil/core@2.22.3(ts-node@10.9.2(@swc/core@1.3.96)(@types/node@22.19.19)(typescript@5.4.5)))':
-    dependencies:
-      '@stencil/core': 2.22.3(ts-node@10.9.2(@swc/core@1.3.96)(@types/node@22.19.19)(typescript@5.4.5))
 
   '@swc/core-darwin-arm64@1.3.96':
     optional: true
