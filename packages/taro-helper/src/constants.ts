@@ -143,7 +143,6 @@ export const UPDATE_PACKAGE_LIST = [
   '@tarojs/cli',
   '@tarojs/api',
   '@tarojs/components',
-  '@tarojs/components-react',
   '@tarojs/extend',
   '@tarojs/helper',
   '@tarojs/taro-loader',
