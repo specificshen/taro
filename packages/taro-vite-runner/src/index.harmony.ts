@@ -1,5 +1,6 @@
 import { isString } from '@tarojs/shared'
 import { type UserConfig, build } from 'vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import harmonyPreset from './harmony'
 import { convertCopyOptions } from './utils'
@@ -18,7 +19,7 @@ export default async function (appPath: string, rawTaroConfig: ViteHarmonyBuildC
 
   // copy-plugin
   if (taroConfig.copy?.patterns?.length) {
-    plugins.push(require('vite-plugin-static-copy').viteStaticCopy({
+    plugins.push(viteStaticCopy({
       targets: convertCopyOptions(taroConfig)
     }))
   }
