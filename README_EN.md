@@ -78,6 +78,41 @@
 
 To migrate from Taro 1/2 to Taro 3, please refer to [The definitive guide to Taro version upgrades](https://docs.taro.zone/blog/2020-09-01-taro-versions).
 
+### Minimal Dependencies (this fork)
+
+Core packages needed for WeChat MiniProgram development with this fork:
+
+```json
+{
+  "dependencies": {
+    "@tarojs/taro": "4.x",
+    "@tarojs/components": "4.x",
+    "@tarojs/runtime": "4.x",
+    "@tarojs/react": "4.x"
+  },
+  "devDependencies": {
+    "@tarojs/cli": "4.x",
+    "@tarojs/vite-runner": "4.x",
+    "@tarojs/plugin-framework-react": "4.x",
+    "@tarojs/plugin-platform-weapp": "4.x",
+    "babel-preset-taro": "4.x"
+  }
+}
+```
+
+Sample project config (`config/index.ts`):
+
+```ts
+export default {
+  framework: 'react',
+  compiler: 'vite',
+  mini: {
+    compile: { prerender: true },
+    output: { renderer: 'skyline', componentFramework: 'glass-easel' },
+  },
+}
+```
+
 ## Resources
 
 [5 Minute Tutorial](https://taro-docs.jd.com/taro/docs/guide)

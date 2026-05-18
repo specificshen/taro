@@ -78,6 +78,41 @@
 
 Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https://docs.taro.zone/blog/2020-09-01-taro-versions)
 
+### 最小依赖集（本 fork）
+
+使用本 fork 开发微信小程序时，核心依赖为：
+
+```json
+{
+  "dependencies": {
+    "@tarojs/taro": "4.x",
+    "@tarojs/components": "4.x",
+    "@tarojs/runtime": "4.x",
+    "@tarojs/react": "4.x"
+  },
+  "devDependencies": {
+    "@tarojs/cli": "4.x",
+    "@tarojs/vite-runner": "4.x",
+    "@tarojs/plugin-framework-react": "4.x",
+    "@tarojs/plugin-platform-weapp": "4.x",
+    "babel-preset-taro": "4.x"
+  }
+}
+```
+
+项目配置示例 (`config/index.ts`)：
+
+```ts
+export default {
+  framework: 'react',
+  compiler: 'vite',
+  mini: {
+    compile: { prerender: true },
+    output: { renderer: 'skyline', componentFramework: 'glass-easel' },
+  },
+}
+```
+
 ## 学习资源
 
 [5 分钟上手 Taro 开发](https://docs.taro.zone/docs/guide)
