@@ -1,20 +1,25 @@
 {
   "name": "taro",
   "version": "4.2.0",
-  "description": "开放式跨端跨框架开发解决方案",
-  "homepage": "https://github.com/NervJS/taro#readme",
-  "author": "O2Team",
+  "description": "React + Vite + 微信小程序（Skyline / glass-easel）现代化 fork",
+  "homepage": "https://github.com/specificshen/taro#readme",
+  "author": "specificshen",
   "private": true,
   "license": "MIT",
   "keywords": [
-    "taro"
+    "taro",
+    "react",
+    "vite",
+    "weapp",
+    "skyline",
+    "glass-easel"
   ],
   "bugs": {
-    "url": "https://github.com/NervJS/taro/issues"
+    "url": "https://github.com/specificshen/taro/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NervJS/taro.git"
+    "url": "git+https://github.com/specificshen/taro.git"
   },
   "main": "index.js",
   "packageManager": "pnpm@10.22.0",
