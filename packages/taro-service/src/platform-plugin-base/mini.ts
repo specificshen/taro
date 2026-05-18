@@ -1,5 +1,3 @@
-import * as path from 'node:path'
-
 import { recursiveMerge, taroJsMiniComponentsPath } from '@tarojs/helper'
 import { isObject, PLATFORM_TYPE } from '@tarojs/shared'
 
@@ -26,8 +24,6 @@ export abstract class TaroPlatformBase<T extends TConfig = TConfig> extends Taro
   // Note: 给所有的小程序平台一个默认的 taroComponentsPath
   taroComponentsPath: string = taroJsMiniComponentsPath
   projectConfigJson?: string
-
-  private projectConfigJsonOutputPath: string
 
   /**
    * 1. 清空 dist 文件夹
@@ -58,18 +54,7 @@ export abstract class TaroPlatformBase<T extends TConfig = TConfig> extends Taro
       const { printLog, processTypeEnum } = this.ctx.helper
       printLog(processTypeEnum.START, '开发者工具-项目目录', `${this.ctx.paths.outputPath}`)
     }
-    // Webpack5 代码自动热重载
-    if (this.compiler === 'webpack5' && this.config.isWatch && this.projectConfigJsonOutputPath) {
-      try {
-        const projectConfig = require(this.projectConfigJsonOutputPath)
-        if (projectConfig.setting?.compileHotReLoad === true) {
-          this.ctx.modifyWebpackChain(({ chain }) => {
-            chain.plugin('TaroMiniHMRPlugin')
-              .use(require(path.join(__dirname, './webpack/hmr-plugin.js')).default)
-          })
-        }
-      } catch (e) {} // eslint-disable-line no-empty
-    }
+    // Webpack5 已在 Vite-only fork 中移除，HMR 由 vite-runner 自身负责
   }
 
   protected printDevelopmentTip (platform: string) {
@@ -89,7 +74,7 @@ ${exampleCommand}`))
     }
 
     if (this.compiler === 'webpack5' && !config.cache?.enable) {
-      tips.push(chalk.yellowBright('建议开启持久化缓存功能，能有效提升二次编译速度，详情请参考: https://docs.taro.zone/docs/config-detail#cache。'))
+      tips.push(chalk.yellowBright('webpack5 路径已 deprecated；React-only fork 仅长期维护 vite。'))
     }
 
     if (tips.length) {
@@ -106,7 +91,7 @@ ${exampleCommand}`))
     const { appPath } = this.ctx.paths
     const { npm } = this.helper
 
-    const runnerPkg = this.compiler === 'vite' ? '@tarojs/vite-runner' : '@tarojs/webpack5-runner'
+    const runnerPkg = '@tarojs/vite-runner'
 
     const runner = await npm.getNpmPkg(runnerPkg, appPath)
 
@@ -176,7 +161,6 @@ ${exampleCommand}`))
       srcConfigName: src,
       distConfigName: dist
     })
-    this.projectConfigJsonOutputPath = `${this.ctx.paths.outputPath}/${dist}`
   }
 
   /**

@@ -18,7 +18,6 @@
     "@tarojs/plugin-platform-weapp": "workspace:*",
     "@tarojs/shared": "workspace:*",
     "@tarojs/helper": "workspace:*",
-    "@tarojs/webpack5-runner": "workspace:*",
     "@tarojs/runner-utils": "workspace:*",
     "@tarojs/taro-loader": "workspace:*",
     "@tarojs/plugin-framework-vue3": "workspace:*",

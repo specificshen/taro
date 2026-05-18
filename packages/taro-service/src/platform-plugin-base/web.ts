@@ -35,14 +35,9 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
 
   protected printDevelopmentTip () {
     const tips: string[] = []
-    const config = this.config
-    const { chalk } = this.helper
-
-    if (this.compiler === 'webpack5' && !config.cache?.enable) {
-      tips.push(chalk.yellowBright('建议开启持久化缓存功能，能有效提升二次编译速度，详情请参考: https://docs.taro.zone/docs/config-detail#cache。'))
-    }
 
     if (tips.length) {
+      const { chalk } = this.helper
       console.log(chalk.yellowBright('Tips:'))
       tips.forEach((item, index) => console.log(`${chalk.yellowBright(index + 1)}. ${item}`))
       console.log('\n')
@@ -56,7 +51,8 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
     const { appPath } = this.ctx.paths
     const { npm } = this.helper
 
-    const runnerPkg = this.compiler === 'vite' ? '@tarojs/vite-runner' : '@tarojs/webpack5-runner'
+    // React-only / Vite-only fork：webpack5 路径已移除，runner 固定为 vite-runner
+    const runnerPkg = '@tarojs/vite-runner'
 
     const runner = await npm.getNpmPkg(runnerPkg, appPath)
 
