@@ -33,6 +33,14 @@ export default class Weapp extends TaroPlatformBase {
   constructor (ctx, config, pluginOptions?: IOptions) {
     super(ctx, config)
     this.template = new Template(pluginOptions)
+    // Skyline / glass-easel 默认配置（用户可在 project config 中覆盖）
+    this.config = {
+      renderer: 'skyline',
+      componentFramework: 'glass-easel',
+      lazyCodeLoading: 'requiredComponents',
+      style: 'v2',
+      ...this.config,
+    }
     this.setupTransaction.addWrapper({
       close () {
         this.modifyTemplate(pluginOptions)

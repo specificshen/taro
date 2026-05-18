@@ -109,8 +109,6 @@ export const REG_URL =
   /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/i
 
 export const REG_TARO_SCOPED_PACKAGE = /@tarojs[\\/][a-z]+/
-export const REG_TARO_H5 = /taro-h5[\\/]dist[\\/](api[\\/]taro|index\.esm)/
-export const REG_TARO_H5_RUNTIME_API = /@tarojs[\\/]plugin-platform-h5[\\/]dist[\\/]runtime[\\/]apis[\\/]index/
 export const REG_CSS_IMPORT = /@import (["'])(.+?)\1;/g
 
 export const NODE_MODULES = 'node_modules'
@@ -134,10 +132,6 @@ export const FILE_PROCESSOR_MAP = {
 }
 
 export const UPDATE_PACKAGE_LIST = [
-  'babel-plugin-transform-react-jsx-to-rn-stylesheet',
-  'taro-css-to-react-native',
-  'stylelint-config-taro-rn',
-  'stylelint-taro-rn',
   'babel-plugin-transform-taroapi',
   'babel-preset-taro',
   'eslint-config-taro',
@@ -149,46 +143,24 @@ export const UPDATE_PACKAGE_LIST = [
   '@tarojs/cli',
   '@tarojs/api',
   '@tarojs/components',
-  '@tarojs/components-advanced',
   '@tarojs/components-react',
-  '@tarojs/components-rn',
   '@tarojs/extend',
-  '@tarojs/taro-h5',
-  '@tarojs/taro-rn',
-  '@tarojs/rn-runner',
-  '@tarojs/rn-style-transformer',
-  '@tarojs/rn-supporter',
-  '@tarojs/rn-transformer',
   '@tarojs/helper',
   '@tarojs/taro-loader',
   '@tarojs/react',
   '@tarojs/plugin-framework-react',
   '@tarojs/plugin-react-devtools',
   '@tarojs/router',
-  '@tarojs/router-rn',
   '@tarojs/runner-utils',
   '@tarojs/runtime',
-  '@tarojs/runtime-rn',
   '@tarojs/service',
-  '@tarojs/with-weapp',
-  '@tarojs/taroize',
   '@tarojs/plugin-inject',
   '@tarojs/plugin-platform-weapp',
-  '@tarojs/plugin-platform-ascf',
-  '@tarojs/plugin-platform-alipay',
-  '@tarojs/plugin-platform-swan',
-  '@tarojs/plugin-platform-tt',
-  '@tarojs/plugin-platform-qq',
-  '@tarojs/plugin-platform-jd',
-  '@tarojs/plugin-platform-h5',
-  '@tarojs/plugin-platform-harmony-ets',
-  '@tarojs/plugin-platform-harmony-hybrid',
   '@tarojs/plugin-html',
   '@tarojs/plugin-mini-ci',
   '@tarojs/plugin-http',
   '@tarojs/vite-runner',
   '@tarojs/create-app',
-  '@tarojs/cli-convertor',
   '@tarojs/transformer-wx',
 ]
 

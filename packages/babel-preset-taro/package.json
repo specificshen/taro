@@ -7,7 +7,6 @@
   "homepage": "https://github.com/nervjs/taro/tree/main/packages/babel-preset-taro#readme",
   "main": "index.js",
   "files": [
-    "rn/",
     "remove-define-config.js",
     "transform-taro-components.js",
     "index.js"
@@ -44,13 +43,11 @@
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
-    "@tarojs/taro-rn": "workspace:*",
     "react-refresh": "^0.14.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-react": "^7.24.1",
-    "@tarojs/taro-rn": "workspace:*",
     "react-refresh": "^0.14.0"
   },
   "peerDependenciesMeta": {
@@ -58,9 +55,6 @@
       "optional": true
     },
     "react-refresh": {
-      "optional": true
-    },
-    "@tarojs/taro-rn": {
       "optional": true
     }
   }

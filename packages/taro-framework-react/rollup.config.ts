@@ -44,20 +44,7 @@ const runtimeConfig: RollupOptions = {
   ...base
 }
 
-// loader 入口
-const loaderConfig: RollupOptions = {
-  input: path.join(cwd, 'src/api-loader.ts'),
-  output: {
-    exports: 'auto',
-    file: path.join(cwd, 'dist/api-loader.js'),
-    format: 'cjs',
-    sourcemap: true
-  },
-  ...base
-}
-
 export default defineConfig([
   compileConfig,
-  loaderConfig,
   runtimeConfig,
 ])
