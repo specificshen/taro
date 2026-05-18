@@ -3,8 +3,6 @@ import { describe, expect, test } from 'vitest'
 
 import babelPresetTaro from '../index.js'
 
-const vp = require('@vue/babel-plugin-jsx')
-
 describe('babel-preset-taro', () => {
   test('react', () => {
     const config = babelPresetTaro({}, {
@@ -12,34 +10,6 @@ describe('babel-preset-taro', () => {
     })
 
     expect(config.sourceType).toBe('unambiguous')
-  })
-
-  test('vue3', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'vue3'
-    })
-
-    expect(config.sourceType).toBe('unambiguous')
-
-    const [override] = config.overrides
-
-    const [[jsxPlugin, jsxOptions]] = override.plugins
-    expect(jsxPlugin === vp).toBeTruthy()
-    expect(jsxOptions).toEqual({})
-  })
-
-  test('vue3 without jsx', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'vue3',
-      vueJsx: false
-    })
-
-    expect(config.sourceType).toBe('unambiguous')
-
-    const [override] = config.overrides
-
-    const [[jsxPlugin,]] = override.plugins
-    expect(jsxPlugin === vp).toBeFalsy()
   })
 
   test('typescript react', () => {
@@ -55,23 +25,6 @@ describe('babel-preset-taro', () => {
     const [, , [ts, tsconfig]] = override.presets
     expect(typeof ts.default === 'function').toBeTruthy()
     expect(tsconfig.jsxPragma === 'React').toBeTruthy()
-  })
-
-  test('typescript vue3', () => {
-    const config = babelPresetTaro({}, {
-      framework: 'vue3',
-      ts: true
-    })
-
-    const [, vueOverride] = config.overrides
-    const [[ts, tsConfig]] = vueOverride.presets
-
-    expect(typeof ts.default === 'function').toBeTruthy()
-    expect(tsConfig.hasOwnProperty('jsxPragma') === false).toBeTruthy()
-    expect(tsConfig.allExtensions).toBeTruthy()
-    expect(tsConfig.isTSX).toBeTruthy()
-
-    expect(vueOverride.include.test('a.vue')).toBeTruthy()
   })
 
   test('can change env options', () => {

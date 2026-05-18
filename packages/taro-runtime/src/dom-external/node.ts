@@ -7,8 +7,8 @@ import type { TaroNode } from '../dom/node'
 export type IPosition = 'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend'
 
 /**
- * An implementation of `Element.insertAdjacentHTML()`
- * to support Vue 3 with a version of or greater than `vue@3.1.2`
+ * An implementation of `Element.insertAdjacentHTML()` used by hydration
+ * and some renderers that rely on direct HTML insertion.
  */
 export function insertAdjacentHTML (
   this: TaroNode,

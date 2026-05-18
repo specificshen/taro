@@ -20,7 +20,6 @@
     "@tarojs/helper": "workspace:*",
     "@tarojs/runner-utils": "workspace:*",
     "@tarojs/taro-loader": "workspace:*",
-    "@tarojs/plugin-framework-vue3": "workspace:*",
     "@tarojs/plugin-framework-react": "workspace:*",
     "@tarojs/plugin-platform-alipay": "workspace:*",
     "@tarojs/plugin-platform-jd": "workspace:*",

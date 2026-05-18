@@ -30,16 +30,14 @@ module.exports = (_, options = {}) => {
   const overrides = []
   const isVite = options.compiler === 'vite'
   // vite 不需要 react 的 preset，在内部已经处理了
-  const isReact = options.framework === 'react' || options.framework === 'preact' && !isVite
-  // vite 不需要 solid 的 preset，在内部已经处理了
-  const isSolid = options.framework === 'solid' && !isVite
-  // vite 不需要 vue 的 preset，在内部已经处理了
-  const isVue3 = options.framework === 'vue3' && !isVite
+  const isReact = options.framework === 'react' && !isVite
   // TODO：后续改为在 vite harmony 中实现对 ts 的支持
   const isHarmony = process.env.TARO_PLATFORM === 'harmony'
   // vite 不需要使用 babel 处理 ts，在 esbuild 中处理了
   const isTs = options.ts && (!isVite || isHarmony)
-  const moduleName = options.framework.charAt(0).toUpperCase() + options.framework.slice(1)
+  const moduleName = options.framework
+    ? options.framework.charAt(0).toUpperCase() + options.framework.slice(1)
+    : 'React'
   const presetReactConfig = options.react || {}
 
   if (isReact) {
@@ -51,34 +49,7 @@ module.exports = (_, options = {}) => {
       },
     ])
     if (process.env.TARO_PLATFORM === 'web' && process.env.NODE_ENV !== 'production' && options.hot !== false) {
-      if (options.framework === 'react') {
-        plugins.push([require('react-refresh/babel'), { skipEnvCheck: true }])
-      } else if (options.framework === 'preact') {
-        overrides.push({
-          include: /\.[jt]sx$/,
-          plugins: [require('@prefresh/babel-plugin')],
-        })
-      }
-    }
-  } else if (isSolid) {
-    const solidOptions = {}
-    if (process.env.TARO_PLATFORM !== 'web') {
-      Object.assign(solidOptions, {
-        moduleName: '@tarojs/plugin-framework-solid/dist/reconciler',
-        generate: 'universal',
-        uniqueTransform: true,
-      })
-    }
-    presets.push([
-      require('babel-plugin-transform-solid-jsx'),
-      solidOptions,
-    ])
-  }
-
-  if (isVue3) {
-    if (options.vueJsx !== false) {
-      const jsxOptions = typeof options.vueJsx === 'object' ? options.vueJsx : {}
-      plugins.push([require('@vue/babel-plugin-jsx'), jsxOptions])
+      plugins.push([require('react-refresh/babel'), { skipEnvCheck: true }])
     }
   }
 
@@ -86,12 +57,6 @@ module.exports = (_, options = {}) => {
     const config = typeof options.ts === 'object' ? options.ts : {}
     if (isReact) {
       config.jsxPragma = moduleName
-    }
-    if (isVue3) {
-      overrides.push({
-        include: /\.vue$/,
-        presets: [[require('@babel/preset-typescript'), { allExtensions: true, isTSX: true }]],
-      })
     }
     presets.push([require('@babel/preset-typescript'), config])
   }

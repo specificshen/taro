@@ -1,4 +1,3 @@
-import type { Component as Vue3Component } from '@vue/runtime-core'
 import type { Component, ComponentClass } from 'react'
 import type { TaroElement } from '../dom/element'
 import type { KeyFrame, MpEvent, ScrollTimelineOption, TFunc } from '../interface'
@@ -77,8 +76,8 @@ interface Show {
 
 export interface AppInstance extends Show {
   componentDidShow?(options?: Record<string, unknown>): void
-  mount? (component: React.ComponentClass | Vue3Component, id: string, cb: (...args: any[]) => void): void
-  mount? (component: React.ComponentClass | Vue3Component, id: string, getCtx:(...args: any[]) => void, cb: (...args: any[]) => void): void
+  mount? (component: React.ComponentClass, id: string, cb: (...args: any[]) => void): void
+  mount? (component: React.ComponentClass, id: string, getCtx:(...args: any[]) => void, cb: (...args: any[]) => void): void
   onError? (error: string): void
   onLaunch? (options?: Record<string, unknown>): void
   onPageNotFound? (res: any): void

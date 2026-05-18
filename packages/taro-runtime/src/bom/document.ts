@@ -30,7 +30,7 @@ function createDocument (): TaroDocument {
   const body = documentCreateElement(BODY)
   const app = documentCreateElement(APP)
   app.id = APP
-  const container = documentCreateElement(CONTAINER) // 多包一层主要为了兼容 vue
+  const container = documentCreateElement(CONTAINER)
 
   doc.appendChild(html)
   html.appendChild(head)
@@ -132,59 +132,6 @@ export function createTTDomDocument(): TaroDocument {
         }
 
         return originalRemoveAttribute(name)
-      }
-
-      if (process.env.FRAMEWORK === 'preact') {
-        const ttEventListener = el.addEventListener.bind(el)
-        const ttRemoveEventListener = el.removeEventListener.bind(el)
-
-        el.addEventListener = function (type: string, listener) {
-          if (type === 'click') {
-            type = 'tap'
-          }
-
-          const bindEventName = type.startsWith('bind') || type.startsWith('catch') ? type : `bind${type}`
-          // 创建包装函数
-          const wrapper = (event) => {
-            const type = event.type
-            // 对齐 modifyMpEvent 处理逻辑
-            if (type === 'tap') {
-              event.type = 'click'
-            } else if (type === 'focus') {
-              event.type = 'focusin'
-            } else if (type === 'blur') {
-              event.type = 'focusout'
-            }
-            Object.assign(event, {
-              mpEvent: event,
-              bubbles: true,
-              cancelable: true,
-            })
-            listener.call(el, event)
-          }
-
-          // 保存包装函数的引用，用于后续移除
-          if (!el.__eventWrappers) {
-            el.__eventWrappers = new WeakMap()
-          }
-          el.__eventWrappers.set(listener, wrapper)
-
-          ttEventListener(bindEventName, wrapper)
-        }
-
-        el.removeEventListener = function (type: string, listener) {
-          if (type === 'click') {
-            type = 'tap'
-          }
-
-          const bindEventName = type.startsWith('bind') || type.startsWith('catch') ? type : `bind${type}`
-          // 获取之前保存的包装函数
-          const wrapper = el.__eventWrappers?.get(listener)
-          if (wrapper) {
-            ttRemoveEventListener(bindEventName, wrapper)
-            delete el.__eventWrappers[listener]
-          }
-        }
       }
 
       return el

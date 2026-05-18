@@ -14,7 +14,6 @@ type PageComponent = React.CElement<PageProps, React.Component<PageProps, any, a
 
 let h: typeof React.createElement
 let ReactDOM: typeof TReactDOM & typeof TReactDOMClient
-let Fragment: typeof React.Fragment
 
 const pageKeyId = incrementId()
 
@@ -40,7 +39,7 @@ export function setReconciler (ReactDOM?) {
 
     // 子组件使用 lifecycle hooks 注册了生命周期后，会存在 prev，里面是注册的生命周期回调。
 
-    // prev 使用 Object.create(null) 创建，H5 的 fast-refresh 可能也会导致存在 prev，要排除这些意外产生的 prev
+    // prev 使用 Object.create(null) 创建，需排除 fast-refresh 等场景下意外产生的 prev
     if ('constructor' in prev) return
 
     Object.keys(prev).forEach(item => {
@@ -49,48 +48,6 @@ export function setReconciler (ReactDOM?) {
       next[item] = nextList.concat(prevList)
     })
   })
-
-  if (process.env.TARO_PLATFORM === 'web') {
-    hooks.tap('createPullDownComponent', (
-      el: ((props: PageProps) => React.ReactNode) | React.ComponentClass<PageProps>,
-      _,
-      R: typeof React,
-      customWrapper
-    ) => {
-      const isReactComponent = isClassComponent(R, el)
-
-      return R.forwardRef((props, ref) => {
-        const newProps: React.ComponentProps<any> = { ...props }
-        const refs = isReactComponent ? { ref: ref } : {
-          forwardedRef: ref,
-          // 兼容 react-redux 7.20.1+
-          reactReduxForwardedRef: ref
-        }
-
-        return h(
-          customWrapper || 'taro-pull-to-refresh-core',
-          null,
-          h(el, {
-            ...newProps,
-            ...refs
-          })
-        )
-      })
-    })
-
-    hooks.tap('getDOMNode', (inst) => {
-      // 由于react 18移除了ReactDOM.findDOMNode方法，修复H5端 Taro.createSelectorQuery设置in(scope)时，报错问题
-      // https://zh-hans.react.dev/reference/react-dom/findDOMNode
-      if (!inst) {
-        return document
-      } else if (inst instanceof HTMLElement) {
-        return inst
-      } else if (inst.$taroPath) {
-        const el = document.getElementById(inst.$taroPath)
-        return el ?? document
-      }
-    })
-  }
 }
 
 export function connectReactPage (
@@ -138,19 +95,11 @@ export function connectReactPage (
             ...refs
           }))
 
-        if (process.env.TARO_PLATFORM === 'web') {
-          return h(
-            'div',
-            { id, className: 'taro_page' },
-            children
-          )
-        } else {
-          return h(
-            'root',
-            { id },
-            children
-          )
-        }
+        return h(
+          'root',
+          { id },
+          children
+        )
       }
     }
   }
@@ -171,13 +120,12 @@ export function createReactApp (
   config: AppConfig
 ) {
   if (process.env.NODE_ENV !== 'production') {
-    ensure(!!dom, '构建 React/Preact 项目请把 process.env.FRAMEWORK 设置为 \'react\'/\'preact\' ')
+    ensure(!!dom, '构建 React 项目时未能找到 ReactDOM，请确认 process.env.FRAMEWORK 设置为 \'react\'')
   }
 
   reactMeta.R = react
   h = react.createElement
   ReactDOM = dom
-  Fragment = react.Fragment
   const appInstanceRef = react.createRef<ReactAppInstance>()
   const isReactComponent = isClassComponent(react, App)
   let appWrapper: AppWrapper
@@ -263,14 +211,12 @@ export function createReactApp (
       return h(
         App,
         props,
-        process.env.TARO_PLATFORM === 'web' ? h(Fragment ?? 'div', null, elements.slice()) : elements.slice()
+        elements.slice()
       )
     }
   }
 
-  if (process.env.TARO_PLATFORM !== 'web') {
-    renderReactRoot()
-  }
+  renderReactRoot()
 
   const [ONLAUNCH, ONSHOW, ONHIDE] = hooks.call('getMiniLifecycleImpl')!.app
 
@@ -303,11 +249,6 @@ export function createReactApp (
     [ONLAUNCH]: setDefaultDescriptor({
       value (options) {
         setRouterParams(options)
-
-        if (process.env.TARO_PLATFORM === 'web') {
-          // 由于 H5 路由初始化的时候会清除 app 下的 dom 元素，所以需要在路由初始化后执行 render
-          renderReactRoot()
-        }
 
         const onLaunch = () => {
           // 用户编写的入口组件实例

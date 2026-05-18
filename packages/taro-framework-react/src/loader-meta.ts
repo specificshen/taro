@@ -88,8 +88,8 @@ function addConfig (source) {
   return additionConfig
 }
 
-export function getLoaderMeta (framework: Frameworks): ILoaderMeta {
-  const loaderMeta = {
+export function getLoaderMeta (_framework: Frameworks): ILoaderMeta {
+  return {
     importFrameworkStatement: `
 import * as React from 'react'
 import ReactDOM from 'react-dom'
@@ -111,18 +111,4 @@ class App extends React.Component {
       Object.assign(config, addConfig(source))
     }
   }
-
-  if (process.env.TARO_PLATFORM === 'web') {
-    if (framework === 'react' || framework === 'preact') {
-      const react = framework === 'preact' ? require('preact/compat') : require('react')
-      const majorVersion = Number((react.version || '18').split('.')[0])
-      if (majorVersion >= 18) {
-        // Note: In react 18 or above, should using react-dom/client
-        loaderMeta.importFrameworkStatement = loaderMeta.importFrameworkStatement.replace('\'react-dom\'', '\'react-dom/client\'')
-        loaderMeta.extraImportForWeb += `import { findDOMNode, render, unstable_batchedUpdates } from 'react-dom'\n`
-        loaderMeta.execBeforeCreateWebApp += `Object.assign(ReactDOM, { findDOMNode, render, unstable_batchedUpdates })\n`
-      }
-    }
-  }
-  return loaderMeta
 }

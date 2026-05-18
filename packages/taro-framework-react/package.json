@@ -1,7 +1,7 @@
 {
   "name": "@tarojs/plugin-framework-react",
   "version": "4.2.0",
-  "description": "React/Preact 框架插件",
+  "description": "React 框架插件",
   "author": "O2Team",
   "homepage": "https://github.com/nervjs/taro",
   "license": "MIT",
@@ -44,45 +44,24 @@
     "@tarojs/shared": "workspace:*",
     "@tarojs/service": "workspace:*",
     "@tarojs/taro": "workspace:*",
-    "webpack-chain": "^6.5.1",
     "vite": "^8.0.13"
   },
   "peerDependencies": {
     "@tarojs/helper": "workspace:*",
     "@tarojs/runtime": "workspace:*",
     "@tarojs/shared": "workspace:*",
-    "@pmmmwh/react-refresh-webpack-plugin": "*",
-    "@preact/preset-vite": "^2",
-    "@prefresh/webpack": "^4",
     "@vitejs/plugin-react": "^6",
-    "preact": "^10",
     "react": "^19",
-    "vite": "^8",
-    "webpack": "^5"
+    "vite": "^8"
   },
   "peerDependenciesMeta": {
-    "@pmmmwh/react-refresh-webpack-plugin": {
-      "optional": true
-    },
-    "@preact/preset-vite": {
-      "optional": true
-    },
-    "@prefresh/webpack": {
-      "optional": true
-    },
     "@vitejs/plugin-react": {
-      "optional": true
-    },
-    "preact": {
       "optional": true
     },
     "react": {
       "optional": true
     },
     "vite": {
-      "optional": true
-    },
-    "webpack": {
       "optional": true
     }
   }

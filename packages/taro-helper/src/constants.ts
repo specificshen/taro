@@ -163,10 +163,7 @@ export const UPDATE_PACKAGE_LIST = [
   '@tarojs/taro-loader',
   '@tarojs/react',
   '@tarojs/plugin-framework-react',
-  '@tarojs/plugin-framework-vue3',
-  '@tarojs/plugin-framework-solid',
   '@tarojs/plugin-react-devtools',
-  '@tarojs/plugin-vue-devtools',
   '@tarojs/router',
   '@tarojs/router-rn',
   '@tarojs/runner-utils',
@@ -230,9 +227,7 @@ export const NPM_DIR = 'npm'
 export const ENTRY = 'app'
 
 export enum FRAMEWORK_MAP {
-  VUE3 = 'vue3',
   REACT = 'react',
-  Solid = 'solid',
 }
 
 export const defaultMainFields = ['browser', 'module', 'jsnext:main', 'main']

@@ -59,8 +59,8 @@ export class TaroDocument extends TaroElement {
     return element
   }
 
-  // an ugly fake createElementNS to deal with @vue/runtime-dom's
-  // support mounting app to svg container since vue@3.0.8
+  // Minimal createElementNS shim — kept as no-op for renderers that
+  // attempt to mount into an SVG container before falling back.
   public createElementNS (_svgNS: string, type: string): TaroElement | TaroRootElement | FormElement {
     return this.createElement(type)
   }
@@ -75,7 +75,7 @@ export class TaroDocument extends TaroElement {
   }
 
   public querySelector<T extends TaroElement> (query: string): T | null {
-    // 为了 Vue3 的乞丐版实现
+    // Minimal id-selector shim — only `#id` is supported.
     if (/^#/.test(query)) {
       return this.getElementById<T>(query.slice(1))
     }

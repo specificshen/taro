@@ -39,25 +39,18 @@
     "@tarojs/helper": "workspace:*",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-transform-imports-api": "1.0.0",
-    "babel-plugin-transform-solid-jsx": "workspace:*",
     "core-js": "^3.36.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
-    "@prefresh/babel-plugin": "^0.5.1",
     "@tarojs/taro-rn": "workspace:*",
-    "@vue/babel-plugin-jsx": "^1.2.2",
-    "babel-preset-solid": "^1.8.16",
     "react-refresh": "^0.14.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-react": "^7.24.1",
-    "@prefresh/babel-plugin": "^0.5.1",
     "@tarojs/taro-rn": "workspace:*",
-    "@vue/babel-plugin-jsx": "^1.2.2",
-    "babel-preset-solid": "^1.8.16",
     "react-refresh": "^0.14.0"
   },
   "peerDependenciesMeta": {
@@ -65,15 +58,6 @@
       "optional": true
     },
     "react-refresh": {
-      "optional": true
-    },
-    "@prefresh/babel-plugin": {
-      "optional": true
-    },
-    "babel-preset-solid": {
-      "optional": true
-    },
-    "@vue/babel-plugin-jsx": {
       "optional": true
     },
     "@tarojs/taro-rn": {
