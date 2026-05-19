@@ -6,7 +6,8 @@
     "moduleResolution": "Bundler",
     "outDir": "./dist",
     "rootDir": "./src",
-    "target": "ES2017"
+    "target": "ES2017",
+    "types": ["node"]
   },
   "include": ["./src"]
 }

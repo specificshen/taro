@@ -23,12 +23,12 @@ export class CompilerContext<T extends ViteH5BuildConfig | ViteHarmonyBuildConfi
 {
   static label = VITE_COMPILER_LABEL
   cwd: string
-  sourceDir: string
-  taroConfig: T
+  sourceDir!: string
+  taroConfig!: T
   rawTaroConfig: T
-  frameworkExts: string[]
-  app: ViteAppMeta
-  pages: VitePageMeta[]
+  frameworkExts!: string[]
+  app!: ViteAppMeta
+  pages!: VitePageMeta[]
   components?: VitePageMeta[]
   loaderMeta: any = {
     importFrameworkStatement: `
@@ -53,7 +53,7 @@ class App extends React.Component {
   logger = logger
   filesConfig: IMiniFilesConfig = {}
   configFileList: string[] = []
-  compilePage: (pageName: string) => VitePageMeta
+  compilePage!: (pageName: string) => VitePageMeta
 
   constructor(appPath: string, rawTaroConfig: T) {
     this.cwd = appPath

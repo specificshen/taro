@@ -160,7 +160,9 @@ export function getPostcssPlugins(
       const pluginPath = resolveSync(pluginName, { basedir: appPath }) || ''
       plugins.push(require(pluginPath)(pluginOption.config || {}))
     } catch (e) {
-      const msg = e.code === 'MODULE_NOT_FOUND' ? `缺少 postcss 插件 "${pluginName}", 已忽略` : e
+      const error = e as NodeJS.ErrnoException
+      const msg =
+        error.code === 'MODULE_NOT_FOUND' ? `缺少 postcss 插件 "${pluginName}", 已忽略` : error.message || String(error)
       logger.info(msg)
     }
   })

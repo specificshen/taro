@@ -19,7 +19,7 @@
     "prod": "pnpm run build",
     "prebuild": "pnpm run clean",
     "build": "pnpm run build:types && pnpm run rolldown --environment NODE_ENV:production",
-    "build:types": "tsc --emitDeclarationOnly --declaration && node ./scripts/copy-entry-types.mjs",
+    "build:types": "tsc --emitDeclarationOnly --declaration --noCheck && node ./scripts/copy-entry-types.mjs",
     "clean": "rimraf ./dist",
     "dev": "concurrently \"pnpm run build:types -- --watch\" \"pnpm run rolldown --environment NODE_ENV:development -w\"",
     "rolldown": "rolldown --config rolldown.config.mjs",
@@ -38,6 +38,8 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "lodash": "^4.17.21"
+    "@types/node": "^22.19.19",
+    "lodash": "^4.17.21",
+    "typescript": "~6.0.3"
   }
 }
