@@ -23,10 +23,11 @@
   "scripts": {
     "prod": "pnpm run build",
     "prebuild": "pnpm run clean",
-    "build": "pnpm run rollup --environment NODE_ENV:production",
+    "build": "pnpm run build:types && pnpm run rolldown --environment NODE_ENV:production",
+    "build:types": "tsc --emitDeclarationOnly --declaration",
     "clean": "rimraf ./dist",
-    "dev": "pnpm run rollup --environment NODE_ENV:development -w",
-    "rollup": "rollup --config rollup.config.ts --configPlugin typescript",
+    "dev": "concurrently \"pnpm run build:types -- --watch\" \"pnpm run rolldown --environment NODE_ENV:development -w\"",
+    "rolldown": "rolldown --config rolldown.config.mjs",
     "test": "cross-env NODE_ENV=test jest",
     "test:ci": "cross-env NODE_ENV=test jest --ci -i --coverage --silent",
     "test:dev": "cross-env NODE_ENV=test jest --watch"

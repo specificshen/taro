@@ -3,8 +3,13 @@ import { Current, eventCenter, Events, getCurrentInstance, nextTick, options } f
 
 import { ENV_TYPE, getEnv } from './env'
 import Link, { interceptorify } from './interceptor'
-import * as interceptors from './interceptor/interceptors'
+import { logInterceptor, timeoutInterceptor } from './interceptor/interceptors'
 import { Behavior, getInitPxTransform, getPreload, getPxTransform } from './tools'
+
+const interceptors = {
+  logInterceptor,
+  timeoutInterceptor,
+}
 
 const Taro: Record<string, unknown> = {
   Behavior,
