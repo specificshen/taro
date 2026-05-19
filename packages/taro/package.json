@@ -5,13 +5,23 @@
   "author": "O2Team",
   "license": "MIT",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "typings": "types/index.d.ts",
   "files": [
     "index.js",
+    "dist",
     "types",
     "html.css",
     "html5.css"
   ],
+  "scripts": {
+    "prod": "pnpm run build",
+    "prebuild": "pnpm run clean",
+    "build": "pnpm run rolldown --environment NODE_ENV:production",
+    "clean": "rimraf ./dist",
+    "dev": "pnpm run rolldown --environment NODE_ENV:development -w",
+    "rolldown": "rolldown --config rolldown.config.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NervJS/taro.git"

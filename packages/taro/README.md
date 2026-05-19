@@ -4,11 +4,11 @@
 
 ## index.js
 
-小程序端入口文件
+兼容入口文件，运行时会加载 `dist/index.js`。
 
-## h5.js
+## dist/index.js
 
-H5 端入口文件
+由 `src/index.js` 通过 Rolldown 构建生成的小程序端入口文件。
 
 ## html.css
 
