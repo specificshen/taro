@@ -1,24 +1,30 @@
 {
   "name": "@tarojs/vite-runner",
   "version": "4.2.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "license": "MIT",
   "files": [
-    "index.js",
     "dist"
   ],
   "scripts": {
     "prod": "pnpm run build",
+    "clean": "rimraf dist",
     "dev": "pnpm run mv:comp && tsc -w",
-    "build": "tsc && pnpm run mv:comp",
+    "build": "pnpm run clean && tsc && pnpm run mv:comp",
     "mv:comp": "node ./mv-comp.js"
   },
   "dependencies": {
     "@ampproject/remapping": "^2.3.0",
     "@babel/core": "^7.24.4",
     "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-inject": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/pluginutils": "^5.1.0",
     "@tarojs/helper": "workspace:*",
     "@tarojs/parse-css-to-stylesheet": "^0.0.69",
@@ -54,7 +60,7 @@
     "@types/babel__core": "^7.20.5",
     "@types/sax": "^1.2.4",
     "less": "^4.2.0",
-    "rollup": "^3.29.4",
+    "rollup": "^3.29.5",
     "sass": "1.44.0",
     "stylus": "^0.63.0",
     "terser": "^5.30.4",

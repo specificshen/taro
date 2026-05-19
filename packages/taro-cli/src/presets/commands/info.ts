@@ -49,7 +49,7 @@ function getJdtaroPackages(ctx) {
     }
   } catch (error) {
     // 记录错误但不中断程序执行（添加trycatch）
-    console.error('读取或解析package.json时发生错误:', error.message)
+    console.error('读取或解析package.json时发生错误:', error instanceof Error ? error.message : String(error))
   }
 
   return []

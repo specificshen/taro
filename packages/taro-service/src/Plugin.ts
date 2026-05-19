@@ -8,7 +8,7 @@ export default class Plugin {
   id: string
   path: string
   ctx: Kernel
-  optsSchema: Func
+  optsSchema!: Func
 
   constructor(opts) {
     this.id = opts.id
@@ -50,7 +50,7 @@ export default class Plugin {
     const methods = this.ctx.methods.get(name) || []
     methods.push(
       fn ||
-        function (fn: Func) {
+        function (this: Plugin, fn: Func) {
           this.register({
             name,
             fn,

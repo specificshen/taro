@@ -1,8 +1,8 @@
 import * as path from 'node:path'
 
 import * as inquirer from 'inquirer'
-import * as getLatestVersion from 'latest-version'
-import * as ora from 'ora'
+import getLatestVersion from 'latest-version'
+import ora from 'ora'
 import * as semver from 'semver'
 
 import packagesManagement from '../../config/packagesManagement'

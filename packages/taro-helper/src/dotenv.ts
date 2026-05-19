@@ -4,7 +4,9 @@ import { parse } from 'dotenv'
 import { expand } from 'dotenv-expand'
 import * as fs from 'fs-extra'
 
-import type { IProjectConfig } from '@tarojs/taro/types/compile'
+interface ConfigWithEnv {
+  env?: Record<string, unknown>
+}
 
 // 支持 --env-prefix=TARO_APP_,aa 类型参数
 export const formatPrefix = (prefixs: string | string[] = ['TARO_APP_']): string[] => {
@@ -53,7 +55,7 @@ export const dotenvParse = (
 }
 
 // 扩展 env
-export const patchEnv = (config: IProjectConfig, expandEnv: Record<string, string>) => {
+export const patchEnv = (config: ConfigWithEnv, expandEnv: Record<string, string>) => {
   const expandEnvStringify = {}
   for (const key in expandEnv) {
     expandEnvStringify[key] = JSON.stringify(expandEnv[key])

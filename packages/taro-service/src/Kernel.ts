@@ -24,21 +24,21 @@ interface IKernelOptions {
 
 export default class Kernel extends EventEmitter {
   appPath: string
-  isWatch: boolean
-  isProduction: boolean
+  isWatch!: boolean
+  isProduction!: boolean
   optsPresets: PluginItem[] | void
   optsPlugins: PluginItem[] | void
-  plugins: Map<string, IPlugin>
-  paths: IPaths
-  extraPlugins: IPluginsObject
-  globalExtraPlugins: IPluginsObject
+  plugins!: Map<string, IPlugin>
+  paths!: IPaths
+  extraPlugins!: IPluginsObject
+  globalExtraPlugins!: IPluginsObject
   config: Config
-  initialConfig: IProjectConfig
-  initialGlobalConfig: IProjectConfig
+  initialConfig!: IProjectConfig
+  initialGlobalConfig!: IProjectConfig
   hooks: Map<string, IHook[]>
   methods: Map<string, Func[]>
-  cliCommands: string[]
-  cliCommandsPath: string
+  cliCommands!: string[]
+  cliCommandsPath!: string
   commands: Map<string, ICommand>
   platforms: Map<string, IPlatform>
   helper: any

@@ -1,5 +1,5 @@
 import { fs, REG_FONT, REG_IMAGE, REG_MEDIA } from '@tarojs/helper'
-import { isBoolean, isFunction, isString } from '@tarojs/shared'
+import { isBoolean, isString } from '@tarojs/shared'
 import mrmime from 'mrmime'
 
 import { isVirtualModule } from '../utils'
@@ -64,12 +64,14 @@ export default function (viteCompilerContext: ViteH5CompilerContext | ViteMiniCo
       const isEsModule = isBoolean(options.esModule) ? options.esModule : true
 
       let url: string
-      if (limit || (!isBoolean(limit) && source.length < limit)) {
+      if (limit === true || (typeof limit === 'number' && source.length < limit)) {
         const mimeType = mrmime.lookup(id) ?? 'application/octet-stream'
         url = `data:${mimeType};base64,${source.toString('base64')}`
       } else {
         let fileName = id.replace(sourceDir + '/', '')
-        isFunction(options.name) && (fileName = options.name(id))
+        if (typeof options.name === 'function') {
+          fileName = options.name(id)
+        }
         const referenceId = this.emitFile({
           type: 'asset',
           fileName,

@@ -1,5 +1,3 @@
-import { isFunction } from '@tarojs/shared'
-
 import type { PluginOption } from 'vite'
 
 interface IOption {
@@ -15,7 +13,7 @@ export default function ({ include = [], comparisonId, force = false }: IOption 
   return {
     name: 'taro:rollup-watch-increment',
     watchChange(id, { event }) {
-      if (isFunction(force) && force(id) === true) {
+      if (typeof force === 'function' && force(id) === true) {
         firstGenerate = true
       } else if (firstGenerate) {
         firstGenerate = false
@@ -40,7 +38,9 @@ export default function ({ include = [], comparisonId, force = false }: IOption 
           files.add(chunk.fileName)
         } else if (chunk.type === 'chunk') {
           const moduleIds = Object.keys(chunk.modules)
-          if (moduleIds.some((id) => files.has(id) || (isFunction(comparisonId) && comparisonId(id, files)))) {
+          if (
+            moduleIds.some((id) => files.has(id) || (typeof comparisonId === 'function' && comparisonId(id, files)))
+          ) {
             files.add(chunk.fileName)
             files.add(`${chunk.fileName}.map`)
           }

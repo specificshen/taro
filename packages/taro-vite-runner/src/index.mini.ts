@@ -1,4 +1,4 @@
-import { isFunction, isString } from '@tarojs/shared'
+import { isFunction } from '@tarojs/shared'
 import { build } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
@@ -25,7 +25,7 @@ export default async function (appPath: string, rawTaroConfig: ViteMiniBuildConf
   }
 
   // custom vite plugins
-  if (!isString(taroConfig.compiler) && taroConfig.compiler?.vitePlugins?.length) {
+  if (typeof taroConfig.compiler === 'object' && taroConfig.compiler?.vitePlugins?.length) {
     plugins.push(...taroConfig.compiler.vitePlugins)
   }
 

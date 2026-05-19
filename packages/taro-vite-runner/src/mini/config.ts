@@ -1,7 +1,6 @@
 import path from 'node:path'
 
 import { babel } from '@rollup/plugin-babel'
-import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
 import {
   defaultMainFields,
   fs,
@@ -11,7 +10,7 @@ import {
   REG_TARO_SCOPED_PACKAGE,
 } from '@tarojs/helper'
 import { getSassLoaderOption } from '@tarojs/runner-utils'
-import { isArray, PLATFORM_TYPE } from '@tarojs/shared'
+import { PLATFORM_TYPE } from '@tarojs/shared'
 
 import { getDefaultPostcssConfig } from '../postcss/postcss.mini'
 import {
@@ -29,9 +28,38 @@ import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCom
 import type { GetManualChunk, InputPluginOption } from 'rollup'
 import type { PluginOption } from 'vite'
 
+type RolldownInjectOptions = Record<string, string | [string, string]>
+
+function normalizeInjectValue(value: string | string[]): string | [string, string] {
+  if (!Array.isArray(value)) return value
+  return value.length <= 1 ? (value[0] ?? '') : [value[0] ?? '', value[1] ?? '']
+}
+
+async function removeSourceMapFiles(dir: string) {
+  if (!(await fs.pathExists(dir))) return
+
+  const entries = await fs.readdir(dir)
+  await Promise.all(
+    entries.map(async (entry) => {
+      const filePath = path.join(dir, entry)
+      const stat = await fs.stat(filePath)
+      if (stat.isDirectory()) {
+        await removeSourceMapFiles(filePath)
+        return
+      }
+      if (filePath.endsWith('.map')) {
+        await fs.remove(filePath)
+      }
+    }),
+  )
+}
+
 export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOption {
   const { taroConfig, cwd: appPath, sourceDir } = viteCompilerContext
-  const isProd = getMode(taroConfig) === 'production'
+  const outputRoot = path.join(appPath, taroConfig.outputRoot || 'dist')
+  const enableSourceMap = taroConfig.enableSourceMap ?? false
+  const compactWatch = taroConfig.isWatch && !enableSourceMap
+  const minify = compactWatch ? 'esbuild' : getMinify(taroConfig)
   function getDefineOption() {
     const {
       env = {},
@@ -44,7 +72,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     env.FRAMEWORK = JSON.stringify(framework)
     env.TARO_ENV = JSON.stringify(buildAdapter)
     env.TARO_PLATFORM = JSON.stringify(process.env.TARO_PLATFORM || PLATFORM_TYPE.MINI)
-    env.NODE_ENV = JSON.stringify(process.env.NODE_ENV)
+    env.NODE_ENV = JSON.stringify(compactWatch ? 'production' : process.env.NODE_ENV)
     env.SUPPORT_TARO_POLYFILL = env.SUPPORT_TARO_POLYFILL || '"disabled"'
     const envConstants = Object.keys(env).reduce((target, key) => {
       target[`process.env.${key}`] = env[key]
@@ -75,8 +103,8 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     })
   }
 
-  function getInjectOption(): RollupInjectOptions {
-    const options: RollupInjectOptions = {
+  function getInjectOption(): RolldownInjectOptions {
+    const options: RolldownInjectOptions = {
       window: ['@tarojs/runtime', 'window'],
       document: ['@tarojs/runtime', 'document'],
       navigator: ['@tarojs/runtime', 'navigator'],
@@ -95,7 +123,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
 
     if (injectOptions?.include) {
       for (const key in injectOptions.include) {
-        options[key] = injectOptions.include[key]
+        options[key] = normalizeInjectValue(injectOptions.include[key])
       }
     }
 
@@ -137,7 +165,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     }
     const importer = [nativeStyleImporter]
     if (sassLoaderOption?.importer) {
-      isArray(sassLoaderOption.importer)
+      Array.isArray(sassLoaderOption.importer)
         ? importer.unshift(...sassLoaderOption.importer)
         : importer.unshift(sassLoaderOption.importer)
     }
@@ -216,85 +244,93 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
 
   return {
     name: 'taro:vite-mini-config',
-    config: async () => ({
-      mode: getMode(taroConfig),
-      build: {
-        outDir: path.join(appPath, taroConfig.outputRoot || 'dist'),
-        target: 'es6',
-        cssCodeSplit: true,
-        emptyOutDir: false,
-        lib: {
-          entry: taroConfig.entry.app,
-          formats: ['cjs'],
-        },
-        watch: taroConfig.isWatch ? {} : null,
-        chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
-        // @TODO doc needed: sourcemapType not supported
-        sourcemap: taroConfig.enableSourceMap ?? taroConfig.isWatch ?? isProd,
-        rollupOptions: {
-          output: {
-            entryFileNames(chunkInfo) {
-              return stripMultiPlatformExt(chunkInfo.name) + taroConfig.fileType.script
-            },
-            chunkFileNames: taroConfig.output!.chunkFileNames,
-            manualChunks: getManualChunks(),
+    config: async () => {
+      if (!enableSourceMap) {
+        await removeSourceMapFiles(outputRoot)
+      }
+
+      return {
+        mode: getMode(taroConfig),
+        build: {
+          outDir: outputRoot,
+          target: 'es6',
+          cssCodeSplit: true,
+          emptyOutDir: false,
+          lib: {
+            entry: taroConfig.entry.app,
+            formats: ['cjs'],
           },
-          plugins: [
-            inject(getInjectOption()) as InputPluginOption,
-            babel(
-              getBabelOption(taroConfig, {
-                defaultExclude: [],
-                defaultInclude: [sourceDir, /(?<=node_modules[\\/]).*taro/],
-              }),
-            ) as InputPluginOption,
+          watch: taroConfig.isWatch ? {} : null,
+          chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
+          // @TODO doc needed: sourcemapType not supported
+          sourcemap: enableSourceMap,
+          rolldownOptions: {
+            transform: {
+              inject: getInjectOption(),
+            },
+            output: {
+              entryFileNames(chunkInfo) {
+                return stripMultiPlatformExt(chunkInfo.name) + taroConfig.fileType.script
+              },
+              chunkFileNames: taroConfig.output!.chunkFileNames,
+              manualChunks: getManualChunks(),
+            },
+            plugins: [
+              babel(
+                getBabelOption(taroConfig, {
+                  defaultExclude: [],
+                  defaultInclude: [sourceDir, /(?<=node_modules[\\/]).*taro/],
+                }),
+              ) as InputPluginOption,
+            ],
+          },
+          commonjsOptions: {
+            exclude: [/\.esm/, /[/\\]esm[/\\]/],
+            transformMixedEsModules: true,
+          },
+          minify,
+          terserOptions:
+            minify === 'terser'
+              ? recursiveMerge({}, DEFAULT_TERSER_OPTIONS, taroConfig.terser?.config || {})
+              : undefined,
+        },
+        define: getDefineOption(),
+        resolve: {
+          mainFields: [...defaultMainFields],
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.mts', '.vue'],
+          alias: [
+            // 小程序使用 regenerator-runtime@0.11
+            { find: 'regenerator-runtime', replacement: require.resolve('regenerator-runtime') },
+            { find: /@tarojs\/components$/, replacement: taroConfig.taroComponentsPath },
+            ...getAliasOption(),
+          ],
+          dedupe: [
+            '@tarojs/shared',
+            '@tarojs/runtime',
+            'react',
+            'react-dom',
+            'react/jsx-runtime',
+            'react-reconciler',
+            'scheduler',
           ],
         },
-        commonjsOptions: {
-          exclude: [/\.esm/, /[/\\]esm[/\\]/],
-          transformMixedEsModules: true,
+        esbuild: {
+          jsxDev: false,
         },
-        minify: getMinify(taroConfig),
-        terserOptions:
-          getMinify(taroConfig) === 'terser'
-            ? recursiveMerge({}, DEFAULT_TERSER_OPTIONS, taroConfig.terser?.config || {})
-            : undefined,
-      },
-      define: getDefineOption(),
-      resolve: {
-        mainFields: [...defaultMainFields],
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.mts', '.vue'],
-        alias: [
-          // 小程序使用 regenerator-runtime@0.11
-          { find: 'regenerator-runtime', replacement: require.resolve('regenerator-runtime') },
-          { find: /@tarojs\/components$/, replacement: taroConfig.taroComponentsPath },
-          ...getAliasOption(),
-        ],
-        dedupe: [
-          '@tarojs/shared',
-          '@tarojs/runtime',
-          'react',
-          'react-dom',
-          'react/jsx-runtime',
-          'react-reconciler',
-          'scheduler',
-        ],
-      },
-      esbuild: {
-        jsxDev: false,
-      },
-      css: {
-        postcss: {
-          plugins: getPostcssPlugins(appPath, __postcssOption, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME),
+        css: {
+          postcss: {
+            plugins: getPostcssPlugins(appPath, __postcssOption, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME),
+          },
+          preprocessorOptions: {
+            ...(await getSassOption()),
+            less: taroConfig.lessLoaderOption || {},
+            stylus: taroConfig.stylusLoaderOption || {},
+          },
+          modules: getCSSModulesOptions(taroConfig),
         },
-        preprocessorOptions: {
-          ...(await getSassOption()),
-          less: taroConfig.lessLoaderOption || {},
-          stylus: taroConfig.stylusLoaderOption || {},
-        },
-        modules: getCSSModulesOptions(taroConfig),
-      },
-      // @TODO xsscript loader
-    }),
+        // @TODO xsscript loader
+      }
+    },
     configResolved(_resolvedConfig) {
       // console.log('resolvedConfig.plugins: ', resolvedConfig.plugins)
       // console.log('resolvedConfig.esbuild: ', resolvedConfig.esbuild)

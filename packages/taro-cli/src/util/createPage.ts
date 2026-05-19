@@ -17,10 +17,10 @@ const generateNewSubPackageItem = (subPackage: string) => {
 const isValidSubPkgObject = (subPkgObject: ObjectExpression) => {
   const properties = subPkgObject?.properties || {}
   const rootProperty = properties.find(
-    (property: ObjectProperty) => (property.key as any)?.name === 'root',
+    (property) => (property as ObjectProperty).key && ((property as ObjectProperty).key as any)?.name === 'root',
   ) as ObjectProperty
   const pagesProperty = properties.find(
-    (property: ObjectProperty) => (property.key as any)?.name === 'pages',
+    (property) => (property as ObjectProperty).key && ((property as ObjectProperty).key as any)?.name === 'pages',
   ) as ObjectProperty
   const rootPropertyValueType = rootProperty?.value?.type
   const pagesPropertyValueType = pagesProperty?.value?.type
@@ -53,7 +53,7 @@ const addNewSubPackage = (node: ObjectExpression, page: string, subPackage: stri
   if (targetSubPkgObject.type !== 'ObjectExpression' || !isValidSubPkgObject(targetSubPkgObject))
     return ConfigModificationState.Fail
   const pagesProperty: ObjectProperty = targetSubPkgObject.properties.find(
-    (property: ObjectProperty) => (property.key as any)?.name === 'pages',
+    (property) => (property as ObjectProperty).key && ((property as ObjectProperty).key as any)?.name === 'pages',
   ) as ObjectProperty
   const currentPages = (pagesProperty.value as ArrayExpression).elements
   const isPageExists = Boolean(currentPages.find((node) => (node as any).value === page))

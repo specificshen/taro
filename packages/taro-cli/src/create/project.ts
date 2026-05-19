@@ -14,7 +14,7 @@ import {
 import { isArray } from '@tarojs/shared'
 import axios from 'axios'
 import * as inquirer from 'inquirer'
-import * as ora from 'ora'
+import ora from 'ora'
 import * as semver from 'semver'
 
 import { clearConsole, getPkgVersion, getRootPath } from '../util'

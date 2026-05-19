@@ -16,7 +16,6 @@
       "!**/*.d.ts",
       "!**/*.ets",
       "!coverage",
-      "!examples",
       "!packages/_legacy",
       "!packages/taro-cli/src/__tests__/fixtures",
       "!packages/taro-cli/templates",

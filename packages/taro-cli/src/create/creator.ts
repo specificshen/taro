@@ -5,7 +5,7 @@ import { fs } from '@tarojs/helper'
 import { getRootPath } from '../util'
 
 export default class Creator {
-  protected _rootPath: string
+  protected _rootPath!: string
   public rootPath: string
 
   constructor(sourceRoot?: string) {

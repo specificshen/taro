@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "declaration": false,
     "experimentalDecorators": true,
     "jsx": "react",
     "jsxFactory": "React.createElement",
     "module": "commonjs",
-    "moduleResolution": "node",
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "outDir": "./dist/",

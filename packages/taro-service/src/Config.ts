@@ -12,7 +12,7 @@ import {
   TARO_GLOBAL_CONFIG_DIR,
   TARO_GLOBAL_CONFIG_FILE,
 } from '@tarojs/helper'
-import * as ora from 'ora'
+import ora from 'ora'
 import { merge } from 'webpack-merge'
 
 import { filterGlobalConfig } from './utils'
@@ -27,10 +27,10 @@ interface IConfigOptions {
 
 export default class Config {
   appPath: string
-  configPath: string
-  initialConfig: IProjectConfig
-  initialGlobalConfig: IProjectConfig
-  isInitSuccess: boolean
+  configPath!: string
+  initialConfig!: IProjectConfig
+  initialGlobalConfig!: IProjectConfig
+  isInitSuccess!: boolean
   disableGlobalConfig: boolean
 
   constructor(opts: IConfigOptions) {

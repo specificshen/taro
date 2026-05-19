@@ -98,7 +98,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       }
     },
     transform(code, id) {
-      if (/\.m?[jt]sx?$/.test(id) && filter(id)) {
+      if (/\.m?[jt]sx?$/.test(id) && typeof filter === 'function' && filter(id)) {
         const scopeNativeComp = new Map<string, string>()
         let enableImportComponent = true
 

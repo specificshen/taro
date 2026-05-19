@@ -4,7 +4,7 @@ import { chalk, fs } from '@tarojs/helper'
 import * as AdmZip from 'adm-zip'
 import axios from 'axios'
 import * as download from 'download-git-repo'
-import * as ora from 'ora'
+import ora from 'ora'
 
 import { getTemplateSourceType, readDirWithFileTypes } from '../util'
 import { TEMPLATE_CREATOR } from './constants'

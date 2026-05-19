@@ -2,8 +2,6 @@ import path from 'node:path'
 import querystring from 'node:querystring'
 
 import { isNpmPkg, normalizePath, recursiveMerge, REG_NODE_MODULES, resolveSync } from '@tarojs/helper'
-import { isFunction, isString } from '@tarojs/shared'
-
 import { backSlashRegEx, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME, needsEscapeRegEx, quoteNewlineRegEx } from './constants'
 import { createFilterWithCompileOptions } from './createFilter'
 import { logger } from './logger'
@@ -90,7 +88,7 @@ export function isVirtualModule(id: string): boolean {
 }
 
 export function isRelativePath(id: string | undefined): boolean {
-  if (!isString(id)) return false
+  if (typeof id !== 'string') return false
 
   if (path.isAbsolute(id)) return false
 
@@ -262,11 +260,12 @@ export function resolveAbsoluteRequire({
 }) {
   outputRoot = escapePath(outputRoot)
   targetRoot = escapePath(targetRoot)
+  const resolveId = typeof modifyResolveId === 'function' ? modifyResolveId : undefined
   return code.replace(/(?:import\s|from\s|require\()['"]([^.][^'"\s]+)['"]\)?/g, (src: string, source: string) => {
     importer = stripVirtualModulePrefix(importer)
     const absolutePath: string = escapePath(
-      isFunction(modifyResolveId)
-        ? modifyResolveId({
+      resolveId
+        ? resolveId({
             source,
             importer,
             options: {

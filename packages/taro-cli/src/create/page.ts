@@ -91,7 +91,7 @@ export default class Page extends Creator {
   public conf: IPageConf
   private modifyCustomTemplateConfig: TGetCustomTemplate
   private afterCreate: TAfterCreate | undefined
-  private pageEntryPath: string
+  private pageEntryPath!: string
 
   constructor(args: IPageArgs) {
     super()

@@ -1,8 +1,6 @@
 import path from 'node:path'
 
 import { fs, isEmptyObject, removePathPrefix } from '@tarojs/helper'
-import { isString } from '@tarojs/shared'
-
 import { appendVirtualModulePrefix, escapePath, prettyPrintJson, stripVirtualModulePrefix } from '../utils'
 import { baseCompName, customWrapperName } from '../utils/constants'
 import { miniTemplateLoader, QUERY_IS_NATIVE_PAGE } from './native-support'
@@ -126,7 +124,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         }
 
         // darkmode
-        if (appConfig.darkmode && isString(appConfig.themeLocation)) {
+        if (appConfig.darkmode && typeof appConfig.themeLocation === 'string') {
           const themePath = path.resolve(viteCompilerContext.sourceDir, appConfig.themeLocation)
           this.emitFile({
             type: 'asset',

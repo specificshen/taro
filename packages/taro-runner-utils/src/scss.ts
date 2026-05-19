@@ -63,7 +63,7 @@ export async function getBundleContent(
       }
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error instanceof Error ? error.message : String(error))
   }
 
   return result
