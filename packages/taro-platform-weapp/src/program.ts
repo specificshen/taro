@@ -42,7 +42,7 @@ export default class Weapp extends TaroPlatformBase {
       ...this.config,
     }
     this.setupTransaction.addWrapper({
-      close() {
+      close: () => {
         this.modifyTemplate(pluginOptions)
         this.modifyWebpackConfig()
       },
