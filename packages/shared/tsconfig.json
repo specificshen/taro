@@ -2,8 +2,10 @@
   "extends": "../../tsconfig.root.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "./src",
     "module": "ESNext",
-    "declaration": true
+    "declaration": true,
+    "types": ["node"]
   },
-  "include": ["./src", "rollup.config.ts"]
+  "include": ["./src"]
 }

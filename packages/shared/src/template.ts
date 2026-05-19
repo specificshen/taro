@@ -75,8 +75,8 @@ export class BaseTemplate {
   protected _isUseXS = true
   protected _isUseCompileMode = false
   protected exportExpr = 'module.exports ='
-  protected isSupportRecursive: boolean
-  protected miniComponents: Components
+  protected isSupportRecursive!: boolean
+  protected miniComponents!: Components
   protected thirdPartyPatcher: Record<string, Record<string, string>> = {}
   protected modifyCompProps?: (compName: string, target: Record<string, string>) => Record<string, string>
   protected modifyLoopBody?: (child: string, nodeName: string) => string
@@ -654,7 +654,7 @@ export class RecursiveTemplate extends BaseTemplate {
 export class UnRecursiveTemplate extends BaseTemplate {
   isSupportRecursive = false
   protected _baseLevel = 16
-  private componentConfig: ComponentConfig
+  private componentConfig!: ComponentConfig
 
   public buildTemplate = (componentConfig: ComponentConfig) => {
     this.componentConfig = componentConfig

@@ -189,6 +189,9 @@ importers:
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
+      rolldown:
+        specifier: ^1.0.1
+        version: 1.0.1
       rollup:
         specifier: ^4.16.4
         version: 4.39.0

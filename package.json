@@ -132,6 +132,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "rimraf": "^5.0.0",
+    "rolldown": "^1.0.1",
     "rollup": "^4.16.4",
     "rollup-plugin-node-externals": "^7.1.1",
     "rollup-plugin-postcss": "^4.0.2",
