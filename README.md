@@ -1,47 +1,17 @@
 <div align="center">
   <h1>Taro · React-only Modern Fork</h1>
-  <p>本仓库是 Taro 的一个 fork，长期维护目标：<strong>React + Vite + 微信小程序（Skyline / glass-easel 优先）</strong>。</p>
-  <p>Vue / Solid / Nerv 等框架路径、H5 / RN / 支付宝 / 字节 / 百度 / QQ / 鸿蒙 等平台路径、Webpack runner 已不在本 fork 的维护范围内。详见 <code>docs/taro-react-only-modernization.md</code>。</p>
+  <p>本仓库是基于 Taro 演进的独立私有发行线，长期维护目标：<strong>React 19 + Vite + 微信小程序（Skyline / glass-easel 优先）</strong>。</p>
+  <p>包名暂时保留 <code>@tarojs/*</code> 以降低业务迁移成本；Vue / Solid / Nerv 等框架路径、H5 / RN / 支付宝 / 字节 / 百度 / QQ / 鸿蒙 等平台路径、Webpack runner 已不在维护范围内。详见 <code>docs/taro-react-only-modernization.md</code>。</p>
   <hr />
   <p>原 Taro 项目介绍：开放式跨端跨框架解决方案，轻松构建可以运行在 小程序/Web/APP 上的应用</p>
-  <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+  <a href="https://github.com/specificshen/taro">
+    <img src="https://img.shields.io/badge/private%20release-React%2019%20%2B%20WeApp-blue?style=flat-square" alt="Private Release">
   </a>
-  <a href="https://www.npmjs.com/package/@tarojs/cli">
-    <img src="https://img.shields.io/node/v/@tarojs/cli.svg?style=flat-square">
-  </a>
-  <a href="https://www.npmjs.com/package/@tarojs/taro">
-    <img src="https://img.shields.io/npm/v/@tarojs/taro.svg?style=flat-square">
-  </a>
-  <a href="https://www.npmjs.com/package/@tarojs/taro">
-    <img src="https://img.shields.io/npm/l/@tarojs/taro.svg?style=flat-square">
-  </a>
-  <a href="https://www.npmjs.com/package/@tarojs/taro">
-    <img src="https://img.shields.io/npm/dt/@tarojs/taro.svg?style=flat-square">
-  </a>
-  <a href="https://github.com/NervJS/taro/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/NervJS/taro/publish.yml?style=flat-square">
-  </a>
-  <a href="https://codecov.io/gh/NervJS/taro" > 
-  <img src="https://codecov.io/gh/NervJS/taro/graph/badge.svg?token=y06kPnzJaQ"/> 
-  </a>
-  <a href="https://github.com/NervJS/taro">
-    <img src="https://img.shields.io/github/contributors/NervJS/taro" alt="GitHub contributors">
-  </a>
-  <a href="https://github.com/NervJS/taro">
-    <img src="https://img.shields.io/github/commit-activity/w/NervJS/taro" alt="GitHub commit activity">
-  </a>
-  <a href="https://github.com/NervJS/taro">
-    <img src="https://img.shields.io/github/issues-closed/NervJS/taro" alt="GitHub closed issues">
-  </a>
-  <a href="https://github.com/NervJS/taro">
-    <img src="https://img.shields.io/github/commits-since/NervJS/taro/latest/main" alt="GitHub commits since latest release (by date)">
-  </a>
-  <a href="https://github.com/NervJS/taro">
-    <img src="https://img.shields.io/github/release-date/NervJS/taro" alt="GitHub Release Date">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License">
   </a>
   <p>
-    <a href="https://github.com/NervJS/taro/blob/next/README.md">简体中文</a> | <a href="https://github.com/NervJS/taro/blob/next/README_EN.md">English</a>
+    <a href="./README.md">简体中文</a> | <a href="./README_EN.md">English</a>
   </p>
 </div>
 
@@ -64,15 +34,16 @@
 
 ## 简介
 
-开放式跨端跨框架解决方案，支持使用 React/Vue/Nerv 等框架来开发微信/京东/百度/支付宝/字节跳动/ QQ 小程序/H5/React Native 等应用。现如今市面上端的形态多种多样，Web、React Native、微信小程序等各种端大行其道，当业务要求同时在不同的端都要求有所表现的时候，针对不同的端去编写多套代码的成本显然非常高，这时候只编写一套代码就能够适配到多端的能力就显得极为需要
+本仓库不再按原 Taro 的“多框架、多平台、多编译器”路线继续演进，而是作为独立私有发行线，聚焦 React 19 + Vite + 微信小程序。业务侧仍优先兼容 `@tarojs/components`、`@tarojs/taro`、生命周期 hooks 与常用配置，内部实现逐步向 WeApp / Skyline 专用链路瘦身。
 
 ### 当前 fork 支持范围
 
-- 仅保证 **React + 微信小程序（WeApp）**
+- 仅保证 **React 19 + 微信小程序（WeApp）**
 - 默认并推荐使用 **Vite**
-- CI / build / publish 已收敛到 React + WeApp 保留链路
+- CI / build / private publish 已收敛到 React + WeApp 保留链路
 - 本 fork 不再保证 H5、React Native、Harmony 以及 Vue / Solid 相关能力可用
 - 建议使用 **Node.js 22+** 与 **pnpm 10**
+- 包名暂时保留 `@tarojs/*`，但必须来自同一个私有发行版本，不要与官方 npm 包混装
 
 ### 版本迁移
 
@@ -85,20 +56,32 @@ Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https
 ```json
 {
   "dependencies": {
-    "@tarojs/taro": "4.x",
-    "@tarojs/components": "4.x",
-    "@tarojs/runtime": "4.x",
-    "@tarojs/react": "4.x"
+    "@tarojs/taro": "4.3.0-alpha.0",
+    "@tarojs/components": "4.3.0-alpha.0",
+    "@tarojs/runtime": "4.3.0-alpha.0",
+    "@tarojs/react": "4.3.0-alpha.0",
+    "react": "^19.2.0"
   },
   "devDependencies": {
-    "@tarojs/cli": "4.x",
-    "@tarojs/vite-runner": "4.x",
-    "@tarojs/plugin-framework-react": "4.x",
-    "@tarojs/plugin-platform-weapp": "4.x",
-    "babel-preset-taro": "4.x"
+    "@tarojs/cli": "4.3.0-alpha.0",
+    "@tarojs/vite-runner": "4.3.0-alpha.0",
+    "@tarojs/plugin-framework-react": "4.3.0-alpha.0",
+    "@tarojs/plugin-platform-weapp": "4.3.0-alpha.0",
+    "babel-preset-taro": "4.3.0-alpha.0"
   }
 }
 ```
+
+### 私有发行包组
+
+私有发布和业务验证必须成组替换，不要只替换 CLI 或 runtime。当前低风险发行包组由脚本维护：
+
+```bash
+pnpm run pack:private -- --dry-run
+pnpm run pack:private -- --dest ../taro-private-packs
+```
+
+生成 tarball 前请先完成构建；业务工程安装时，所有 `@tarojs/*` 与相关 `babel/postcss` 包应指向同一个私有版本或同一批 tarball。
 
 项目配置示例 (`config/index.ts`)：
 
