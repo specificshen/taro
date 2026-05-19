@@ -1,4 +1,4 @@
-import { convertNumber2PX, eventHandlerTTDom, FormElement, setInnerHTML } from '@tarojs/runtime'
+import { convertNumber2PX, eventHandlerTTDom, FormElement } from '@tarojs/runtime'
 import {
   capitalize,
   internalComponents,
@@ -149,14 +149,10 @@ function setStyle(style: Style, key: string, value: unknown) {
 }
 
 type StyleValue = Record<string, string | number>
-interface DangerouslySetInnerHTML {
-  __html?: string
-}
-
 function setProperty(dom: TaroElement, name: string, value: unknown, oldValue?: unknown) {
   name = name === 'className' ? 'class' : name
 
-  if (name === 'key' || name === 'children' || name === 'ref') {
+  if (name === 'key' || name === 'children' || name === 'ref' || name === 'dangerouslySetInnerHTML') {
     // skip
   } else if (name === 'style') {
     if (process.env.TARO_ENV === 'tt' && isEnableTTDom()) {
@@ -194,18 +190,6 @@ function setProperty(dom: TaroElement, name: string, value: unknown, oldValue?: 
     }
   } else if (isEventName(name)) {
     setEvent(dom, name, value, oldValue)
-  } else if (name === 'dangerouslySetInnerHTML') {
-    const newHtml = (value as DangerouslySetInnerHTML)?.__html ?? ''
-    const oldHtml = (oldValue as DangerouslySetInnerHTML)?.__html ?? ''
-    if (newHtml || oldHtml) {
-      if (oldHtml !== newHtml) {
-        if (process.env.TARO_ENV === 'tt' && isEnableTTDom()) {
-          setInnerHTML(dom, newHtml)
-        } else {
-          dom.innerHTML = newHtml
-        }
-      }
-    }
   } else if (!isFunction(value)) {
     if (process.env.TARO_ENV === 'tt' && isEnableTTDom() && !IS_DATASET_OR_ARIA.test(name)) {
       name = toCamelCase(name)

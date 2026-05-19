@@ -1,41 +1,7 @@
 import { DATASET, OBJECT, PROPS, STYLE } from '../constants'
 import { NodeType } from '../dom/node_types'
-import { parser } from '../dom-external/inner-html/parser'
 
 import type { TaroNode } from '../dom/node'
-
-export type IPosition = 'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend'
-
-/**
- * An implementation of `Element.insertAdjacentHTML()` used by hydration
- * and some renderers that rely on direct HTML insertion.
- */
-export function insertAdjacentHTML(this: TaroNode, position: IPosition, html: string) {
-  const parsedNodes = parser(html, this.ownerDocument)
-
-  for (let i = 0; i < parsedNodes.length; i++) {
-    const n = parsedNodes[i]
-
-    switch (position) {
-      case 'beforebegin':
-        this.parentNode?.insertBefore(n, this)
-        break
-      case 'afterbegin':
-        if (this.hasChildNodes()) {
-          this.insertBefore(n, this.childNodes[0])
-        } else {
-          this.appendChild(n)
-        }
-        break
-      case 'beforeend':
-        this.appendChild(n)
-        break
-      case 'afterend':
-        this.parentNode?.appendChild(n)
-        break
-    }
-  }
-}
 
 export function cloneNode(this: TaroNode, isDeep = false) {
   const document = this.ownerDocument

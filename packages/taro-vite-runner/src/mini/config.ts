@@ -80,8 +80,6 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     }, {})
 
     const runtimeConstants = {
-      ENABLE_INNER_HTML: runtime.enableInnerHTML ?? true,
-      ENABLE_ADJACENT_HTML: runtime.enableAdjacentHTML ?? false,
       ENABLE_SIZE_APIS: runtime.enableSizeAPIs ?? false,
       ENABLE_TEMPLATE_CONTENT: runtime.enableTemplateContent ?? false,
       ENABLE_CLONE_NODE: runtime.enableCloneNode ?? false,

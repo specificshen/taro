@@ -28,7 +28,6 @@ export { TaroRootElement } from './dom/root'
 export { Style } from './dom/style'
 export { SVGElement } from './dom/svg'
 export { TaroText } from './dom/text'
-export { setInnerHTML } from './dom-external/inner-html/html'
 export { MutationObserver } from './dom-external/mutation-observer'
 // others
 export { env }

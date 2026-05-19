@@ -76,7 +76,7 @@ interface SlimProps {
 /** 联合类型不能用omit（比如picker） */
 type DistributiveOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never
 
-export type RemoveReactAttribute = 'children' | 'className' | 'style' | 'key' | 'ref' | 'dangerouslySetInnerHTML'
+export type RemoveReactAttribute = 'children' | 'className' | 'style' | 'key' | 'ref'
 
 export type TransformReact2SolidType<P extends StandardProps = Record<string, never>> = DistributiveOmit<P, RemoveReactAttribute> & SlimProps & JSX.DirectiveAttributes & JSX.CustomAttributes<TaroElement>
 

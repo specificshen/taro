@@ -6,9 +6,7 @@ import type { Compiler, CompilerTypes, CompilerWebpackTypes } from '../compiler'
 import type { OutputExt } from './project'
 
 interface Runtime {
-  enableInnerHTML?: boolean
   enableSizeAPIs?: boolean
-  enableAdjacentHTML?: boolean
   enableTemplateContent?: boolean
   enableCloneNode?: boolean
   enableContains?: boolean

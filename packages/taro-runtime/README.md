@@ -41,7 +41,6 @@ Taro 运行时。在小程序端连接框架（DSL）渲染机制到小程序渲
 
 Taro 配置：
 
-* `html`: [渲染 HTML](https://taro-docs.jd.com/taro/next/docs/html.html)
 * `debug`: 开启之后会打印渲染时间
 * `prerender`: 暴露给 `@tarojs/cli` 的内部参数
 

@@ -21,13 +21,6 @@ export interface StandardProps<T = any, TouchEvent extends BaseTouchEvent<any> =
   /** 引用 */
   ref?: LegacyRef<T>
   /**
-   * 渲染 HTML
-   * @see /docs/html
-   */
-  dangerouslySetInnerHTML?: {
-    __html: string
-  }
-  /**
    * 是否开启编译模式 或者 是否是编译模式的子渲染函数
    * @supported weapp, harmony
    */
