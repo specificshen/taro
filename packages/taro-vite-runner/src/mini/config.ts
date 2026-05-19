@@ -1,6 +1,5 @@
 import path from 'node:path'
 
-import { babel } from '@rollup/plugin-babel'
 import {
   defaultMainFields,
   fs,
@@ -21,11 +20,12 @@ import {
   getPostcssPlugins,
   stripMultiPlatformExt,
 } from '../utils'
+import { createBabelTransformPlugin } from '../utils/babel'
 import { DEFAULT_TERSER_OPTIONS, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME } from '../utils/constants'
 import { logger } from '../utils/logger'
 
 import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
-import type { GetManualChunk, InputPluginOption } from 'rollup'
+import type { GetManualChunk } from 'rollup'
 import type { PluginOption } from 'vite'
 
 type RolldownInjectOptions = Record<string, string | [string, string]>
@@ -276,12 +276,12 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
               manualChunks: getManualChunks(),
             },
             plugins: [
-              babel(
+              createBabelTransformPlugin(
                 getBabelOption(taroConfig, {
                   defaultExclude: [],
                   defaultInclude: [sourceDir, /(?<=node_modules[\\/]).*taro/],
                 }),
-              ) as InputPluginOption,
+              ),
             ],
           },
           commonjsOptions: {

@@ -123,7 +123,7 @@ export interface IH5Config <T extends CompilerTypes = CompilerWebpackTypes> {
   compile?: {
     exclude?: any[]
     include?: any[]
-    /** 对应 @rollup/plugin-babel 插件的 filter 配置。只在 vite 编译模式下有效 */
+    /** 对应 Babel transform 插件的 filter 配置。只在 vite 编译模式下有效 */
     filter?: (filename: string) => boolean
   }
   /** 生成的代码是否要兼容旧版浏览器，值为 true 时，会去读取 package.json 的 browserslist 字段。只在 vite 编译模式下有效 */

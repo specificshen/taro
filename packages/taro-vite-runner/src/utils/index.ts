@@ -6,7 +6,6 @@ import { backSlashRegEx, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME, needsEscapeRegEx, quo
 import { createFilterWithCompileOptions } from './createFilter'
 import { logger } from './logger'
 
-import type { RollupBabelInputPluginOptions } from '@rollup/plugin-babel'
 import type { IPostcssOption } from '@tarojs/taro/types/compile'
 import type { TRollupResolveMethod } from '@tarojs/taro/types/compile/config/plugin'
 import type {
@@ -20,6 +19,7 @@ import type {
 } from '@tarojs/taro/types/compile/viteCompilerContext'
 import type { CSSModulesOptions } from 'vite'
 import type { Target } from 'vite-plugin-static-copy'
+import type { TaroBabelInputPluginOptions } from './babel'
 
 export function convertCopyOptions(taroConfig: ViteMiniBuildConfig | ViteH5BuildConfig | ViteHarmonyBuildConfig) {
   const copy = taroConfig.copy
@@ -203,14 +203,14 @@ export function getCSSModulesOptions(
 export function getBabelOption(
   taroConfig: ViteMiniBuildConfig | ViteH5BuildConfig | ViteHarmonyBuildConfig,
   filterConfig: {
-    babelOption?: Partial<RollupBabelInputPluginOptions>
+    babelOption?: Partial<TaroBabelInputPluginOptions>
     defaultInclude?: (string | RegExp)[]
     defaultExclude?: (string | RegExp)[]
   } = {},
-): RollupBabelInputPluginOptions {
+): TaroBabelInputPluginOptions {
   const { compile = {} } = taroConfig
   const { defaultExclude = [], defaultInclude = [], babelOption } = filterConfig
-  const opts: RollupBabelInputPluginOptions = {
+  const opts: TaroBabelInputPluginOptions = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs', '.mts'],
     babelHelpers: 'runtime',
     skipPreflightCheck: true,

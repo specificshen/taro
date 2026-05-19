@@ -24,8 +24,6 @@
   "dependencies": {
     "@ampproject/remapping": "^2.3.0",
     "@babel/core": "^7.24.4",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/pluginutils": "^5.1.0",
     "@tarojs/helper": "workspace:*",
     "@tarojs/parse-css-to-stylesheet": "^0.0.69",
     "@tarojs/runner-utils": "workspace:*",
