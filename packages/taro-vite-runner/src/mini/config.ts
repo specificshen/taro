@@ -314,9 +314,6 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             'scheduler',
           ],
         },
-        esbuild: {
-          jsxDev: false,
-        },
         css: {
           postcss: {
             plugins: getPostcssPlugins(appPath, __postcssOption, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME),
