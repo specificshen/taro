@@ -4,5 +4,5 @@
     "esModuleInterop": true,
     "module": "ESNext"
   },
-  "include": ["./src", "./rollup.config.ts"]
+  "include": ["./src"]
 }
