@@ -1,10 +1,15 @@
-import { defaultMainFields, fs, resolveSync } from '@tarojs/helper'
+import fs from 'node:fs'
+import path from 'node:path'
+
+import { defaultMainFields, resolveSync } from '@tarojs/helper'
 
 import { getLoaderMeta } from './loader-meta'
 
 import type { IPluginContext } from '@tarojs/service'
 import type { PluginOption } from 'vite'
 import type { Frameworks } from './index'
+
+const JSX_DEV_RUNTIME_SHIM_ID = '\0taro-react-jsx-dev-runtime-shim'
 
 export function miniVitePlugin(ctx: IPluginContext, framework: Frameworks): PluginOption {
   return [injectLoaderMeta(ctx, framework), aliasPlugin(ctx)]
@@ -25,7 +30,39 @@ function injectLoaderMeta(ctx: IPluginContext, framework: Frameworks): PluginOpt
   }
 }
 
+function resolvePackageDir(
+  id: string,
+  resolveOptions: { basedir: string; mainFields: string[] },
+  extraBasedirs: string[] = [],
+): string {
+  for (const basedir of [resolveOptions.basedir, ...extraBasedirs]) {
+    try {
+      return path.dirname(require.resolve(`${id}/package.json`, { paths: [basedir] }))
+    } catch (_error) {
+      // fallback to @tarojs/helper resolver below
+    }
+
+    const pkgPath = resolveSync(`${id}/package.json`, { ...resolveOptions, basedir })
+    if (pkgPath) {
+      return path.dirname(pkgPath)
+    }
+  }
+  throw new Error(`Cannot resolve package: ${id}`)
+}
+
+function resolvePackageFile(packageDir: string, candidates: string[]): string {
+  for (const candidate of candidates) {
+    const filePath = path.join(packageDir, candidate)
+    if (fs.existsSync(filePath)) {
+      return filePath
+    }
+  }
+  throw new Error(`Cannot resolve package file from: ${packageDir}`)
+}
+
 function aliasPlugin(ctx: IPluginContext): PluginOption {
+  let jsxDevRuntimeShim = ''
+
   return {
     name: 'taro-react:alias',
     config(config) {
@@ -41,27 +78,53 @@ function aliasPlugin(ctx: IPluginContext): PluginOption {
       }
       const isProd = config.mode === 'production'
       if (!isProd && ctx.initialConfig.mini?.debugReact !== true) {
+        const taroReactDir = resolvePackageDir('@tarojs/react', resolveOptions)
+        const reactDir = resolvePackageDir('react', resolveOptions)
+        const reactDomDir = resolvePackageDir('react-dom', resolveOptions)
+        const reconcilerDir = resolvePackageDir('react-reconciler', resolveOptions, [taroReactDir])
+        const schedulerDir = resolvePackageDir('scheduler', resolveOptions, [taroReactDir, reactDomDir])
+
         // 开发模式下默认使用 production 版本的 react 减小体积。debugReact 时保留 dev 版本。
         alias.push({
-          find: /react-reconciler$/,
-          replacement: 'react-reconciler/cjs/react-reconciler.production.min.js',
+          find: /^react-reconciler$/,
+          replacement: resolvePackageFile(reconcilerDir, [
+            'cjs/react-reconciler.production.min.js',
+            'cjs/react-reconciler.production.js',
+          ]),
         })
-        alias.push({ find: /^react$/, replacement: 'react/cjs/react.production.min.js' })
-        alias.push({ find: /scheduler$/, replacement: 'scheduler/cjs/scheduler.production.min.js' })
-        alias.push({ find: /react\/jsx-runtime$/, replacement: 'react/cjs/react-jsx-runtime.production.min.js' })
-
-        // 在 React 18+ 中，package.json#exports 未暴露 ./cjs/ 路径，需要在编译期补齐。
-        const reactPkgPath = resolveSync('react/package.json', resolveOptions)
-        if (reactPkgPath) {
-          const reactPkg = require('react/package.json')
-          const reactVersion = reactPkg.version || ''
-          if (/^[~^]?(18|19)/.test(reactVersion) && reactPkg.exports) {
-            reactPkg.exports = Object.assign(reactPkg.exports, {
-              './cjs/': './cjs/',
-            })
-            fs.writeJsonSync(reactPkgPath, reactPkg, { spaces: 2 })
-          }
-        }
+        alias.push({
+          find: /^react$/,
+          replacement: resolvePackageFile(reactDir, ['cjs/react.production.min.js', 'cjs/react.production.js']),
+        })
+        alias.push({
+          find: /^scheduler$/,
+          replacement: resolvePackageFile(schedulerDir, [
+            'cjs/scheduler.production.min.js',
+            'cjs/scheduler.production.js',
+          ]),
+        })
+        alias.push({
+          find: /^react\/jsx-runtime$/,
+          replacement: resolvePackageFile(reactDir, [
+            'cjs/react-jsx-runtime.production.min.js',
+            'cjs/react-jsx-runtime.production.js',
+          ]),
+        })
+        const jsxRuntimeFile = resolvePackageFile(reactDir, [
+          'cjs/react-jsx-runtime.production.min.js',
+          'cjs/react-jsx-runtime.production.js',
+        ])
+        jsxDevRuntimeShim = [
+          `import { Fragment, jsx, jsxs } from ${JSON.stringify(jsxRuntimeFile)}`,
+          'export { Fragment }',
+          'export function jsxDEV(type, props, key, isStaticChildren) {',
+          '  return isStaticChildren ? jsxs(type, props, key) : jsx(type, props, key)',
+          '}',
+        ].join('\n')
+        alias.push({
+          find: /^react\/jsx-dev-runtime$/,
+          replacement: JSX_DEV_RUNTIME_SHIM_ID,
+        })
       }
 
       return {
@@ -69,6 +132,12 @@ function aliasPlugin(ctx: IPluginContext): PluginOption {
           alias,
         },
       }
+    },
+    resolveId(id) {
+      if (id === JSX_DEV_RUNTIME_SHIM_ID) return id
+    },
+    load(id) {
+      if (id === JSX_DEV_RUNTIME_SHIM_ID) return jsxDevRuntimeShim
     },
   }
 }
