@@ -18,10 +18,11 @@
   "scripts": {
     "prod": "pnpm run build",
     "prebuild": "pnpm run clean",
-    "build": "pnpm run rollup --environment NODE_ENV:production",
+    "build": "pnpm run build:types && pnpm run rolldown --environment NODE_ENV:production",
+    "build:types": "tsc --emitDeclarationOnly --declaration && node ./scripts/copy-entry-types.mjs",
     "clean": "rimraf ./dist",
-    "dev": "pnpm run rollup --environment NODE_ENV:development -w",
-    "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "dev": "concurrently \"pnpm run build:types -- --watch\" \"pnpm run rolldown --environment NODE_ENV:development -w\"",
+    "rolldown": "rolldown --config rolldown.config.mjs",
     "test": "vitest run",
     "test:ci": "vitest run --coverage"
   },
@@ -37,9 +38,6 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^12.1.2",
-    "lodash": "^4.17.21",
-    "rollup": "^4.37.0",
-    "rollup-plugin-dts": "^6.2.1"
+    "lodash": "^4.17.21"
   }
 }

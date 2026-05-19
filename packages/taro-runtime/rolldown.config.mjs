@@ -1,0 +1,43 @@
+import { defineConfig } from 'rolldown'
+
+const external = ['@tarojs/shared', 'tslib']
+
+const baseOutput = {
+  sourcemap: true,
+  exports: 'named',
+}
+
+export default defineConfig([
+  {
+    input: 'src/index.ts',
+    external,
+    output: {
+      ...baseOutput,
+      dir: 'dist',
+      format: 'esm',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      entryFileNames: '[name].js',
+    },
+  },
+  {
+    input: 'src/index.ts',
+    external,
+    output: {
+      ...baseOutput,
+      file: 'dist/index.cjs.js',
+      format: 'cjs',
+      codeSplitting: false,
+    },
+  },
+  {
+    input: 'src/index.ts',
+    external,
+    output: {
+      ...baseOutput,
+      file: 'dist/runtime.esm.js',
+      format: 'es',
+      codeSplitting: false,
+    },
+  },
+])
