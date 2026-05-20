@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/binding",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-binding",
+  "version": "0.1.0",
   "description": "Node binding for taro",
   "main": "binding.js",
   "typings": "binding.d.ts",
@@ -35,7 +35,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NervJS/taro.git"
+    "url": "git+https://github.com/specificshen/taro.git"
   },
   "keywords": [
     "taro"
@@ -54,10 +54,11 @@
   },
   "homepage": "https://github.com/NervJS/taro#readme",
   "optionalDependencies": {
-    "@tarojs/binding-darwin-arm64": "workspace:*",
-    "@tarojs/binding-darwin-x64": "workspace:*",
-    "@tarojs/binding-linux-arm64-gnu": "workspace:*",
-    "@tarojs/binding-linux-x64-gnu": "workspace:*",
-    "@tarojs/binding-win32-x64-msvc": "workspace:*"
+    "@spcsn/taro-binding-darwin-arm64": "workspace:*",
+    "@spcsn/taro-binding-darwin-x64": "workspace:*",
+    "@spcsn/taro-binding-linux-arm64-gnu": "workspace:*",
+    "@spcsn/taro-binding-linux-x64-gnu": "workspace:*",
+    "@spcsn/taro-binding-linux-x64-musl": "workspace:*",
+    "@spcsn/taro-binding-win32-x64-msvc": "workspace:*"
   }
 }

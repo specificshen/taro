@@ -7,7 +7,7 @@ import {
   FrameworkType,
   NpmType,
   PeriodType,
-} from '@tarojs/binding'
+} from '@spcsn/taro-binding'
 import {
   babelKit,
   chalk,

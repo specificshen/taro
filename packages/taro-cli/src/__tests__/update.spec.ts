@@ -80,7 +80,7 @@ function updatePkg(pkgPath: string, version: string) {
       '@spcsn/taro-plugin-framework-react': version,
       '@spcsn/taro-plugin-generator': version,
       '@spcsn/taro-vite-runner': version,
-      '@tarojs/binding': version,
+      '@spcsn/taro-binding': version,
     },
     devDependencies: {
       ...packageMap.devDependencies,

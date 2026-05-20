@@ -98,7 +98,7 @@ export default (ctx: IPluginContext) => {
         spinner.stop()
 
         const oldVersion = packageMap.dependencies['@spcsn/taro']
-        // 更新 @tarojs/* 版本和 NervJS 版本
+        // 更新 @spcsn/* 底座版本
         Object.keys(packageMap.dependencies || {}).forEach((key) => {
           if (UPDATE_PACKAGE_LIST.indexOf(key) !== -1) {
             packageMap.dependencies[key] = version

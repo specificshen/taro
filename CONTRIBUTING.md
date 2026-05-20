@@ -174,7 +174,7 @@ Rust 代码存放在 `crates` 文件夹下，使用 Cargo workspace 管理，目
 然后可以执行单元测试：
 
 ```bash
-$ pnpm --filter @tarojs/binding run test
+$ pnpm --filter @spcsn/taro-binding run test
 ```
 
 或结合调用方执行集成测试。

@@ -1,5 +1,5 @@
 {
-  "name": "postcss-plugin-constparse",
+  "name": "@spcsn/postcss-plugin-constparse",
   "version": "0.1.0",
   "description": "parse constants defined in config",
   "author": "O2Team",

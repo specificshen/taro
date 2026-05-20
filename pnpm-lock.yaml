@@ -203,19 +203,22 @@ importers:
         specifier: 5.3.1
         version: 5.3.1
     optionalDependencies:
-      '@tarojs/binding-darwin-arm64':
+      '@spcsn/taro-binding-darwin-arm64':
         specifier: workspace:*
         version: link:../../npm/darwin-arm64
-      '@tarojs/binding-darwin-x64':
+      '@spcsn/taro-binding-darwin-x64':
         specifier: workspace:*
         version: link:../../npm/darwin-x64
-      '@tarojs/binding-linux-arm64-gnu':
+      '@spcsn/taro-binding-linux-arm64-gnu':
         specifier: workspace:*
         version: link:../../npm/linux-arm64-gnu
-      '@tarojs/binding-linux-x64-gnu':
+      '@spcsn/taro-binding-linux-x64-gnu':
         specifier: workspace:*
         version: link:../../npm/linux-x64-gnu
-      '@tarojs/binding-win32-x64-msvc':
+      '@spcsn/taro-binding-linux-x64-musl':
+        specifier: workspace:*
+        version: link:../../npm/linux-x64-musl
+      '@spcsn/taro-binding-win32-x64-msvc':
         specifier: workspace:*
         version: link:../../npm/win32-x64-msvc
 
@@ -226,6 +229,8 @@ importers:
   npm/linux-arm64-gnu: {}
 
   npm/linux-x64-gnu: {}
+
+  npm/linux-x64-musl: {}
 
   npm/win32-x64-msvc: {}
 
@@ -365,6 +370,9 @@ importers:
       '@spcsn/babel-preset-taro':
         specifier: workspace:*
         version: link:../babel-preset-taro
+      '@spcsn/taro-binding':
+        specifier: workspace:*
+        version: link:../../crates/native_binding
       '@spcsn/taro-helper':
         specifier: workspace:*
         version: link:../taro-helper
@@ -386,9 +394,6 @@ importers:
       '@spcsn/taro-vite-runner':
         specifier: workspace:*
         version: link:../taro-vite-runner
-      '@tarojs/binding':
-        specifier: workspace:*
-        version: link:../../crates/native_binding
       '@tarojs/plugin-doctor':
         specifier: ^0.0.13
         version: 0.0.13
@@ -814,6 +819,18 @@ importers:
       '@babel/core':
         specifier: ^7.24.4
         version: 7.24.4
+      '@spcsn/babel-plugin-transform-taroapi':
+        specifier: workspace:*
+        version: link:../babel-plugin-transform-taroapi
+      '@spcsn/postcss-html-transform':
+        specifier: workspace:*
+        version: link:../postcss-html-transform
+      '@spcsn/postcss-plugin-constparse':
+        specifier: workspace:*
+        version: link:../postcss-plugin-constparse
+      '@spcsn/postcss-pxtransform':
+        specifier: workspace:*
+        version: link:../postcss-pxtransform
       '@spcsn/taro-helper':
         specifier: workspace:*
         version: link:../taro-helper
@@ -841,9 +858,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.5.0(postcss@8.5.15)
-      babel-plugin-transform-taroapi:
-        specifier: workspace:*
-        version: link:../babel-plugin-transform-taroapi
       connect-history-api-fallback:
         specifier: ^2.0.0
         version: 2.0.0
@@ -874,9 +888,6 @@ importers:
       postcss-css-variables:
         specifier: ^0.19.0
         version: 0.19.0(postcss@8.5.15)
-      postcss-html-transform:
-        specifier: workspace:*
-        version: link:../postcss-html-transform
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.1(postcss@8.5.15)
@@ -886,12 +897,6 @@ importers:
       postcss-modules:
         specifier: ^6.0.0
         version: 6.0.1(postcss@8.5.15)
-      postcss-plugin-constparse:
-        specifier: workspace:*
-        version: link:../postcss-plugin-constparse
-      postcss-pxtransform:
-        specifier: workspace:*
-        version: link:../postcss-pxtransform
       regenerator-runtime:
         specifier: '0.11'
         version: 0.11.1

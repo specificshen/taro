@@ -1,3 +1,3 @@
-# `@tarojs/taro-darwin-arm64`
+# `@spcsn/taro-binding-darwin-arm64`
 
-This is the **aarch64-apple-darwin** binary for `@spcsn/taro`
+This is the **aarch64-apple-darwin** binary for `@spcsn/taro-binding`

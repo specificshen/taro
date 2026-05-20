@@ -69,9 +69,9 @@ export const getDefaultPostcssConfig = function ({
 
   return [
     ['autoprefixer', autoprefixer, require('autoprefixer')],
-    ['postcss-pxtransform', pxtransform, require('postcss-pxtransform')],
-    ['postcss-html-transform', htmltransform, require('postcss-html-transform')],
-    ['postcss-plugin-constparse', defaultConstparseOption, require('postcss-plugin-constparse')],
+    ['postcss-pxtransform', pxtransform, require('@spcsn/postcss-pxtransform')],
+    ['postcss-html-transform', htmltransform, require('@spcsn/postcss-html-transform')],
+    ['postcss-plugin-constparse', defaultConstparseOption, require('@spcsn/postcss-plugin-constparse')],
     ...Object.entries(options),
   ]
 }

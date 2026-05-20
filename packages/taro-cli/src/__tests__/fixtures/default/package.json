@@ -16,7 +16,7 @@
     "@spcsn/taro-plugin-framework-react": "3.0.0-beta.6",
     "@spcsn/taro-plugin-generator": "3.0.0-beta.6",
     "@spcsn/taro-vite-runner": "3.0.0-beta.6",
-    "@tarojs/binding": "3.0.0-beta.6"
+    "@spcsn/taro-binding": "0.1.0"
   },
   "devDependencies": {
     "babel-preset-taro": "2.0.0",

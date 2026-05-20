@@ -51,7 +51,7 @@
     "@spcsn/taro-service": "workspace:*",
     "@spcsn/taro-shared": "workspace:*",
     "@spcsn/taro-vite-runner": "workspace:*",
-    "@tarojs/binding": "workspace:*",
+    "@spcsn/taro-binding": "workspace:*",
     "@tarojs/plugin-doctor": "^0.0.13",
     "adm-zip": "^0.5.12",
     "axios": "^1.6.8",

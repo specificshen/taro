@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-transform-taroapi",
+  "name": "@spcsn/babel-plugin-transform-taroapi",
   "version": "0.1.0",
   "author": "O2Team",
   "license": "MIT",

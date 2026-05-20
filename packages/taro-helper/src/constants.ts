@@ -132,11 +132,11 @@ export const FILE_PROCESSOR_MAP = {
 }
 
 export const UPDATE_PACKAGE_LIST = [
-  'babel-plugin-transform-taroapi',
-  'babel-preset-taro',
-  'postcss-html-transform',
-  'postcss-plugin-constparse',
-  'postcss-pxtransform',
+  '@spcsn/babel-plugin-transform-taroapi',
+  '@spcsn/babel-preset-taro',
+  '@spcsn/postcss-html-transform',
+  '@spcsn/postcss-plugin-constparse',
+  '@spcsn/postcss-pxtransform',
   '@spcsn/taro-shared',
   '@spcsn/taro',
   '@spcsn/taro-cli',

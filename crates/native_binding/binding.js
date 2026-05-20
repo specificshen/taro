@@ -35,7 +35,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.android-arm64.node')
           } else {
-            nativeBinding = require('@tarojs/binding-android-arm64')
+            nativeBinding = require('@spcsn/taro-binding-android-arm64')
           }
         } catch (e) {
           loadError = e
@@ -47,7 +47,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.android-arm-eabi.node')
           } else {
-            nativeBinding = require('@tarojs/binding-android-arm-eabi')
+            nativeBinding = require('@spcsn/taro-binding-android-arm-eabi')
           }
         } catch (e) {
           loadError = e
@@ -67,7 +67,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.win32-x64-msvc.node')
           } else {
-            nativeBinding = require('@tarojs/binding-win32-x64-msvc')
+            nativeBinding = require('@spcsn/taro-binding-win32-x64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -81,7 +81,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.win32-ia32-msvc.node')
           } else {
-            nativeBinding = require('@tarojs/binding-win32-ia32-msvc')
+            nativeBinding = require('@spcsn/taro-binding-win32-ia32-msvc')
           }
         } catch (e) {
           loadError = e
@@ -95,7 +95,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.win32-arm64-msvc.node')
           } else {
-            nativeBinding = require('@tarojs/binding-win32-arm64-msvc')
+            nativeBinding = require('@spcsn/taro-binding-win32-arm64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -111,7 +111,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require('./taro.darwin-universal.node')
       } else {
-        nativeBinding = require('@tarojs/binding-darwin-universal')
+        nativeBinding = require('@spcsn/taro-binding-darwin-universal')
       }
       break
     } catch {}
@@ -122,7 +122,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.darwin-x64.node')
           } else {
-            nativeBinding = require('@tarojs/binding-darwin-x64')
+            nativeBinding = require('@spcsn/taro-binding-darwin-x64')
           }
         } catch (e) {
           loadError = e
@@ -136,7 +136,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.darwin-arm64.node')
           } else {
-            nativeBinding = require('@tarojs/binding-darwin-arm64')
+            nativeBinding = require('@spcsn/taro-binding-darwin-arm64')
           }
         } catch (e) {
           loadError = e
@@ -155,7 +155,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require('./taro.freebsd-x64.node')
       } else {
-        nativeBinding = require('@tarojs/binding-freebsd-x64')
+        nativeBinding = require('@spcsn/taro-binding-freebsd-x64')
       }
     } catch (e) {
       loadError = e
@@ -172,7 +172,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./taro.linux-x64-musl.node')
             } else {
-              nativeBinding = require('@tarojs/binding-linux-x64-musl')
+              nativeBinding = require('@spcsn/taro-binding-linux-x64-musl')
             }
           } catch (e) {
             loadError = e
@@ -185,7 +185,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./taro.linux-x64-gnu.node')
             } else {
-              nativeBinding = require('@tarojs/binding-linux-x64-gnu')
+              nativeBinding = require('@spcsn/taro-binding-linux-x64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -201,7 +201,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./taro.linux-arm64-musl.node')
             } else {
-              nativeBinding = require('@tarojs/binding-linux-arm64-musl')
+              nativeBinding = require('@spcsn/taro-binding-linux-arm64-musl')
             }
           } catch (e) {
             loadError = e
@@ -214,7 +214,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./taro.linux-arm64-gnu.node')
             } else {
-              nativeBinding = require('@tarojs/binding-linux-arm64-gnu')
+              nativeBinding = require('@spcsn/taro-binding-linux-arm64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -229,7 +229,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./taro.linux-arm-gnueabihf.node')
           } else {
-            nativeBinding = require('@tarojs/binding-linux-arm-gnueabihf')
+            nativeBinding = require('@spcsn/taro-binding-linux-arm-gnueabihf')
           }
         } catch (e) {
           loadError = e

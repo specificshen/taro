@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { CompilerType, createProject, CSSType, FrameworkType, NpmType, PeriodType } from '@tarojs/binding'
+import { CompilerType, createProject, CSSType, FrameworkType, NpmType, PeriodType } from '@spcsn/taro-binding'
 import {
   chalk,
   DEFAULT_TEMPLATE_SRC,

@@ -1,5 +1,5 @@
 {
-  "name": "postcss-html-transform",
+  "name": "@spcsn/postcss-html-transform",
   "version": "0.1.0",
   "description": "transform html tag name selector",
   "author": "O2Team",
