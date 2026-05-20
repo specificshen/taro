@@ -14,14 +14,14 @@ const defaultConstparseOption = {
   platform,
 };
 
-const taroModuleRgx = [/@tarojs[/\\_]components/, /\btaro-components\b/];
+const taroModuleRgx = [/@spcsn[/\\_]taro-components/, /\btaro-components\b/];
 
 const defaultEsnextModuleRgx = [
-  /@tarojs[/\\_]components/,
+  /@spcsn[/\\_]taro-components/,
   /\btaro-components\b/,
-  /@tarojs[/\\_]taro-h5/,
+  /@spcsn[/\\_]taro-h5/,
   /\btaro-h5\b/,
-  /@tarojs[/\\_]router/,
+  /@spcsn[/\\_]taro-router/,
   /\btaro-router\b/,
 ];
 
@@ -64,7 +64,6 @@ export const getDefaultPostcssConfig = function ({
     pxtransform.config!.deviceRatio = deviceRatio;
   }
 
-  // 由于 vite 缺少 postcss 文件的 filter 能力，所以只能针对 postcss-pxtransform 这个插件，在内部进行 filter，后面跟进 vite 的特性可以进行修改
   pxtransform.config!.exclude = getPostcssExclude(esnextModules);
 
   return [

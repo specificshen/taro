@@ -11,6 +11,9 @@ export default defineConfig([
   {
     input: 'src/index.ts',
     external,
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       dir: 'dist',
@@ -23,6 +26,9 @@ export default defineConfig([
   {
     input: 'src/index.ts',
     external,
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       file: 'dist/index.cjs.js',
@@ -33,6 +39,9 @@ export default defineConfig([
   {
     input: 'src/index.ts',
     external,
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       file: 'dist/runtime.esm.js',

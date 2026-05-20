@@ -6,6 +6,9 @@ const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsW
 export default defineConfig({
   input: 'src/index.ts',
   external,
+  transform: {
+    target: 'es2015',
+  },
   output: {
     sourcemap: true,
     format: 'es',

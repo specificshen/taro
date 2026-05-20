@@ -33,11 +33,9 @@ export default function (
       if (isVirtualModule(source)) return null;
       if (REG_NODE_MODULES.test(source)) return null;
 
-      // example: 'js|jsx|ts|tsx|vue'
       const allowedExts = Array.from(new Set(SCRIPT_EXT.concat(taroConfig.frameworkExts || [])))
         .map((item: string) => item.replace(/^\./, ''))
         .join('|');
-      // example: /\.(weapp|mini)\.(js|jsx|ts|tsx|vue)/
       const multiPlatformReg = new RegExp(
         `\\.(${process.env.TARO_ENV}|${process.env.TARO_PLATFORM})\\.(${allowedExts})`,
       );

@@ -1,6 +1,6 @@
 {
   "name": "@spcsn/taro-vite-runner",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -29,7 +29,6 @@
     "@spcsn/taro-runner-utils": "workspace:*",
     "@spcsn/taro-runtime": "workspace:*",
     "@spcsn/taro-shared": "workspace:*",
-    "@tarojs/parse-css-to-stylesheet": "^0.0.69",
     "@vitejs/plugin-legacy": "^8.0.2",
     "acorn-walk": "^8.3.2",
     "autoprefixer": "^10.4.19",

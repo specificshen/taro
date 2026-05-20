@@ -49,9 +49,7 @@ describe('config validator of doctor', () => {
 
     expect(messages.length).toEqual(3);
     msgs = messages.map((line) => line.content);
-    expect(
-      msgs.includes('framework 的值 "" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配'),
-    ).toBeTruthy();
+    expect(msgs.includes('framework 的值 "" 与任何指定选项 ["react"] 都不匹配')).toBeTruthy();
   });
 
   it('date', async () => {
@@ -86,34 +84,11 @@ describe('config validator of doctor', () => {
 
     res = await validator(
       getConfig({
-        framework: 'vue',
-      }),
-    );
-    expect(res.messages.length).toEqual(3);
-
-    res = await validator(
-      getConfig({
-        framework: 'nerv',
-      }),
-    );
-    expect(res.messages.length).toEqual(3);
-
-    res = await validator(
-      getConfig({
-        framework: 'vue3',
-      }),
-    );
-    expect(res.messages.length).toEqual(3);
-
-    res = await validator(
-      getConfig({
         framework: 'other',
       }),
     );
     expect(res.messages.length).toEqual(3);
-    expect(res.messages[2].content).toEqual(
-      'framework 的值 "other" 与任何指定选项 ["nerv","react","preact","solid","vue","vue3","none"] 都不匹配',
-    );
+    expect(res.messages[2].content).toEqual('framework 的值 "other" 与任何指定选项 ["react"] 都不匹配');
   });
 
   it('designWidth', async () => {

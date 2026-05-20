@@ -97,16 +97,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
               }
             } else {
               const nameOfCallee = callee.name;
-              if (
-                // 兼容 react17 new jsx transtrom
-                !/_?jsxs?/.test(nameOfCallee) &&
-                // 兼容 Vue 3.0 渲染函数及 JSX
-                !nameOfCallee?.includes('createVNode') &&
-                !nameOfCallee?.includes('createBlock') &&
-                !nameOfCallee?.includes('createElementVNode') &&
-                !nameOfCallee?.includes('createElementBlock') &&
-                !nameOfCallee?.includes('resolveComponent') // 收集使用解析函数的组件名称
-              ) {
+              if (!/_?jsxs?/.test(nameOfCallee) && !nameOfCallee?.includes('createElement')) {
                 return;
               }
             }

@@ -248,7 +248,6 @@ impl VisitMut for PreVisitor {
   }
 
   fn visit_mut_jsx_element(&mut self, el: &mut JSXElement) {
-    // 处理 @tarojs/components 的 List,ListItem 组件
     transform_taro_components(el, &self.import_specifiers, &self.import_aliases);
     el.visit_mut_children_with(self);
   }
@@ -564,7 +563,7 @@ impl TransformVisitor {
                     return true;
                   }
 
-                  // 小程序组件标准属性 -> 取 @tarojs/shared 传递过来的属性值；非标准属性 -> 取属性名
+                  // 小程序组件标准属性取共享属性值，非标准属性取属性名
                   let value: &str = attrs_map
                     .get(&miniapp_attr_name)
                     .map(|res| {

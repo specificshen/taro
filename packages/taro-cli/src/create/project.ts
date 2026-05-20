@@ -275,18 +275,6 @@ export default class Project extends Creator {
         name: 'React',
         value: FrameworkType.React,
       },
-      {
-        name: 'PReact',
-        value: FrameworkType.Preact,
-      },
-      {
-        name: 'Vue3',
-        value: FrameworkType.Vue3,
-      },
-      {
-        name: 'Solid',
-        value: FrameworkType.Solid,
-      },
     ];
 
     if (typeof conf.framework !== 'string') {

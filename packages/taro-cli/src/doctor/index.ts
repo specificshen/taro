@@ -1,4 +1,4 @@
-import { validateConfig, validateEnv, validateEslint, validatePackage, validateRecommend } from '@tarojs/plugin-doctor';
+import { validateConfig, validateEnv, validateEslint, validatePackage, validateRecommend } from './validators';
 
 export default {
   validators: [

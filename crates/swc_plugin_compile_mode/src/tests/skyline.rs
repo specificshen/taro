@@ -6,7 +6,7 @@ test!(
   |_| tr(),
   should_support_list,
   r#"
-    import { List as TaroList, ListItem as TaroListItem } from '@tarojs/components'
+    import { List as TaroList, ListItem as TaroListItem } from '@spcsn/taro-components'
     const list = [1,2,3]
     function Index () {
         return (

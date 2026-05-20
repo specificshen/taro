@@ -1,6 +1,6 @@
 {
   "name": "@spcsn/taro-cli",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "cli tool for taro",
   "author": "O2Team",
   "license": "MIT",
@@ -52,7 +52,6 @@
     "@spcsn/taro-shared": "workspace:*",
     "@spcsn/taro-vite-runner": "workspace:*",
     "@spcsn/taro-binding": "workspace:*",
-    "@tarojs/plugin-doctor": "^0.0.13",
     "adm-zip": "^0.5.12",
     "axios": "^1.6.8",
     "cli-highlight": "^2.1.11",

@@ -683,8 +683,7 @@ pub fn transform_taro_components(
         if ident.sym.as_str() == import {
           // 检查导出模块来源
           if let Some(src) = import_specifiers.get(import) {
-            // 如果是 @tarojs/components 导出的 List 组件，需要特殊处理
-            if src == "@tarojs/components" {
+            if src == "@spcsn/taro-components" {
               transform_list_component(el);
             }
           }
@@ -695,8 +694,7 @@ pub fn transform_taro_components(
         if ident.sym.as_str() == import {
           // 检查导出模块来源
           if let Some(src) = import_specifiers.get(import) {
-            // 如果是 @tarojs/components 导出的 ListItem 组件，需要特殊处理
-            if src == "@tarojs/components" {
+            if src == "@spcsn/taro-components" {
               transform_list_item_component(el);
             }
           }

@@ -38,7 +38,7 @@ pub const HARMONY_IMPORTER: &str = "import {
   textModify,
   setNormalTextAttributeIntoInstance,
   getImageMode
-} from '@tarojs/components'
+} from '@spcsn/taro-components'
 import {
   NodeType,
   convertNumber2VP,
@@ -47,7 +47,7 @@ import {
   getComponentEventCallback,
   AREA_CHANGE_EVENT_NAME,
   VISIBLE_CHANGE_EVENT_NAME
-} from '@tarojs/runtime'
+} from '@spcsn/taro-runtime'
 import { 
   createLazyChildren, 
   createChildItem 
@@ -61,8 +61,8 @@ import type {
   TaroAny,
   TaroStyleType,
   TaroTextStyleType
-} from '@tarojs/runtime'
-import { isString } from '@tarojs/shared'
+} from '@spcsn/taro-runtime'
+import { isString } from '@spcsn/taro-shared'
 
 ";
 

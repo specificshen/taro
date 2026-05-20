@@ -1,4 +1,4 @@
-import { MessageKind, validateConfig } from '@tarojs/plugin-doctor';
+import { MessageKind, validateConfig } from '../../doctor/validators';
 
 import { extractCompileEntry } from '../../util/appConfig';
 import * as hooks from '../constant';

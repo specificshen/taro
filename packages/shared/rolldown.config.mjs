@@ -8,6 +8,9 @@ const baseOutput = {
 export default defineConfig([
   {
     input: 'src/index.ts',
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       dir: 'dist',
@@ -17,6 +20,9 @@ export default defineConfig([
   },
   {
     input: 'src/index.ts',
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       file: 'dist/index.cjs.js',
@@ -25,6 +31,9 @@ export default defineConfig([
   },
   {
     input: 'src/index.ts',
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       file: 'dist/shared.esm.js',
@@ -33,6 +42,9 @@ export default defineConfig([
   },
   {
     input: 'src/template.ts',
+    transform: {
+      target: 'es2015',
+    },
     output: {
       ...baseOutput,
       file: 'dist/template.js',
