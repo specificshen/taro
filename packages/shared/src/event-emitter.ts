@@ -1,13 +1,9 @@
 type EventName = string | symbol;
 type EventCallbacks = Record<EventName, Record<'next' | 'tail', unknown>>;
-const eventSplitter = ','; // Note: Harmony ACE API 8 开发板不支持使用正则 split 字符串 /\s+/
 
 export class Events {
   protected callbacks?: EventCallbacks;
-
-  static get eventSplitter() {
-    return eventSplitter;
-  }
+  static eventSplitter = ','; // Note: Harmony ACE API 8 开发板不支持使用正则 split 字符串 /\s+/
 
   constructor(opts?) {
     this.callbacks = opts?.callbacks ?? {};
@@ -21,7 +17,7 @@ export class Events {
     if (typeof eventName === 'symbol') {
       _eventName = [eventName];
     } else {
-      _eventName = eventName.split(eventSplitter);
+      _eventName = eventName.split(Events.eventSplitter);
     }
     this.callbacks ||= {};
     const calls = this.callbacks;
@@ -62,7 +58,7 @@ export class Events {
     if (typeof events === 'symbol') {
       _events = [events];
     } else {
-      _events = events ? events.split(eventSplitter) : Object.keys(calls);
+      _events = events ? events.split(Events.eventSplitter) : Object.keys(calls);
     }
     while ((event = _events.shift())) {
       let node: any = calls[event];
@@ -90,7 +86,7 @@ export class Events {
     if (typeof events === 'symbol') {
       _events = [events];
     } else {
-      _events = events.split(eventSplitter);
+      _events = events.split(Events.eventSplitter);
     }
     while ((event = _events.shift())) {
       if ((node = calls[event])) {

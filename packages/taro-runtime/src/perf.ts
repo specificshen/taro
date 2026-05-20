@@ -23,7 +23,7 @@ class Performance {
     this.recorder.delete(id);
     const time = now - prev;
     // eslint-disable-next-line no-console
-    console.log(`${id} 时长： ${time}ms 开始时间：${this.parseTime(prev)} 结束时间：${this.parseTime(now)}`);
+    console.log(`${id} 时长： ${time}ms 开始时间：${this.#parseTime(prev)} 结束时间：${this.#parseTime(now)}`);
   }
 
   public delayStop(id: string, delay = 500) {
@@ -37,7 +37,7 @@ class Performance {
     }, delay);
   }
 
-  private parseTime(time: number) {
+  #parseTime(time: number) {
     const d = new Date(time);
     return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${`${d.getMilliseconds()}`.padStart(3, '0')}`;
   }

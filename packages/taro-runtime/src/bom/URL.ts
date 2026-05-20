@@ -13,12 +13,12 @@ class TaroURL {
   }
 
   /* private property */
-  private _hash = '';
-  private _hostname = '';
-  private _pathname = '';
-  private _port = '';
-  private _protocol = '';
-  private _search: URLSearchParams;
+  #hash = '';
+  #hostname = '';
+  #pathname = '';
+  #port = '';
+  #protocol = '';
+  #search: URLSearchParams;
 
   constructor(url: string, base?: string) {
     if (!isString(url)) url = String(url);
@@ -26,21 +26,21 @@ class TaroURL {
     const parseResult = parseUrlBase(url, base);
     const { hash, hostname, pathname, port, protocol, search } = parseResult;
 
-    this._hash = hash;
-    this._hostname = hostname;
-    this._pathname = pathname || '/';
-    this._port = port;
-    this._protocol = protocol;
-    this._search = new URLSearchParams(search);
+    this.#hash = hash;
+    this.#hostname = hostname;
+    this.#pathname = pathname || '/';
+    this.#port = port;
+    this.#protocol = protocol;
+    this.#search = new URLSearchParams(search);
   }
 
   /* public property */
   get protocol() {
-    return this._protocol;
+    return this.#protocol;
   }
 
   set protocol(val: string) {
-    isString(val) && (this._protocol = val.trim());
+    isString(val) && (this.#protocol = val.trim());
   }
 
   get host() {
@@ -57,23 +57,23 @@ class TaroURL {
   }
 
   get hostname() {
-    return this._hostname;
+    return this.#hostname;
   }
 
   set hostname(val: string) {
-    val && isString(val) && (this._hostname = val.trim());
+    val && isString(val) && (this.#hostname = val.trim());
   }
 
   get port() {
-    return this._port;
+    return this.#port;
   }
 
   set port(val: string) {
-    isString(val) && (this._port = val.trim());
+    isString(val) && (this.#port = val.trim());
   }
 
   get pathname() {
-    return this._pathname;
+    return this.#pathname;
   }
 
   set pathname(val: string) {
@@ -84,32 +84,32 @@ class TaroURL {
       while (HEAD_REG.test(temp)) {
         temp = temp.replace(HEAD_REG, '');
       }
-      if (temp) this._pathname = '/' + temp;
-      else this._pathname = '/';
+      if (temp) this.#pathname = '/' + temp;
+      else this.#pathname = '/';
     }
   }
 
   get search() {
-    const val = this._search.toString();
+    const val = this.#search.toString();
     return val.length === 0 || val.startsWith('?') ? val : `?${val}`;
   }
 
   set search(val: string) {
     if (isString(val)) {
       val = val.trim();
-      this._search = new URLSearchParams(val);
+      this.#search = new URLSearchParams(val);
     }
   }
 
   get hash() {
-    return this._hash;
+    return this.#hash;
   }
 
   set hash(val: string) {
     if (isString(val)) {
       val = val.trim();
-      if (val) this._hash = val.startsWith('#') ? val : `#${val}`;
-      else this._hash = '';
+      if (val) this.#hash = val.startsWith('#') ? val : `#${val}`;
+      else this.#hash = '';
     }
   }
 
@@ -145,7 +145,7 @@ class TaroURL {
   }
 
   get searchParams() {
-    return this._search;
+    return this.#search;
   }
 
   // public method
