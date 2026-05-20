@@ -1,4 +1,3 @@
-import { chalk } from './terminal'
 import * as Util from './utils'
 
 import type TResolve from 'resolve'

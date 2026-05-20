@@ -253,6 +253,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       }
 
       const taroComponentsPath = resolveModulePath(taroConfig.taroComponentsPath, appPath)
+      const taroRuntimePath = resolveModulePath('@spcsn/taro-runtime', appPath)
 
       return {
         mode: getMode(taroConfig),
@@ -306,6 +307,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           alias: [
             // 小程序使用 regenerator-runtime@0.11
             { find: 'regenerator-runtime', replacement: require.resolve('regenerator-runtime') },
+            { find: /@spcsn\/taro-runtime$/, replacement: taroRuntimePath },
             { find: /@tarojs\/components$/, replacement: taroComponentsPath },
             { find: /@spcsn\/taro-components$/, replacement: taroComponentsPath },
             ...getAliasOption(),

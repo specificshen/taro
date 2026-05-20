@@ -10,7 +10,7 @@ export default (id = '') => {
         CallExpression(nodePath, state) {
           if (!/\.config\.(t|j)sx?$/.test(state.filename || id)) return
 
-          const { callee } = nodePath.node
+          const { callee } = nodePath.node as any
           if (!t.isIdentifier(callee)) return
           if (!['defineAppConfig', 'definePageConfig'].includes(callee.name)) return
 

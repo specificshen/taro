@@ -1,11 +1,10 @@
 <div align="center">
-  <h1>Taro · React-only Modern Fork</h1>
-  <p>本仓库是基于 Taro 演进的独立私有发行线，长期维护目标：<strong>React 19 + Vite + 微信小程序（Skyline / glass-easel 优先）</strong>。</p>
-  <p>包名暂时保留 <code>@tarojs/*</code> 以降低业务迁移成本；Vue / Solid / Nerv 等框架路径、H5 / RN / 支付宝 / 字节 / 百度 / QQ / 鸿蒙 等平台路径、Webpack runner 已不在维护范围内。详见 <code>docs/taro-react-only-modernization.md</code>。</p>
+  <h1>SPCSN Taro Mini Runtime</h1>
+  <p>本仓库是从 Taro 代码基线演进出来的 <strong>@spcsn 独立底座</strong>，长期维护目标：<strong>React 19 + Vite + 微信小程序（Skyline / glass-easel 优先）</strong>。</p>
+  <p>从 <code>0.1.0</code> 开始，本仓库不再使用上游 Taro 的 <code>4.x</code> 版本语义；所有可发布包统一走 <code>@spcsn/*</code> 私有发行线。Vue / Solid / Nerv 等框架路径、H5 / RN / 支付宝 / 字节 / 百度 / QQ / 鸿蒙 等平台路径、Webpack runner 已不在维护范围内。</p>
   <hr />
-  <p>原 Taro 项目介绍：开放式跨端跨框架解决方案，轻松构建可以运行在 小程序/Web/APP 上的应用</p>
   <a href="https://github.com/specificshen/taro">
-    <img src="https://img.shields.io/badge/private%20release-React%2019%20%2B%20WeApp-blue?style=flat-square" alt="Private Release">
+    <img src="https://img.shields.io/badge/@spcsn-React%2019%20%2B%20WeApp-blue?style=flat-square" alt="SPCSN Release">
   </a>
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License">
@@ -34,7 +33,17 @@
 
 ## 简介
 
-本仓库不再按原 Taro 的“多框架、多平台、多编译器”路线继续演进，而是作为独立私有发行线，聚焦 React 19 + Vite + 微信小程序。业务侧仍优先兼容 `@spcsn/taro-components`、`@spcsn/taro`、生命周期 hooks 与常用配置，内部实现逐步向 WeApp / Skyline 专用链路瘦身。
+本仓库不再按原 Taro 的“多框架、多平台、多编译器”路线继续演进，而是作为 `@spcsn` 独立私有发行线，聚焦 React 19 + Vite + 微信小程序。业务侧只需要理解自己直接使用的运行 API、组件包和 CLI；Vite、Babel、PostCSS、Terser、React framework 插件、WeApp 平台插件、runtime 注入等构建实现细节由底座内部包闭包承接。
+
+### 独立版本线
+
+`@spcsn` 底座从 `0.1.0` 开始发布。这个版本号不再映射上游 Taro 的 `4.x`，含义是：
+
+- `0.x`：私有底座快速迭代阶段，允许继续收敛不需要的上游跨端能力。
+- `0.1.x`：React 19 + Vite + WeApp / Skyline 这条主链路的 patch 修复。
+- 后续 `0.2.0`、`0.3.0` 用于表达底座能力边界变化，而不是跟随上游 Taro minor。
+
+不要把 `@spcsn/*` 与官方 `@tarojs/*` 混装，也不要用上游 Taro 版本号判断本仓库能力范围。
 
 ### 当前 fork 支持范围
 
@@ -43,7 +52,7 @@
 - CI / build / private publish 已收敛到 React + WeApp 保留链路
 - 本 fork 不再保证 H5、React Native、Harmony 以及 Vue / Solid 相关能力可用
 - 建议使用 **Node.js 22+** 与 **pnpm 10**
-- 包名暂时保留 `@tarojs/*`，但必须来自同一个私有发行版本，不要与官方 npm 包混装
+- 所有 `@spcsn/*` 底座包必须来自同一个私有发行版本，不要与官方 `@tarojs/*` 混装
 
 ### 版本迁移
 
@@ -56,21 +65,17 @@ Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https
 ```json
 {
   "dependencies": {
-    "@spcsn/taro": "4.3.0-alpha.0",
-    "@spcsn/taro-components": "4.3.0-alpha.0",
-    "@spcsn/taro-runtime": "4.3.0-alpha.0",
-    "@spcsn/taro-react": "4.3.0-alpha.0",
+    "@spcsn/taro": "0.1.0",
+    "@spcsn/taro-components": "0.1.0",
     "react": "^19.2.0"
   },
   "devDependencies": {
-    "@spcsn/taro-cli": "4.3.0-alpha.0",
-    "@spcsn/taro-vite-runner": "4.3.0-alpha.0",
-    "@spcsn/taro-plugin-framework-react": "4.3.0-alpha.0",
-    "@spcsn/taro-plugin-platform-weapp": "4.3.0-alpha.0",
-    "babel-preset-taro": "4.3.0-alpha.0"
+    "@spcsn/taro-cli": "0.1.0"
   }
 }
 ```
+
+业务工程不要显式安装 `@spcsn/taro-runtime`、`@spcsn/taro-react`、`@spcsn/taro-vite-runner`、`@spcsn/taro-plugin-framework-react`、`@spcsn/taro-plugin-platform-weapp`、`@spcsn/babel-preset-taro`、`vite`、`postcss`、`terser`、`@vitejs/plugin-react`、`@babel/core`、`@babel/preset-react`、`react-refresh` 等底座内部实现依赖。它们属于 CLI / runner / framework / platform 包的实现闭包。
 
 ### 私有发行包组
 
@@ -81,7 +86,7 @@ pnpm run pack:private -- --dry-run
 pnpm run pack:private -- --dest ../taro-private-packs
 ```
 
-生成 tarball 前请先完成构建；业务工程安装时，所有 `@tarojs/*` 与相关 `babel/postcss` 包应指向同一个私有版本或同一批 tarball。
+生成 tarball 前请先完成构建；业务工程安装时，所有 `@spcsn/*` 底座包应指向同一个私有版本或同一批 tarball。
 
 项目配置示例 (`config/index.ts`)：
 

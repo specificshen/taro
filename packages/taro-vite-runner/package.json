@@ -1,6 +1,6 @@
 {
   "name": "@spcsn/taro-vite-runner",
-  "version": "4.2.1",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -66,7 +66,5 @@
     "sass": "1.44.0",
     "stylus": "^0.63.0"
   },
-  "peerDependencies": {
-    "@spcsn/taro-runtime": "workspace:*"
-  }
+  "peerDependencies": {}
 }
