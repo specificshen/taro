@@ -25,24 +25,24 @@ const cache = new RuntimeCache<HistoryContext>('history');
 
 class TaroHistory extends Events {
   /* private property */
-  #location: TaroLocation;
-  #stack: HistoryState[] = [];
-  #cur = 0;
+  private _location: TaroLocation;
+  private _stack: HistoryState[] = [];
+  private _cur = 0;
 
-  #window: any;
+  private _window: any;
 
   constructor(location: TaroLocation, options: Options) {
     super();
 
-    this.#window = options.window;
-    this.#location = location;
+    this._window = options.window;
+    this._location = location;
 
-    this.#location.on(
+    this._location.on(
       '__record_history__',
       (href: string) => {
-        this.#cur++;
-        this.#stack = this.#stack.slice(0, this.#cur);
-        this.#stack.push({
+        this._cur++;
+        this._stack = this._stack.slice(0, this._cur);
+        this._stack.push({
           state: null,
           title: '',
           url: href,
@@ -51,10 +51,10 @@ class TaroHistory extends Events {
       null,
     );
 
-    this.#location.on(
+    this._location.on(
       '__reset_history__',
       (href: string) => {
-        this.#reset(href);
+        this._reset(href);
       },
       null,
     );
@@ -64,7 +64,7 @@ class TaroHistory extends Events {
     this.on(
       CONTEXT_ACTIONS.INIT,
       () => {
-        this.#reset();
+        this._reset();
       },
       null,
     );
@@ -73,9 +73,9 @@ class TaroHistory extends Events {
       CONTEXT_ACTIONS.RESTORE,
       (pageId: string) => {
         cache.set(pageId, {
-          location: this.#location,
-          stack: this.#stack.slice(),
-          cur: this.#cur,
+          location: this._location,
+          stack: this._stack.slice(),
+          cur: this._cur,
         });
       },
       null,
@@ -86,9 +86,9 @@ class TaroHistory extends Events {
       (pageId: string) => {
         if (cache.has(pageId)) {
           const ctx = cache.get(pageId)!;
-          this.#location = ctx.location;
-          this.#stack = ctx.stack;
-          this.#cur = ctx.cur;
+          this._location = ctx.location;
+          this._stack = ctx.stack;
+          this._cur = ctx.cur;
         }
       },
       null,
@@ -102,40 +102,40 @@ class TaroHistory extends Events {
       null,
     );
 
-    this.#reset();
+    this._reset();
   }
 
-  #reset(href = '') {
-    this.#stack = [
+  private _reset(href = '') {
+    this._stack = [
       {
         state: null,
         title: '',
-        url: href || this.#location.href,
+        url: href || this._location.href,
       },
     ];
-    this.#cur = 0;
+    this._cur = 0;
   }
 
   /* public property */
   get length() {
-    return this.#stack.length;
+    return this._stack.length;
   }
 
   get state() {
-    return this.#stack[this.#cur].state;
+    return this._stack[this._cur].state;
   }
 
   /* public method */
   go(delta: number) {
     if (!isNumber(delta) || isNaN(delta)) return;
 
-    let targetIdx = this.#cur + delta;
+    let targetIdx = this._cur + delta;
     targetIdx = Math.min(Math.max(targetIdx, 0), this.length - 1);
 
-    this.#cur = targetIdx;
+    this._cur = targetIdx;
 
-    this.#location.trigger('__set_href_without_history__', this.#stack[this.#cur].url);
-    this.#window.trigger('popstate', this.#stack[this.#cur]);
+    this._location.trigger('__set_href_without_history__', this._stack[this._cur].url);
+    this._window.trigger('popstate', this._stack[this._cur]);
   }
 
   back() {
@@ -148,26 +148,26 @@ class TaroHistory extends Events {
 
   pushState(state: any, title: string, url: string) {
     if (!url || !isString(url)) return;
-    this.#stack = this.#stack.slice(0, this.#cur + 1);
-    this.#stack.push({
+    this._stack = this._stack.slice(0, this._cur + 1);
+    this._stack.push({
       state,
       title,
       url,
     });
-    this.#cur = this.length - 1;
+    this._cur = this.length - 1;
 
-    this.#location.trigger('__set_href_without_history__', url);
+    this._location.trigger('__set_href_without_history__', url);
   }
 
   replaceState(state: any, title: string, url: string) {
     if (!url || !isString(url)) return;
-    this.#stack[this.#cur] = {
+    this._stack[this._cur] = {
       state,
       title,
       url,
     };
 
-    this.#location.trigger('__set_href_without_history__', url);
+    this._location.trigger('__set_href_without_history__', url);
   }
 
   // For debug

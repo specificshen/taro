@@ -40,12 +40,12 @@ export const URLSearchParams =
   process.env.TARO_PLATFORM === 'web'
     ? env.window.URLSearchParams
     : class {
-        #dict = Object.create(null);
+      private _dict = Object.create(null);
 
         constructor(query) {
           query ??= '';
 
-          const dict = this.#dict;
+          const dict = this._dict;
 
           if (typeof query === 'string') {
             if (query.charAt(0) === '?') {
@@ -85,37 +85,37 @@ export const URLSearchParams =
         }
 
         append(name: string, value: string) {
-          appendTo(this.#dict, name, value);
+          appendTo(this._dict, name, value);
         }
 
         delete(name: string) {
-          delete this.#dict[name];
+          delete this._dict[name];
         }
 
         get(name: string) {
-          const dict = this.#dict;
+          const dict = this._dict;
           return name in dict ? dict[name][0] : null;
         }
 
         getAll(name: string) {
-          const dict = this.#dict;
+          const dict = this._dict;
           return name in dict ? dict[name].slice(0) : [];
         }
 
         has(name: string) {
-          return name in this.#dict;
+          return name in this._dict;
         }
 
         keys() {
-          return Object.keys(this.#dict);
+          return Object.keys(this._dict);
         }
 
         set(name: string, value: string) {
-          this.#dict[name] = ['' + value];
+          this._dict[name] = ['' + value];
         }
 
         forEach(callback, thisArg) {
-          const dict = this.#dict;
+          const dict = this._dict;
           Object.getOwnPropertyNames(dict).forEach(function (name) {
             dict[name].forEach(function (value: string) {
               callback.call(thisArg, value, name, this);
@@ -128,7 +128,7 @@ export const URLSearchParams =
         }
 
         toString() {
-          const dict = this.#dict;
+          const dict = this._dict;
           const query: any[] = [];
           for (const key in dict) {
             const name = encode(key);

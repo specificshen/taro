@@ -21,30 +21,30 @@ const cache = new RuntimeCache<LocationContext>('location');
 
 class TaroLocation extends Events {
   /* private property */
-  #url = new TaroURLProvider(INIT_URL);
-  #noCheckUrl = false;
-  #window: any;
+  private _url = new TaroURLProvider(INIT_URL);
+  private _noCheckUrl = false;
+  private _window: any;
 
   constructor(options: Options) {
     super();
 
-    this.#window = options.window;
+    this._window = options.window;
 
-    this.#reset();
+    this._reset();
 
     this.on(
       '__set_href_without_history__',
       (href: string) => {
-        this.#noCheckUrl = true;
+        this._noCheckUrl = true;
 
-        const lastHash = this.#url.hash;
-        this.#url.href = generateFullUrl(href);
+        const lastHash = this._url.hash;
+        this._url.href = generateFullUrl(href);
 
-        if (lastHash !== this.#url.hash) {
-          this.#window.trigger('hashchange');
+        if (lastHash !== this._url.hash) {
+          this._window.trigger('hashchange');
         }
 
-        this.#noCheckUrl = false;
+        this._noCheckUrl = false;
       },
       null,
     );
@@ -53,7 +53,7 @@ class TaroLocation extends Events {
     this.on(
       CONTEXT_ACTIONS.INIT,
       () => {
-        this.#reset();
+        this._reset();
       },
       null,
     );
@@ -74,9 +74,9 @@ class TaroLocation extends Events {
         // 数据恢复时，不需要执行跳转
         if (cache.has(pageId)) {
           const ctx = cache.get(pageId)!;
-          this.#noCheckUrl = true;
-          this.#url.href = ctx.lastHref;
-          this.#noCheckUrl = false;
+          this._noCheckUrl = true;
+          this._url.href = ctx.lastHref;
+          this._noCheckUrl = false;
         }
       },
       null,
@@ -92,7 +92,7 @@ class TaroLocation extends Events {
   }
 
   /* private method */
-  #reset() {
+  private _reset() {
     const Current = getCurrentInstance();
     const router = Current.router;
     if (router) {
@@ -103,37 +103,37 @@ class TaroLocation extends Events {
       const searchStr = searchArr.length > 0 ? '?' + searchArr.join('&') : '';
       const url = `${INIT_URL}${path.startsWith('/') ? path : '/' + path}${searchStr}`;
 
-      this.#url = new TaroURLProvider(url);
+      this._url = new TaroURLProvider(url);
 
       this.trigger('__reset_history__', this.href);
     }
   }
 
-  #getPreValue(): PreValue {
-    return this.#url._toRaw();
+  private _getPreValue(): PreValue {
+    return this._url._toRaw();
   }
 
-  #rollBack(href: string) {
-    this.#url.href = href;
+  private _rollBack(href: string) {
+    this._url.href = href;
   }
 
-  #recordHistory() {
+  private _recordHistory() {
     this.trigger('__record_history__', this.href);
   }
 
   /**
    * 校验url的变化，是否需要更新history
    */
-  #checkUrlChange(preValue: PreValue): boolean {
-    if (this.#noCheckUrl) {
+  private _checkUrlChange(preValue: PreValue): boolean {
+    if (this._noCheckUrl) {
       return false;
     }
 
-    const { protocol, hostname, port, pathname, search, hash } = this.#url._toRaw();
+    const { protocol, hostname, port, pathname, search, hash } = this._url._toRaw();
 
     // 跨域三要素不允许修改
     if (protocol !== preValue.protocol || hostname !== preValue.hostname || port !== preValue.port) {
-      this.#rollBack(preValue.href);
+      this._rollBack(preValue.href);
       return false;
     }
 
@@ -149,17 +149,17 @@ class TaroLocation extends Events {
 
     // hashchange
     if (hash !== preValue.hash) {
-      this.#window.trigger('hashchange');
+      this._window.trigger('hashchange');
       return true;
     }
 
-    this.#rollBack(preValue.href);
+    this._rollBack(preValue.href);
     return false;
   }
 
   /* public property */
   get protocol() {
-    return this.#url.protocol;
+    return this._url.protocol;
   }
 
   set protocol(val: string) {
@@ -167,70 +167,70 @@ class TaroLocation extends Events {
     if (!val || !isString(val) || !REG.test(val.trim())) return;
 
     val = val.trim();
-    const preValue = this.#getPreValue();
-    this.#url.protocol = val;
+    const preValue = this._getPreValue();
+    this._url.protocol = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get host() {
-    return this.#url.host;
+    return this._url.host;
   }
 
   set host(val: string) {
     if (!val || !isString(val)) return;
     val = val.trim();
 
-    const preValue = this.#getPreValue();
-    this.#url.host = val;
+    const preValue = this._getPreValue();
+    this._url.host = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get hostname() {
-    return this.#url.hostname;
+    return this._url.hostname;
   }
 
   set hostname(val: string) {
     if (!val || !isString(val)) return;
     val = val.trim();
 
-    const preValue = this.#getPreValue();
-    this.#url.hostname = val;
+    const preValue = this._getPreValue();
+    this._url.hostname = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get port() {
-    return this.#url.port;
+    return this._url.port;
   }
 
   set port(val: string) {
     const xVal = Number((val = val.trim()));
     if (!isNumber(xVal) || xVal <= 0) return;
 
-    const preValue = this.#getPreValue();
-    this.#url.port = val;
+    const preValue = this._getPreValue();
+    this._url.port = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get pathname() {
-    return this.#url.pathname;
+    return this._url.pathname;
   }
 
   set pathname(val: string) {
     if (!val || !isString(val)) return;
     val = val.trim();
 
-    const preValue = this.#getPreValue();
-    this.#url.pathname = val;
+    const preValue = this._getPreValue();
+    this._url.pathname = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get search() {
-    return this.#url.search;
+    return this._url.search;
   }
 
   set search(val: string) {
@@ -238,14 +238,14 @@ class TaroLocation extends Events {
     val = val.trim();
     val = val.startsWith('?') ? val : `?${val}`;
 
-    const preValue = this.#getPreValue();
-    this.#url.search = val;
+    const preValue = this._getPreValue();
+    this._url.search = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get hash() {
-    return this.#url.hash;
+    return this._url.hash;
   }
 
   // 小程序的navigateTo存在截断hash字符串的问题
@@ -254,38 +254,38 @@ class TaroLocation extends Events {
     val = val.trim();
     val = val.startsWith('#') ? val : `#${val}`;
 
-    const preValue = this.#getPreValue();
-    this.#url.hash = val;
+    const preValue = this._getPreValue();
+    this._url.hash = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get href() {
-    return this.#url.href;
+    return this._url.href;
   }
 
   set href(val: string) {
     const REG = /^(http:|https:)?\/\/.+/;
     if (!val || !isString(val) || !REG.test((val = val.trim()))) return;
 
-    const preValue = this.#getPreValue();
-    this.#url.href = val;
+    const preValue = this._getPreValue();
+    this._url.href = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   get origin() {
-    return this.#url.origin;
+    return this._url.origin;
   }
 
   set origin(val: string) {
     const REG = /^(http:|https:)?\/\/.+/;
     if (!val || !isString(val) || !REG.test((val = val.trim()))) return;
 
-    const preValue = this.#getPreValue();
-    this.#url.origin = val;
+    const preValue = this._getPreValue();
+    this._url.origin = val;
 
-    if (this.#checkUrlChange(preValue)) this.#recordHistory();
+    if (this._checkUrlChange(preValue)) this._recordHistory();
   }
 
   /* public method */
