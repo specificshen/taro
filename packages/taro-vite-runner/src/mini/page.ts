@@ -104,6 +104,8 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
 
         const result = transformSync(code, {
           filename: id,
+          babelrc: false,
+          configFile: false,
           parserOpts: {
             plugins: ['jsx', 'typescript'],
           },

@@ -16,7 +16,3 @@ declare module 'vite' {
   export function searchForWorkspaceRoot(path: string): string
 }
 
-declare module '@vitejs/plugin-legacy' {
-  const legacy: any
-  export default legacy
-}
