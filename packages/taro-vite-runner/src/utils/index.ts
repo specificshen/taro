@@ -3,7 +3,7 @@ import querystring from 'node:querystring';
 
 import { isNpmPkg, normalizePath, recursiveMerge, REG_NODE_MODULES, resolveSync } from '@spcsn/taro-helper';
 import { backSlashRegEx, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME, needsEscapeRegEx, quoteNewlineRegEx } from './constants';
-import { createFilterWithCompileOptions } from './createFilter';
+import { createFilterWithCompileOptions } from './create-filter';
 import { logger } from './logger';
 
 import type { IPostcssOption } from '@spcsn/taro/types/compile';

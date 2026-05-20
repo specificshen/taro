@@ -11,7 +11,7 @@ import {
 import { getSassLoaderOption } from '@spcsn/taro-runner-utils';
 import { PLATFORM_TYPE } from '@spcsn/taro-shared';
 
-import { getDefaultPostcssConfig } from '../postcss/postcss.mini';
+import { getDefaultPostcssConfig } from './postcss';
 import {
   getBabelOption,
   getCSSModulesOptions,
@@ -253,6 +253,9 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           // @TODO doc needed: sourcemapType not supported
           sourcemap: enableSourceMap,
           rolldownOptions: {
+            checks: {
+              pluginTimings: false,
+            },
             transform: {
               inject: getInjectOption(),
             },

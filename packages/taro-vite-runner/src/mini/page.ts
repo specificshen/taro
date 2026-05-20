@@ -5,7 +5,7 @@ import { transformSync } from '@babel/core';
 import pluginImportNativeComponent from '../common/babel-plugin-import-native-component';
 import pluginRemovePageConfig from '../common/babel-plugin-remove-config';
 import { appendVirtualModulePrefix, escapePath, prettyPrintJson, stripVirtualModulePrefix } from '../utils';
-import { createFilterWithCompileOptions } from '../utils/createFilter';
+import { createFilterWithCompileOptions } from '../utils/create-filter';
 import { UniqueKeyMap } from '../utils/map';
 
 import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext';

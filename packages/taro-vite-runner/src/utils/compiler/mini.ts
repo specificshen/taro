@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fs, isAliasPath, readConfig, recursiveMerge, replaceAliasPath, resolveMainFilePath } from '@spcsn/taro-helper';
 import { isArray, isFunction } from '@spcsn/taro-shared';
 
-import defaultConfig from '../../defaultConfig/defaultConfig.mini';
+import defaultConfig from '../../mini/default-config';
 import { miniTemplateLoader, QUERY_IS_NATIVE_COMP } from '../../mini/native-support';
 import { getComponentName } from '../../utils';
 import { componentConfig } from '../../utils/component';
