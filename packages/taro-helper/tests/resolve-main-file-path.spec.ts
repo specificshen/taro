@@ -1,6 +1,8 @@
 import * as path from 'node:path';
 
-import { resolveMainFilePath } from '../utils';
+import { describe, expect, it } from 'vitest';
+
+import { resolveMainFilePath } from '../src/utils';
 
 describe('resolveMainFilePath', () => {
   it('should return the same path if it starts with "pages/" or is "app.config"', () => {

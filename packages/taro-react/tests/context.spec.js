@@ -1,18 +1,20 @@
-import { document } from '@spcsn/taro-runtime';
-import * as React from 'react';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { render } from '../dist/react.esm';
+import { document } from "@spcsn/taro-runtime";
+import * as React from "react";
 
-describe('Context', () => {
+import { render } from "../dist/react.esm";
+
+describe("Context", () => {
   beforeAll(() => {
-    process.env.FRAMEWORK = 'react';
+    process.env.FRAMEWORK = "react";
   });
 
   afterAll(() => {
     process.env.FRAMEWORK = undefined;
   });
 
-  it('Context must be available in the consumer', () => {
+  it("Context must be available in the consumer", () => {
     let actual = 0;
     const Context = React.createContext();
 
@@ -21,7 +23,7 @@ describe('Context', () => {
         <Context.Consumer>
           {(value) => {
             actual = value;
-            return <text prop={'Result: ' + value} />;
+            return <text prop={"Result: " + value} />;
           }}
         </Context.Consumer>
       );
@@ -38,7 +40,7 @@ describe('Context', () => {
       }
     }
 
-    const container = document.createElement('view');
+    const container = document.createElement("view");
     render(
       <Context.Provider value={5}>
         <MyNode />

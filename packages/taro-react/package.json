@@ -16,8 +16,8 @@
   },
   "scripts": {
     "prod": "pnpm run build",
-    "test": "jest --collectCoverage",
-    "test:ci": "jest --ci -i --coverage --silent",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage",
     "build": "pnpm run build:types && pnpm run rolldown",
     "build:types": "tsc --emitDeclarationOnly --declaration --noCheck",
     "dev": "concurrently \"pnpm run build:types -- --watch\" \"pnpm run rolldown -w\"",

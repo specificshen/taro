@@ -1,6 +1,6 @@
 ## babel-plugin-transform-taroapi
 
-用于 H5 端转换 import default Taro API 为模块化引用，以达到 tree-shaking 的目的。
+将 `import default Taro` 的写法转换为模块化引用，以实现 tree-shaking。
 
 ### example
 
@@ -12,6 +12,6 @@ Taro.request(...)
 会转换为：
 
 ```
-import { request } from '@tarojs/taro-h5'
+import { request } from '@spcsn/taro-api'
 request(...)
 ```

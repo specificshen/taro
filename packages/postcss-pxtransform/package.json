@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/specificshen/taro/tree/main/packages/postcss-pxtransform#readme",
   "scripts": {
-    "test": "jest"
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage",
+    "test:dev": "vitest"
   },
   "jest": {
     "testEnvironment": "node",

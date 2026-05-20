@@ -1,12 +1,14 @@
 import * as path from 'node:path';
 
+import { type MockedClass, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { dotenvParse } from '@spcsn/taro-helper';
 import { Kernel } from '@spcsn/taro-service';
 
-import CLI from '../cli';
+import CLI from '../src/cli';
 
-jest.mock('@spcsn/taro-service');
-const MockedKernel = Kernel as unknown as jest.Mock<Kernel>;
+vi.mock('@spcsn/taro-service');
+const MockedKernel = Kernel as unknown as MockedClass<typeof Kernel>;
 const APP_PATH = path.join(__dirname, 'fixtures/default');
 
 function setProcessArgv(cmd: string) {

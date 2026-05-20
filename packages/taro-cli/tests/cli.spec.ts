@@ -1,10 +1,12 @@
+import { type MockedClass, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { Kernel } from '@spcsn/taro-service';
 
-import CLI from '../cli';
-import { getPkgVersion } from '../util';
+import CLI from '../src/cli';
+import { getPkgVersion } from '../src/util';
 
-jest.mock('@spcsn/taro-service');
-const MockedKernel = Kernel as unknown as jest.Mock<Kernel>;
+vi.mock('@spcsn/taro-service');
+const MockedKernel = Kernel as unknown as MockedClass<typeof Kernel>;
 const APP_PATH = '/a/b/c';
 
 function setProcessArgv(cmd: string) {
@@ -202,7 +204,7 @@ describe('inspect', () => {
 
   describe('others', () => {
     it('should log helps', async () => {
-      const spy = jest.spyOn(console, 'log');
+      const spy = vi.spyOn(console, 'log');
       spy.mockImplementation(() => {});
 
       setProcessArgv('taro -h');
@@ -213,7 +215,7 @@ describe('inspect', () => {
     });
 
     it('should log version', async () => {
-      const spy = jest.spyOn(console, 'log');
+      const spy = vi.spyOn(console, 'log');
       spy.mockImplementation(() => {});
 
       setProcessArgv('taro -v');

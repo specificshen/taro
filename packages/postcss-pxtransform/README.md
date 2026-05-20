@@ -1,6 +1,6 @@
 # PostCSS Pxtransform 
 
-[PostCSS](https://github.com/ai/postcss) 单位转换插件，目前已支持小程序端（px 转rpx），H5 端（px 转 rem）及 RN 端。
+[PostCSS](https://github.com/ai/postcss) 单位转换插件，支持微信小程序端（px 转 rpx）。
 
 基于 [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem/)。
 

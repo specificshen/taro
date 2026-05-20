@@ -14,8 +14,8 @@
     "postbuild": "pnpm run swc:backup",
     "dev": "tsc -w",
     "prepack": "pnpm run build",
-    "test": "jest --collectCoverage",
-    "test:ci": "jest --ci -i --coverage --silent",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage",
     "artifacts": "node scripts/artifacts.js",
     "swc:backup": "node scripts/backup.js"
   },

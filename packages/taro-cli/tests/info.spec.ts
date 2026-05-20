@@ -1,17 +1,19 @@
 import * as path from 'node:path';
 
+import { type MockInstance, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { chalk } from '@spcsn/taro-helper';
 
-import { getPkgVersion } from '../util';
+import { getPkgVersion } from '../src/util';
 import { run } from './utils';
 
-jest.mock('envinfo', () => {
-  const envinfo = jest.requireActual('envinfo');
+vi.mock('envinfo', async () => {
+  const envinfo = await vi.importActual<typeof import('envinfo')>('envinfo');
   return {
     __esModule: true,
-    async run(data, options) {
+    async run(data: any, options: any) {
       const res = await envinfo.run(data, { ...options, json: true });
-      return JSON.parse(res);
+      return JSON.parse(res as string);
     },
   };
 });
@@ -20,8 +22,8 @@ const runInfo = run('info', ['commands/info']);
 
 describe('info', () => {
   it("should exit because there isn't a Taro project", async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'log');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'log');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -40,7 +42,7 @@ describe('info', () => {
   });
 
   it('should log information', async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     const appPath = path.resolve(__dirname, 'fixtures/default');

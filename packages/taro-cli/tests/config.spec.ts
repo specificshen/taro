@@ -1,23 +1,25 @@
 import * as path from 'node:path';
 
+import { type MockedFunction, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { fs, getUserHomeDir, TARO_BASE_CONFIG, TARO_CONFIG_FOLDER } from '@spcsn/taro-helper';
 import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from '@spcsn/taro-service/src/utils/constants';
 
 import { run } from './utils';
 
-jest.mock('@spcsn/taro-helper', () => {
-  const helper = jest.requireActual('@spcsn/taro-helper');
+vi.mock('@spcsn/taro-helper', async () => {
+  const helper = await vi.importActual<typeof import('@spcsn/taro-helper')>('@spcsn/taro-helper');
   const fs = helper.fs;
   return {
     __esModule: true,
     ...helper,
-    getUserHomeDir: jest.fn(),
+    getUserHomeDir: vi.fn(),
     fs: {
       ...fs,
-      existsSync: jest.fn(),
-      readJSONSync: jest.fn(),
-      writeJSONSync: jest.fn(),
-      ensureFileSync: jest.fn(),
+      existsSync: vi.fn(),
+      readJSONSync: vi.fn(),
+      writeJSONSync: vi.fn(),
+      ensureFileSync: vi.fn(),
     },
   };
 });
@@ -25,11 +27,11 @@ jest.mock('@spcsn/taro-helper', () => {
 const runConfig = run('config', ['commands/config']);
 
 describe('config', () => {
-  const getUserHomeDirMocked = getUserHomeDir as jest.Mock<any>;
-  const existsSyncMocked = fs.existsSync as jest.Mock<any>;
-  const readJSONSyncMocked = fs.readJSONSync as jest.Mock<any>;
-  const writeJSONSyncMocked = fs.writeJSONSync as jest.Mock<any>;
-  const ensureFileSyncMocked = fs.ensureFileSync as jest.Mock<any>;
+  const getUserHomeDirMocked = getUserHomeDir as MockedFunction<typeof getUserHomeDir>;
+  const existsSyncMocked = fs.existsSync as MockedFunction<typeof fs.existsSync>;
+  const readJSONSyncMocked = fs.readJSONSync as MockedFunction<typeof fs.readJSONSync>;
+  const writeJSONSyncMocked = fs.writeJSONSync as MockedFunction<typeof fs.writeJSONSync>;
+  const ensureFileSyncMocked = fs.ensureFileSync as MockedFunction<typeof fs.ensureFileSync>;
   const appPath = '/';
 
   beforeEach(() => {
@@ -46,7 +48,7 @@ describe('config', () => {
   });
 
   it("should exit because can't find home dir", async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     getUserHomeDirMocked.mockReturnValue('');
@@ -58,7 +60,7 @@ describe('config', () => {
   });
 
   it('should warn when getting config without args key', async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     await runConfig(appPath, { args: ['get'] });
@@ -72,7 +74,7 @@ describe('config', () => {
     const value = 'v';
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     readJSONSyncMocked.mockImplementation(() => ({
       [key]: value,
@@ -89,7 +91,7 @@ describe('config', () => {
   });
 
   it('should warn when getting config without args value', async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     await runConfig(appPath, { args: ['set', 'k'] });
@@ -103,7 +105,7 @@ describe('config', () => {
     const value = 'v';
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     readJSONSyncMocked.mockReturnValue({ a: 1 });
 
@@ -127,7 +129,7 @@ describe('config', () => {
     const value = 'v';
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     existsSyncMocked.mockReturnValue(false);
 
@@ -144,7 +146,7 @@ describe('config', () => {
   });
 
   it('should warn when deleting config without args key', async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     await runConfig(appPath, { args: ['delete'] });
@@ -157,7 +159,7 @@ describe('config', () => {
     const key = 'k';
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     readJSONSyncMocked.mockReturnValue({
       a: 1,
@@ -178,7 +180,7 @@ describe('config', () => {
 
   it('should list config', async () => {
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     readJSONSyncMocked.mockReturnValue({
       a: 1,
@@ -199,7 +201,7 @@ describe('config', () => {
 
   it('should list config in json', async () => {
     const configPath = path.join('/', `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     readJSONSyncMocked.mockReturnValue({
       a: 1,

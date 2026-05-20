@@ -1,27 +1,29 @@
 import * as path from 'node:path';
 
+import { type MockedFunction, type MockInstance, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { chalk, fs } from '@spcsn/taro-helper';
 
 import { run } from './utils';
 
-jest.mock('cli-highlight', () => {
+vi.mock('cli-highlight', () => {
   return {
     __esModule: true,
-    default(str) {
+    default(str: string) {
       return str;
     },
   };
 });
 
-jest.mock('@spcsn/taro-helper', () => {
-  const helper = jest.requireActual('@spcsn/taro-helper');
+vi.mock('@spcsn/taro-helper', async () => {
+  const helper = await vi.importActual<typeof import('@spcsn/taro-helper')>('@spcsn/taro-helper');
   const fs = helper.fs;
   return {
     __esModule: true,
     ...helper,
     fs: {
       ...fs,
-      writeFileSync: jest.fn(),
+      writeFileSync: vi.fn(),
     },
   };
 });
@@ -34,12 +36,12 @@ const runInspect = run('inspect', [
 
 describe('inspect', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it("should exit because there isn't a Taro project", async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'log');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'log');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -58,8 +60,8 @@ describe('inspect', () => {
   });
 
   it("should exit when user haven't pass correct type", async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'log');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'log');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -78,8 +80,8 @@ describe('inspect', () => {
   });
 
   it('should log config', async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'info');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'info');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -103,9 +105,9 @@ describe('inspect', () => {
   });
 
   it('should log specific config', async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'info');
-    const errorSpy = jest.spyOn(console, 'error');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'info');
+    const errorSpy = vi.spyOn(console, 'error');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -133,8 +135,8 @@ describe('inspect', () => {
   });
 
   it('should output config', async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const writeFileSync = fs.writeFileSync as jest.Mock<any>;
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const writeFileSync = fs.writeFileSync as MockedFunction<any>;
     const outputPath = 'project-config.js';
 
     exitSpy.mockImplementation(() => {

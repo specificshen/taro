@@ -1,39 +1,41 @@
 import * as path from 'node:path';
 
+import { type MockedFunction, type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { chalk, fs } from '@spcsn/taro-helper';
 
-import doctor from '../doctor';
+import doctor from '../src/doctor';
 
 const validator = doctor.validators[3];
 
-jest.mock('@spcsn/taro-helper', () => {
-  const helper = jest.requireActual('@spcsn/taro-helper');
+vi.mock('@spcsn/taro-helper', async () => {
+  const helper = await vi.importActual<typeof import('@spcsn/taro-helper')>('@spcsn/taro-helper');
   const fs = helper.fs;
   return {
     __esModule: true,
     ...helper,
     fs: {
       ...fs,
-      readdirSync: jest.fn(),
-      existsSync: jest.fn(),
+      readdirSync: vi.fn(),
+      existsSync: vi.fn(),
     },
   };
 });
 
 describe('recommand validator of doctor', () => {
-  const existsSyncMocked = fs.existsSync as jest.Mock<any>;
-  const readdirSyncMocked = fs.readdirSync as jest.Mock<any>;
+  const existsSyncMocked = fs.existsSync as MockedFunction<typeof fs.existsSync>;
+  const readdirSyncMocked = fs.readdirSync as MockedFunction<typeof fs.readdirSync>;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     existsSyncMocked.mockReset();
     readdirSyncMocked.mockReset();
     existsSyncMocked.mockReturnValue(true);
   });
 
   it.skip("should exit because there isn't a Taro project", async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'log');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'log');
 
     exitSpy.mockImplementation(() => {
       throw new Error();
@@ -55,7 +57,7 @@ describe('recommand validator of doctor', () => {
   });
 
   it.skip('should warn when test framework not found', async () => {
-    jest.doMock('./fixtures/default/package.json', () => ({
+    vi.doMock('./fixtures/default/package.json', () => ({
       devDependencies: {
         eslint: 1,
       },
@@ -73,11 +75,11 @@ describe('recommand validator of doctor', () => {
       '可以参考 https://github.com/NervJS/taro-ui-sample 项目, 其中已经包含了完整的测试配置与范例',
     );
 
-    jest.dontMock('./fixtures/default/package.json');
+    vi.unmock('./fixtures/default/package.json');
   });
 
   it.skip('should warn when Readme not found', async () => {
-    jest.doMock('./fixtures/default/package.json', () => ({
+    vi.doMock('./fixtures/default/package.json', () => ({
       devDependencies: {
         mocha: 1,
         jslint: 1,
@@ -93,11 +95,11 @@ describe('recommand validator of doctor', () => {
     );
     expect(lines[0].valid).toBe(true);
 
-    jest.dontMock('./fixtures/default/package.json');
+    vi.unmock('./fixtures/default/package.json');
   });
 
   it.skip('should warn when .gitignore not found', async () => {
-    jest.doMock('./fixtures/default/package.json', () => ({
+    vi.doMock('./fixtures/default/package.json', () => ({
       devDependencies: {
         jesmine: 1,
         tslint: 1,
@@ -113,11 +115,11 @@ describe('recommand validator of doctor', () => {
     );
     expect(lines[0].valid).toBe(true);
 
-    jest.dontMock('./fixtures/default/package.json');
+    vi.unmock('./fixtures/default/package.json');
   });
 
   it.skip('should warn when .editorconfig not found', async () => {
-    jest.doMock('./fixtures/default/package.json', () => ({
+    vi.doMock('./fixtures/default/package.json', () => ({
       devDependencies: {
         karma: 1,
         jshint: 1,
@@ -131,6 +133,6 @@ describe('recommand validator of doctor', () => {
     expect(lines[0].desc).toBe('没有检查到 .editconfig 配置, 配置 editconfig 以统一项目成员编辑器的代码风格');
     expect(lines[0].valid).toBe(true);
 
-    jest.dontMock('./fixtures/default/package.json');
+    vi.unmock('./fixtures/default/package.json');
   });
 });

@@ -1,6 +1,8 @@
+import { describe, expect, it } from 'vitest';
+
 import * as helper from '@spcsn/taro-helper';
 
-import doctor from '../doctor';
+import doctor from '../src/doctor';
 
 const validator = doctor.validators[1];
 const baseConfig = {

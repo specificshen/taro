@@ -1,8 +1,10 @@
+import { type MockInstance, describe, expect, it, vi } from 'vitest';
+
 import { chalk } from '@spcsn/taro-helper';
 
 import { run } from './utils';
 
-jest.mock('../doctor', () => {
+vi.mock('../src/doctor', () => {
   return {
     __esModule: true,
     default: {
@@ -58,8 +60,8 @@ jest.mock('../doctor', () => {
   };
 });
 
-jest.mock('ora', () => {
-  const ora = jest.fn();
+vi.mock('ora', () => {
+  const ora = vi.fn();
   ora.mockReturnValue({
     start() {
       return {
@@ -74,8 +76,8 @@ const runDoctor = run('doctor', ['commands/doctor']);
 
 describe('doctor', () => {
   it("should exit because there isn't a Taro project", async () => {
-    const exitSpy = jest.spyOn(process, 'exit') as jest.SpyInstance<void, any>;
-    const logSpy = jest.spyOn(console, 'log');
+    const exitSpy = vi.spyOn(process, 'exit') as MockInstance<[], never>;
+    const logSpy = vi.spyOn(console, 'log');
 
     exitSpy.mockImplementation(() => {
       throw new Error();

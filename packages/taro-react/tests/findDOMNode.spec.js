@@ -1,11 +1,13 @@
-import { document } from '@spcsn/taro-runtime';
-import * as React from 'react';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { findDOMNode, render, unmountComponentAtNode } from '../dist/react.esm';
+import { document } from "@spcsn/taro-runtime";
+import * as React from "react";
 
-describe('findDOMNode', () => {
+import { findDOMNode, render, unmountComponentAtNode } from "../dist/react.esm";
+
+describe("findDOMNode", () => {
   beforeAll(() => {
-    process.env.FRAMEWORK = 'react';
+    process.env.FRAMEWORK = "react";
   });
 
   afterAll(() => {
@@ -13,15 +15,15 @@ describe('findDOMNode', () => {
   });
 
   function renderIntoDetachedNode(children) {
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     return render(children, div);
   }
 
-  it('findDOMNode should return null if passed null', () => {
+  it("findDOMNode should return null if passed null", () => {
     expect(findDOMNode(null)).toBe(null);
   });
 
-  it('findDOMNode should find dom element', () => {
+  it("findDOMNode should find dom element", () => {
     class MyNode extends React.Component {
       render() {
         return (
@@ -35,11 +37,11 @@ describe('findDOMNode', () => {
     const myNode = renderIntoDetachedNode(<MyNode />);
     const myDiv = findDOMNode(myNode);
     const mySameDiv = findDOMNode(myDiv);
-    expect(myDiv.tagName).toBe('DIV');
+    expect(myDiv.tagName).toBe("DIV");
     expect(mySameDiv).toBe(myDiv);
   });
 
-  it('findDOMNode should find dom element after an update from null', () => {
+  it("findDOMNode should find dom element after an update from null", () => {
     function Bar({ flag }) {
       if (flag) {
         return <span>A</span>;
@@ -52,7 +54,7 @@ describe('findDOMNode', () => {
       }
     }
 
-    const container = document.createElement('div');
+    const container = document.createElement("div");
 
     const myNodeA = render(<MyNode />, container);
     const a = findDOMNode(myNodeA);
@@ -62,30 +64,32 @@ describe('findDOMNode', () => {
     expect(myNodeA === myNodeB).toBe(true);
 
     const b = findDOMNode(myNodeB);
-    expect(b.tagName).toBe('SPAN');
+    expect(b.tagName).toBe("SPAN");
   });
 
-  it('findDOMNode should reject random objects', () => {
+  it("findDOMNode should reject random objects", () => {
     expect(function () {
-      findDOMNode({ foo: 'bar' });
-    }).toThrowError('Argument appears to not be a ReactComponent. Keys: foo');
+      findDOMNode({ foo: "bar" });
+    }).toThrowError("Argument appears to not be a ReactComponent. Keys: foo");
   });
 
-  it('findDOMNode should reject unmounted objects with render func', () => {
+  it("findDOMNode should reject unmounted objects with render func", () => {
     class Foo extends React.Component {
       render() {
         return <div />;
       }
     }
 
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     const inst = render(<Foo />, container);
     unmountComponentAtNode(container);
 
-    expect(() => findDOMNode(inst)).toThrowError('Unable to find node on an unmounted component.');
+    expect(() => findDOMNode(inst)).toThrowError(
+      "Unable to find node on an unmounted component.",
+    );
   });
 
-  it('findDOMNode should not throw an error when called within a component that is not mounted', () => {
+  it("findDOMNode should not throw an error when called within a component that is not mounted", () => {
     class Bar extends React.Component {
       UNSAFE_componentWillMount() {
         expect(findDOMNode(this)).toBeNull();

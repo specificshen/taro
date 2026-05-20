@@ -1,16 +1,18 @@
 import * as path from 'node:path';
 
+import { type MockedFunction, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { chalk, fs, PROJECT_CONFIG, shouldUseCnpm, shouldUseYarn } from '@spcsn/taro-helper';
 import { exec } from 'child_process';
 
-import { getPkgVersion } from '../util';
+import { getPkgVersion } from '../src/util';
 import { run } from './utils';
 
 const runUpdate = run('update', ['commands/update']);
 const lastestVersion = getPkgVersion();
 
-jest.mock('child_process', () => {
-  const exec = jest.fn();
+vi.mock('child_process', () => {
+  const exec = vi.fn();
   exec.mockReturnValue({
     stdout: {
       on() {},
@@ -25,8 +27,8 @@ jest.mock('child_process', () => {
   };
 });
 
-jest.mock('ora', () => {
-  const ora = jest.fn();
+vi.mock('ora', () => {
+  const ora = vi.fn();
   ora.mockReturnValue({
     start() {
       return {
@@ -39,26 +41,26 @@ jest.mock('ora', () => {
   return ora;
 });
 
-jest.mock('@spcsn/taro-helper', () => {
-  const helper = jest.requireActual('@spcsn/taro-helper');
+vi.mock('@spcsn/taro-helper', async () => {
+  const helper = await vi.importActual<typeof import('@spcsn/taro-helper')>('@spcsn/taro-helper');
   const fs = helper.fs;
   return {
     __esModule: true,
     ...helper,
-    shouldUseCnpm: jest.fn(),
-    shouldUseYarn: jest.fn(),
+    shouldUseCnpm: vi.fn(),
+    shouldUseYarn: vi.fn(),
     chalk: {
-      red: jest.fn(),
+      red: vi.fn(),
       green() {},
     },
     fs: {
       ...fs,
-      writeJson: jest.fn(),
+      writeJson: vi.fn(),
     },
   };
 });
 
-jest.mock('latest-version', () => () => lastestVersion);
+vi.mock('latest-version', () => () => lastestVersion);
 
 function updatePkg(pkgPath: string, version: string) {
   let packageMap = require(pkgPath);
@@ -94,10 +96,10 @@ function updatePkg(pkgPath: string, version: string) {
 }
 
 describe('update', () => {
-  const execMocked = exec as unknown as jest.Mock<any>;
-  const shouldUseCnpmMocked = shouldUseCnpm as jest.Mock<any>;
-  const shouldUseYarnMocked = shouldUseYarn as jest.Mock<any>;
-  const writeJson = fs.writeJson as jest.Mock<any>;
+  const execMocked = exec as unknown as MockedFunction<typeof exec>;
+  const shouldUseCnpmMocked = shouldUseCnpm as MockedFunction<typeof shouldUseCnpm>;
+  const shouldUseYarnMocked = shouldUseYarn as MockedFunction<typeof shouldUseYarn>;
+  const writeJson = fs.writeJson as MockedFunction<typeof fs.writeJson>;
 
   beforeEach(() => {
     shouldUseCnpmMocked.mockReturnValue(false);
@@ -112,7 +114,7 @@ describe('update', () => {
   });
 
   it('should log errors', async () => {
-    const spy = jest.spyOn(console, 'log');
+    const spy = vi.spyOn(console, 'log');
     spy.mockImplementation(() => {});
     await runUpdate('', {
       options: {
@@ -184,9 +186,9 @@ describe('update', () => {
   });
 
   it("should throw when there isn't a Taro project", async () => {
-    const chalkMocked = chalk.red as unknown as jest.Mock<any>;
-    const exitSpy = jest.spyOn(process, 'exit');
-    const logSpy = jest.spyOn(console, 'log');
+    const chalkMocked = chalk.red as unknown as MockedFunction<any>;
+    const exitSpy = vi.spyOn(process, 'exit');
+    const logSpy = vi.spyOn(console, 'log');
     exitSpy.mockImplementation(() => {
       throw new Error();
     });
@@ -211,7 +213,7 @@ describe('update', () => {
     const pkgPath = path.join(appPath, 'package.json');
     const packageMap = updatePkg(pkgPath, lastestVersion);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     await runUpdate(appPath, {
@@ -234,7 +236,7 @@ describe('update', () => {
     const pkgPath = path.join(appPath, 'package.json');
     const packageMap = updatePkg(pkgPath, version);
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     await runUpdate(appPath, {
@@ -254,7 +256,7 @@ describe('update', () => {
   it('should update project with yarn', async () => {
     const appPath = path.resolve(__dirname, 'fixtures/default');
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     shouldUseYarnMocked.mockReturnValue(true);
 
@@ -273,7 +275,7 @@ describe('update', () => {
   it('should update project with pnpm', async () => {
     const appPath = path.resolve(__dirname, 'fixtures/default');
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     shouldUseCnpmMocked.mockReturnValue(true);
 
@@ -292,7 +294,7 @@ describe('update', () => {
   it('should update project with cnpm', async () => {
     const appPath = path.resolve(__dirname, 'fixtures/default');
 
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
     shouldUseCnpmMocked.mockReturnValue(true);
 

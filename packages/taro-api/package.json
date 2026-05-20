@@ -10,7 +10,7 @@
   "module": "dist/index.esm.js",
   "directories": {
     "lib": "lib",
-    "test": "__tests__"
+    "test": "tests"
   },
   "files": [
     "dist"
@@ -28,9 +28,9 @@
     "clean": "rimraf ./dist",
     "dev": "concurrently \"pnpm run build:types -- --watch\" \"pnpm run rolldown --environment NODE_ENV:development -w\"",
     "rolldown": "rolldown --config rolldown.config.mjs",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:ci": "cross-env NODE_ENV=test jest --ci -i --coverage --silent",
-    "test:dev": "cross-env NODE_ENV=test jest --watch"
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage",
+    "test:dev": "vitest"
   },
   "bugs": {
     "url": "https://github.com/NervJS/taro/issues"

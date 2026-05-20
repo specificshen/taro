@@ -1,6 +1,8 @@
 import * as path from 'node:path';
 
-import { readConfig } from '../utils';
+import { describe, expect, test, vi } from 'vitest';
+
+import { readConfig } from '../src/utils';
 
 describe('readConfig', () => {
   const config = {
@@ -64,7 +66,7 @@ describe('readConfig', () => {
   });
 
   test('read config with import', async () => {
-    const logSpy = jest.spyOn(console, 'log');
+    const logSpy = vi.spyOn(console, 'log');
     logSpy.mockImplementation(() => {});
 
     const result = readConfig(path.join(__dirname, './__mocks__/app.import.config.ts'));
