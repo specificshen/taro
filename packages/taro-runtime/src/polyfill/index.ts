@@ -1,4 +1,4 @@
-import { isObject } from '@tarojs/shared'
+import { isObject } from '@spcsn/taro-shared'
 
 import { handleArrayFindPolyfill, handleArrayIncludesPolyfill } from './array'
 import { handleIntersectionObserverPolyfill } from './intersection-observer'

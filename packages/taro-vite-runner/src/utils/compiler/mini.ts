@@ -1,7 +1,7 @@
 import path from 'node:path'
 
-import { fs, isAliasPath, readConfig, recursiveMerge, replaceAliasPath, resolveMainFilePath } from '@tarojs/helper'
-import { isArray, isFunction } from '@tarojs/shared'
+import { fs, isAliasPath, readConfig, recursiveMerge, replaceAliasPath, resolveMainFilePath } from '@spcsn/taro-helper'
+import { isArray, isFunction } from '@spcsn/taro-shared'
 
 import defaultConfig from '../../defaultConfig/defaultConfig.mini'
 import { miniTemplateLoader, QUERY_IS_NATIVE_COMP } from '../../mini/native-support'
@@ -9,7 +9,7 @@ import { getComponentName } from '../../utils'
 import { componentConfig } from '../../utils/component'
 import { CompilerContext } from './base'
 
-import type { PageConfig } from '@tarojs/taro'
+import type { PageConfig } from '@spcsn/taro'
 import type {
   ViteAppMeta,
   ViteFileType,
@@ -17,7 +17,7 @@ import type {
   ViteMiniCompilerContext,
   ViteNativeCompMeta,
   VitePageMeta,
-} from '@tarojs/taro/types/compile/viteCompilerContext'
+} from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 
 export class TaroCompilerContext extends CompilerContext<ViteMiniBuildConfig> implements ViteMiniCompilerContext {

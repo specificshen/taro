@@ -1,9 +1,9 @@
-import { Kernel } from '@tarojs/service'
+import { Kernel } from '@spcsn/taro-service'
 
 import CLI from '../cli'
 import { getPkgVersion } from '../util'
 
-jest.mock('@tarojs/service')
+jest.mock('@spcsn/taro-service')
 const MockedKernel = Kernel as unknown as jest.Mock<Kernel>
 const APP_PATH = '/a/b/c'
 

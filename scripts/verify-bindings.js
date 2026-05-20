@@ -6,37 +6,37 @@ const path = require('path')
 
 const BINDINGS = [
   {
-    name: '@tarojs/binding-darwin-x64',
+    name: '@spcsn/taro-binding-darwin-x64',
     path: 'npm/darwin-x64',
     nodeFile: 'taro.darwin-x64.node',
     minSize: 1024 * 1024,
   },
   {
-    name: '@tarojs/binding-darwin-arm64',
+    name: '@spcsn/taro-binding-darwin-arm64',
     path: 'npm/darwin-arm64',
     nodeFile: 'taro.darwin-arm64.node',
     minSize: 1024 * 1024,
   },
   {
-    name: '@tarojs/binding-linux-x64-gnu',
+    name: '@spcsn/taro-binding-linux-x64-gnu',
     path: 'npm/linux-x64-gnu',
     nodeFile: 'taro.linux-x64-gnu.node',
     minSize: 1024 * 1024,
   },
   {
-    name: '@tarojs/binding-linux-x64-musl',
+    name: '@spcsn/taro-binding-linux-x64-musl',
     path: 'npm/linux-x64-musl',
     nodeFile: 'taro.linux-x64-musl.node',
     minSize: 1024 * 1024,
   },
   {
-    name: '@tarojs/binding-linux-arm64-gnu',
+    name: '@spcsn/taro-binding-linux-arm64-gnu',
     path: 'npm/linux-arm64-gnu',
     nodeFile: 'taro.linux-arm64-gnu.node',
     minSize: 1024 * 1024,
   },
   {
-    name: '@tarojs/binding-win32-x64-msvc',
+    name: '@spcsn/taro-binding-win32-x64-msvc',
     path: 'npm/win32-x64-msvc',
     nodeFile: 'taro.win32-x64-msvc.node',
     minSize: 1024 * 1024,

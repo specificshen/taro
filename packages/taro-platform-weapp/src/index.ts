@@ -1,6 +1,6 @@
 import Weapp from './program'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 // 让其它平台插件可以继承此平台
 export { Weapp }

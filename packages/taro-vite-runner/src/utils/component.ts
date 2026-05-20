@@ -1,4 +1,4 @@
-import type { IComponentConfig } from '@tarojs/taro/types/compile/hooks'
+import type { IComponentConfig } from '@spcsn/taro/types/compile/hooks'
 
 export const componentConfig: IComponentConfig = {
   includes: new Set([

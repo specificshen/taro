@@ -1,7 +1,7 @@
 const path = require('path')
 
 function hasBrowserslist() {
-  const fs = require('@tarojs/helper').fs
+  const fs = require('@spcsn/taro-helper').fs
   const root = process.cwd()
   try {
     const pkg = require(path.resolve(root, 'package.json'))

@@ -46,14 +46,14 @@ $ pnpm --filter [package-name] run dev
 1. 进入需要调试的子包的根目录，然后执行 `pnpm link --global`。
 2. 进入测试项目的根目录，然后执行 `pnpm link --global [package-name]`。
 
-情况二、测试项目 `package.json` 中没有声明对该包的依赖，该依赖包是被某个 Taro 包间接依赖的，如 `@tarojs/runner-utils`。
+情况二、测试项目 `package.json` 中没有声明对该包的依赖，该依赖包是被某个 Taro 包间接依赖的，如 `@spcsn/taro-runner-utils`。
 
 1. 测试项目的 `package.json` 中新增 pnpm 配置并配置该依赖包的具体链接路径
 
 ```json
 "pnpm": {
   "overrides": {
-    "@tarojs/runner-utils": "/Users/.../taro/packages/taro-runner-utils"
+    "@spcsn/taro-runner-utils": "/Users/.../taro/packages/taro-runner-utils"
   }
 },
 ```
@@ -88,10 +88,10 @@ compiler: {
 $ pnpm add -wD <dependency>
 # 在根目录删除依赖
 $ pnpm remove -wD <dependency>
-# 为某个子包（如 @tarojs/cli）新增一个依赖
-$ pnpm --filter @tarojs/cli add <dependency>
-# 为某个子包（如 @tarojs/cli）删除一个依赖
-$ pnpm --filter @tarojs/cli remove <dependency>
+# 为某个子包（如 @spcsn/taro-cli）新增一个依赖
+$ pnpm --filter @spcsn/taro-cli add <dependency>
+# 为某个子包（如 @spcsn/taro-cli）删除一个依赖
+$ pnpm --filter @spcsn/taro-cli remove <dependency>
 # 为所有子包新增一个依赖
 $ pnpm -r --filter=./packages/* add <dependency>
 # 为所有子包删除一个依赖

@@ -1,11 +1,11 @@
 import path from 'node:path'
 
-import { fs, isEmptyObject, removePathPrefix } from '@tarojs/helper'
+import { fs, isEmptyObject, removePathPrefix } from '@spcsn/taro-helper'
 import { appendVirtualModulePrefix, escapePath, prettyPrintJson, stripVirtualModulePrefix } from '../utils'
 import { baseCompName, customWrapperName } from '../utils/constants'
 import { miniTemplateLoader, QUERY_IS_NATIVE_PAGE } from './native-support'
 
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginOption } from 'vite'
 
 const ENTRY_SUFFIX = '?entry-loader=true'
@@ -136,9 +136,9 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
 
         return [
           setReconciler,
-          'import { window } from "@tarojs/runtime"',
+          'import { window } from "@spcsn/taro-runtime"',
           `import { ${creator} } from "${creatorLocation}"`,
-          'import { initPxTransform } from "@tarojs/taro"',
+          'import { initPxTransform } from "@spcsn/taro"',
           setReconcilerPost,
           `import component from "${escapePath(rawId)}"`,
           importFrameworkStatement,

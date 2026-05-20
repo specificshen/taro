@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { Config, Kernel } from '@tarojs/service'
+import { Config, Kernel } from '@spcsn/taro-service'
 
 interface IRunOptions {
   options?: Record<string, string | boolean>
@@ -37,7 +37,7 @@ export function run(name: string, presets: string[] = []): IRun {
 
     const type = options.type
     if (typeof type === 'string' && !presets.some((e) => e.includes(type))) {
-      kernel.optsPlugins.push(require.resolve(`@tarojs/plugin-platform-${options.type}`))
+      kernel.optsPlugins.push(require.resolve(`@spcsn/taro-plugin-platform-${options.type}`))
     }
 
     await kernel.run({

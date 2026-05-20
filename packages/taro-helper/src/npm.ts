@@ -25,13 +25,30 @@ const defaultInstallOptions: IInstallOptions = {
   peerDependencies: true,
 }
 
-export const taroPluginPrefix = '@tarojs/plugin-'
+export const taroPluginPrefix = '@spcsn/taro-plugin-'
 
 export function resolveNpm(pluginName: string, root?: string): Promise<string> {
   const resolvePath = require('resolve') as typeof TResolve
   if (!npmCached[pluginName]) {
     return new Promise((resolve, reject) => {
       resolvePath(`${pluginName}`, { basedir: root }, (err, res) => {
+        if (err && (err as any).code === 'MODULE_NOT_FOUND') {
+          try {
+            const cliPath = require.resolve('@spcsn/taro-cli/package.json', { paths: [__dirname, root].filter(Boolean) as string[] });
+            const res = resolvePath.sync(pluginName, { basedir: require('path').dirname(cliPath) });
+            if (res) {
+              npmCached[pluginName] = res;
+              resolve(res);
+              return;
+            }
+          } catch (e2) { console.error("!!! FATAL e2 !!!", e2); throw e2; }
+          resolvePath(`${pluginName}`, { basedir: __dirname }, (err2, res2) => {
+            if (err2) return reject(err2);
+            npmCached[pluginName] = res2;
+            resolve(res2 || '');
+          });
+          return;
+        }
         if (err) {
           return reject(err)
         }
@@ -47,13 +64,30 @@ export function resolveNpmSync(pluginName: string, root?: string): string {
   const resolvePath = require('resolve') as typeof TResolve
   try {
     if (!npmCached[pluginName]) {
-      const res = resolvePath.sync(pluginName, { basedir: root })
+      let res;
+      try {
+        res = resolvePath.sync(pluginName, { basedir: root })
+      } catch (e) {
+        if ((e as any).code === 'MODULE_NOT_FOUND') {
+          try {
+            const cliPath = require.resolve('@spcsn/taro-cli/package.json', { paths: [__dirname, root].filter(Boolean) as string[] });
+            return resolvePath.sync(pluginName, { basedir: require('path').dirname(cliPath) });
+          } catch (e2) { console.error("RESOLVE_FAILED", String(e2)) }
+          try {
+            const cliPath = require.resolve('@spcsn/taro-cli/package.json', { paths: [__dirname, root].filter(Boolean) as string[] });
+            return resolvePath.sync(pluginName, { basedir: require('path').dirname(cliPath) });
+          } catch (e2) { console.error("RESOLVE_FAILED", String(e2)) }
+          res = resolvePath.sync(pluginName, { basedir: __dirname })
+        } else {
+          throw e;
+        }
+      }
       return res
     }
     return npmCached[pluginName]
   } catch (err) {
     if ((err as { code?: string }).code === 'MODULE_NOT_FOUND') {
-      console.log(chalk.cyan(`缺少npm包${pluginName}，开始安装...`))
+      console.error('!!! CAUGHT FATAL !!!', err, (err as any).stack);
       const installOptions: IInstallOptions = {
         dev: false,
       }
@@ -170,7 +204,7 @@ export async function getNpmPkg(npmName: string, root: string) {
     npmPath = resolveNpmSync(npmName, root)
   } catch (err) {
     if ((err as { code?: string }).code === 'MODULE_NOT_FOUND') {
-      console.log(chalk.cyan(`缺少npm包${npmName}，开始安装...`))
+      console.error('!!! CAUGHT FATAL !!!', err, (err as any).stack);
       const installOptions: IInstallOptions = {
         dev: false,
       }

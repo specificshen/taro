@@ -17,7 +17,7 @@ import {
   resolveScriptPath,
   TARO_BASE_CONFIG,
   TARO_CONFIG_FOLDER,
-} from '@tarojs/helper'
+} from '@spcsn/taro-helper'
 
 import { getPkgVersion, getRootPath, isNil } from '../util'
 import { modifyPagesOrSubPackages } from '../util/createPage'
@@ -240,7 +240,7 @@ export default class Page extends Creator {
     traverse(ast as any, {
       ExportDefaultDeclaration(path) {
         modifyPagesOrSubPackages({
-          path,
+          path: path as any,
           fullPagePath: pageString,
           subPkgRootPath: subPkg,
           callback,

@@ -2051,7 +2051,7 @@ declare module '../../index' {
      * @supported weapp, alipay, swan, jd, qq, tt, h5, harmony_hybrid, harmony
      * @example
      * ```tsx
-     * import { useReady } from '@tarojs/taro'
+     * import { useReady } from '@spcsn/taro'
      *
      * useReady(() => {
      *   const context = Taro.createCanvasContext('canvas')

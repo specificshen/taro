@@ -1,4 +1,4 @@
-import * as helper from '@tarojs/helper'
+import * as helper from '@spcsn/taro-helper'
 
 import doctor from '../doctor'
 
@@ -172,9 +172,9 @@ describe('config validator of doctor', () => {
     let res = await validator(
       getConfig({
         plugins: [
-          '@tarojs/plugin-mock',
+          '@spcsn/taro-plugin-mock',
           [
-            '@tarojs/plugin-mock',
+            '@spcsn/taro-plugin-mock',
             {
               mocks: {
                 '/api/user/1': {
@@ -184,7 +184,7 @@ describe('config validator of doctor', () => {
               },
             },
           ],
-          ['@tarojs/plugin-mock'],
+          ['@spcsn/taro-plugin-mock'],
           '/absulute/path/plugin/filename',
         ],
       }),
@@ -203,9 +203,9 @@ describe('config validator of doctor', () => {
     let res = await validator(
       getConfig({
         presets: [
-          '@tarojs/plugin-mock',
+          '@spcsn/taro-plugin-mock',
           [
-            '@tarojs/plugin-mock',
+            '@spcsn/taro-plugin-mock',
             {
               mocks: {
                 '/api/user/1': {
@@ -215,7 +215,7 @@ describe('config validator of doctor', () => {
               },
             },
           ],
-          ['@tarojs/plugin-mock'],
+          ['@spcsn/taro-plugin-mock'],
           '/absulute/path/plugin/filename',
         ],
       }),

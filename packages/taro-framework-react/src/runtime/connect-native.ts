@@ -19,17 +19,17 @@ import {
   requestAnimationFrame,
   safeExecute,
   window,
-} from '@tarojs/runtime'
-import { EMPTY_OBJ, ensure, hooks, isUndefined } from '@tarojs/shared'
+} from '@spcsn/taro-runtime'
+import { EMPTY_OBJ, ensure, hooks, isUndefined } from '@spcsn/taro-shared'
 
 import { setReconciler } from './connect'
 import { reactMeta } from './react-meta'
 import { isClassComponent } from './utils'
 
-import type { Instance, TaroRootElement } from '@tarojs/runtime' // eslint-disable-line import/no-duplicates
-import type { MpInstance } from '@tarojs/runtime/dist/runtime.esm' // eslint-disable-line import/no-duplicates
-import type { AppInstance, PageInstance } from '@tarojs/taro'
-import type { Func } from '@tarojs/taro/types/compile'
+import type { Instance, TaroRootElement } from '@spcsn/taro-runtime' // eslint-disable-line import/no-duplicates
+import type { MpInstance } from '@spcsn/taro-runtime/dist/runtime.esm' // eslint-disable-line import/no-duplicates
+import type { AppInstance, PageInstance } from '@spcsn/taro'
+import type { Func } from '@spcsn/taro/types/compile'
 import type React from 'react'
 
 declare const getCurrentPages: () => PageInstance[]

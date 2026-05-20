@@ -1,3 +1,3 @@
-declare module '@tarojs/components' {
-  export * from '@tarojs/components/types/index.vue3'
+declare module '@spcsn/taro-components' {
+  export * from '@spcsn/taro-components/types/index.vue3'
 }

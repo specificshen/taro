@@ -9,7 +9,7 @@ import {
   Shortcuts,
   toCamelCase,
   warn,
-} from '@tarojs/shared'
+} from '@spcsn/taro-shared'
 
 import {
   CATCH_VIEW,

@@ -1,12 +1,12 @@
 import * as path from 'node:path'
 
-import { chalk, getModuleDefaultExport } from '@tarojs/helper'
+import { chalk, getModuleDefaultExport } from '@spcsn/taro-helper'
 import { merge } from 'lodash'
 import * as resolve from 'resolve'
 
 import { PluginType } from './constants'
 
-import type { IProjectConfig, PluginItem } from '@tarojs/taro/types/compile'
+import type { IProjectConfig, PluginItem } from '@spcsn/taro/types/compile'
 import type { IPlugin, IPluginsObject } from './types'
 
 export const isNpmPkg: (name: string) => boolean = (name) => !/^(\.|\/)/.test(name)
@@ -61,6 +61,13 @@ export function resolvePresetsOrPlugins(
         extensions: ['.js', '.ts'],
       })
     } catch (err) {
+      if ((err as any).code === 'MODULE_NOT_FOUND') {
+        try {
+          const cliPath = require.resolve('@spcsn/taro-cli/package.json', { paths: [__dirname, root].filter(Boolean) });
+          fPath = resolve.sync(item, { basedir: require('path').dirname(cliPath), extensions: ['.js', '.ts'] });
+        } catch(e) {}
+      }
+      if (!fPath) {
       if (args[item]?.backup) {
         // 如果项目中没有，可以使用 CLI 中的插件
         fPath = args[item]?.backup
@@ -72,6 +79,7 @@ export function resolvePresetsOrPlugins(
         console.log(chalk.red(`找不到插件依赖 "${item}"，请先在项目中安装，项目路径：${root}`))
         process.exit(1)
       }
+    }
     }
     const resolvedItem = {
       id: fPath,

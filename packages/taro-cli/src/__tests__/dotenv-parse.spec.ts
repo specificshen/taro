@@ -1,11 +1,11 @@
 import * as path from 'node:path'
 
-import { dotenvParse } from '@tarojs/helper'
-import { Kernel } from '@tarojs/service'
+import { dotenvParse } from '@spcsn/taro-helper'
+import { Kernel } from '@spcsn/taro-service'
 
 import CLI from '../cli'
 
-jest.mock('@tarojs/service')
+jest.mock('@spcsn/taro-service')
 const MockedKernel = Kernel as unknown as jest.Mock<Kernel>
 const APP_PATH = path.join(__dirname, 'fixtures/default')
 

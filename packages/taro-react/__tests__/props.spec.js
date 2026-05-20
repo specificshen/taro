@@ -1,4 +1,4 @@
-import { createEvent, document } from '@tarojs/runtime'
+import { createEvent, document } from '@spcsn/taro-runtime'
 import * as React from 'react'
 
 import { render } from '../dist/react.esm'

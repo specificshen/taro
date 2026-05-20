@@ -1,4 +1,4 @@
-export { Current } from '@tarojs/runtime'
+export { Current } from '@spcsn/taro-runtime'
 
 export interface IFileType {
   style: string

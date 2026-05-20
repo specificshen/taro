@@ -1,13 +1,13 @@
 import * as path from 'node:path'
 
-import { emptyDirectory } from '@tarojs/helper'
+import { emptyDirectory } from '@spcsn/taro-helper'
 
 import { run } from './utils'
 
-const runBuild = run('build', ['commands/build', require.resolve('@tarojs/plugin-platform-weapp')])
+const runBuild = run('build', ['commands/build', require.resolve('@spcsn/taro-plugin-platform-weapp')])
 
-jest.mock('@tarojs/helper', () => {
-  const helper = jest.requireActual('@tarojs/helper')
+jest.mock('@spcsn/taro-helper', () => {
+  const helper = jest.requireActual('@spcsn/taro-helper')
   const fs = helper.fs
   return {
     __esModule: true,

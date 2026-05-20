@@ -1,5 +1,5 @@
 {{#if typescript }}import { PropsWithChildren } from 'react'{{/if}}
-import { useLaunch } from '@tarojs/taro'
+import { useLaunch } from '@spcsn/taro'
 
 import './app.{{ cssExt }}'
 

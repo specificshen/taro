@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { isFunction, isNumber } from '@tarojs/shared'
+import { isFunction, isNumber } from '@spcsn/taro-shared'
 
 import { throttle } from '../utils'
 

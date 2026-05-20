@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/taro",
-  "version": "4.2.0",
+  "name": "@spcsn/taro",
+  "version": "4.2.1",
   "description": "Taro framework",
   "author": "O2Team",
   "license": "MIT",
@@ -31,14 +31,16 @@
     "node": ">= 22"
   },
   "dependencies": {
-    "@tarojs/api": "workspace:*",
-    "@tarojs/runtime": "workspace:*",
-    "@types/postcss-url": "^10.0.4"
+    "@spcsn/taro-api": "workspace:*",
+    "@spcsn/taro-runtime": "workspace:*",
+    "@types/postcss-url": "^10.0.4",
+    "@spcsn/taro-react": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*"
   },
   "devDependencies": {
-    "@tarojs/components": "workspace:*",
-    "@tarojs/helper": "workspace:*",
-    "@tarojs/shared": "workspace:*",
+    "@spcsn/taro-components": "workspace:*",
+    "@spcsn/taro-helper": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
     "html-webpack-plugin": "^5.6.0",
     "webpack": "5.91.0",
     "webpack-chain": "^6.5.1",
@@ -46,9 +48,9 @@
     "rollup": "^3.29.4"
   },
   "peerDependencies": {
-    "@tarojs/components": "workspace:*",
-    "@tarojs/helper": "workspace:*",
-    "@tarojs/shared": "workspace:*",
+    "@spcsn/taro-components": "workspace:*",
+    "@spcsn/taro-helper": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
     "@types/react": "^19",
     "html-webpack-plugin": "^5",
     "rollup": "^3",

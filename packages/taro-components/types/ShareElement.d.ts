@@ -75,7 +75,7 @@ interface ShareElementProps extends StandardProps {
  * ```tsx
  * // index.js
  * import { useState, useCallback } from 'react'
- * import { View, Button, PageContainer, ShareElement } from '@tarojs/components'
+ * import { View, Button, PageContainer, ShareElement } from '@spcsn/taro-components'
  *
  * import './index.scss'
  *

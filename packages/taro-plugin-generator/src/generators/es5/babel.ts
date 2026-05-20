@@ -10,7 +10,7 @@ import dedent from 'dedent'
 
 import { GeneratorError, GeneratorErrorType } from '../../utils/error'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 const USE_BUILT_INS = 'useBuiltIns'
 const config = dedent(`

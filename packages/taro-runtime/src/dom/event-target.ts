@@ -1,4 +1,4 @@
-import { hooks, isArray, isObject, warn } from '@tarojs/shared'
+import { hooks, isArray, isObject, warn } from '@spcsn/taro-shared'
 
 import type { AddEventListenerOptions, EventHandler } from '../interface'
 

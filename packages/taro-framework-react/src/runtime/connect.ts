@@ -7,8 +7,8 @@ import {
   injectPageInstance,
   PAGE_INIT,
   perf,
-} from '@tarojs/runtime'
-import { EMPTY_OBJ, ensure, hooks } from '@tarojs/shared'
+} from '@spcsn/taro-runtime'
+import { EMPTY_OBJ, ensure, hooks } from '@spcsn/taro-shared'
 
 import { reactMeta } from './react-meta'
 import { ensureIsArray, HOOKS_APP_ID, isClassComponent, setDefaultDescriptor, setRouterParams } from './utils'
@@ -20,8 +20,8 @@ import type {
   PageProps,
   ReactAppInstance,
   ReactPageComponent,
-} from '@tarojs/runtime'
-import type { AppConfig } from '@tarojs/taro'
+} from '@spcsn/taro-runtime'
+import type { AppConfig } from '@spcsn/taro'
 import type React from 'react'
 import type TReactDOM from 'react-dom'
 import type TReactDOMClient from 'react-dom/client'

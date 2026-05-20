@@ -12,7 +12,7 @@ import {
   isString,
   isUndefined,
   Shortcuts,
-} from '@tarojs/shared'
+} from '@spcsn/taro-shared'
 
 import { raf } from '../bom/raf'
 import { taroWindowProvider } from '../bom/window'

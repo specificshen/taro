@@ -1,9 +1,9 @@
 import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 
-import * as helper from '@tarojs/helper'
-import * as runnerUtils from '@tarojs/runner-utils'
-import { getPlatformType } from '@tarojs/shared'
+import * as helper from '@spcsn/taro-helper'
+import * as runnerUtils from '@spcsn/taro-runner-utils'
+import { getPlatformType } from '@spcsn/taro-shared'
 import { merge } from 'lodash'
 import { AsyncSeriesWaterfallHook } from 'tapable'
 
@@ -11,7 +11,7 @@ import Plugin from './Plugin'
 import { convertPluginsToObject, mergePlugins, printHelpLog, resolvePresetsOrPlugins } from './utils'
 import { IS_ADD_HOOK, IS_EVENT_HOOK, IS_MODIFY_HOOK, PluginType } from './utils/constants'
 
-import type { Func, IProjectConfig, PluginItem } from '@tarojs/taro/types/compile'
+import type { Func, IProjectConfig, PluginItem } from '@spcsn/taro/types/compile'
 import type Config from './Config'
 import type { ICommand, IHook, IPaths, IPlatform, IPlugin, IPluginsObject, IPreset } from './utils/types'
 

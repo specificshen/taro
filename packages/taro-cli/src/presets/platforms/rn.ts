@@ -2,15 +2,15 @@ import * as fs from 'node:fs'
 import * as os from 'node:os'
 import * as path from 'node:path'
 
-import { chalk } from '@tarojs/helper'
+import { chalk } from '@spcsn/taro-helper'
 import * as child_process from 'child_process'
 
 import { printDevelopmentTip } from '../../util'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 function checkReactNativeDependencies(packageInfo): boolean {
-  const packageNames = ['react', 'react-native', '@tarojs/taro-rn', '@tarojs/rn-runner']
+  const packageNames = ['react', 'react-native', '@spcsn/taro-rn', '@spcsn/taro-rn-runner']
   const { dependencies, devDependencies } = packageInfo
   for (let i = 0; i < packageNames.length; i++) {
     if (!dependencies[packageNames[i]] && !devDependencies[packageNames[i]]) {
@@ -109,7 +109,7 @@ export default (ctx: IPluginContext) => {
       makeSureReactNativeInstalled(appPath).then(
         async () => {
           // build with metro
-          const rnRunner = await npm.getNpmPkg('@tarojs/rn-runner', appPath)
+          const rnRunner = await npm.getNpmPkg('@spcsn/taro-rn-runner', appPath)
           await rnRunner(appPath, rnRunnerOpts)
         },
         (error) => {

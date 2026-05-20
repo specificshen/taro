@@ -1,12 +1,12 @@
 import * as path from 'node:path'
 
-import { fs, getUserHomeDir, TARO_BASE_CONFIG, TARO_CONFIG_FOLDER } from '@tarojs/helper'
-import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from '@tarojs/service/src/utils/constants'
+import { fs, getUserHomeDir, TARO_BASE_CONFIG, TARO_CONFIG_FOLDER } from '@spcsn/taro-helper'
+import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from '@spcsn/taro-service/src/utils/constants'
 
 import { run } from './utils'
 
-jest.mock('@tarojs/helper', () => {
-  const helper = jest.requireActual('@tarojs/helper')
+jest.mock('@spcsn/taro-helper', () => {
+  const helper = jest.requireActual('@spcsn/taro-helper')
   const fs = helper.fs
   return {
     __esModule: true,

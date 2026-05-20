@@ -1,4 +1,4 @@
 /* eslint-disable no-undef */
-import { createRecursiveComponentConfig } from '@tarojs/runtime'
+import { createRecursiveComponentConfig } from '@spcsn/taro-runtime'
 // @ts-ignore
 Component(createRecursiveComponentConfig('custom-wrapper'))

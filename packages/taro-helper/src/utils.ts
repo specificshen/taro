@@ -308,7 +308,7 @@ export function getNpmPackageAbsolutePath(npmPath: string, defaultFile = 'index'
 
     // 获取 npm 包名和指定的包文件路径
     // taro-loader/path/index => packageName = taro-loader, componentRelativePath = path/index
-    // @tarojs/runtime/path/index => packageName = @tarojs/runtime, componentRelativePath = path/index
+    // @spcsn/taro-runtime/path/index => packageName = @spcsn/taro-runtime, componentRelativePath = path/index
     if (npmPath.startsWith('@')) {
       packageName = packageParts.slice(0, 2).join(path.sep)
       componentRelativePath = packageParts.slice(2).join(path.sep)

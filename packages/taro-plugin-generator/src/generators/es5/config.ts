@@ -8,7 +8,7 @@ import dedent from 'dedent'
 import { ensureNestedObjectProperty } from '../../utils/ast'
 import { GeneratorError, GeneratorErrorType } from '../../utils/error'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 const createModifiedConfigError = (compilerType: CompilerType) =>
   new GeneratorError({

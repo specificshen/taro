@@ -1,4 +1,4 @@
-# @tarojs/components
+# @spcsn/taro-components
 
 Taro 组件库。
 

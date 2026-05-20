@@ -7,7 +7,7 @@ import { updateConfig } from './config'
 import { updateDeps } from './deps'
 import { emit } from './emit'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export async function tailwindcssGenerator(ctx: IPluginContext) {
   const answer = await inquirer.prompt({

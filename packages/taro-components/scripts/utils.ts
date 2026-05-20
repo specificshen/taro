@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { fs } from '@tarojs/helper'
+import { fs } from '@spcsn/taro-helper'
 
 import { TYPES_DIR } from './constants'
 

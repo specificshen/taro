@@ -1,4 +1,4 @@
-# @tarojs/taro
+# @spcsn/taro
 
 暴露给应用开发者的 Taro 核心 API。包含以下文件：
 

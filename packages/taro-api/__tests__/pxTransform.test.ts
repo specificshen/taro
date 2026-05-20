@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 
 describe('pxtransform', () => {
   test('pxTransform', () => {

@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export default (ctx: IPluginContext) => {
   ctx.registerMethod('writeFileToDist', ({ filePath, content }) => {

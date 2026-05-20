@@ -1,6 +1,6 @@
 import { defineConfig } from 'rolldown'
 
-const external = ['@tarojs/runtime', '@tarojs/shared']
+const external = ['@spcsn/taro-runtime', '@spcsn/taro-shared']
 
 const baseOutput = {
   sourcemap: true,
@@ -38,8 +38,8 @@ export default defineConfig([
       codeSplitting: false,
       name: 'Taro',
       globals: {
-        '@tarojs/runtime': 'runtime',
-        '@tarojs/shared': 'shared',
+        '@spcsn/taro-runtime': 'runtime',
+        '@spcsn/taro-shared': 'shared',
       },
     },
   },

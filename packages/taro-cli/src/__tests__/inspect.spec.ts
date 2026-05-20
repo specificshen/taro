@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { chalk, fs } from '@tarojs/helper'
+import { chalk, fs } from '@spcsn/taro-helper'
 
 import { run } from './utils'
 
@@ -13,8 +13,8 @@ jest.mock('cli-highlight', () => {
   }
 })
 
-jest.mock('@tarojs/helper', () => {
-  const helper = jest.requireActual('@tarojs/helper')
+jest.mock('@spcsn/taro-helper', () => {
+  const helper = jest.requireActual('@spcsn/taro-helper')
   const fs = helper.fs
   return {
     __esModule: true,
@@ -29,7 +29,7 @@ jest.mock('@tarojs/helper', () => {
 const runInspect = run('inspect', [
   'commands/build',
   'commands/inspect',
-  require.resolve('@tarojs/plugin-platform-weapp'),
+  require.resolve('@spcsn/taro-plugin-platform-weapp'),
 ])
 
 describe('inspect', () => {

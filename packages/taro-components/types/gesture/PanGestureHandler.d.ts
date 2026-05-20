@@ -35,7 +35,7 @@ interface PanGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, PanGestureHandler } from '@tarojs/components'
+ * import { View, PanGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

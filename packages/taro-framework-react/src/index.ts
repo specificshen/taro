@@ -1,8 +1,8 @@
-import { isString } from '@tarojs/shared'
+import { isString } from '@spcsn/taro-shared'
 
 import { miniVitePlugin } from './vite.mini'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 import type { PluginOption } from 'vite'
 
 export type Frameworks = 'react'

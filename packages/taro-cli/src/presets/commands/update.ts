@@ -8,7 +8,7 @@ import * as semver from 'semver'
 import packagesManagement from '../../config/packagesManagement'
 import { execCommand, getPkgItemByKey } from '../../util'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
@@ -97,7 +97,7 @@ export default (ctx: IPluginContext) => {
 
         spinner.stop()
 
-        const oldVersion = packageMap.dependencies['@tarojs/taro']
+        const oldVersion = packageMap.dependencies['@spcsn/taro']
         // 更新 @tarojs/* 版本和 NervJS 版本
         Object.keys(packageMap.dependencies || {}).forEach((key) => {
           if (UPDATE_PACKAGE_LIST.indexOf(key) !== -1) {

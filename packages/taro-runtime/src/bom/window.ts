@@ -1,4 +1,4 @@
-import { isString } from '@tarojs/shared'
+import { isString } from '@spcsn/taro-shared'
 
 import { CONTEXT_ACTIONS } from '../constants'
 import { Events } from '../emitter/emitter'

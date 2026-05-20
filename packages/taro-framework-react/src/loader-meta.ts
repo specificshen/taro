@@ -1,9 +1,11 @@
+import path from 'node:path'
+
 import * as acorn from 'acorn'
 import * as walk from 'acorn-walk'
 
 import { Frameworks } from './index'
 
-import type { ILoaderMeta } from '@tarojs/taro/types/compile/config/plugin'
+import type { ILoaderMeta } from '@spcsn/taro/types/compile/config/plugin'
 
 function addConfig(source) {
   const configsMap = {
@@ -103,7 +105,7 @@ class App extends React.Component {
 `,
     frameworkArgs: 'React, ReactDOM, config',
     creator: 'createReactApp',
-    creatorLocation: '@tarojs/plugin-framework-react/dist/runtime',
+    creatorLocation: path.join(__dirname, 'runtime'),
     importFrameworkName: 'React',
     extraImportForWeb: '',
     execBeforeCreateWebApp: '',

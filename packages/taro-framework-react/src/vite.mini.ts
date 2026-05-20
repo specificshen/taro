@@ -1,11 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { defaultMainFields, resolveSync } from '@tarojs/helper'
+import { defaultMainFields, resolveSync } from '@spcsn/taro-helper'
 
 import { getLoaderMeta } from './loader-meta'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 import type { PluginOption } from 'vite'
 import type { Frameworks } from './index'
 
@@ -35,11 +35,11 @@ function resolvePackageDir(
   resolveOptions: { basedir: string; mainFields: string[] },
   extraBasedirs: string[] = [],
 ): string {
-  for (const basedir of [resolveOptions.basedir, ...extraBasedirs]) {
+  for (const basedir of [resolveOptions.basedir, ...extraBasedirs, __dirname, path.resolve(__dirname, "../../")]) {
     try {
       return path.dirname(require.resolve(`${id}/package.json`, { paths: [basedir] }))
     } catch (_error) {
-      // fallback to @tarojs/helper resolver below
+      // fallback to @spcsn/taro-helper resolver below
     }
 
     const pkgPath = resolveSync(`${id}/package.json`, { ...resolveOptions, basedir })
@@ -66,19 +66,20 @@ function aliasPlugin(ctx: IPluginContext): PluginOption {
   return {
     name: 'taro-react:alias',
     config(config) {
-      const alias: { find: string | RegExp; replacement: string }[] = [
-        { find: /react-dom$/, replacement: '@tarojs/react' },
-        { find: /react-dom\/client$/, replacement: '@tarojs/react' },
-      ]
-
       const mainFields = ['unpkg', ...defaultMainFields]
       const resolveOptions = {
         basedir: process.cwd(),
         mainFields,
       }
+      const taroReactDir = resolvePackageDir('@spcsn/taro-react', resolveOptions)
+      const taroReactFile = resolvePackageFile(taroReactDir, ['dist/react.esm.js'])
+      const alias: { find: string | RegExp; replacement: string }[] = [
+        { find: /react-dom$/, replacement: taroReactFile },
+        { find: /react-dom\/client$/, replacement: taroReactFile },
+      ]
+
       const isProd = config.mode === 'production'
       if (!isProd && ctx.initialConfig.mini?.debugReact !== true) {
-        const taroReactDir = resolvePackageDir('@tarojs/react', resolveOptions)
         const reactDir = resolvePackageDir('react', resolveOptions)
         const reactDomDir = resolvePackageDir('react-dom', resolveOptions)
         const reconcilerDir = resolvePackageDir('react-reconciler', resolveOptions, [taroReactDir])

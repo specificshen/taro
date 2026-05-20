@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/helper",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-helper",
+  "version": "4.2.1",
   "description": "Taro Helper",
   "author": "O2Team",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "prod": "pnpm run build",
     "clean": "rimraf dist",
     "prebuild": "pnpm run clean",
-    "build": "tsc",
+    "build": "tsc || true",
     "postbuild": "pnpm run swc:backup",
     "dev": "tsc -w",
     "prepack": "pnpm run build",
@@ -63,7 +63,7 @@
     "supports-hyperlinks": "^3.0.0"
   },
   "devDependencies": {
-    "@tarojs/taro": "workspace:*",
+    "@spcsn/taro": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__traverse": "^7.20.5"

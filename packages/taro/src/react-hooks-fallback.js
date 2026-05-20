@@ -1,4 +1,4 @@
-const { Current, getPageInstance, injectPageInstance } = require('@tarojs/runtime')
+const { Current, getPageInstance, injectPageInstance } = require('@spcsn/taro-runtime')
 const React = require('react')
 
 const hooksMap = {

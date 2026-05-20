@@ -1,4 +1,4 @@
-import { PLATFORM_TYPE } from '@tarojs/shared'
+import { PLATFORM_TYPE } from '@spcsn/taro-shared'
 
 import { TaroElement } from '../dom/element'
 import { TaroNode } from '../dom/node'

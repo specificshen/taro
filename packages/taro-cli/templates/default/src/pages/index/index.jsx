@@ -1,5 +1,5 @@
-import { View, Text } from '@tarojs/components'
-import { useLoad } from '@tarojs/taro'
+import { View, Text } from '@spcsn/taro-components'
+import { useLoad } from '@spcsn/taro'
 import './index.{{ cssExt }}'
 
 export default function {{ to_pascal_case pageName }} () {

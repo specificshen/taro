@@ -1,4 +1,4 @@
-# @tarojs/plugin-generator
+# @spcsn/taro-plugin-generator
 
 ## 使用
 
@@ -9,7 +9,7 @@ export default defineConfig<'webpack5'>(async (merge, {command, mode}) => {
         ...
         plugins: [
             ...,
-            "@tarojs/plugin-generator" // 添加插件
+            "@spcsn/taro-plugin-generator" // 添加插件
         ],
         ...
     }

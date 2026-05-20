@@ -35,7 +35,7 @@ interface VerticalDragGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, VerticalDragGestureHandler } from '@tarojs/components'
+ * import { View, VerticalDragGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

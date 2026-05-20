@@ -1,4 +1,4 @@
-import { DEFAULT_COMPONENTS, isEnableTTDom, TT_SPECIFIC_COMPONENTS } from '@tarojs/shared'
+import { DEFAULT_COMPONENTS, isEnableTTDom, TT_SPECIFIC_COMPONENTS } from '@spcsn/taro-shared'
 
 import { APP, BODY, CONTAINER, HEAD, HTML } from '../constants'
 import { TaroDocument } from '../dom/document'

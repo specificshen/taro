@@ -137,21 +137,21 @@ export const UPDATE_PACKAGE_LIST = [
   'postcss-html-transform',
   'postcss-plugin-constparse',
   'postcss-pxtransform',
-  '@tarojs/shared',
-  '@tarojs/taro',
-  '@tarojs/cli',
-  '@tarojs/api',
-  '@tarojs/components',
-  '@tarojs/helper',
-  '@tarojs/react',
-  '@tarojs/plugin-framework-react',
-  '@tarojs/runner-utils',
-  '@tarojs/runtime',
-  '@tarojs/service',
-  '@tarojs/plugin-platform-weapp',
-  '@tarojs/vite-runner',
-  '@tarojs/plugin-generator',
-  '@tarojs/binding',
+  '@spcsn/taro-shared',
+  '@spcsn/taro',
+  '@spcsn/taro-cli',
+  '@spcsn/taro-api',
+  '@spcsn/taro-components',
+  '@spcsn/taro-helper',
+  '@spcsn/taro-react',
+  '@spcsn/taro-plugin-framework-react',
+  '@spcsn/taro-runner-utils',
+  '@spcsn/taro-runtime',
+  '@spcsn/taro-service',
+  '@spcsn/taro-plugin-platform-weapp',
+  '@spcsn/taro-vite-runner',
+  '@spcsn/taro-plugin-generator',
+  '@spcsn/taro-binding',
 ]
 
 export enum META_TYPE {
@@ -164,20 +164,20 @@ export enum META_TYPE {
   EXPORTS = 'EXPORTS',
 }
 
-export const taroJsMiniComponentsPath = '@tarojs/components/mini'
-export const taroJsComponents = '@tarojs/components'
-export const taroJsQuickAppComponents = '@tarojs/components-qa'
-export const taroJsFramework = '@tarojs/taro'
-export const taroJsRedux = '@tarojs/redux'
-export const taroJsMobx = '@tarojs/mobx'
-export const taroJsMobxCommon = '@tarojs/mobx-common'
+export const taroJsMiniComponentsPath = '@spcsn/taro-components/mini'
+export const taroJsComponents = '@spcsn/taro-components'
+export const taroJsQuickAppComponents = '@spcsn/taro-components-qa'
+export const taroJsFramework = '@spcsn/taro'
+export const taroJsRedux = '@spcsn/taro-redux'
+export const taroJsMobx = '@spcsn/taro-mobx'
+export const taroJsMobxCommon = '@spcsn/taro-mobx-common'
 
 export const DEVICE_RATIO_NAME = 'deviceRatio'
 export const isWindows = os.platform() === 'win32'
 
-export const DEFAULT_TEMPLATE_SRC = 'github:NervJS/taro-project-templates#v4.0'
-export const DEFAULT_TEMPLATE_SRC_GITEE = 'direct:https://gitee.com/o2team/taro-project-templates.git#v4.0'
-export const TARO_CONFIG_FOLDER = '.taro4.0'
+export const DEFAULT_TEMPLATE_SRC = 'github:NervJS/taro-project-templates#v4.2'
+export const DEFAULT_TEMPLATE_SRC_GITEE = 'direct:https://gitee.com/o2team/taro-project-templates.git#v4.2'
+export const TARO_CONFIG_FOLDER = '.taro4.2'
 export const TARO_BASE_CONFIG = 'index.json'
 export const TARO_GLOBAL_CONFIG_DIR = '.taro-global-config'
 export const TARO_GLOBAL_CONFIG_FILE = 'index.json'

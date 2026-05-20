@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { isObject, PLATFORM_TYPE } from '@tarojs/shared'
+import { isObject, PLATFORM_TYPE } from '@spcsn/taro-shared'
 import { get, merge } from 'lodash'
 
 import { getPkgVersion } from '../utils/package'
@@ -52,7 +52,7 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
     const { npm } = this.helper
 
     // React-only / Vite-only fork：webpack5 路径已移除，runner 固定为 vite-runner
-    const runnerPkg = '@tarojs/vite-runner'
+    const runnerPkg = '@spcsn/taro-vite-runner'
 
     const runner = await npm.getNpmPkg(runnerPkg, appPath)
 

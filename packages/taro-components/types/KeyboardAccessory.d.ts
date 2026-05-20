@@ -4,7 +4,7 @@ import { StandardProps } from './common'
 /** @ignore */
 type KeyboardAccessoryProps = StandardProps
 
-/** 设置 Input / Textarea 聚焦时键盘上方 CoverView / CoverImage 工具栏视图。需要配置 Taro 插件 `@tarojs/plugin-platform-weapp` 的 `enablekeyboardAccessory` 参数为 `true` 后才能使用，请参考：[#9548](https://github.com/NervJS/taro/issues/9548#issuecomment-891682216)。
+/** 设置 Input / Textarea 聚焦时键盘上方 CoverView / CoverImage 工具栏视图。需要配置 Taro 插件 `@spcsn/taro-plugin-platform-weapp` 的 `enablekeyboardAccessory` 参数为 `true` 后才能使用，请参考：[#9548](https://github.com/NervJS/taro/issues/9548#issuecomment-891682216)。
  *
  * @classification forms
  * @supported weapp
@@ -14,7 +14,7 @@ type KeyboardAccessoryProps = StandardProps
  * {
  *   // ...
  *   plugins: [
- *     ['@tarojs/plugin-platform-weapp', {
+ *     ['@spcsn/taro-plugin-platform-weapp', {
  *       enablekeyboardAccessory: true
  *     }]
  *   ]

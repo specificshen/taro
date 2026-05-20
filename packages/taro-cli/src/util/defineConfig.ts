@@ -1,5 +1,5 @@
-import type { IProjectConfig } from '@tarojs/taro/types/compile'
-import type { CompilerTypes, CompilerWebpackTypes } from '@tarojs/taro/types/compile/compiler'
+import type { IProjectConfig } from '@spcsn/taro/types/compile'
+import type { CompilerTypes, CompilerWebpackTypes } from '@spcsn/taro/types/compile/compiler'
 
 type WebpackMerge = (...configs: Array<object | null | undefined>) => object
 

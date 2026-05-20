@@ -1,4 +1,4 @@
-import { noop } from '@tarojs/shared'
+import { noop } from '@spcsn/taro-shared'
 
 import { MutationObserverImpl, recordMutation } from './implements'
 import { MutationRecord, MutationRecordType } from './record'

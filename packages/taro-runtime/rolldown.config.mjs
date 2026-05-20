@@ -1,6 +1,6 @@
 import { defineConfig } from 'rolldown'
 
-const external = ['@tarojs/shared', 'tslib']
+const external = ['@spcsn/taro-shared', 'tslib']
 
 const baseOutput = {
   sourcemap: true,

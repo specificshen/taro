@@ -9,7 +9,7 @@ import dedent from 'dedent'
 
 import { GeneratorError, GeneratorErrorType } from '../../utils/error'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export async function emit(ctx: IPluginContext) {
   return Promise.all([emitCSS(ctx), injectTailwindCSSToEntry(ctx), emitPostcssConfig(ctx)])

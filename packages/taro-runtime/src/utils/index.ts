@@ -1,4 +1,4 @@
-import { getComponentsAlias as _getComponentsAlias, internalComponents, isFunction, Shortcuts } from '@tarojs/shared'
+import { getComponentsAlias as _getComponentsAlias, internalComponents, isFunction, Shortcuts } from '@spcsn/taro-shared'
 
 import { CLASS, COMMENT, ID, ROOT_STR, STYLE, UID } from '../constants'
 import { NodeType } from '../dom/node_types'

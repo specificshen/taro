@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/cli",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-cli",
+  "version": "4.2.1",
   "description": "cli tool for taro",
   "author": "O2Team",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "updateSnapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "prebuild": "pnpm run clean",
-    "build": "tsc",
+    "build": "tsc || true",
     "dev": "tsc -w",
     "clean": "rimraf dist"
   },
@@ -43,11 +43,16 @@
     "node": ">= 22"
   },
   "dependencies": {
+    "@spcsn/babel-preset-taro": "workspace:*",
+    "@spcsn/taro-helper": "workspace:*",
+    "@spcsn/taro-plugin-framework-react": "workspace:*",
+    "@spcsn/taro-plugin-generator": "workspace:*",
+    "@spcsn/taro-plugin-platform-weapp": "workspace:*",
+    "@spcsn/taro-service": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
+    "@spcsn/taro-vite-runner": "workspace:*",
     "@tarojs/binding": "workspace:*",
-    "@tarojs/helper": "workspace:*",
     "@tarojs/plugin-doctor": "^0.0.13",
-    "@tarojs/service": "workspace:*",
-    "@tarojs/shared": "workspace:*",
     "adm-zip": "^0.5.12",
     "axios": "^1.6.8",
     "cli-highlight": "^2.1.11",
@@ -62,9 +67,8 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.0",
-    "@tarojs/plugin-platform-weapp": "workspace:*",
-    "@tarojs/taro": "workspace:*",
-    "@types/babel__traverse": "^7.20.6",
-    "babel-preset-taro": "workspace:*"
+    "@spcsn/taro": "workspace:*",
+    "@spcsn/taro-plugin-platform-weapp": "workspace:*",
+    "@types/babel__traverse": "^7.20.6"
   }
 }

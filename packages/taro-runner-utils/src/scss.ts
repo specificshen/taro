@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { fs } from '@tarojs/helper'
+import { fs } from '@spcsn/taro-helper'
 import { Bundler, BundleResult } from 'scss-bundle'
 
 interface LoaderOption {

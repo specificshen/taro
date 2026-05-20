@@ -1,5 +1,5 @@
 import { CSSProperties, LegacyRef, ReactNode } from 'react'
-import { COMPILE_MODE_SUB_RENDER_FN } from '@tarojs/shared'
+import { COMPILE_MODE_SUB_RENDER_FN } from '@spcsn/taro-shared'
 
 export interface StandardProps<T = any, TouchEvent extends BaseTouchEvent<any> = ITouchEvent> extends EventProps<TouchEvent> {
   /** 组件的唯一标示, 保持整个页面唯一 */

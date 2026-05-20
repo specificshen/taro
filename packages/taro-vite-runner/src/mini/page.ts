@@ -8,7 +8,7 @@ import { appendVirtualModulePrefix, escapePath, prettyPrintJson, stripVirtualMod
 import { createFilterWithCompileOptions } from '../utils/createFilter'
 import { UniqueKeyMap } from '../utils/map'
 
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginOption, ResolvedConfig } from 'vite'
 
 export const PAGE_SUFFIX = '?page-loader=true'
@@ -88,7 +88,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         })
 
         return [
-          'import { createPageConfig } from "@tarojs/runtime"',
+          'import { createPageConfig } from "@spcsn/taro-runtime"',
           `import component from "${escapePath(rawId)}"`,
           `var config = ${pageConfig}`,
           page.config.enableShareTimeline ? 'component.enableShareTimeline = true' : '',

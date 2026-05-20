@@ -1,4 +1,4 @@
-import { MapProps } from '@tarojs/components';
+import { MapProps } from '@spcsn/taro-components';
 import Taro from '../../index'
 
 declare module '../../index' {

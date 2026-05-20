@@ -1,4 +1,4 @@
-import { ensure, hooks, Shortcuts } from '@tarojs/shared'
+import { ensure, hooks, Shortcuts } from '@spcsn/taro-shared'
 
 import { DOCUMENT_FRAGMENT } from '../constants'
 import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer'

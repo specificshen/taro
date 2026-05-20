@@ -2,7 +2,7 @@ import type * as BabelCore from '@babel/core'
 
 export default (id = '') => {
   return function pluginRemovePageConfig(babel: typeof BabelCore): BabelCore.PluginObj<BabelCore.PluginPass> {
-    const { types: t } = babel
+    const t = babel.types as any
 
     return {
       name: 'plugin:remove_pageconfig',

@@ -1,12 +1,12 @@
 /**
- * vue tsx @tarojs/components 类型提示文件
+ * vue tsx @spcsn/taro-components 类型提示文件
  *
  * ## 如何使用?
 
  * 请在醒目全局的类型文件中写入以下代码，覆盖默认的组件类型提示
  * ```typescript
- * export declare module '@tarojs/components' {
- *   export * from '@tarojs/components/types/index.vue3'
+ * export declare module '@spcsn/taro-components' {
+ *   export * from '@spcsn/taro-components/types/index.vue3'
  * }
  * ```
  */

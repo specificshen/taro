@@ -1,4 +1,4 @@
-import { isArray } from '@tarojs/shared'
+import { isArray } from '@spcsn/taro-shared'
 
 import env from '../env'
 

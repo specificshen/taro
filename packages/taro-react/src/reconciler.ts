@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
-import { document, FormElement } from '@tarojs/runtime'
-import { isBoolean, isUndefined, noop } from '@tarojs/shared'
+import { document, FormElement } from '@spcsn/taro-runtime'
+import { isBoolean, isUndefined, noop } from '@spcsn/taro-shared'
 import { createContext } from 'react'
 import Reconciler from 'react-reconciler'
 import { DefaultEventPriority, NoEventPriority } from 'react-reconciler/constants'
@@ -9,7 +9,7 @@ import { precacheFiberNode, updateFiberProps } from './componentTree'
 import { track } from './inputValueTracking'
 import { getUpdatePayload, Props, updateProps, updatePropsByPayload } from './props'
 
-import type { TaroElement, TaroText } from '@tarojs/runtime'
+import type { TaroElement, TaroText } from '@spcsn/taro-runtime'
 import type { Fiber, HostConfig } from 'react-reconciler'
 
 let currentUpdatePriority = NoEventPriority

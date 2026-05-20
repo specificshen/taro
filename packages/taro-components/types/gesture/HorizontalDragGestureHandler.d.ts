@@ -35,7 +35,7 @@ interface HorizontalDragGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, HorizontalDragGestureHandler } from '@tarojs/components'
+ * import { View, HorizontalDragGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

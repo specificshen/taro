@@ -5,7 +5,7 @@
 ### example
 
 ```
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 Taro.request(...)
 ```
 

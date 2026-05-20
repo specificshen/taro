@@ -1,4 +1,4 @@
-import { isFunction, isObject } from '@tarojs/shared'
+import { isFunction, isObject } from '@spcsn/taro-shared'
 
 export function Behavior(options) {
   return options

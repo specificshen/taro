@@ -1,13 +1,13 @@
 import * as path from 'node:path'
 
-import { chalk, fs } from '@tarojs/helper'
+import { chalk, fs } from '@spcsn/taro-helper'
 
 import doctor from '../doctor'
 
 const validator = doctor.validators[3]
 
-jest.mock('@tarojs/helper', () => {
-  const helper = jest.requireActual('@tarojs/helper')
+jest.mock('@spcsn/taro-helper', () => {
+  const helper = jest.requireActual('@spcsn/taro-helper')
   const fs = helper.fs
   return {
     __esModule: true,

@@ -1,4 +1,4 @@
-import { Shortcuts } from '@tarojs/shared'
+import { Shortcuts } from '@spcsn/taro-shared'
 
 import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer'
 import { TaroNode } from './node'

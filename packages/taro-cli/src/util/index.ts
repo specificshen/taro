@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { chalk, fs, isWindows } from '@tarojs/helper'
+import { chalk, fs, isWindows } from '@spcsn/taro-helper'
 import { exec } from 'child_process'
 
 export function getRootPath(): string {

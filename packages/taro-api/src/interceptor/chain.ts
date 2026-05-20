@@ -1,4 +1,4 @@
-import { isFunction } from '@tarojs/shared'
+import { isFunction } from '@spcsn/taro-shared'
 
 export type TInterceptor = (c: Chain) => Promise<void>
 

@@ -1,4 +1,4 @@
-import type { RecursiveTemplate, UnRecursiveTemplate } from '@tarojs/shared/dist/template'
+import type { RecursiveTemplate, UnRecursiveTemplate } from '@spcsn/taro-shared/dist/template'
 
 import type { PluginContext } from 'rollup'
 import type { IMiniFilesConfig, IH5Config, IHarmonyConfig, IMiniAppConfig } from './config'

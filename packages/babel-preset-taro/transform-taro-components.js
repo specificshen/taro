@@ -5,7 +5,7 @@ const COMPONENT_LIST_ITEM = 'ListItem'
 const COMPONENT_LIST_BUILDER = 'ListBuilder'
 const COMPONENT_SCROLL_VIEW = 'ScrollView'
 const COMPONENT_VIEW = 'View'
-const TARO_COMPONENTS = '@tarojs/components'
+const TARO_COMPONENTS = '@spcsn/taro-components'
 
 const SCROLL_VIEW_PROPS = [
   'scrollX',
@@ -87,7 +87,7 @@ module.exports = declare((api) => {
               remainingBody.push(node)
             })
 
-            // 重新生成 @tarojs/components 导入声明并插入到路径的开头，排除掉 List、ListItem，添加 ScrollView、ListBuilder、View 到 @tarojs/components 导入声明中
+            // 重新生成 @spcsn/taro-components 导入声明并插入到路径的开头，排除掉 List、ListItem，添加 ScrollView、ListBuilder、View 到 @spcsn/taro-components 导入声明中
             const baseSpecifiers = collectedSpecifiers.filter((specifier) => {
               return !(
                 api.types.isImportSpecifier(specifier) &&
@@ -100,7 +100,7 @@ module.exports = declare((api) => {
               specifierMap.set(specifier.local.name, specifier)
             })
 
-            // 保证重建的 @tarojs/components 导入不重复本地名，且补齐转换所需组件
+            // 保证重建的 @spcsn/taro-components 导入不重复本地名，且补齐转换所需组件
             const ensureSpecifier = (localName, importedName) => {
               if (!specifierMap.has(localName)) {
                 specifierMap.set(
@@ -143,9 +143,9 @@ module.exports = declare((api) => {
 
           specifiers.forEach((specifier) => {
             if (api.types.isImportSpecifier(specifier)) {
-              // 导出名，import { List as TaroList} from '@tarojs/components', local.name = List
+              // 导出名，import { List as TaroList} from '@spcsn/taro-components', local.name = List
               const imported = specifier.imported || specifier.local
-              // 别名，import { List as TaroList} from '@tarojs/components', local.name = TaroList
+              // 别名，import { List as TaroList} from '@spcsn/taro-components', local.name = TaroList
               const local = specifier.local
 
               // 收集组件导入信息

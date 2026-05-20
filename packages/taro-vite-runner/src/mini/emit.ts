@@ -1,14 +1,14 @@
 import path from 'node:path'
 
-import { promoteRelativePath } from '@tarojs/helper'
-import { isFunction, isString, toDashed } from '@tarojs/shared'
+import { promoteRelativePath } from '@spcsn/taro-helper'
+import { isFunction, isString, toDashed } from '@spcsn/taro-shared'
 
 import { getComponentName, prettyPrintJson } from '../utils'
 import { componentConfig } from '../utils/component'
 import { baseCompName, baseTemplateName, customWrapperName } from '../utils/constants'
 
-import type { Config } from '@tarojs/taro'
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { Config } from '@spcsn/taro'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 import type { PluginOption } from 'vite'
 

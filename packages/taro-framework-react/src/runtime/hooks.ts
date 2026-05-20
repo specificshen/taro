@@ -1,11 +1,11 @@
-import { Current, getPageInstance, injectPageInstance } from '@tarojs/runtime'
-import { isArray, isFunction } from '@tarojs/shared'
+import { Current, getPageInstance, injectPageInstance } from '@spcsn/taro-runtime'
+import { isArray, isFunction } from '@spcsn/taro-shared'
 
 import { reactMeta } from './react-meta'
 import { HOOKS_APP_ID } from './utils'
 
-import type { AppInstance, Instance, PageLifeCycle, PageProps } from '@tarojs/runtime'
-import type { Func } from '@tarojs/taro/types/compile'
+import type { AppInstance, Instance, PageLifeCycle, PageProps } from '@spcsn/taro-runtime'
+import type { Func } from '@spcsn/taro/types/compile'
 
 const createTaroHook = (lifecycle: keyof PageLifeCycle | keyof AppInstance) => {
   return (fn: Func) => {

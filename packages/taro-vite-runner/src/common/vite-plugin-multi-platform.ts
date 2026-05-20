@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { REG_NODE_MODULES, SCRIPT_EXT } from '@tarojs/helper'
+import { REG_NODE_MODULES, SCRIPT_EXT } from '@spcsn/taro-helper'
 
 import { isVirtualModule } from '../utils'
 
@@ -8,7 +8,7 @@ import type {
   ViteH5CompilerContext,
   ViteHarmonyCompilerContext,
   ViteMiniCompilerContext,
-} from '@tarojs/taro/types/compile/viteCompilerContext'
+} from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { ResolvedId } from 'rollup'
 import type { PluginOption } from 'vite'
 

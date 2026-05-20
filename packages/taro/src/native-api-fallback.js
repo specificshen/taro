@@ -35,7 +35,7 @@ const needPromiseApis = new Set([
 function initWeappNativeApiFallback(taro) {
   if (typeof wx === 'undefined' || typeof taro.addInterceptor === 'function') return
 
-  const { processApis } = require('@tarojs/shared')
+  const { processApis } = require('@spcsn/taro-shared')
 
   processApis(taro, wx, {
     needPromiseApis,

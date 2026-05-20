@@ -109,7 +109,7 @@ declare module './index' {
      * @see https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareAppMessage-Object-object
      * @example
      * ```tsx
-     * import { ShareAppMessageReturnObject, useShareAppMessage } from "@tarojs/taro";
+     * import { ShareAppMessageReturnObject, useShareAppMessage } from "@spcsn/taro";
      * // ... else code
      * useShareAppMessage(() => {
      *   const p = new Promise<ShareAppMessageReturnObject>(resolve => {

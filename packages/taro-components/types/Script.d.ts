@@ -20,7 +20,7 @@ interface ScriptProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, Script } from '@tarojs/components'
+ * import { View, Script } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

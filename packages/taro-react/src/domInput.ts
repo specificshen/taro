@@ -1,7 +1,7 @@
 import { supportedInputTypes } from './constant'
 import { Props } from './props'
 
-import type { FormElement, TaroElement } from '@tarojs/runtime'
+import type { FormElement, TaroElement } from '@spcsn/taro-runtime'
 import type { RestoreType } from './event'
 
 // 从 props 中，更新 input 组件的 value 值

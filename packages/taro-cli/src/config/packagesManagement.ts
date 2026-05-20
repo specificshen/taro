@@ -1,19 +1,19 @@
 const packagesManagement = {
   yarn: {
     command: 'yarn install',
-    globalCommand: 'yarn global add @tarojs/cli',
+    globalCommand: 'yarn global add @spcsn/taro-cli',
   },
   pnpm: {
     command: 'pnpm install',
-    globalCommand: 'pnpm add -g @tarojs/cli',
+    globalCommand: 'pnpm add -g @spcsn/taro-cli',
   },
   cnpm: {
     command: 'cnpm install',
-    globalCommand: 'cnpm i -g @tarojs/cli',
+    globalCommand: 'cnpm i -g @spcsn/taro-cli',
   },
   npm: {
     command: 'npm install',
-    globalCommand: 'npm i -g @tarojs/cli',
+    globalCommand: 'npm i -g @spcsn/taro-cli',
   },
 }
 

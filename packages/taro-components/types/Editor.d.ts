@@ -105,7 +105,7 @@ declare namespace EditorProps {
  * </template>
  *
  * <script>
- *   import Taro from '@tarojs/taro'
+ *   import Taro from '@spcsn/taro'
  *   export default {
  *     data() {
  *       return {

@@ -44,7 +44,7 @@ const plugin = function (babel: typeof BabelCore): BabelCore.PluginObj<IState> {
     name: 'babel-plugin-transform-taro-api',
     pre() {
       const { opts = {} as any } = this
-      const { apis = new Set<string>(), bindingName = 'Taro', packageName = '@tarojs/taro', definition = {} } = opts
+      const { apis = new Set<string>(), bindingName = 'Taro', packageName = '@spcsn/taro', definition = {} } = opts
       this.definition = {
         ...definition.apis,
         ...definition.components,

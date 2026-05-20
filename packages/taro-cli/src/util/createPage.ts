@@ -1,4 +1,4 @@
-import { babelKit } from '@tarojs/helper'
+import { babelKit } from '@spcsn/taro-helper'
 
 import { ConfigModificationState, ModifyCallback } from '../create/page'
 

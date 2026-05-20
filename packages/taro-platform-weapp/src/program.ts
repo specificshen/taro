@@ -1,19 +1,19 @@
-import { TaroPlatformBase } from '@tarojs/service'
+import path from 'node:path'
+
+import { TaroPlatformBase } from '@spcsn/taro-service'
 
 import { components } from './components'
 import { Template } from './template'
 
 import type { IOptions } from './index'
 
-const PACKAGE_NAME = '@tarojs/plugin-platform-weapp'
-
 export default class Weapp extends TaroPlatformBase {
   template: Template
   platform = 'weapp'
   globalObject = 'wx'
   projectConfigJson: string = this.config.projectConfigName || 'project.config.json'
-  runtimePath = `${PACKAGE_NAME}/dist/runtime`
-  taroComponentsPath = `${PACKAGE_NAME}/dist/components-react`
+  runtimePath = path.join(__dirname, 'runtime')
+  taroComponentsPath = path.join(__dirname, 'components-react')
   fileType = {
     templ: '.wxml',
     style: '.wxss',

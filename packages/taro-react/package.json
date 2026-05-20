@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/react",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-react",
+  "version": "4.2.1",
   "description": "like react-dom, but for mini apps.",
   "author": "O2Team",
   "license": "MIT",
@@ -30,8 +30,8 @@
     "node": ">= 22"
   },
   "dependencies": {
-    "@tarojs/shared": "workspace:*",
-    "@tarojs/runtime": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
+    "@spcsn/taro-runtime": "workspace:*",
     "react-reconciler": "0.33.0"
   },
   "devDependencies": {

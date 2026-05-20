@@ -16,7 +16,7 @@ interface RootPortalProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { useState } from 'react'
- * import { RootPortal, View, Button } from '@tarojs/components'
+ * import { RootPortal, View, Button } from '@spcsn/taro-components'
  *
  * export default function RootPortalExample {
  *   const [show, setShow] = useState(false)

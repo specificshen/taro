@@ -1,11 +1,11 @@
-import { fs, REG_FONT, REG_IMAGE, REG_MEDIA } from '@tarojs/helper'
-import { isBoolean, isString } from '@tarojs/shared'
+import { fs, REG_FONT, REG_IMAGE, REG_MEDIA } from '@spcsn/taro-helper'
+import { isBoolean, isString } from '@spcsn/taro-shared'
 import mrmime from 'mrmime'
 
 import { isVirtualModule } from '../utils'
 
-import type { IUrlLoaderOption } from '@tarojs/taro/types/compile'
-import type { ViteH5CompilerContext, ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { IUrlLoaderOption } from '@spcsn/taro/types/compile'
+import type { ViteH5CompilerContext, ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginOption, ResolvedConfig } from 'vite'
 
 const rawRE = /(?:\?|&)raw(?:&|$)/

@@ -8,7 +8,7 @@ import pagePlugin from './page'
 import pipelinePlugin from './pipeline'
 import stylePlugin from './style'
 
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginOption } from 'vite'
 
 export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOption[] {

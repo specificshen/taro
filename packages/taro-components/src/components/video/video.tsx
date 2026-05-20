@@ -1,5 +1,5 @@
 import { Component, h, ComponentInterface, Prop, State, Event, EventEmitter, Host, Watch, Listen, Element, Method } from '@stencil/core'
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 import classNames from 'classnames'
 import { throttle } from '../../utils'
 import {

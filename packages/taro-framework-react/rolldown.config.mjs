@@ -1,11 +1,11 @@
 import { defineConfig } from 'rolldown'
 
 const externalPackages = [
-  '@tarojs/helper',
-  '@tarojs/runtime',
-  '@tarojs/service',
-  '@tarojs/shared',
-  '@tarojs/taro',
+  '@spcsn/taro-helper',
+  '@spcsn/taro-runtime',
+  '@spcsn/taro-service',
+  '@spcsn/taro-shared',
+  '@spcsn/taro',
   '@vitejs/plugin-react',
   'acorn',
   'acorn-walk',

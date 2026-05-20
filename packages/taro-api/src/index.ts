@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Current, eventCenter, Events, getCurrentInstance, nextTick, options } from '@tarojs/runtime'
+import { Current, eventCenter, Events, getCurrentInstance, nextTick, options } from '@spcsn/taro-runtime'
 
 import { ENV_TYPE, getEnv } from './env'
 import Link, { interceptorify } from './interceptor'

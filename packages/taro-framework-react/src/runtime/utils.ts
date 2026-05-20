@@ -1,5 +1,5 @@
-import { Current } from '@tarojs/runtime'
-import { isArray, isFunction } from '@tarojs/shared'
+import { Current } from '@spcsn/taro-runtime'
+import { isArray, isFunction } from '@spcsn/taro-shared'
 
 import type * as React from 'react'
 

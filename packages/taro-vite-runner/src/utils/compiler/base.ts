@@ -1,13 +1,13 @@
 import path from 'node:path'
 
-import { fs, isEmptyObject, readConfig, resolveMainFilePath, SCRIPT_EXT } from '@tarojs/helper'
-import { VITE_COMPILER_LABEL } from '@tarojs/runner-utils'
+import { fs, isEmptyObject, readConfig, resolveMainFilePath, SCRIPT_EXT } from '@spcsn/taro-helper'
+import { VITE_COMPILER_LABEL } from '@spcsn/taro-runner-utils'
 
 import { stripMultiPlatformExt } from '../../utils'
 import { logger } from '../logger'
 
-import type { AppConfig } from '@tarojs/taro'
-import type { IMiniFilesConfig } from '@tarojs/taro/types/compile'
+import type { AppConfig } from '@spcsn/taro'
+import type { IMiniFilesConfig } from '@spcsn/taro/types/compile'
 import type {
   ViteAppMeta,
   ViteCompilerContext,
@@ -15,7 +15,7 @@ import type {
   ViteHarmonyBuildConfig,
   ViteMiniBuildConfig,
   VitePageMeta,
-} from '@tarojs/taro/types/compile/viteCompilerContext'
+} from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 
 export class CompilerContext<T extends ViteH5BuildConfig | ViteHarmonyBuildConfig | ViteMiniBuildConfig>
@@ -44,7 +44,7 @@ class App extends React.Component {
 `,
     frameworkArgs: 'React, ReactDOM, config',
     creator: 'createReactApp',
-    creatorLocation: '@tarojs/plugin-framework-react/dist/runtime',
+    creatorLocation: require.resolve('@spcsn/taro-plugin-framework-react/dist/runtime'),
     importFrameworkName: 'React',
     extraImportForWeb: '',
     execBeforeCreateWebApp: '',

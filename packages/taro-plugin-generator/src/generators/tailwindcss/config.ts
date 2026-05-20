@@ -7,7 +7,7 @@ import dedent from 'dedent'
 
 import { GeneratorError, GeneratorErrorType } from '../../utils/error'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export async function updateConfig(options: { ctx: IPluginContext; compilerType: 'webpack5' | 'vite' }) {
   const { ctx, compilerType } = options

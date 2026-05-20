@@ -1,11 +1,11 @@
 import * as path from 'node:path'
 
-import { ENTRY, OUTPUT_DIR, resolveScriptPath, SOURCE_DIR } from '@tarojs/helper'
-import { getPlatformType } from '@tarojs/shared'
+import { ENTRY, OUTPUT_DIR, resolveScriptPath, SOURCE_DIR } from '@spcsn/taro-helper'
+import { getPlatformType } from '@spcsn/taro-shared'
 
 import * as hooks from '../constant'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({

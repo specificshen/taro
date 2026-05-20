@@ -1,12 +1,12 @@
 import path from 'node:path'
 
-import { fs } from '@tarojs/helper'
+import { fs } from '@spcsn/taro-helper'
 import { normalizePath } from 'vite'
 
 import { isRelativePath, isVirtualModule } from '../utils'
 import { componentConfig } from '../utils/component'
 
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 import type { PluginOption } from 'vite'
 

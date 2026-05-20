@@ -1,4 +1,4 @@
-import type { options } from '@tarojs/runtime'
+import type { options } from '@spcsn/taro-runtime'
 
 import Taro from './index'
 

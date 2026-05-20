@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 
 describe('taro interceptorify', () => {
   it('onion competency model', async () => {

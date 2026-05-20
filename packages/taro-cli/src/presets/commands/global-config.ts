@@ -5,7 +5,7 @@ import * as validatePkgName from 'validate-npm-package-name'
 
 import { execCommand, getPkgNameByFilterVersion, getRootPath } from '../../util'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 type TPresetOrPluginAction = 'install' | 'uninstall'
 type TPluginType = 'plugin' | 'preset'

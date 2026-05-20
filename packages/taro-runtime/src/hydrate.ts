@@ -1,4 +1,4 @@
-import { hooks, Shortcuts, toCamelCase } from '@tarojs/shared'
+import { hooks, Shortcuts, toCamelCase } from '@spcsn/taro-shared'
 
 import { CATCH_VIEW, CATCHMOVE, CLASS, CLICK_VIEW, COMPILE_MODE, ID, PURE_VIEW, STYLE, VIEW } from './constants'
 import { getComponentsAlias, isComment, isHasExtractProp, isText } from './utils'

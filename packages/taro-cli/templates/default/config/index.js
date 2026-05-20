@@ -1,4 +1,4 @@
-import { defineConfig{{#if typescript }}, type UserConfigExport{{/if}} } from '@tarojs/cli'
+import { defineConfig{{#if typescript }}, type UserConfigExport{{/if}} } from '@spcsn/taro-cli'
 import devConfig from './dev'
 import prodConfig from './prod'
 
@@ -17,7 +17,7 @@ export default defineConfig{{#if typescript }}<'vite'>{{/if}}(async (merge, { co
     sourceRoot: 'src',
     outputRoot: 'dist',
     plugins: [
-      "@tarojs/plugin-generator"
+      "@spcsn/taro-plugin-generator"
     ],
     defineConstants: {
     },

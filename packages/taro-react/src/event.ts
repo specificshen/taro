@@ -8,7 +8,7 @@ import {
 import { updateValueIfChanged } from './inputValueTracking'
 import { TaroReconciler } from './reconciler'
 
-import type { TaroElement, TaroEvent } from '@tarojs/runtime'
+import type { TaroElement, TaroEvent } from '@spcsn/taro-runtime'
 import type { Fiber } from 'react-reconciler'
 import type { Props } from './props'
 

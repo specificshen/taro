@@ -5,7 +5,7 @@
 import { internalContainerInstanceKey, internalInstanceKey, internalPropsKey } from './constant'
 import { HostComponent, HostRoot, HostText, SuspenseComponent } from './workTags'
 
-import type { TaroElement, TaroText } from '@tarojs/runtime'
+import type { TaroElement, TaroText } from '@spcsn/taro-runtime'
 import type { Fiber } from 'react-reconciler'
 import type { Props } from './props'
 

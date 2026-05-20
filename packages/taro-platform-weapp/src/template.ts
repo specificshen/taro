@@ -1,4 +1,4 @@
-import { Shortcuts, UnRecursiveTemplate } from '@tarojs/shared/dist/template'
+import { Shortcuts, UnRecursiveTemplate } from '@spcsn/taro-shared/dist/template'
 
 import type { IOptions } from './index'
 

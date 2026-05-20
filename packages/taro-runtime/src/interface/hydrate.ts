@@ -1,4 +1,4 @@
-import type { Shortcuts } from '@tarojs/shared'
+import type { Shortcuts } from '@spcsn/taro-shared'
 import type { PageConfig } from './utils'
 
 export interface MpInstance {

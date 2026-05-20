@@ -20,7 +20,7 @@ interface SlotProps extends StandardProps {
  * @supported weapp, swan, alipay, tt, jd, qq, h5, harmony_hybrid
  * @example
  * ```tsx
- * import { Slot, View, Text } from '@tarojs/components'
+ * import { Slot, View, Text } from '@spcsn/taro-components'
  *
  * export default class SlotView extends Component {
  *   render () {

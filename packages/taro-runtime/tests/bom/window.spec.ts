@@ -11,7 +11,7 @@ vi.mock('../../src/env', () => ({
   },
 }))
 
-vi.mock('@tarojs/shared', () => ({
+vi.mock('@spcsn/taro-shared', () => ({
   isString: (val: any) => typeof val === 'string',
   Events: class Events {
     private events: { [key: string]: Array<{ callback: (...args: any[]) => any; ctx: any }> } = {}

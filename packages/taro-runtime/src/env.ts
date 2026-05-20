@@ -1,4 +1,4 @@
-import { EMPTY_OBJ } from '@tarojs/shared'
+import { EMPTY_OBJ } from '@spcsn/taro-shared'
 
 import type { TaroDocument } from './dom/document'
 

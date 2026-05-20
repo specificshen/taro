@@ -173,7 +173,7 @@
 /// <reference path="taro.lifecycle.d.ts" />
 /// <reference path="taro.runtime.d.ts" />
 
-/// <reference types="@tarojs/plugin-platform-weapp/types/shims-weapp" />
+/// <reference types="@spcsn/taro-plugin-platform-weapp/types/shims-weapp" />
 
 export = Taro
 export as namespace Taro

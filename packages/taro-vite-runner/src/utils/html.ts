@@ -1,4 +1,4 @@
-import { normalizePath } from '@tarojs/helper'
+import { normalizePath } from '@spcsn/taro-helper'
 
 export function getHtmlScript(entryScript: string, pxtransformOption): string {
   let htmlScript = ''

@@ -1,6 +1,6 @@
 import { defineConfig } from 'rolldown'
 
-const externalPackages = ['@tarojs/service', '@tarojs/shared']
+const externalPackages = ['@spcsn/taro-service', '@spcsn/taro-shared']
 const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
 
 const baseOutput = {

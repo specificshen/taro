@@ -35,7 +35,7 @@ interface ScaleGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, ScaleGestureHandler } from '@tarojs/components'
+ * import { View, ScaleGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

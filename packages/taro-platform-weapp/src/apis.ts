@@ -1,4 +1,4 @@
-import { processApis } from '@tarojs/shared'
+import { processApis } from '@spcsn/taro-shared'
 
 import { needPromiseApis } from './apis-list'
 

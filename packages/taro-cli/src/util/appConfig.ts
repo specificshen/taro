@@ -1,6 +1,6 @@
-import { IPluginContext } from '@tarojs/service'
-import { isString } from '@tarojs/shared'
-import { AppConfig } from '@tarojs/taro'
+import { IPluginContext } from '@spcsn/taro-service'
+import { isString } from '@spcsn/taro-shared'
+import { AppConfig } from '@spcsn/taro'
 
 /**
  * 按需编译功能，只编译指定的页面或组件

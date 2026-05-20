@@ -11,14 +11,14 @@ import {
   SOURCE_DIR,
   TARO_GLOBAL_CONFIG_DIR,
   TARO_GLOBAL_CONFIG_FILE,
-} from '@tarojs/helper'
+} from '@spcsn/taro-helper'
 import ora from 'ora'
 import { merge } from 'webpack-merge'
 
 import { filterGlobalConfig } from './utils'
 import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from './utils/constants'
 
-import type { IProjectConfig } from '@tarojs/taro/types/compile'
+import type { IProjectConfig } from '@spcsn/taro/types/compile'
 
 interface IConfigOptions {
   appPath: string

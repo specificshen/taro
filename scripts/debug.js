@@ -7,7 +7,7 @@ const chalk = require('chalk')
 /**
  * pnpm run debug
  * --projectPath /Users/taro/testapp
- * --packages @tarojs/shared,@tarojs/runtime
+ * --packages @spcsn/taro-shared,@spcsn/taro-runtime
  * --unlink
  *
  * projectPath: 调试的项目
@@ -68,12 +68,12 @@ function forceInstall() {
 }
 
 function runDevConcurrently() {
-  const excludePkg = ['@tarojs/taro']
+  const excludePkg = ['@spcsn/taro']
   const commands = packages
     .filter((pkg) => !excludePkg.includes(pkg))
     .map((pkg) => {
       const devMap = {
-        '@tarojs/components': 'dev:components',
+        '@spcsn/taro-components': 'dev:components',
       }
       return `pnpm --filter ${pkg} run ${devMap[pkg] || 'dev'}`
     })

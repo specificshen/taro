@@ -1,4 +1,4 @@
-import { convertNumber2PX, eventHandlerTTDom, FormElement } from '@tarojs/runtime'
+import { convertNumber2PX, eventHandlerTTDom, FormElement } from '@spcsn/taro-runtime'
 import {
   capitalize,
   internalComponents,
@@ -9,9 +9,9 @@ import {
   isString,
   toCamelCase,
   UNITLESS_PROPERTIES_SET,
-} from '@tarojs/shared'
+} from '@spcsn/taro-shared'
 
-import type { Style, TaroElement } from '@tarojs/runtime'
+import type { Style, TaroElement } from '@spcsn/taro-runtime'
 
 // 拓展TaroElement的属性
 

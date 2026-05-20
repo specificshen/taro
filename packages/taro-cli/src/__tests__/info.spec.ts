@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { chalk } from '@tarojs/helper'
+import { chalk } from '@spcsn/taro-helper'
 
 import { getPkgVersion } from '../util'
 import { run } from './utils'
@@ -59,11 +59,11 @@ describe('info', () => {
     expect(Object.keys(info.System)).toEqual(expect.arrayContaining(['OS']))
     // Note: 环境内可能不包括 Yarn
     expect(Object.keys(info.Binaries)).toEqual(expect.arrayContaining(['Node', 'npm']))
-    // expect(info.npmPackages.hasOwnProperty('@tarojs/helper')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('@tarojs/service')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('@tarojs/taro')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('@tarojs/taroize')).toBeTruthy()
-    // expect(info.npmPackages.hasOwnProperty('@tarojs/webpack-runner')).toBeTruthy()
+    // expect(info.npmPackages.hasOwnProperty('@spcsn/taro-helper')).toBeTruthy()
+    // expect(info.npmPackages.hasOwnProperty('@spcsn/taro-service')).toBeTruthy()
+    // expect(info.npmPackages.hasOwnProperty('@spcsn/taro')).toBeTruthy()
+    // expect(info.npmPackages.hasOwnProperty('@spcsn/taroize')).toBeTruthy()
+    // expect(info.npmPackages.hasOwnProperty('@spcsn/taro-webpack-runner')).toBeTruthy()
     // expect(info.npmPackages.hasOwnProperty('babel-plugin-transform-taroapi')).toBeTruthy()
     // expect(info.npmPackages.hasOwnProperty('postcss-pxtransform')).toBeTruthy()
 

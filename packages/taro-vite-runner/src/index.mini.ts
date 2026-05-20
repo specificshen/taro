@@ -1,4 +1,4 @@
-import { isFunction } from '@tarojs/shared'
+import { isFunction } from '@spcsn/taro-shared'
 import { build } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
@@ -7,7 +7,7 @@ import { convertCopyOptions } from './utils'
 import { TaroCompilerContext } from './utils/compiler/mini'
 import { componentConfig } from './utils/component'
 
-import type { ViteMiniBuildConfig } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniBuildConfig } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { UserConfig } from 'vite'
 
 export default async function (appPath: string, rawTaroConfig: ViteMiniBuildConfig) {

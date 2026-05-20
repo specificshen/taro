@@ -1,3 +1,3 @@
 # `@tarojs/taro-linux-x64-gnu`
 
-This is the **x86_64-unknown-linux-gnu** binary for `@tarojs/taro`
+This is the **x86_64-unknown-linux-gnu** binary for `@spcsn/taro`

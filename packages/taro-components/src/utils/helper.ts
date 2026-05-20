@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 
 export function notSupport(name = '', instance = {}) {
   console.error(`H5 暂不支持 ${name} 组件！`)

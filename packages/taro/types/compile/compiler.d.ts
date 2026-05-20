@@ -1,4 +1,4 @@
-import type { swc } from '@tarojs/helper'
+import type { swc } from '@spcsn/taro-helper'
 import type Webpack from 'webpack'
 
 export type CompilerViteTypes = 'vite'

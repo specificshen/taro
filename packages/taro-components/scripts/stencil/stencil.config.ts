@@ -78,7 +78,7 @@ export const config: Config = {
       }
     },
     moduleNameMapper: {
-      '@tarojs/taro': path.resolve(__dirname, '..', '..', 'packages/taro-h5/dist/index'),
+      '@spcsn/taro': path.resolve(__dirname, '..', '..', 'packages/taro-h5/dist/index'),
       '(\\.(css|less|sass|scss))|weui': '<rootDir>/__mocks__/styleMock.js',
       '\\.(gif|ttf|eot|svg)$': '<rootDir>/__mocks__/fileMock.js',
     },

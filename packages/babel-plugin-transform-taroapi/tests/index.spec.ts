@@ -10,7 +10,7 @@ type ImportType =
   | babel.types.ImportDefaultSpecifier
   | babel.types.ImportNamespaceSpecifier
 
-const packageName = '@tarojs/taro-h5'
+const packageName = '@spcsn/taro-h5'
 const pluginOptions = [
   plugin,
   {
@@ -161,7 +161,7 @@ describe('babel-plugin-transform-taroapi', () => {
 
   test('should support rename of imported names', function () {
     const code = `
-    // import { inject as mobxInject, observer as mobxObserver } from '@tarojs/mobx'
+    // import { inject as mobxInject, observer as mobxObserver } from '@spcsn/taro-mobx'
     import { Component as TaroComponent } from '${packageName}';
     export class Connected extends TaroComponent {}
     `

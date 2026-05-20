@@ -10,7 +10,7 @@
 - 只支持 React，不再维护 Vue、Nerv、Solid 等框架路径。
 - 首要支持微信小程序，优先适配 Skyline / glass-easel。
 - 以 Vite 作为唯一主编译链路，移除或冻结 Webpack 兼容路径。
-- 保留现有 Taro 应用的业务迁移友好性：业务代码仍可继续使用 `@tarojs/components` 与 `@tarojs/taro`。
+- 保留现有 Taro 应用的业务迁移友好性：业务代码仍可继续使用 `@spcsn/taro-components` 与 `@spcsn/taro`。
 - 减少运行时和构建期抽象层，降低调试成本、包体积和构建复杂度。
 
 ### 1.2 非目标
@@ -30,7 +30,7 @@ Taro 当前复杂度主要来自三个历史包袱：
 
 React-only 现代化的最短路径不是直接重写全部 Taro，而是先稳定业务 API 面，再逐步削减内部抽象：
 
-- 对应用开发者保留 `@tarojs/components` 和 `@tarojs/taro`。
+- 对应用开发者保留 `@spcsn/taro-components` 和 `@spcsn/taro`。
 - 对框架内部只保留 React reconciler 相关路径。
 - 对构建链只保留 Vite runner。
 - 对平台只保留 weapp，且以 Skyline 为默认渲染假设。
@@ -52,23 +52,23 @@ packages/
 建议改造后对外包名可以先保持兼容：
 
 ```text
-@tarojs/cli
-@tarojs/vite-runner
-@tarojs/plugin-platform-weapp
-@tarojs/plugin-framework-react
-@tarojs/react
-@tarojs/runtime
-@tarojs/components
-@tarojs/taro
-@tarojs/shared
-@tarojs/helper
+@spcsn/taro-cli
+@spcsn/taro-vite-runner
+@spcsn/taro-plugin-platform-weapp
+@spcsn/taro-plugin-framework-react
+@spcsn/taro-react
+@spcsn/taro-runtime
+@spcsn/taro-components
+@spcsn/taro
+@spcsn/taro-shared
+@spcsn/taro-helper
 ```
 
 第一阶段不急着改包名，避免应用侧迁移成本过高。内部实现可以先收敛，API 表面后置清理。
 
 ## 4. 包级改造策略
 
-### 4.1 `@tarojs/components`
+### 4.1 `@spcsn/taro-components`
 
 职责：提供 React JSX 中使用的小程序组件。
 
@@ -90,7 +90,7 @@ packages/
 - Skyline 下默认使用 Flex 友好的组件模型。
 - 不引入 Web DOM 假设，例如 `HTMLElement`、`document`、`window`。
 
-### 4.2 `@tarojs/taro`
+### 4.2 `@spcsn/taro`
 
 职责：业务侧的小程序 API 门面。
 
@@ -113,11 +113,11 @@ packages/
 
 改造原则：
 
-- `@tarojs/taro` 对业务保持兼容；内部直接调用微信小程序 API 或运行时桥接。
+- `@spcsn/taro` 对业务保持兼容；内部直接调用微信小程序 API 或运行时桥接。
 - 所有 API 类型以微信小程序定义为基准，再做 Taro 兼容别名。
 - 对不支持的旧多端 API，提供编译期错误或清晰 runtime warning，不做静默降级。
 
-### 4.3 `@tarojs/react`
+### 4.3 `@spcsn/taro-react`
 
 职责：React 框架适配层。
 
@@ -140,7 +140,7 @@ packages/
 - `framework: 'react'` 可在配置中继续保留，但只作为兼容字段。
 - 使用清晰的 React 入口函数，例如 `createMiniProgramApp(App, config)`。
 
-### 4.4 `@tarojs/runtime`
+### 4.4 `@spcsn/taro-runtime`
 
 职责：把 React 渲染结果映射到小程序页面/组件实例。
 
@@ -165,7 +165,7 @@ packages/
 - 页面切换、弹窗、列表、表单、图片预览等常见场景正常。
 - 生命周期顺序可预测：`useLoad` -> 首次 render -> `useReady` -> `useDidShow`。
 
-### 4.5 `@tarojs/plugin-platform-weapp`
+### 4.5 `@spcsn/taro-plugin-platform-weapp`
 
 职责：微信小程序平台产物生成与平台协议适配。
 
@@ -194,7 +194,7 @@ export default defineAppConfig({
 });
 ```
 
-### 4.6 `@tarojs/vite-runner`
+### 4.6 `@spcsn/taro-vite-runner`
 
 职责：唯一编译 runner。
 
@@ -234,7 +234,7 @@ vite config
   -> weapp json/wxml/wxss/js emitter
 ```
 
-### 4.7 `@tarojs/cli`
+### 4.7 `@spcsn/taro-cli`
 
 职责：命令入口。
 
@@ -286,7 +286,7 @@ export default defineMiniappConfig({
 
 第三阶段：如果只剩极少 Taro 特有转换，将它改造成 Vite plugin 内部 transform，减少用户显式 Babel 配置。
 
-### 4.9 `@tarojs/shared` 与 `@tarojs/helper`
+### 4.9 `@spcsn/taro-shared` 与 `@spcsn/taro-helper`
 
 职责：内部共享工具。
 
@@ -378,7 +378,7 @@ export default defineMiniappConfig({
 
 任务：
 
-- 统计真实业务对 `@tarojs/taro` 的 API 使用。
+- 统计真实业务对 `@spcsn/taro` 的 API 使用。
 - 保留高频 API，低频多端 API 标记 deprecated。
 - 不支持 API 直接给出清晰错误。
 - 类型定义改成微信小程序优先。
@@ -411,15 +411,15 @@ export default defineMiniappConfig({
 ```json
 {
   "dependencies": {
-    "@tarojs/components": "next-modern",
-    "@tarojs/taro": "next-modern",
-    "@tarojs/react": "next-modern",
+    "@spcsn/taro-components": "next-modern",
+    "@spcsn/taro": "next-modern",
+    "@spcsn/taro-react": "next-modern",
     "react": "^18.3.0"
   },
   "devDependencies": {
-    "@tarojs/cli": "next-modern",
-    "@tarojs/plugin-platform-weapp": "next-modern",
-    "@tarojs/vite-runner": "next-modern",
+    "@spcsn/taro-cli": "next-modern",
+    "@spcsn/taro-plugin-platform-weapp": "next-modern",
+    "@spcsn/taro-vite-runner": "next-modern",
     "typescript": "^5.0.0",
     "vite": "^5.0.0"
   }
@@ -436,7 +436,7 @@ export default defineMiniappConfig({
 你正在改造一个 fork 后的 Taro monorepo。目标是把它收敛为 React-only + Vite-only + weapp/Skyline-first 的现代小程序框架。
 
 请遵循以下原则：
-1. 保持应用侧 `@tarojs/components` 与 `@tarojs/taro` API 尽量兼容。
+1. 保持应用侧 `@spcsn/taro-components` 与 `@spcsn/taro` API 尽量兼容。
 2. 删除或冻结非 React 框架路径，不再维护 Vue/Nerv/Solid 等 adapter。
 3. 删除或冻结非微信小程序平台路径，不再维护 H5/RN/支付宝/百度/字节等端。
 4. Vite 是唯一编译链路；Webpack 相关路径只允许删除、隔离或 deprecated，不允许继续扩展。
@@ -467,8 +467,8 @@ Taro 很多包之间存在隐式共享工具。删除多端代码前必须先用
 
 真实业务项目通常大量使用：
 
-- `@tarojs/components`
-- `@tarojs/taro`
+- `@spcsn/taro-components`
+- `@spcsn/taro`
 - 生命周期 hooks
 - `pxTransform`
 - 路由与 storage API
@@ -498,7 +498,7 @@ Skyline 不等于 WebView。不要引入：
 
 ## 10. 建议先改哪里
 
-第一刀不要动 `@tarojs/components` 和 `@tarojs/taro` 的业务 API 表面。
+第一刀不要动 `@spcsn/taro-components` 和 `@spcsn/taro` 的业务 API 表面。
 
 推荐起手顺序：
 
@@ -525,17 +525,17 @@ Skyline 不等于 WebView。不要引入：
 当前业务工程至少需要一起替换这些包：
 
 ```text
-@tarojs/components
-@tarojs/helper
-@tarojs/plugin-framework-react
-@tarojs/plugin-platform-weapp
-@tarojs/react
-@tarojs/runtime
-@tarojs/shared
-@tarojs/taro
-@tarojs/cli
-@tarojs/plugin-generator
-@tarojs/vite-runner
+@spcsn/taro-components
+@spcsn/taro-helper
+@spcsn/taro-plugin-framework-react
+@spcsn/taro-plugin-platform-weapp
+@spcsn/taro-react
+@spcsn/taro-runtime
+@spcsn/taro-shared
+@spcsn/taro
+@spcsn/taro-cli
+@spcsn/taro-plugin-generator
+@spcsn/taro-vite-runner
 babel-preset-taro
 ```
 
@@ -552,17 +552,17 @@ pnpm build
 
 ```bash
 mkdir -p ../taro-modern-packs
-pnpm --filter @tarojs/components pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/helper pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/plugin-framework-react pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/plugin-platform-weapp pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/react pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/runtime pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/shared pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/taro pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/cli pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/plugin-generator pack --pack-destination ../taro-modern-packs
-pnpm --filter @tarojs/vite-runner pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-components pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-helper pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-plugin-framework-react pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-plugin-platform-weapp pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-react pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-runtime pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-shared pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-cli pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-plugin-generator pack --pack-destination ../taro-modern-packs
+pnpm --filter @spcsn/taro-vite-runner pack --pack-destination ../taro-modern-packs
 pnpm --filter babel-preset-taro pack --pack-destination ../taro-modern-packs
 ```
 
@@ -571,19 +571,19 @@ pnpm --filter babel-preset-taro pack --pack-destination ../taro-modern-packs
 ```json
 {
   "dependencies": {
-    "@tarojs/components": "file:../taro-modern-packs/tarojs-components-*.tgz",
-    "@tarojs/helper": "file:../taro-modern-packs/tarojs-helper-*.tgz",
-    "@tarojs/plugin-framework-react": "file:../taro-modern-packs/tarojs-plugin-framework-react-*.tgz",
-    "@tarojs/plugin-platform-weapp": "file:../taro-modern-packs/tarojs-plugin-platform-weapp-*.tgz",
-    "@tarojs/react": "file:../taro-modern-packs/tarojs-react-*.tgz",
-    "@tarojs/runtime": "file:../taro-modern-packs/tarojs-runtime-*.tgz",
-    "@tarojs/shared": "file:../taro-modern-packs/tarojs-shared-*.tgz",
-    "@tarojs/taro": "file:../taro-modern-packs/tarojs-taro-*.tgz"
+    "@spcsn/taro-components": "file:../taro-modern-packs/tarojs-components-*.tgz",
+    "@spcsn/taro-helper": "file:../taro-modern-packs/tarojs-helper-*.tgz",
+    "@spcsn/taro-plugin-framework-react": "file:../taro-modern-packs/tarojs-plugin-framework-react-*.tgz",
+    "@spcsn/taro-plugin-platform-weapp": "file:../taro-modern-packs/tarojs-plugin-platform-weapp-*.tgz",
+    "@spcsn/taro-react": "file:../taro-modern-packs/tarojs-react-*.tgz",
+    "@spcsn/taro-runtime": "file:../taro-modern-packs/tarojs-runtime-*.tgz",
+    "@spcsn/taro-shared": "file:../taro-modern-packs/tarojs-shared-*.tgz",
+    "@spcsn/taro": "file:../taro-modern-packs/tarojs-taro-*.tgz"
   },
   "devDependencies": {
-    "@tarojs/cli": "file:../taro-modern-packs/tarojs-cli-*.tgz",
-    "@tarojs/plugin-generator": "file:../taro-modern-packs/tarojs-plugin-generator-*.tgz",
-    "@tarojs/vite-runner": "file:../taro-modern-packs/tarojs-vite-runner-*.tgz",
+    "@spcsn/taro-cli": "file:../taro-modern-packs/tarojs-cli-*.tgz",
+    "@spcsn/taro-plugin-generator": "file:../taro-modern-packs/tarojs-plugin-generator-*.tgz",
+    "@spcsn/taro-vite-runner": "file:../taro-modern-packs/tarojs-vite-runner-*.tgz",
     "babel-preset-taro": "file:../taro-modern-packs/babel-preset-taro-*.tgz"
   }
 }
@@ -609,17 +609,17 @@ pnpm run build
 {
   "pnpm": {
     "overrides": {
-      "@tarojs/components": "link:../taro/packages/taro-components",
-      "@tarojs/taro": "link:../taro/packages/taro",
-      "@tarojs/react": "link:../taro/packages/taro-react",
-      "@tarojs/runtime": "link:../taro/packages/taro-runtime",
-      "@tarojs/shared": "link:../taro/packages/shared",
-      "@tarojs/helper": "link:../taro/packages/helper",
-      "@tarojs/cli": "link:../taro/packages/taro-cli",
-      "@tarojs/vite-runner": "link:../taro/packages/taro-vite-runner",
-      "@tarojs/plugin-platform-weapp": "link:../taro/packages/taro-plugin-platform-weapp",
-      "@tarojs/plugin-framework-react": "link:../taro/packages/taro-plugin-framework-react",
-      "@tarojs/plugin-generator": "link:../taro/packages/taro-plugin-generator",
+      "@spcsn/taro-components": "link:../taro/packages/taro-components",
+      "@spcsn/taro": "link:../taro/packages/taro",
+      "@spcsn/taro-react": "link:../taro/packages/taro-react",
+      "@spcsn/taro-runtime": "link:../taro/packages/taro-runtime",
+      "@spcsn/taro-shared": "link:../taro/packages/shared",
+      "@spcsn/taro-helper": "link:../taro/packages/helper",
+      "@spcsn/taro-cli": "link:../taro/packages/taro-cli",
+      "@spcsn/taro-vite-runner": "link:../taro/packages/taro-vite-runner",
+      "@spcsn/taro-plugin-platform-weapp": "link:../taro/packages/taro-plugin-platform-weapp",
+      "@spcsn/taro-plugin-framework-react": "link:../taro/packages/taro-plugin-framework-react",
+      "@spcsn/taro-plugin-generator": "link:../taro/packages/taro-plugin-generator",
       "babel-preset-taro": "link:../taro/packages/babel-preset-taro"
     }
   }
@@ -628,9 +628,9 @@ pnpm run build
 
 这段路径只表达方法，具体目录必须以 fork 后 Taro monorepo 的真实包目录为准。使用 link 方式前，fork 仓库里的包仍然需要先 build，否则业务工程可能解析到未编译源码或错误入口。
 
-### 11.4 不推荐：只 link `@tarojs/cli`
+### 11.4 不推荐：只 link `@spcsn/taro-cli`
 
-只替换 CLI 通常不够。CLI 会加载 runner、platform plugin、framework plugin、runtime、shared/helper 等内部包。如果只 link 一个 `@tarojs/cli`，其它包仍来自业务工程的官方版本，很容易出现：
+只替换 CLI 通常不够。CLI 会加载 runner、platform plugin、framework plugin、runtime、shared/helper 等内部包。如果只 link 一个 `@spcsn/taro-cli`，其它包仍来自业务工程的官方版本，很容易出现：
 
 - 配置字段识别不一致。
 - plugin API 版本不一致。
@@ -644,9 +644,9 @@ pnpm run build
 第一层：安装完整性。
 
 ```bash
-pnpm why @tarojs/taro
-pnpm why @tarojs/runtime
-pnpm why @tarojs/vite-runner
+pnpm why @spcsn/taro
+pnpm why @spcsn/taro-runtime
+pnpm why @spcsn/taro-vite-runner
 ```
 
 确认输出都指向本地 tarball 或 link 路径。
@@ -661,7 +661,7 @@ pnpm run build
 
 - `config/index.ts` 能被新 CLI 读取。
 - `framework: 'react'` 与 `compiler: 'vite'` 不报错。
-- `@tarojs/plugin-platform-weapp` 能输出 `dist/app.json`。
+- `@spcsn/taro-plugin-platform-weapp` 能输出 `dist/app.json`。
 - CSS Modules 与 pxtransform 仍正常。
 
 第三层：产物检查。

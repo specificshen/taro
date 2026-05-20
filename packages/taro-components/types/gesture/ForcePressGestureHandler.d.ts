@@ -31,7 +31,7 @@ interface ForcePressGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, ForcePressGestureHandler } from '@tarojs/components'
+ * import { View, ForcePressGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

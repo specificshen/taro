@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/runtime",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-runtime",
+  "version": "4.2.1",
   "description": "taro runtime for mini apps.",
   "author": "O2Team",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "node": ">= 22"
   },
   "dependencies": {
-    "@tarojs/shared": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

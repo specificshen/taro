@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 
-import { dotenvParse, fs, patchEnv } from '@tarojs/helper'
-import { Config, Kernel } from '@tarojs/service'
+import { dotenvParse, fs, patchEnv } from '@spcsn/taro-helper'
+import { Config, Kernel } from '@spcsn/taro-service'
 import minimist from 'minimist'
 
 import customCommand from './commands/customCommand'
@@ -124,7 +124,7 @@ export default class CLI {
           // 针对不同的内置平台注册对应的端平台插件
           switch (platform) {
             case 'weapp':
-              kernel.optsPlugins.push(`@tarojs/plugin-platform-${platform}`)
+              kernel.optsPlugins.push(`@spcsn/taro-plugin-platform-${platform}`)
               break
             default: {
               if (platform) {
@@ -141,7 +141,7 @@ export default class CLI {
             console.log('当前 Fork 仅支持 React 框架。')
             return
           }
-          kernel.optsPlugins.push('@tarojs/plugin-framework-react')
+          kernel.optsPlugins.push('@spcsn/taro-plugin-framework-react')
 
           // 编译小程序插件
           if (typeof args.plugin === 'string') {
@@ -152,7 +152,7 @@ export default class CLI {
             }
             platform = 'plugin'
             kernel.optsPlugins.push(path.resolve(platformsPath, 'plugin.js'))
-            kernel.optsPlugins.push(`@tarojs/plugin-platform-${plugin}`)
+            kernel.optsPlugins.push(`@spcsn/taro-plugin-platform-${plugin}`)
           }
 
           // 传递 inspect 参数即可

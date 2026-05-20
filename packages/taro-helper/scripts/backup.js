@@ -10,7 +10,7 @@ if (process.env.CI && (typeof process.env.CI !== 'string' || process.env.CI.toLo
     const destPath = path.join(__dirname, `../swc/${plugin}.wasm`)
     fs.access(srcPath, fs.constants.F_OK, (err) => {
       if (err) return
-      fs.copyFile(srcPath, destPath, (err) => err && console.log('[@tarojs/helper] swc:backup error: ', err))
+      fs.copyFile(srcPath, destPath, (err) => err && console.log('[@spcsn/taro-helper] swc:backup error: ', err))
     })
   })
 }

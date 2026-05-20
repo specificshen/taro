@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import { debounce, handleStencilNodes } from '../../utils'
 
-import type { ScrollViewContext } from '@tarojs/taro'
+import type { ScrollViewContext } from '@spcsn/taro'
 
 function easeOutScroll (from: number, to: number, duration = 500, callback?) {
   if (from === to || typeof from !== 'number') {

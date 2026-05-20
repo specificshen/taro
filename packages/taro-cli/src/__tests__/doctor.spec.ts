@@ -1,4 +1,4 @@
-import { chalk } from '@tarojs/helper'
+import { chalk } from '@spcsn/taro-helper'
 
 import { run } from './utils'
 

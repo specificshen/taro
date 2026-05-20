@@ -34,7 +34,7 @@
 
 ## 简介
 
-本仓库不再按原 Taro 的“多框架、多平台、多编译器”路线继续演进，而是作为独立私有发行线，聚焦 React 19 + Vite + 微信小程序。业务侧仍优先兼容 `@tarojs/components`、`@tarojs/taro`、生命周期 hooks 与常用配置，内部实现逐步向 WeApp / Skyline 专用链路瘦身。
+本仓库不再按原 Taro 的“多框架、多平台、多编译器”路线继续演进，而是作为独立私有发行线，聚焦 React 19 + Vite + 微信小程序。业务侧仍优先兼容 `@spcsn/taro-components`、`@spcsn/taro`、生命周期 hooks 与常用配置，内部实现逐步向 WeApp / Skyline 专用链路瘦身。
 
 ### 当前 fork 支持范围
 
@@ -56,17 +56,17 @@ Taro 1/2 迁移至 Taro 3，请阅读[《Taro 版本升级权威指南》](https
 ```json
 {
   "dependencies": {
-    "@tarojs/taro": "4.3.0-alpha.0",
-    "@tarojs/components": "4.3.0-alpha.0",
-    "@tarojs/runtime": "4.3.0-alpha.0",
-    "@tarojs/react": "4.3.0-alpha.0",
+    "@spcsn/taro": "4.3.0-alpha.0",
+    "@spcsn/taro-components": "4.3.0-alpha.0",
+    "@spcsn/taro-runtime": "4.3.0-alpha.0",
+    "@spcsn/taro-react": "4.3.0-alpha.0",
     "react": "^19.2.0"
   },
   "devDependencies": {
-    "@tarojs/cli": "4.3.0-alpha.0",
-    "@tarojs/vite-runner": "4.3.0-alpha.0",
-    "@tarojs/plugin-framework-react": "4.3.0-alpha.0",
-    "@tarojs/plugin-platform-weapp": "4.3.0-alpha.0",
+    "@spcsn/taro-cli": "4.3.0-alpha.0",
+    "@spcsn/taro-vite-runner": "4.3.0-alpha.0",
+    "@spcsn/taro-plugin-framework-react": "4.3.0-alpha.0",
+    "@spcsn/taro-plugin-platform-weapp": "4.3.0-alpha.0",
     "babel-preset-taro": "4.3.0-alpha.0"
   }
 }

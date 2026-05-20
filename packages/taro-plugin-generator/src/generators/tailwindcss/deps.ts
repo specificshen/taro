@@ -2,7 +2,7 @@
 
 import { updatePkgJson } from '../../utils'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 const getDeps = (version: TailwindCSSVersion): Deps => {
   const deps: Deps = {

@@ -1,4 +1,4 @@
-# `@tarojs/runtime`
+# `@spcsn/taro-runtime`
 
 Taro 运行时。在小程序端连接框架（DSL）渲染机制到小程序渲染机制，连接小程序路由和生命周期到框架对应的生命周期。在 H5/RN 端连接小程序生命周期**规范**到框架生命周期。
 
@@ -42,7 +42,7 @@ Taro 运行时。在小程序端连接框架（DSL）渲染机制到小程序渲
 Taro 配置：
 
 * `debug`: 开启之后会打印渲染时间
-* `prerender`: 暴露给 `@tarojs/cli` 的内部参数
+* `prerender`: 暴露给 `@spcsn/taro-cli` 的内部参数
 
 ### Events
 

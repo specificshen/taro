@@ -1,4 +1,4 @@
-import { hooks, isArray, isNull, isString, isUndefined, Shortcuts, toCamelCase, toDashed, warn } from '@tarojs/shared'
+import { hooks, isArray, isNull, isString, isUndefined, Shortcuts, toCamelCase, toDashed, warn } from '@spcsn/taro-shared'
 
 import { PROPERTY_THRESHOLD } from '../constants'
 import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer'

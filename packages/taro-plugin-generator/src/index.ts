@@ -4,7 +4,7 @@ import { es5Generator } from './generators/es5'
 import { tailwindcssGenerator } from './generators/tailwindcss'
 import { safely } from './utils/error'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 /**
  * 命令行扩展

@@ -35,7 +35,7 @@ interface DoubleTapGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, DoubleTapGestureHandler } from '@tarojs/components'
+ * import { View, DoubleTapGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

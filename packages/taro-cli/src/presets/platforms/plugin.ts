@@ -1,9 +1,9 @@
 import * as path from 'node:path'
 
-import { fs } from '@tarojs/helper'
-import { getPlatformType } from '@tarojs/shared'
+import { fs } from '@spcsn/taro-helper'
+import { getPlatformType } from '@spcsn/taro-shared'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 const configName = 'mini'
 export default (ctx: IPluginContext) => {
@@ -68,7 +68,7 @@ export default (ctx: IPluginContext) => {
         const docDestPath = path.join(process.cwd(), 'miniprogram/doc')
         fs.copy(docSrcPath, docDestPath)
       } catch (err) {
-        console.error('[@tarojs/cli] build plugin doc failed: ', err)
+        console.error('[@spcsn/taro-cli] build plugin doc failed: ', err)
       }
     },
   })

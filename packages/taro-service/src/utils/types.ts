@@ -1,9 +1,9 @@
-import { AppConfig } from '@tarojs/taro'
+import { AppConfig } from '@spcsn/taro'
 
-import type helper from '@tarojs/helper'
-import type runnerUtils from '@tarojs/runner-utils'
-import type { Func, IMiniFilesConfig, IProjectConfig } from '@tarojs/taro/types/compile'
-import type { IModifyChainData } from '@tarojs/taro/types/compile/hooks'
+import type helper from '@spcsn/taro-helper'
+import type runnerUtils from '@spcsn/taro-runner-utils'
+import type { Func, IMiniFilesConfig, IProjectConfig } from '@spcsn/taro/types/compile'
+import type { IModifyChainData } from '@spcsn/taro/types/compile/hooks'
 import type joi from 'joi'
 import type Webpack from 'webpack'
 import type Chain from 'webpack-chain'
@@ -89,11 +89,11 @@ export declare interface IPluginContext {
    */
   runOpts: any
   /**
-   * 为包 @tarojs/helper 的快捷使用方式，包含其所有 API
+   * 为包 @spcsn/taro-helper 的快捷使用方式，包含其所有 API
    */
   helper: typeof helper
   /**
-   * 为包 @tarojs/runner-utils 的快捷使用方式，包含其所有 API
+   * 为包 @spcsn/taro-runner-utils 的快捷使用方式，包含其所有 API
    */
   runnerUtils: typeof runnerUtils
   /**

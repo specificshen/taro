@@ -5,7 +5,7 @@
  */
 import path from 'node:path'
 
-import { isArray, isFunction } from '@tarojs/shared'
+import { isArray, isFunction } from '@spcsn/taro-shared'
 import pm from 'picomatch'
 
 function ensureArray(thing) {

@@ -1,6 +1,6 @@
 {
-  "name": "@tarojs/plugin-framework-react",
-  "version": "4.2.0",
+  "name": "@spcsn/taro-plugin-framework-react",
+  "version": "4.2.1",
   "description": "React 框架插件",
   "author": "O2Team",
   "homepage": "https://github.com/nervjs/taro",
@@ -33,35 +33,30 @@
     "node": ">= 22"
   },
   "dependencies": {
+    "@spcsn/taro-react": "workspace:*",
+    "@vitejs/plugin-react": "^6.0.2",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.2",
     "lodash": "^4.17.21",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.2",
+    "vite": "^8.0.13"
   },
   "devDependencies": {
-    "@tarojs/helper": "workspace:*",
-    "@tarojs/runtime": "workspace:*",
-    "@tarojs/shared": "workspace:*",
-    "@tarojs/service": "workspace:*",
-    "@tarojs/taro": "workspace:*",
+    "@spcsn/taro-helper": "workspace:*",
+    "@spcsn/taro-runtime": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
+    "@spcsn/taro-service": "workspace:*",
+    "@spcsn/taro": "workspace:*",
     "vite": "^8.0.13"
   },
   "peerDependencies": {
-    "@tarojs/helper": "workspace:*",
-    "@tarojs/runtime": "workspace:*",
-    "@tarojs/shared": "workspace:*",
-    "@vitejs/plugin-react": "^6",
-    "react": "^19",
-    "vite": "^8"
+    "@spcsn/taro-helper": "workspace:*",
+    "@spcsn/taro-runtime": "workspace:*",
+    "@spcsn/taro-shared": "workspace:*",
+    "react": "^19"
   },
   "peerDependenciesMeta": {
-    "@vitejs/plugin-react": {
-      "optional": true
-    },
     "react": {
-      "optional": true
-    },
-    "vite": {
       "optional": true
     }
   }

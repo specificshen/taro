@@ -1,4 +1,4 @@
-import { hooks, isArray, isFunction, isUndefined, Shortcuts } from '@tarojs/shared'
+import { hooks, isArray, isFunction, isUndefined, Shortcuts } from '@spcsn/taro-shared'
 
 import { CUSTOM_WRAPPER, PAGE_INIT, ROOT_STR, SET_DATA } from '../constants'
 import { options } from '../options'

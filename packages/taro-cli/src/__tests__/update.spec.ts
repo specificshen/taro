@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { chalk, fs, PROJECT_CONFIG, shouldUseCnpm, shouldUseYarn } from '@tarojs/helper'
+import { chalk, fs, PROJECT_CONFIG, shouldUseCnpm, shouldUseYarn } from '@spcsn/taro-helper'
 import { exec } from 'child_process'
 
 import { getPkgVersion } from '../util'
@@ -39,8 +39,8 @@ jest.mock('ora', () => {
   return ora
 })
 
-jest.mock('@tarojs/helper', () => {
-  const helper = jest.requireActual('@tarojs/helper')
+jest.mock('@spcsn/taro-helper', () => {
+  const helper = jest.requireActual('@spcsn/taro-helper')
   const fs = helper.fs
   return {
     __esModule: true,
@@ -66,20 +66,20 @@ function updatePkg(pkgPath: string, version: string) {
     ...packageMap,
     dependencies: {
       ...packageMap.dependencies,
-      '@tarojs/shared': version,
-      '@tarojs/taro': version,
-      '@tarojs/cli': version,
-      '@tarojs/components': version,
-      '@tarojs/api': version,
-      '@tarojs/helper': version,
-      '@tarojs/react': version,
-      '@tarojs/runner-utils': version,
-      '@tarojs/runtime': version,
-      '@tarojs/service': version,
-      '@tarojs/plugin-platform-weapp': version,
-      '@tarojs/plugin-framework-react': version,
-      '@tarojs/plugin-generator': version,
-      '@tarojs/vite-runner': version,
+      '@spcsn/taro-shared': version,
+      '@spcsn/taro': version,
+      '@spcsn/taro-cli': version,
+      '@spcsn/taro-components': version,
+      '@spcsn/taro-api': version,
+      '@spcsn/taro-helper': version,
+      '@spcsn/taro-react': version,
+      '@spcsn/taro-runner-utils': version,
+      '@spcsn/taro-runtime': version,
+      '@spcsn/taro-service': version,
+      '@spcsn/taro-plugin-platform-weapp': version,
+      '@spcsn/taro-plugin-framework-react': version,
+      '@spcsn/taro-plugin-generator': version,
+      '@spcsn/taro-vite-runner': version,
       '@tarojs/binding': version,
     },
     devDependencies: {
@@ -132,7 +132,7 @@ describe('update', () => {
         disableGlobalConfig: true,
       },
     })
-    expect(execMocked).toBeCalledWith(`npm i -g @tarojs/cli@${lastestVersion}`)
+    expect(execMocked).toBeCalledWith(`npm i -g @spcsn/taro-cli@${lastestVersion}`)
   })
 
   it('should update self using yarn', async () => {
@@ -144,7 +144,7 @@ describe('update', () => {
         disableGlobalConfig: true,
       },
     })
-    expect(execMocked).toBeCalledWith(`yarn global add @tarojs/cli@${lastestVersion}`)
+    expect(execMocked).toBeCalledWith(`yarn global add @spcsn/taro-cli@${lastestVersion}`)
   })
 
   it('should update self using pnpm', async () => {
@@ -156,7 +156,7 @@ describe('update', () => {
         disableGlobalConfig: true,
       },
     })
-    expect(execMocked).toBeCalledWith(`pnpm add -g @tarojs/cli@${lastestVersion}`)
+    expect(execMocked).toBeCalledWith(`pnpm add -g @spcsn/taro-cli@${lastestVersion}`)
   })
 
   it('should update self using cnpm', async () => {
@@ -168,7 +168,7 @@ describe('update', () => {
         disableGlobalConfig: true,
       },
     })
-    expect(execMocked).toBeCalledWith(`cnpm i -g @tarojs/cli@${lastestVersion}`)
+    expect(execMocked).toBeCalledWith(`cnpm i -g @spcsn/taro-cli@${lastestVersion}`)
   })
 
   it('should update self to specific version', async () => {
@@ -180,7 +180,7 @@ describe('update', () => {
         disableGlobalConfig: true,
       },
     })
-    expect(execMocked).toBeCalledWith(`npm i -g @tarojs/cli@${version}`)
+    expect(execMocked).toBeCalledWith(`npm i -g @spcsn/taro-cli@${version}`)
   })
 
   it("should throw when there isn't a Taro project", async () => {

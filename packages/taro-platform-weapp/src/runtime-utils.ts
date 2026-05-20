@@ -1,4 +1,4 @@
-import { Shortcuts, toCamelCase } from '@tarojs/shared'
+import { Shortcuts, toCamelCase } from '@spcsn/taro-shared'
 
 import { initNativeApi } from './apis'
 

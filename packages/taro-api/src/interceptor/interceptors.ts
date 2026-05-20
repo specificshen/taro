@@ -1,4 +1,4 @@
-import { isFunction, isUndefined } from '@tarojs/shared'
+import { isFunction, isUndefined } from '@spcsn/taro-shared'
 
 import type Chain from './chain'
 

@@ -1,4 +1,4 @@
-import type { Func, IPostcssOption } from '@tarojs/taro/types/compile'
+import type { Func, IPostcssOption } from '@spcsn/taro/types/compile'
 
 export const getDefaultPostcssConfig = function ({
   designWidth,

@@ -1,4 +1,4 @@
-import { document } from '@tarojs/runtime'
+import { document } from '@spcsn/taro-runtime'
 import * as React from 'react'
 
 import { findDOMNode, render, unmountComponentAtNode } from '../dist/react.esm'

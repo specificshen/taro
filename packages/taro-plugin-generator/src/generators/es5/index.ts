@@ -3,7 +3,7 @@ import { getCompilerType, readPkgJson } from '../../utils'
 import { updateBabelConfig } from './babel'
 import { updateConfig } from './config'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export async function es5Generator(ctx: IPluginContext) {
   const compilerType = getCompilerType(ctx.initialConfig.compiler)

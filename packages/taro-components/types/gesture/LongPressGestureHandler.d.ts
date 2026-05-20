@@ -35,7 +35,7 @@ interface LongPressGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, LongPressGestureHandler } from '@tarojs/components'
+ * import { View, LongPressGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

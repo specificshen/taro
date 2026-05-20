@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ensure, isFunction } from '@tarojs/shared'
+import { ensure, isFunction } from '@spcsn/taro-shared'
 
 import { internalInstanceKey } from './constant'
 import { finishEventHandler } from './event'
 import { TaroReconciler } from './reconciler'
 import { ContainerMap, createRoot, render } from './render'
 
-import type { TaroElement } from '@tarojs/runtime'
+import type { TaroElement } from '@spcsn/taro-runtime'
 import type { ReactNode } from 'react'
 
 let isInsideEventHandler = false

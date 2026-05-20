@@ -1,4 +1,4 @@
-import { EMPTY_OBJ, hooks, isUndefined } from '@tarojs/shared'
+import { EMPTY_OBJ, hooks, isUndefined } from '@spcsn/taro-shared'
 
 import {
   CONFIRM,

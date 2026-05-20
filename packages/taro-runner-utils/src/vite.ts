@@ -4,7 +4,7 @@ import type {
   ViteH5CompilerContext,
   ViteHarmonyCompilerContext,
   ViteMiniCompilerContext,
-} from '@tarojs/taro/types/compile/viteCompilerContext'
+} from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginContext } from 'rollup'
 
 export async function getViteH5CompilerContext(

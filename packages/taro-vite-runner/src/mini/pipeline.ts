@@ -1,8 +1,8 @@
-import { VITE_COMPILER_LABEL } from '@tarojs/runner-utils'
-import { isFunction } from '@tarojs/shared'
+import { VITE_COMPILER_LABEL } from '@spcsn/taro-runner-utils'
+import { isFunction } from '@spcsn/taro-shared'
 
-import type { UnRecursiveTemplate } from '@tarojs/shared/dist/template'
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { UnRecursiveTemplate } from '@spcsn/taro-shared/dist/template'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { PluginOption } from 'vite'
 
 export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOption {

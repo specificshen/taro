@@ -1,4 +1,4 @@
-import { document } from '@tarojs/runtime'
+import { document } from '@spcsn/taro-runtime'
 import * as React from 'react'
 
 import { render, unmountComponentAtNode, unstable_batchedUpdates as batchedUpdates } from '../dist/react.esm'

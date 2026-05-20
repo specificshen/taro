@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 
 import { createPlugin } from '@tarojs/binding'
-import { chalk, fs } from '@tarojs/helper'
+import { chalk, fs } from '@spcsn/taro-helper'
 
 import { getRootPath } from '../util'
 import Creator from './creator'

@@ -16,7 +16,7 @@ interface NativeSlotProps extends StandardProps {
  * @version 3.5.7+
  * @example
  * ```tsx
- * import { NativeSlot, View } from '@tarojs/components'
+ * import { NativeSlot, View } from '@spcsn/taro-components'
  *
  * export default function () {
  *   render () {

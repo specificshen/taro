@@ -1,4 +1,4 @@
-import { isFunction, isObject, isUndefined } from '@tarojs/shared'
+import { isFunction, isObject, isUndefined } from '@spcsn/taro-shared'
 
 export function handleObjectAssignPolyfill () {
   if (!isFunction(Object.assign)) {

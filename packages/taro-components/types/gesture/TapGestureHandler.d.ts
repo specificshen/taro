@@ -35,7 +35,7 @@ interface TapGestureHandlerProps extends StandardProps {
  * @example_react
  * ```tsx
  * import { Component } from 'react'
- * import { View, TapGestureHandler } from '@tarojs/components'
+ * import { View, TapGestureHandler } from '@spcsn/taro-components'
  *
  * export function Index () {
  *   return (

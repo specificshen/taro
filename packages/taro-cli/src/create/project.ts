@@ -10,8 +10,8 @@ import {
   SOURCE_DIR,
   TARO_BASE_CONFIG,
   TARO_CONFIG_FOLDER,
-} from '@tarojs/helper'
-import { isArray } from '@tarojs/shared'
+} from '@spcsn/taro-helper'
+import { isArray } from '@spcsn/taro-shared'
 import axios from 'axios'
 import * as inquirer from 'inquirer'
 import ora from 'ora'

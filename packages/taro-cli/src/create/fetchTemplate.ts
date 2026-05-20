@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { chalk, fs } from '@tarojs/helper'
+import { chalk, fs } from '@spcsn/taro-helper'
 import * as AdmZip from 'adm-zip'
 import axios from 'axios'
 import * as download from 'download-git-repo'

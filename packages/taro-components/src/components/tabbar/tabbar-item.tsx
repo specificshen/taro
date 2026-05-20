@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import Taro from '@tarojs/taro'
+import Taro from '@spcsn/taro'
 import classNames from 'classnames'
 
 import { isVisible } from '../../utils'

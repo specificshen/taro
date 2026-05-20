@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import helper, { REG_NODE_MODULES } from '@tarojs/helper'
+import helper, { REG_NODE_MODULES } from '@spcsn/taro-helper'
 
 interface IOptions {
   include?: string[]

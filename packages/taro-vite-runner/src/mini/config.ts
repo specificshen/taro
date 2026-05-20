@@ -7,9 +7,9 @@ import {
   recursiveMerge,
   REG_NODE_MODULES_DIR,
   REG_TARO_SCOPED_PACKAGE,
-} from '@tarojs/helper'
-import { getSassLoaderOption } from '@tarojs/runner-utils'
-import { PLATFORM_TYPE } from '@tarojs/shared'
+} from '@spcsn/taro-helper'
+import { getSassLoaderOption } from '@spcsn/taro-runner-utils'
+import { PLATFORM_TYPE } from '@spcsn/taro-shared'
 
 import { getDefaultPostcssConfig } from '../postcss/postcss.mini'
 import {
@@ -24,11 +24,16 @@ import { createBabelTransformPlugin } from '../utils/babel'
 import { DEFAULT_TERSER_OPTIONS, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME } from '../utils/constants'
 import { logger } from '../utils/logger'
 
-import type { ViteMiniCompilerContext } from '@tarojs/taro/types/compile/viteCompilerContext'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
 import type { GetManualChunk } from 'rollup'
 import type { PluginOption } from 'vite'
 
 type RolldownInjectOptions = Record<string, string | [string, string]>
+
+function resolveModulePath(id: string, basedir: string): string {
+  if (path.isAbsolute(id)) return id
+  return require.resolve(id, { paths: [basedir, __dirname] })
+}
 
 function normalizeInjectValue(value: string | string[]): string | [string, string] {
   if (!Array.isArray(value)) return value
@@ -103,18 +108,18 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
 
   function getInjectOption(): RolldownInjectOptions {
     const options: RolldownInjectOptions = {
-      window: ['@tarojs/runtime', 'window'],
-      document: ['@tarojs/runtime', 'document'],
-      navigator: ['@tarojs/runtime', 'navigator'],
-      requestAnimationFrame: ['@tarojs/runtime', 'requestAnimationFrame'],
-      cancelAnimationFrame: ['@tarojs/runtime', 'cancelAnimationFrame'],
-      Element: ['@tarojs/runtime', 'TaroElement'],
-      SVGElement: ['@tarojs/runtime', 'SVGElement'],
-      MutationObserver: ['@tarojs/runtime', 'MutationObserver'],
-      history: ['@tarojs/runtime', 'history'],
-      location: ['@tarojs/runtime', 'location'],
-      URLSearchParams: ['@tarojs/runtime', 'URLSearchParams'],
-      URL: ['@tarojs/runtime', 'URL'],
+      window: ['@spcsn/taro-runtime', 'window'],
+      document: ['@spcsn/taro-runtime', 'document'],
+      navigator: ['@spcsn/taro-runtime', 'navigator'],
+      requestAnimationFrame: ['@spcsn/taro-runtime', 'requestAnimationFrame'],
+      cancelAnimationFrame: ['@spcsn/taro-runtime', 'cancelAnimationFrame'],
+      Element: ['@spcsn/taro-runtime', 'TaroElement'],
+      SVGElement: ['@spcsn/taro-runtime', 'SVGElement'],
+      MutationObserver: ['@spcsn/taro-runtime', 'MutationObserver'],
+      history: ['@spcsn/taro-runtime', 'history'],
+      location: ['@spcsn/taro-runtime', 'location'],
+      URLSearchParams: ['@spcsn/taro-runtime', 'URLSearchParams'],
+      URL: ['@spcsn/taro-runtime', 'URL'],
     }
 
     const injectOptions = taroConfig.injectOptions
@@ -247,6 +252,8 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
         await removeSourceMapFiles(outputRoot)
       }
 
+      const taroComponentsPath = resolveModulePath(taroConfig.taroComponentsPath, appPath)
+
       return {
         mode: getMode(taroConfig),
         build: {
@@ -299,12 +306,13 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           alias: [
             // 小程序使用 regenerator-runtime@0.11
             { find: 'regenerator-runtime', replacement: require.resolve('regenerator-runtime') },
-            { find: /@tarojs\/components$/, replacement: taroConfig.taroComponentsPath },
+            { find: /@tarojs\/components$/, replacement: taroComponentsPath },
+            { find: /@spcsn\/taro-components$/, replacement: taroComponentsPath },
             ...getAliasOption(),
           ],
           dedupe: [
-            '@tarojs/shared',
-            '@tarojs/runtime',
+            '@spcsn/taro-shared',
+            '@spcsn/taro-runtime',
             'react',
             'react-dom',
             'react/jsx-runtime',

@@ -1,6 +1,6 @@
 import * as hooks from '../constant'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 import type { TSetCustomTemplateConfig } from '../../create/page'
 
 declare const enum createTemplateTypeEnum {

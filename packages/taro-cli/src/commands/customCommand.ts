@@ -1,4 +1,4 @@
-import { Kernel } from '@tarojs/service'
+import { Kernel } from '@spcsn/taro-service'
 
 export default function customCommand(command: string, kernel: Kernel, args: { _: string[]; [key: string]: any }) {
   if (typeof command === 'string') {

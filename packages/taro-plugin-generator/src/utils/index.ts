@@ -2,7 +2,7 @@
 import { spawn } from 'node:child_process'
 import * as path from 'node:path'
 
-import type { IPluginContext } from '@tarojs/service'
+import type { IPluginContext } from '@spcsn/taro-service'
 
 export function execCommand(params: { command: string; args: string[]; cwd: string }) {
   const { command, cwd, args } = params
