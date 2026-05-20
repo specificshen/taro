@@ -1,23 +1,23 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest';
 
-import { indent } from '../src/utils'
+import { indent } from '../src/utils';
 
 describe('shared utils', () => {
   test('#indent', async () => {
     const inner = `<text>
   hello, world
-</text>`
+</text>`;
 
     const outer = `<view>
   ${indent(inner, 2)}
-</view>`
+</view>`;
 
     const result = `<view>
   <text>
     hello, world
   </text>
-</view>`
+</view>`;
 
-    expect(outer).toBe(result)
-  })
-})
+    expect(outer).toBe(result);
+  });
+});

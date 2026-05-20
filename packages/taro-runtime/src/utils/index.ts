@@ -1,64 +1,69 @@
-import { getComponentsAlias as _getComponentsAlias, internalComponents, isFunction, Shortcuts } from '@spcsn/taro-shared'
+import {
+  getComponentsAlias as _getComponentsAlias,
+  internalComponents,
+  isFunction,
+  Shortcuts,
+} from '@spcsn/taro-shared';
 
-import { CLASS, COMMENT, ID, ROOT_STR, STYLE, UID } from '../constants'
-import { NodeType } from '../dom/node_types'
+import { CLASS, COMMENT, ID, ROOT_STR, STYLE, UID } from '../constants';
+import { NodeType } from '../dom/node_types';
 
-import type { TaroElement } from '../dom/element'
-import type { TaroNode } from '../dom/node'
-import type { TaroText } from '../dom/text'
-import type { TFunc } from '../interface'
+import type { TaroElement } from '../dom/element';
+import type { TaroNode } from '../dom/node';
+import type { TaroText } from '../dom/text';
+import type { TFunc } from '../interface';
 
 export const incrementId = () => {
-  const chatCodes: number[] = []
+  const chatCodes: number[] = [];
   // A-Z
   for (let i = 65; i <= 90; i++) {
-    chatCodes.push(i)
+    chatCodes.push(i);
   }
   // a-z
   for (let i = 97; i <= 122; i++) {
-    chatCodes.push(i)
+    chatCodes.push(i);
   }
-  const chatCodesLen = chatCodes.length - 1
-  const list = [0, 0]
+  const chatCodesLen = chatCodes.length - 1;
+  const list = [0, 0];
   return () => {
-    const target = list.map((item) => chatCodes[item])
-    const res = String.fromCharCode(...target)
+    const target = list.map((item) => chatCodes[item]);
+    const res = String.fromCharCode(...target);
 
-    let tailIdx = list.length - 1
+    let tailIdx = list.length - 1;
 
-    list[tailIdx]++
+    list[tailIdx]++;
 
     while (list[tailIdx] > chatCodesLen) {
-      list[tailIdx] = 0
-      tailIdx = tailIdx - 1
+      list[tailIdx] = 0;
+      tailIdx = tailIdx - 1;
       if (tailIdx < 0) {
-        list.push(0)
-        break
+        list.push(0);
+        break;
       }
-      list[tailIdx]++
+      list[tailIdx]++;
     }
 
-    return res
-  }
-}
+    return res;
+  };
+};
 
 export function isElement(node: TaroNode): node is TaroElement {
-  return node.nodeType === NodeType.ELEMENT_NODE
+  return node.nodeType === NodeType.ELEMENT_NODE;
 }
 
 export function isText(node: TaroNode): node is TaroText {
-  return node.nodeType === NodeType.TEXT_NODE
+  return node.nodeType === NodeType.TEXT_NODE;
 }
 
 export function isComment(node: TaroNode): boolean {
-  return node.nodeName === COMMENT
+  return node.nodeName === COMMENT;
 }
 
 export function isHasExtractProp(el: TaroElement): boolean {
   const res = Object.keys(el.props).find((prop) => {
-    return !(/^(class|style|id)$/.test(prop) || prop.startsWith('data-'))
-  })
-  return Boolean(res)
+    return !(/^(class|style|id)$/.test(prop) || prop.startsWith('data-'));
+  });
+  return Boolean(res);
 }
 
 /**
@@ -69,58 +74,58 @@ export function isHasExtractProp(el: TaroElement): boolean {
 export function isParentBound(node: TaroElement | null, type: string): boolean {
   while ((node = node?.parentElement || null)) {
     if (!node || node.nodeName === ROOT_STR || node.nodeName === 'root-portal') {
-      return false
+      return false;
     } else if (node.__handlers[type]?.length) {
-      return true
+      return true;
     }
   }
 
-  return false
+  return false;
 }
 
 export function shortcutAttr(key: string): string {
   switch (key) {
     case STYLE:
-      return Shortcuts.Style
+      return Shortcuts.Style;
     case ID:
-      return UID
+      return UID;
     case CLASS:
-      return Shortcuts.Class
+      return Shortcuts.Class;
     default:
-      return key
+      return key;
   }
 }
 
-export const customWrapperCache = new Map<string, Record<string, any>>()
+export const customWrapperCache = new Map<string, Record<string, any>>();
 
 interface Ctor {
-  new (...args: any[]): any
+  new (...args: any[]): any;
 }
 
 export function extend(ctor: Ctor, methodName: string, options: TFunc | Record<string, any>) {
   if (isFunction(options)) {
     options = {
       value: options,
-    }
+    };
   }
   Object.defineProperty(ctor.prototype, methodName, {
     configurable: true,
     enumerable: true,
     ...options,
-  })
+  });
 }
 
-let componentsAlias
+let componentsAlias;
 export function getComponentsAlias() {
   if (!componentsAlias) {
-    componentsAlias = _getComponentsAlias(internalComponents)
+    componentsAlias = _getComponentsAlias(internalComponents);
   }
-  return componentsAlias
+  return componentsAlias;
 }
 
 export function convertNumber2PX(value: number) {
-  return value + 'px'
+  return value + 'px';
 }
 
-export * from './lodash'
-export * from './router'
+export * from './lodash';
+export * from './router';

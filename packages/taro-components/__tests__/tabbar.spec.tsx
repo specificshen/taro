@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { Tabbar } from '../src/components/tabbar/tabbar'
+import { Tabbar } from '../src/components/tabbar/tabbar';
 
 describe('Tabbar', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('base', async () => {
     page = await newSpecPage({
@@ -33,7 +33,7 @@ describe('Tabbar', () => {
           }}
         />
       ),
-    })
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+});

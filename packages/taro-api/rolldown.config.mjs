@@ -1,11 +1,11 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
-const external = ['@spcsn/taro-runtime', '@spcsn/taro-shared']
+const external = ['@spcsn/taro-runtime', '@spcsn/taro-shared'];
 
 const baseOutput = {
   sourcemap: true,
   exports: 'named',
-}
+};
 
 export default defineConfig([
   {
@@ -53,4 +53,4 @@ export default defineConfig([
       codeSplitting: false,
     },
   },
-])
+]);

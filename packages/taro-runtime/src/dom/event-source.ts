@@ -1,22 +1,22 @@
-import type { TaroNode } from './node'
+import type { TaroNode } from './node';
 
 interface IEventSource extends Map<string | undefined | null, TaroNode> {
-  removeNode(child: TaroNode): void
-  removeNodeTree(child: TaroNode): void
+  removeNode(child: TaroNode): void;
+  removeNodeTree(child: TaroNode): void;
 }
 
 class EventSource extends Map {
   removeNode(child: TaroNode) {
-    const { sid, uid } = child
-    this.delete(sid)
-    if (uid !== sid && uid) this.delete(uid)
+    const { sid, uid } = child;
+    this.delete(sid);
+    if (uid !== sid && uid) this.delete(uid);
   }
 
   removeNodeTree(child: TaroNode) {
-    this.removeNode(child)
-    const { childNodes } = child
-    childNodes.forEach((node) => this.removeNodeTree(node))
+    this.removeNode(child);
+    const { childNodes } = child;
+    childNodes.forEach((node) => this.removeNodeTree(node));
   }
 }
 
-export const eventSource: IEventSource = new EventSource()
+export const eventSource: IEventSource = new EventSource();

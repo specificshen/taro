@@ -1,38 +1,38 @@
-const path = require('path')
+const path = require('path');
 
 function hasBrowserslist() {
-  const fs = require('@spcsn/taro-helper').fs
-  const root = process.cwd()
+  const fs = require('@spcsn/taro-helper').fs;
+  const root = process.cwd();
   try {
-    const pkg = require(path.resolve(root, 'package.json'))
+    const pkg = require(path.resolve(root, 'package.json'));
     if (pkg.browserslist) {
-      return true
+      return true;
     }
   } catch {
     //
   }
   if (fs.existsSync(path.resolve(root, '.browserslistrc'))) {
-    return true
+    return true;
   }
   if (process.env.BROWSERSLIST) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 
 module.exports = (_, options = {}) => {
-  const presets = []
-  const plugins = []
-  const overrides = []
-  const isVite = options.compiler === 'vite'
+  const presets = [];
+  const plugins = [];
+  const overrides = [];
+  const isVite = options.compiler === 'vite';
   // vite 不需要 react 的 preset，在内部已经处理了
-  const isReact = options.framework === 'react' && !isVite
+  const isReact = options.framework === 'react' && !isVite;
   // vite 不需要使用 babel 处理 ts，在 esbuild 中处理了
-  const isTs = options.ts && !isVite
+  const isTs = options.ts && !isVite;
   const moduleName = options.framework
     ? options.framework.charAt(0).toUpperCase() + options.framework.slice(1)
-    : 'React'
-  const presetReactConfig = options.react || {}
+    : 'React';
+  const presetReactConfig = options.react || {};
 
   if (isReact) {
     presets.push([
@@ -41,25 +41,25 @@ module.exports = (_, options = {}) => {
         runtime: options.reactJsxRuntime || 'automatic',
         ...presetReactConfig,
       },
-    ])
+    ]);
     if (process.env.TARO_PLATFORM === 'web' && process.env.NODE_ENV !== 'production' && options.hot !== false) {
-      plugins.push([require('react-refresh/babel'), { skipEnvCheck: true }])
+      plugins.push([require('react-refresh/babel'), { skipEnvCheck: true }]);
     }
   }
 
   if (isTs) {
-    const config = typeof options.ts === 'object' ? options.ts : {}
+    const config = typeof options.ts === 'object' ? options.ts : {};
     if (isReact) {
-      config.jsxPragma = moduleName
+      config.jsxPragma = moduleName;
     }
-    presets.push([require('@babel/preset-typescript'), config])
+    presets.push([require('@babel/preset-typescript'), config]);
   }
 
   const runtimePath =
     process.env.NODE_ENV === 'jest' || process.env.NODE_ENV === 'test'
       ? false
-      : path.dirname(require.resolve('@babel/runtime/package.json'))
-  const runtimeVersion = require('@babel/runtime/package.json').version
+      : path.dirname(require.resolve('@babel/runtime/package.json'));
+  const runtimeVersion = require('@babel/runtime/package.json').version;
   const {
     loose = false,
     debug = false,
@@ -89,19 +89,19 @@ module.exports = (_, options = {}) => {
     // See https://github.com/babel/babel/issues/10261
     // And https://github.com/facebook/docusaurus/pull/2111
     version = runtimeVersion,
-  } = options
+  } = options;
 
   // resolve targets
-  let targets
+  let targets;
   if (rawTargets) {
-    targets = rawTargets
+    targets = rawTargets;
   } else if (ignoreBrowserslistConfig) {
-    targets = { node: 'current' }
+    targets = { node: 'current' };
   } else if (!hasBrowserslist()) {
     targets = {
       ios: '9',
       android: '5',
-    }
+    };
   }
 
   const envOptions = {
@@ -116,23 +116,23 @@ module.exports = (_, options = {}) => {
     exclude,
     shippedProposals,
     forceAllTransforms,
-  }
+  };
 
-  let transformRuntimeCorejs = false
+  let transformRuntimeCorejs = false;
   if (useBuiltIns === 'usage') {
-    transformRuntimeCorejs = 3
+    transformRuntimeCorejs = 3;
   } else {
-    envOptions.useBuiltIns = useBuiltIns
+    envOptions.useBuiltIns = useBuiltIns;
     if (useBuiltIns === 'entry') {
-      envOptions.corejs = '3'
+      envOptions.corejs = '3';
     }
   }
 
   if (process.env.NODE_ENV === 'test') {
-    envOptions.modules = 'commonjs'
+    envOptions.modules = 'commonjs';
   }
 
-  presets.unshift([require('@babel/preset-env'), envOptions])
+  presets.unshift([require('@babel/preset-env'), envOptions]);
 
   plugins.push(
     [
@@ -143,7 +143,7 @@ module.exports = (_, options = {}) => {
       },
     ],
     [require('@babel/plugin-transform-class-properties'), { loose }],
-  )
+  );
 
   plugins.push([
     require('@babel/plugin-transform-runtime'),
@@ -155,19 +155,19 @@ module.exports = (_, options = {}) => {
       absoluteRuntime,
       version,
     },
-  ])
+  ]);
 
   if (
     typeof options['dynamic-import-node'] === 'boolean'
       ? options['dynamic-import-node']
       : process.env.TARO_PLATFORM !== 'web'
   ) {
-    plugins.push([require('babel-plugin-dynamic-import-node')])
+    plugins.push([require('babel-plugin-dynamic-import-node')]);
   }
 
-  plugins.push(require('./remove-define-config'))
+  plugins.push(require('./remove-define-config'));
   if (isReact && process.env.TARO_ENV === 'weapp') {
-    plugins.unshift(require('./transform-taro-components'))
+    plugins.unshift(require('./transform-taro-components'));
   }
 
   return {
@@ -180,5 +180,5 @@ module.exports = (_, options = {}) => {
       },
       ...overrides,
     ],
-  }
-}
+  };
+};

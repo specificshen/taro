@@ -1,23 +1,23 @@
-import { Config, transformSync } from '@swc/core'
-import esbuild from 'esbuild'
-import { defaults, omit } from 'lodash'
-import requireFromString from 'require-from-string'
+import { Config, transformSync } from '@swc/core';
+import esbuild from 'esbuild';
+import { defaults, omit } from 'lodash';
+import requireFromString from 'require-from-string';
 
-import { defaultMainFields } from '../constants'
+import { defaultMainFields } from '../constants';
 
-import type { Loader } from 'esbuild'
+import type { Loader } from 'esbuild';
 
 export const defaultEsbuildLoader: Record<string, Loader> = {
   '.js': 'js',
   '.jsx': 'tsx',
   '.ts': 'ts',
   '.json': 'json',
-}
+};
 
 export interface IRequireWithEsbuildOptions {
-  customConfig?: Parameters<typeof esbuild.build>[0]
-  customSwcConfig?: Config
-  cwd?: string
+  customConfig?: Parameters<typeof esbuild.build>[0];
+  customSwcConfig?: Config;
+  cwd?: string;
 }
 
 /** 基于 esbuild 的 require 实现 */
@@ -43,7 +43,7 @@ export function requireWithEsbuild(
       mainFields: [...defaultMainFields],
       write: false,
     }),
-  )
+  );
 
   // Note: esbuild.buildSync 模式下不支持引入插件，所以这里需要手动转换
   const { code = '' } = transformSync(
@@ -51,9 +51,9 @@ export function requireWithEsbuild(
     defaults(customSwcConfig, {
       jsc: { target: 'es2015' },
     }),
-  )
-  return requireFromString(code, id)
+  );
+  return requireFromString(code, id);
 }
 
-export { esbuild }
-export * from './utils'
+export { esbuild };
+export * from './utils';

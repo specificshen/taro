@@ -1,7 +1,7 @@
-const DEFAULT_EMPTY_ARRAY = '[]'
-const NO_DEFAULT_VALUE = ''
-const DEFAULT_TRUE = '!0'
-const DEFAULT_FALSE = '!1'
+const DEFAULT_EMPTY_ARRAY = '[]';
+const NO_DEFAULT_VALUE = '';
+const DEFAULT_TRUE = '!0';
+const DEFAULT_FALSE = '!1';
 
 export const touchEvents = {
   bindTouchStart: NO_DEFAULT_VALUE,
@@ -9,7 +9,7 @@ export const touchEvents = {
   bindTouchEnd: NO_DEFAULT_VALUE,
   bindTouchCancel: NO_DEFAULT_VALUE,
   bindLongTap: NO_DEFAULT_VALUE,
-}
+};
 
 export const animation = {
   animation: NO_DEFAULT_VALUE,
@@ -17,10 +17,10 @@ export const animation = {
   bindAnimationIteration: NO_DEFAULT_VALUE,
   bindAnimationEnd: NO_DEFAULT_VALUE,
   bindTransitionEnd: NO_DEFAULT_VALUE,
-}
+};
 
 export function singleQuote(s: string) {
-  return `'${s}'`
+  return `'${s}'`;
 }
 
 const View = {
@@ -30,13 +30,13 @@ const View = {
   'hover-stay-time': '400',
   ...touchEvents,
   ...animation,
-}
+};
 
 const Icon = {
   type: NO_DEFAULT_VALUE,
   size: '23',
   color: NO_DEFAULT_VALUE,
-}
+};
 
 const MapComp = {
   longitude: NO_DEFAULT_VALUE,
@@ -55,7 +55,7 @@ const MapComp = {
   bindCalloutTap: NO_DEFAULT_VALUE,
   bindUpdated: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const Progress = {
   percent: NO_DEFAULT_VALUE,
@@ -66,18 +66,18 @@ const Progress = {
   active: DEFAULT_FALSE,
   'active-mode': singleQuote('backwards'),
   'show-info': DEFAULT_FALSE,
-}
+};
 
 const RichText = {
   nodes: DEFAULT_EMPTY_ARRAY,
-}
+};
 
 const Text = {
   selectable: DEFAULT_FALSE,
   space: NO_DEFAULT_VALUE,
   decode: DEFAULT_FALSE,
   ...touchEvents,
-}
+};
 
 const Button = {
   size: singleQuote('default'),
@@ -94,7 +94,7 @@ const Button = {
   name: NO_DEFAULT_VALUE,
   bindagreeprivacyauthorization: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const Checkbox = {
   value: NO_DEFAULT_VALUE,
@@ -102,19 +102,19 @@ const Checkbox = {
   checked: DEFAULT_FALSE,
   color: singleQuote('#09BB07'),
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const CheckboxGroup = {
   bindChange: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Form = {
   'report-submit': DEFAULT_FALSE,
   bindSubmit: NO_DEFAULT_VALUE,
   bindReset: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Input = {
   value: NO_DEFAULT_VALUE,
@@ -137,13 +137,13 @@ const Input = {
   bindBlur: NO_DEFAULT_VALUE,
   bindConfirm: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Label = {
   for: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const Picker = {
   mode: singleQuote('selector'),
@@ -159,7 +159,7 @@ const Picker = {
   bindCancel: NO_DEFAULT_VALUE,
   bindChange: NO_DEFAULT_VALUE,
   bindColumnChange: NO_DEFAULT_VALUE,
-}
+};
 
 const PickerView = {
   value: NO_DEFAULT_VALUE,
@@ -169,11 +169,11 @@ const PickerView = {
   'mask-class': NO_DEFAULT_VALUE,
   bindChange: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const PickerViewColumn = {
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Radio = {
   value: NO_DEFAULT_VALUE,
@@ -181,12 +181,12 @@ const Radio = {
   disabled: NO_DEFAULT_VALUE,
   color: singleQuote('#09BB07'),
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const RadioGroup = {
   bindChange: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Slider = {
   min: '0',
@@ -202,7 +202,7 @@ const Slider = {
   bindChange: NO_DEFAULT_VALUE,
   bindChanging: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Switch = {
   checked: DEFAULT_FALSE,
@@ -211,7 +211,7 @@ const Switch = {
   color: singleQuote('#04BE02'),
   bindChange: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const Textarea = {
   value: NO_DEFAULT_VALUE,
@@ -234,22 +234,22 @@ const Textarea = {
   bindInput: NO_DEFAULT_VALUE,
   bindConfirm: NO_DEFAULT_VALUE,
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const CoverImage = {
   src: NO_DEFAULT_VALUE,
   bindLoad: 'eh',
   bindError: 'eh',
-}
+};
 
 const CoverView = {
   'scroll-top': DEFAULT_FALSE,
   ...touchEvents,
-}
+};
 
 const MovableArea = {
   'scale-area': DEFAULT_FALSE,
-}
+};
 
 const MovableView = {
   direction: 'none',
@@ -272,7 +272,7 @@ const MovableView = {
   height: singleQuote('10px'),
   ...touchEvents,
   ...animation,
-}
+};
 
 const ScrollView = {
   'scroll-x': DEFAULT_FALSE,
@@ -289,7 +289,7 @@ const ScrollView = {
   bindScroll: NO_DEFAULT_VALUE,
   ...touchEvents,
   ...animation,
-}
+};
 
 const Swiper = {
   'indicator-dots': DEFAULT_FALSE,
@@ -308,11 +308,11 @@ const Swiper = {
   bindTransition: NO_DEFAULT_VALUE,
   bindAnimationFinish: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const SwiperItem = {
   'item-id': NO_DEFAULT_VALUE,
-}
+};
 
 const Navigator = {
   url: NO_DEFAULT_VALUE,
@@ -325,7 +325,7 @@ const Navigator = {
   bindSuccess: NO_DEFAULT_VALUE,
   bindFail: NO_DEFAULT_VALUE,
   bindComplete: NO_DEFAULT_VALUE,
-}
+};
 
 const Audio = {
   id: NO_DEFAULT_VALUE,
@@ -340,14 +340,14 @@ const Audio = {
   bindPause: NO_DEFAULT_VALUE,
   bindTimeUpdate: NO_DEFAULT_VALUE,
   bindEnded: NO_DEFAULT_VALUE,
-}
+};
 
 const Camera = {
   'device-position': singleQuote('back'),
   flash: singleQuote('auto'),
   bindStop: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
-}
+};
 
 const Image = {
   src: NO_DEFAULT_VALUE,
@@ -356,7 +356,7 @@ const Image = {
   bindError: NO_DEFAULT_VALUE,
   bindLoad: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const LivePlayer = {
   src: NO_DEFAULT_VALUE,
@@ -371,7 +371,7 @@ const LivePlayer = {
   bindFullScreenChange: NO_DEFAULT_VALUE,
   bindNetStatus: NO_DEFAULT_VALUE,
   ...animation,
-}
+};
 
 const Video = {
   src: NO_DEFAULT_VALUE,
@@ -402,14 +402,14 @@ const Video = {
   bindWaiting: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
   ...animation,
-}
+};
 
 const Canvas = {
   'canvas-id': NO_DEFAULT_VALUE,
   'disable-scroll': DEFAULT_FALSE,
   bindError: NO_DEFAULT_VALUE,
   ...touchEvents,
-}
+};
 
 const Ad = {
   'unit-id': NO_DEFAULT_VALUE,
@@ -417,21 +417,21 @@ const Ad = {
   bindLoad: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
   bindClose: NO_DEFAULT_VALUE,
-}
+};
 
 const WebView = {
   src: NO_DEFAULT_VALUE,
   bindMessage: NO_DEFAULT_VALUE,
   bindLoad: NO_DEFAULT_VALUE,
   bindError: NO_DEFAULT_VALUE,
-}
+};
 
-const Block = {}
+const Block = {};
 
 // For Vue，因为 slot 标签被 vue 占用了
 const SlotView = {
   name: NO_DEFAULT_VALUE,
-}
+};
 
 // For React
 // Slot 和 SlotView 最终都会编译成 <view slot={{ i.name }} />
@@ -439,13 +439,13 @@ const SlotView = {
 // 不给 View 直接加 slot 属性的原因是性能损耗
 const Slot = {
   name: NO_DEFAULT_VALUE,
-}
+};
 
 const NativeSlot = {
   name: NO_DEFAULT_VALUE,
-}
+};
 
-const Script = {}
+const Script = {};
 
 export const internalComponents: Record<string, Record<string, string>> = {
   View,
@@ -489,7 +489,7 @@ export const internalComponents: Record<string, Record<string, string>> = {
   SlotView,
   NativeSlot,
   Script,
-}
+};
 
 export const controlledComponent = new Set([
   'input',
@@ -500,9 +500,9 @@ export const controlledComponent = new Set([
   'slider',
   'switch',
   'textarea',
-])
+]);
 
-export const focusComponents = new Set(['input', 'textarea'])
+export const focusComponents = new Set(['input', 'textarea']);
 
 export const voidElements = new Set([
   'progress',
@@ -517,7 +517,7 @@ export const voidElements = new Set([
   'official-account',
   'open-data',
   'navigation-bar',
-])
+]);
 
 export const nestElements = new Map([
   ['view', -1],
@@ -536,4 +536,4 @@ export const nestElements = new Map([
   ['scroll-view', 4],
   ['swiper', 4],
   ['swiper-item', 4],
-])
+]);

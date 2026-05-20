@@ -1,120 +1,120 @@
-import type { TaroElement } from './element'
+import type { TaroElement } from './element';
 
 export class ClassList {
-  private el: TaroElement
+  private el: TaroElement;
 
-  private tokenList: string[] = []
+  private tokenList: string[] = [];
 
   constructor(className: string, el: TaroElement) {
-    this.el = el
+    this.el = el;
     className
       .trim()
       .split(/\s+/)
-      .forEach((token) => this.tokenList.push(token))
+      .forEach((token) => this.tokenList.push(token));
   }
 
   public get value() {
-    return this.toString()
+    return this.toString();
   }
 
   public get length() {
-    return this.tokenList.length
+    return this.tokenList.length;
   }
 
   add() {
-    let index = 0
-    let updated = false
+    let index = 0;
+    let updated = false;
 
-    const tokens = arguments
-    const length = tokens.length
-    const tokenList = this.tokenList
+    const tokens = arguments;
+    const length = tokens.length;
+    const tokenList = this.tokenList;
 
     do {
-      const token: string = tokens[index]
+      const token: string = tokens[index];
 
       if (this.checkTokenIsValid(token) && !~tokenList.indexOf(token)) {
-        tokenList.push(token)
+        tokenList.push(token);
 
-        updated = true
+        updated = true;
       }
-    } while (++index < length)
+    } while (++index < length);
 
     if (updated) {
-      this._update()
+      this._update();
     }
   }
 
   remove() {
-    let i = 0
-    let updated = false
+    let i = 0;
+    let updated = false;
 
-    const tokens = arguments
-    const length = tokens.length
-    const tokenList = this.tokenList
+    const tokens = arguments;
+    const length = tokens.length;
+    const tokenList = this.tokenList;
 
     do {
-      const token = tokens[i] + ''
+      const token = tokens[i] + '';
 
-      if (!this.checkTokenIsValid(token)) continue
+      if (!this.checkTokenIsValid(token)) continue;
 
-      const index = tokenList.indexOf(token)
+      const index = tokenList.indexOf(token);
 
       if (~tokenList.indexOf(token)) {
-        tokenList.splice(index, 1)
+        tokenList.splice(index, 1);
 
-        updated = true
+        updated = true;
       }
-    } while (++i < length)
+    } while (++i < length);
 
     if (updated) {
-      this._update()
+      this._update();
     }
   }
 
   contains(token: string) {
-    if (!this.checkTokenIsValid(token)) return false
+    if (!this.checkTokenIsValid(token)) return false;
 
-    return !!~this.tokenList.indexOf(token)
+    return !!~this.tokenList.indexOf(token);
   }
 
   toggle(token: string, force: boolean) {
-    const result = this.contains(token)
-    const method = result ? force !== true && 'remove' : force !== false && 'add'
+    const result = this.contains(token);
+    const method = result ? force !== true && 'remove' : force !== false && 'add';
 
     if (method) {
       // @ts-ignore
-      this[method](token)
+      this[method](token);
     }
 
     if (force === true || force === false) {
-      return force
+      return force;
     } else {
-      return !result
+      return !result;
     }
   }
 
   replace(token: string, replacement_token: string) {
-    if (!this.checkTokenIsValid(token) || !this.checkTokenIsValid(replacement_token)) return
+    if (!this.checkTokenIsValid(token) || !this.checkTokenIsValid(replacement_token)) return;
 
-    const index = this.tokenList.indexOf(token)
+    const index = this.tokenList.indexOf(token);
 
     if (~index) {
-      this.tokenList.splice(index, 1, replacement_token)
-      this._update()
+      this.tokenList.splice(index, 1, replacement_token);
+      this._update();
     }
   }
 
   toString() {
-    return this.tokenList.filter((v) => v !== '').join(' ')
+    return this.tokenList.filter((v) => v !== '').join(' ');
   }
 
   private checkTokenIsValid(token: string) {
-    if (token === '' || /\s/.test(token)) return false
+    if (token === '' || /\s/.test(token)) return false;
 
-    return true
+    return true;
   }
 
   private _update() {
-    this.el.className = this.value
+    this.el.className = this.value;
   }
 }

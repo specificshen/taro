@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   collectCoverage: false,
@@ -22,4 +22,4 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
-}
+};

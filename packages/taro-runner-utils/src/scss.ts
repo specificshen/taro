@@ -1,20 +1,20 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import { fs } from '@spcsn/taro-helper'
-import { Bundler, BundleResult } from 'scss-bundle'
+import { fs } from '@spcsn/taro-helper';
+import { Bundler, BundleResult } from 'scss-bundle';
 
 interface LoaderOption {
-  data?: string
-  [key: string]: any
+  data?: string;
+  [key: string]: any;
 }
 
 interface BuildConfig {
   sass?: {
-    resource?: string | string[]
-    projectDirectory?: string
-    data?: string
-  }
-  sassLoaderOption?: LoaderOption
+    resource?: string | string[];
+    projectDirectory?: string;
+    data?: string;
+  };
+  sassLoaderOption?: LoaderOption;
 }
 
 /**
@@ -29,12 +29,12 @@ export async function getBundleResult(
   url: string,
   projectDirectory: string | undefined = undefined,
 ): Promise<BundleResult> {
-  let bundler: Bundler = new Bundler()
+  let bundler: Bundler = new Bundler();
   if (projectDirectory) {
-    bundler = new Bundler(undefined, projectDirectory)
+    bundler = new Bundler(undefined, projectDirectory);
   }
-  const res = await bundler.bundle(url)
-  return res
+  const res = await bundler.bundle(url);
+  return res;
 }
 
 /**
@@ -48,25 +48,25 @@ export async function getBundleContent(
   resource: string | string[],
   projectDirectory: string | undefined = undefined,
 ): Promise<string | undefined> {
-  let result: string | undefined = ''
+  let result: string | undefined = '';
 
   try {
     if (typeof resource === 'string') {
-      const res = await getBundleResult(resource, projectDirectory)
-      result = res.bundledContent
+      const res = await getBundleResult(resource, projectDirectory);
+      result = res.bundledContent;
     }
 
     if (Array.isArray(resource)) {
       for (const url of resource) {
-        const res = await getBundleResult(url, projectDirectory)
-        result += res.bundledContent || ''
+        const res = await getBundleResult(url, projectDirectory);
+        result += res.bundledContent || '';
       }
     }
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : String(error))
+    throw new Error(error instanceof Error ? error.message : String(error));
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -78,15 +78,15 @@ export async function getBundleContent(
 function checkPath(resource: string | string[], rootDir: string | undefined) {
   if (Array.isArray(resource)) {
     resource.forEach((item) => {
-      const url = rootDir ? path.resolve(rootDir, item) : item
+      const url = rootDir ? path.resolve(rootDir, item) : item;
       if (!fs.existsSync(url)) {
-        throw new Error(`全局注入 scss 文件路径错误: ${url}`)
+        throw new Error(`全局注入 scss 文件路径错误: ${url}`);
       }
-    })
+    });
   } else if (typeof resource === 'string') {
-    const url = rootDir ? path.resolve(rootDir, resource) : resource
+    const url = rootDir ? path.resolve(rootDir, resource) : resource;
     if (!fs.existsSync(url)) {
-      throw new Error(`全局注入 scss 文件路径错误: ${url}`)
+      throw new Error(`全局注入 scss 文件路径错误: ${url}`);
     }
   }
 }
@@ -97,28 +97,28 @@ function checkPath(resource: string | string[], rootDir: string | undefined) {
  * @returns Merged sass loader option.
  */
 export async function getSassLoaderOption({ sass, sassLoaderOption }: BuildConfig): Promise<LoaderOption> {
-  sassLoaderOption = sassLoaderOption || {}
+  sassLoaderOption = sassLoaderOption || {};
 
-  let bundledContent = ''
+  let bundledContent = '';
 
   if (!sass) {
-    return sassLoaderOption
+    return sassLoaderOption;
   }
 
-  const { resource, projectDirectory } = sass
+  const { resource, projectDirectory } = sass;
   if (resource) {
-    checkPath(resource, projectDirectory)
-    const content = await getBundleContent(resource, projectDirectory)
-    bundledContent += content
+    checkPath(resource, projectDirectory);
+    const content = await getBundleContent(resource, projectDirectory);
+    bundledContent += content;
   }
 
   if (sass.data) {
-    bundledContent += sass.data
+    bundledContent += sass.data;
   }
   return {
     ...sassLoaderOption,
     additionalData: sassLoaderOption.data ? `${sassLoaderOption.data}${bundledContent}` : bundledContent,
-  }
+  };
 }
 
-export default getSassLoaderOption
+export default getSassLoaderOption;

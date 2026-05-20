@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import { updatePkgJson } from '../../utils'
+import { updatePkgJson } from '../../utils';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 const getDeps = (version: TailwindCSSVersion): Deps => {
   const deps: Deps = {
@@ -11,17 +11,17 @@ const getDeps = (version: TailwindCSSVersion): Deps => {
       'weapp-tailwindcss': '^4.1.7',
       '@tailwindcss/postcss': '^4.1.7',
     },
-  }
+  };
 
-  return deps
-}
+  return deps;
+};
 
 export async function updateDeps(options: { ctx: IPluginContext; tailwindcssVersion: TailwindCSSVersion }) {
-  const { ctx, tailwindcssVersion } = options
-  const patch: PackageJson = { ...getDeps(tailwindcssVersion) }
+  const { ctx, tailwindcssVersion } = options;
+  const patch: PackageJson = { ...getDeps(tailwindcssVersion) };
   if (tailwindcssVersion === '4x') {
     // 这是为了给 tailwindcss@4 打上支持 rpx 单位的补丁，否则它会把 rpx 认为是一种颜色
-    patch.scripts = { postinstall: 'weapp-tw patch' }
+    patch.scripts = { postinstall: 'weapp-tw patch' };
   }
-  return updatePkgJson(ctx, patch)
+  return updatePkgJson(ctx, patch);
 }

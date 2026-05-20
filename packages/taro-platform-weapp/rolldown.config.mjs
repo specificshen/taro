@@ -1,11 +1,11 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
-const externalPackages = ['@spcsn/taro-service', '@spcsn/taro-shared']
-const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+const externalPackages = ['@spcsn/taro-service', '@spcsn/taro-shared'];
+const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`));
 
 const baseOutput = {
   sourcemap: true,
-}
+};
 
 export default defineConfig([
   {
@@ -45,4 +45,4 @@ export default defineConfig([
       format: 'es',
     },
   },
-])
+]);

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 // https://cn.vitest.dev/guide/
 export default defineConfig({
@@ -9,4 +9,4 @@ export default defineConfig({
       include: ['./index.js'],
     },
   },
-})
+});

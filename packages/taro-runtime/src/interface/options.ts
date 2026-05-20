@@ -1,5 +1,5 @@
 export interface Options {
-  prerender: boolean
-  debug: boolean
-  miniGlobal?: any
+  prerender: boolean;
+  debug: boolean;
+  miniGlobal?: any;
 }

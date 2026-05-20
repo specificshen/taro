@@ -9,4 +9,4 @@
 // !singlequotes|!doublequotes|!url()|pixelunit
 
 module.exports = (units = ['px']) =>
-  new RegExp(`"[^"]+"|'[^']+'|url\\([^\\)]+\\)|(\\d*\\.?\\d+)(${units.join('|')})`, 'g')
+  new RegExp(`"[^"]+"|'[^']+'|url\\([^\\)]+\\)|(\\d*\\.?\\d+)(${units.join('|')})`, 'g');

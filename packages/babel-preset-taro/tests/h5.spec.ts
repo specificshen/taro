@@ -1,13 +1,13 @@
-import din from 'babel-plugin-dynamic-import-node'
-import { beforeAll, describe, expect, test } from 'vitest'
+import din from 'babel-plugin-dynamic-import-node';
+import { beforeAll, describe, expect, test } from 'vitest';
 
-import babelPresetTaro from '../index.js'
+import babelPresetTaro from '../index.js';
 
 describe('babel-preset-taro with h5', () => {
   beforeAll(() => {
-    process.env.TARO_PLATFORM = 'web'
-    process.env.TARO_ENV = 'h5'
-  })
+    process.env.TARO_PLATFORM = 'web';
+    process.env.TARO_ENV = 'h5';
+  });
 
   test('not exist dynamic-import-node', () => {
     const config = babelPresetTaro(
@@ -16,15 +16,15 @@ describe('babel-preset-taro with h5', () => {
         framework: 'react',
         ts: true,
       },
-    )
+    );
 
-    expect(config.sourceType).toBe('unambiguous')
+    expect(config.sourceType).toBe('unambiguous');
 
-    const [override] = config.overrides
+    const [override] = config.overrides;
 
-    const [dynamicImportNode] = override.plugins[override.plugins.length - 2]
-    expect(dynamicImportNode === din).toBeFalsy()
-  })
+    const [dynamicImportNode] = override.plugins[override.plugins.length - 2];
+    expect(dynamicImportNode === din).toBeFalsy();
+  });
 
   test('enable dynamic-import-node', () => {
     const config = babelPresetTaro(
@@ -34,13 +34,13 @@ describe('babel-preset-taro with h5', () => {
         ts: true,
         'dynamic-import-node': true,
       },
-    )
+    );
 
-    expect(config.sourceType).toBe('unambiguous')
+    expect(config.sourceType).toBe('unambiguous');
 
-    const [override] = config.overrides
+    const [override] = config.overrides;
 
-    const [dynamicImportNode] = override.plugins[override.plugins.length - 2]
-    expect(dynamicImportNode === din).toBeTruthy()
-  })
-})
+    const [dynamicImportNode] = override.plugins[override.plugins.length - 2];
+    expect(dynamicImportNode === din).toBeTruthy();
+  });
+});

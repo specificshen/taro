@@ -1,4 +1,4 @@
-import { ContinuousEventPriority, DefaultEventPriority, DiscreteEventPriority } from 'react-reconciler/constants'
+import { ContinuousEventPriority, DefaultEventPriority, DiscreteEventPriority } from 'react-reconciler/constants';
 
 export const supportedInputTypes: { [key: string]: boolean } = {
   color: true,
@@ -16,7 +16,7 @@ export const supportedInputTypes: { [key: string]: boolean } = {
   time: true,
   url: true,
   week: true,
-}
+};
 
 export function getEventPriority(domEventName) {
   switch (domEventName) {
@@ -47,7 +47,7 @@ export function getEventPriority(domEventName) {
     case 'focus':
     case 'select':
     case 'selectstart':
-      return DiscreteEventPriority
+      return DiscreteEventPriority;
     case 'drag':
     case 'dragenter':
     case 'dragexit':
@@ -61,17 +61,17 @@ export function getEventPriority(domEventName) {
     case 'touchmove':
     case 'pointerenter':
     case 'pointerleave':
-      return ContinuousEventPriority
+      return ContinuousEventPriority;
     default:
-      return DefaultEventPriority
+      return DefaultEventPriority;
   }
 }
 
-const randomKey = Math.random().toString(36).slice(2)
+const randomKey = Math.random().toString(36).slice(2);
 
-export const internalPropsKey = '__reactProps$' + randomKey
-export const internalInstanceKey = '__reactFiber$' + randomKey
-export const internalContainerInstanceKey = '__reactContainer$' + randomKey
+export const internalPropsKey = '__reactProps$' + randomKey;
+export const internalInstanceKey = '__reactFiber$' + randomKey;
+export const internalContainerInstanceKey = '__reactContainer$' + randomKey;
 // const internalEventHandlersKey = '__reactEvents$' + randomKey
 // const internalEventHandlerListenersKey = '__reactListeners$' + randomKey
 // const internalEventHandlesSetKey = '__reactHandles$' + randomKey

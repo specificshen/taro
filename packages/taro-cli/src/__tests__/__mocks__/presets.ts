@@ -1,4 +1,4 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
 export default () => {
   return {
@@ -11,5 +11,5 @@ export default () => {
       path.resolve(__dirname, '../../presets', 'files', 'generateProjectConfig.ts'),
       path.resolve(__dirname, '../../presets', 'files', 'generateFrameworkInfo.ts'),
     ],
-  }
-}
+  };
+};

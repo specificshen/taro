@@ -1,4 +1,4 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
 const externalPackages = [
   '@spcsn/taro-helper',
@@ -15,10 +15,10 @@ const externalPackages = [
   'react-dom/client',
   'tslib',
   'vite',
-]
+];
 
 const external = (id) =>
-  id.startsWith('node:') || externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+  id.startsWith('node:') || externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`));
 
 export default defineConfig([
   {
@@ -40,4 +40,4 @@ export default defineConfig([
       sourcemap: true,
     },
   },
-])
+]);

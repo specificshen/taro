@@ -1,9 +1,9 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
 const baseOutput = {
   sourcemap: true,
   exports: 'named',
-}
+};
 
 export default defineConfig([
   {
@@ -39,4 +39,4 @@ export default defineConfig([
       format: 'cjs',
     },
   },
-])
+]);

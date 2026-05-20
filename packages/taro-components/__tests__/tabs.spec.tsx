@@ -1,15 +1,15 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { TabItem } from '../src/components/tabs/tab-item'
-import { Tabs } from '../src/components/tabs/tabs'
-import { printUnimplementedWarning } from './utils'
+import { TabItem } from '../src/components/tabs/tab-item';
+import { Tabs } from '../src/components/tabs/tabs';
+import { printUnimplementedWarning } from './utils';
 
-const logError = jest.fn()
-console.error = logError
+const logError = jest.fn();
+console.error = logError;
 
 describe('Tabs', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('unimplemented', async () => {
     page = await newSpecPage({
@@ -22,8 +22,8 @@ describe('Tabs', () => {
           <taro-tab-item-core />
         </taro-tabs-core>
       ),
-    })
-    await page.waitForChanges()
+    });
+    await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
       <taro-tabs-core>
@@ -32,7 +32,7 @@ describe('Tabs', () => {
         <taro-tab-item-core></taro-tab-item-core>
         <taro-tab-item-core></taro-tab-item-core>
       </taro-tabs-core>
-    `)
-    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root))
-  })
-})
+    `);
+    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root));
+  });
+});

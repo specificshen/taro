@@ -1,4 +1,4 @@
-import type { IComponentConfig } from '@spcsn/taro/types/compile/hooks'
+import type { IComponentConfig } from '@spcsn/taro/types/compile/hooks';
 
 export const componentConfig: IComponentConfig = {
   includes: new Set([
@@ -16,4 +16,4 @@ export const componentConfig: IComponentConfig = {
   exclude: new Set(),
   thirdPartyComponents: new Map(),
   includeAll: false,
-}
+};

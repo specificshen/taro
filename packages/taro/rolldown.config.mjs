@@ -1,7 +1,7 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
-const externalPackages = ['@spcsn/taro-api', '@spcsn/taro-runtime', '@spcsn/taro-shared', 'react']
-const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+const externalPackages = ['@spcsn/taro-api', '@spcsn/taro-runtime', '@spcsn/taro-shared', 'react'];
+const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`));
 
 export default defineConfig({
   input: 'src/index.js',
@@ -12,4 +12,4 @@ export default defineConfig({
     sourcemap: true,
     exports: 'auto',
   },
-})
+});

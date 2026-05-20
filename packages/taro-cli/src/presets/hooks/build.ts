@@ -1,9 +1,9 @@
-import * as hooks from '../constant'
+import * as hooks from '../constant';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 export default (ctx: IPluginContext) => {
-  ;[
+  [
     hooks.MODIFY_APP_CONFIG,
     hooks.MODIFY_WEBPACK_CHAIN,
     hooks.MODIFY_VITE_CONFIG,
@@ -17,6 +17,6 @@ export default (ctx: IPluginContext) => {
     hooks.ON_BUILD_COMPLETE,
     hooks.MODIFY_RUNNER_OPTS,
   ].forEach((methodName) => {
-    ctx.registerMethod(methodName)
-  })
-}
+    ctx.registerMethod(methodName);
+  });
+};

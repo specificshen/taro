@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-const { exec } = require('child_process')
-const concurrently = require('concurrently')
-const minimist = require('minimist')
-const chalk = require('chalk')
+const { exec } = require('child_process');
+const concurrently = require('concurrently');
+const minimist = require('minimist');
+const chalk = require('chalk');
 
 /**
  * pnpm run debug
@@ -15,23 +15,23 @@ const chalk = require('chalk')
  * unlink: 是否进行unlink，默认为link
  */
 
-const args = minimist(process.argv.slice(2))
-const { packages: packagesStr, projectPath, unlink } = args
+const args = minimist(process.argv.slice(2));
+const { packages: packagesStr, projectPath, unlink } = args;
 
-const packages = packagesStr?.split(',') || []
-const linkType = unlink ? 'unlink' : 'link'
+const packages = packagesStr?.split(',') || [];
+const linkType = unlink ? 'unlink' : 'link';
 
 function execCommand(command, successMessage, errorMessage) {
   return new Promise((resolve, reject) => {
     exec(command, (error) => {
       if (error) {
-        console.error(chalk.red(errorMessage), error)
-        return reject(error)
+        console.error(chalk.red(errorMessage), error);
+        return reject(error);
       }
-      console.log(chalk.green(successMessage))
-      resolve()
-    })
-  })
+      console.log(chalk.green(successMessage));
+      resolve();
+    });
+  });
 }
 
 function linkToGlobal() {
@@ -43,7 +43,7 @@ function linkToGlobal() {
         `yarn ${linkType} ${pkg} 出错`,
       ),
     ),
-  )
+  );
 }
 
 function linkToLocal() {
@@ -55,60 +55,60 @@ function linkToLocal() {
         `yarn ${linkType} ${pkg} 出错`,
       ),
     ),
-  )
+  );
 }
 
 function forceInstall() {
-  console.log(chalk.green('正在项目中为您安装unlink的包...'))
+  console.log(chalk.green('正在项目中为您安装unlink的包...'));
   return execCommand(
     `cd ${projectPath} && yarn install --force`,
     `已在项目中为您安装unlink的包`,
     `yarn install --force 出错`,
-  )
+  );
 }
 
 function runDevConcurrently() {
-  const excludePkg = ['@spcsn/taro']
+  const excludePkg = ['@spcsn/taro'];
   const commands = packages
     .filter((pkg) => !excludePkg.includes(pkg))
     .map((pkg) => {
       const devMap = {
         '@spcsn/taro-components': 'dev:components',
-      }
-      return `pnpm --filter ${pkg} run ${devMap[pkg] || 'dev'}`
-    })
+      };
+      return `pnpm --filter ${pkg} run ${devMap[pkg] || 'dev'}`;
+    });
 
-  if (!commands.length) return
+  if (!commands.length) return;
 
   const { result } = concurrently(commands, {
     prefix: 'name',
     killOthers: ['failure', 'success'],
-  })
+  });
 
   return result.catch((error) => {
-    console.error(chalk.red('自动编译出错:'), error)
-  })
+    console.error(chalk.red('自动编译出错:'), error);
+  });
 }
 
 async function main() {
   if (!projectPath || !packages?.length) {
-    console.error(chalk.red('参数错误~'))
-    return
+    console.error(chalk.red('参数错误~'));
+    return;
   }
 
   try {
     if (unlink) {
-      await linkToLocal()
-      await linkToGlobal()
-      await forceInstall()
+      await linkToLocal();
+      await linkToGlobal();
+      await forceInstall();
     } else {
-      await linkToGlobal()
-      await linkToLocal()
-      await runDevConcurrently()
+      await linkToGlobal();
+      await linkToLocal();
+      await runDevConcurrently();
     }
   } catch (error) {
-    console.error(chalk.red('工作流执行出错:'), error)
+    console.error(chalk.red('工作流执行出错:'), error);
   }
 }
 
-main()
+main();

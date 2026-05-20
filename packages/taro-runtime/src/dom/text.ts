@@ -1,17 +1,17 @@
-import { Shortcuts } from '@spcsn/taro-shared'
+import { Shortcuts } from '@spcsn/taro-shared';
 
-import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer'
-import { TaroNode } from './node'
-import { NodeType } from './node_types'
+import { MutationObserver, MutationRecordType } from '../dom-external/mutation-observer';
+import { TaroNode } from './node';
+import { NodeType } from './node_types';
 
 export class TaroText extends TaroNode {
-  public _value: string
-  public nodeType = NodeType.TEXT_NODE
-  public nodeName = '#text'
+  public _value: string;
+  public nodeType = NodeType.TEXT_NODE;
+  public nodeName = '#text';
 
   constructor(value) {
-    super()
-    this._value = value
+    super();
+    this._value = value;
   }
 
   public set textContent(text: string) {
@@ -19,31 +19,31 @@ export class TaroText extends TaroNode {
       target: this,
       type: MutationRecordType.CHARACTER_DATA,
       oldValue: this._value,
-    })
-    this._value = text
+    });
+    this._value = text;
     this.enqueueUpdate({
       path: `${this._path}.${Shortcuts.Text}`,
       value: text,
-    })
+    });
   }
 
   public get textContent(): string {
-    return this._value
+    return this._value;
   }
 
   public set nodeValue(text: string) {
-    this.textContent = text
+    this.textContent = text;
   }
 
   public get nodeValue(): string {
-    return this._value
+    return this._value;
   }
 
   public set data(text: string) {
-    this.textContent = text
+    this.textContent = text;
   }
 
   public get data(): string {
-    return this._value
+    return this._value;
   }
 }

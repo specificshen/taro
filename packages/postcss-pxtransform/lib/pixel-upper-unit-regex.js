@@ -8,4 +8,4 @@
 // Any digit followed by PX
 // !singlequotes|!doublequotes|!url()|pixelunit
 
-module.exports = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)(PX)/g
+module.exports = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)(PX)/g;

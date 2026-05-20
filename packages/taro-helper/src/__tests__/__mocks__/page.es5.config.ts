@@ -1,5 +1,5 @@
 const config = definePageConfig({
   navigationBarTitleText: 'index',
-})
+});
 
-module.exports = config
+module.exports = config;

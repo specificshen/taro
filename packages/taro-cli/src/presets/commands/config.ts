@@ -1,6 +1,6 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
@@ -15,72 +15,72 @@ export default (ctx: IPluginContext) => {
       'taro config list [--json]',
     ],
     fn({ _, options }) {
-      const [, cmd, key, value] = _
-      const json = !!options.json
-      const { fs, getUserHomeDir, TARO_CONFIG_FOLDER, TARO_BASE_CONFIG } = ctx.helper
-      const homedir = getUserHomeDir()
-      const configPath = path.join(homedir, `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`)
-      if (!homedir) return console.log('找不到用户根目录')
+      const [, cmd, key, value] = _;
+      const json = !!options.json;
+      const { fs, getUserHomeDir, TARO_CONFIG_FOLDER, TARO_BASE_CONFIG } = ctx.helper;
+      const homedir = getUserHomeDir();
+      const configPath = path.join(homedir, `${TARO_CONFIG_FOLDER}/${TARO_BASE_CONFIG}`);
+      if (!homedir) return console.log('找不到用户根目录');
 
       function displayConfigPath(configPath) {
-        console.log(`Config path: ${configPath}`)
-        console.log()
+        console.log(`Config path: ${configPath}`);
+        console.log();
       }
 
       switch (cmd) {
         case 'get':
-          if (!key) return console.log('Usage: taro config get <key>')
+          if (!key) return console.log('Usage: taro config get <key>');
           if (fs.existsSync(configPath)) {
-            displayConfigPath(configPath)
-            const config = fs.readJSONSync(configPath)
-            console.log(`key: ${key}, value: ${config[key]}`)
+            displayConfigPath(configPath);
+            const config = fs.readJSONSync(configPath);
+            console.log(`key: ${key}, value: ${config[key]}`);
           }
-          break
+          break;
         case 'set':
-          if (!key || !value) return console.log('Usage: taro config set <key> <value>')
+          if (!key || !value) return console.log('Usage: taro config set <key> <value>');
 
           if (fs.existsSync(configPath)) {
-            displayConfigPath(configPath)
-            const config = fs.readJSONSync(configPath)
-            config[key] = value
-            fs.writeJSONSync(configPath, config)
+            displayConfigPath(configPath);
+            const config = fs.readJSONSync(configPath);
+            config[key] = value;
+            fs.writeJSONSync(configPath, config);
           } else {
-            fs.ensureFileSync(configPath)
+            fs.ensureFileSync(configPath);
             fs.writeJSONSync(configPath, {
               [key]: value,
-            })
+            });
           }
-          console.log(`set key: ${key}, value: ${value}`)
-          break
+          console.log(`set key: ${key}, value: ${value}`);
+          break;
         case 'delete':
-          if (!key) return console.log('Usage: taro config delete <key>')
+          if (!key) return console.log('Usage: taro config delete <key>');
 
           if (fs.existsSync(configPath)) {
-            displayConfigPath(configPath)
-            const config = fs.readJSONSync(configPath)
-            delete config[key]
-            fs.writeJSONSync(configPath, config)
+            displayConfigPath(configPath);
+            const config = fs.readJSONSync(configPath);
+            delete config[key];
+            fs.writeJSONSync(configPath, config);
           }
-          console.log(`deleted: ${key}`)
-          break
+          console.log(`deleted: ${key}`);
+          break;
         case 'list':
         case 'ls':
           if (fs.existsSync(configPath)) {
-            displayConfigPath(configPath)
-            console.log('Config info:')
-            const config = fs.readJSONSync(configPath)
+            displayConfigPath(configPath);
+            console.log('Config info:');
+            const config = fs.readJSONSync(configPath);
             if (json) {
-              console.log(JSON.stringify(config, null, 2))
+              console.log(JSON.stringify(config, null, 2));
             } else {
               for (const key in config) {
-                console.log(`${key}=${config[key]}`)
+                console.log(`${key}=${config[key]}`);
               }
             }
           }
-          break
+          break;
         default:
-          break
+          break;
       }
     },
-  })
-}
+  });
+};

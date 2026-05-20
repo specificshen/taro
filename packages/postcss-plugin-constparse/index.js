@@ -1,7 +1,7 @@
 const PLATFORM = {
   WEAPP: 'weapp',
   H5: 'h5',
-}
+};
 
 module.exports = (opts = {}) => {
   opts = Object.assign(
@@ -14,19 +14,19 @@ module.exports = (opts = {}) => {
       ],
     },
     opts,
-  )
+  );
 
   return {
     postcssPlugin: 'postcss-plugin-constparse',
     Declaration(decl) {
-      if (opts.platform === PLATFORM.WEAPP) return
-      let value = decl.value
+      if (opts.platform === PLATFORM.WEAPP) return;
+      let value = decl.value;
       opts.constants.forEach((item) => {
-        value = value.replace(new RegExp(item.key, 'g'), item.val)
-      })
-      decl.value = value
+        value = value.replace(new RegExp(item.key, 'g'), item.val);
+      });
+      decl.value = value;
     },
-  }
-}
+  };
+};
 
-module.exports.postcss = true
+module.exports.postcss = true;

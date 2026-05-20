@@ -1,28 +1,28 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import { Config, Kernel } from '@spcsn/taro-service'
+import { Config, Kernel } from '@spcsn/taro-service';
 
 interface IRunOptions {
-  options?: Record<string, string | boolean>
-  args?: string[]
+  options?: Record<string, string | boolean>;
+  args?: string[];
 }
 
 interface IRun {
-  (appPath: string, options?: IRunOptions): Promise<Kernel>
+  (appPath: string, options?: IRunOptions): Promise<Kernel>;
 }
 
 export function run(name: string, presets: string[] = []): IRun {
   return async function (appPath, opts = {}) {
-    const { options = {}, args = [] } = opts
+    const { options = {}, args = [] } = opts;
 
     const config = new Config({
       appPath: appPath,
       disableGlobalConfig: !!options.disableGlobalConfig,
-    })
+    });
     await config.init({
       mode: (options.mode || process.env.NODE_ENV) as string,
       command: name,
-    })
+    });
 
     const kernel = new Kernel({
       appPath: appPath,
@@ -32,12 +32,12 @@ export function run(name: string, presets: string[] = []): IRun {
       ],
       plugins: [],
       config,
-    })
-    kernel.optsPlugins ||= []
+    });
+    kernel.optsPlugins ||= [];
 
-    const type = options.type
+    const type = options.type;
     if (typeof type === 'string' && !presets.some((e) => e.includes(type))) {
-      kernel.optsPlugins.push(require.resolve(`@spcsn/taro-plugin-platform-${options.type}`))
+      kernel.optsPlugins.push(require.resolve(`@spcsn/taro-plugin-platform-${options.type}`));
     }
 
     await kernel.run({
@@ -47,8 +47,8 @@ export function run(name: string, presets: string[] = []): IRun {
         options,
         isHelp: false,
       },
-    })
+    });
 
-    return kernel
-  }
+    return kernel;
+  };
 }

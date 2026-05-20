@@ -1,44 +1,44 @@
-import { afterAll, beforeEach, describe, expect, test } from 'vitest'
+import { afterAll, beforeEach, describe, expect, test } from 'vitest';
 
-import * as runtime from '../src/index'
+import * as runtime from '../src/index';
 
 describe('eventSource', () => {
-  process.env.FRAMEWORK = 'react'
-  const eventSource = runtime.eventSource
-  const document = runtime.document
+  process.env.FRAMEWORK = 'react';
+  const eventSource = runtime.eventSource;
+  const document = runtime.document;
 
-  global.document = runtime.document
+  global.document = runtime.document;
 
   beforeEach(() => {
-    eventSource.clear()
-  })
+    eventSource.clear();
+  });
 
   afterAll(() => {
-    process.env.FRAMEWORK = ''
-  })
+    process.env.FRAMEWORK = '';
+  });
 
   function createDiv(id?: string): any {
-    const div = document.createElement('div')
-    if (id) div.id = id
-    return div
+    const div = document.createElement('div');
+    if (id) div.id = id;
+    return div;
   }
 
   /**
    * <div id='target' />
    */
   test("eventSource.removeNode should remove node' sid & uid", () => {
-    const node = createDiv('target')
+    const node = createDiv('target');
 
-    const { sid, uid } = node
+    const { sid, uid } = node;
 
-    expect(eventSource.has(sid)).toBeTruthy()
-    expect(eventSource.has(uid)).toBeTruthy()
+    expect(eventSource.has(sid)).toBeTruthy();
+    expect(eventSource.has(uid)).toBeTruthy();
 
-    eventSource.removeNode(node)
+    eventSource.removeNode(node);
 
-    expect(eventSource.has(sid)).toBeFalsy()
-    expect(eventSource.has(uid)).toBeFalsy()
-  })
+    expect(eventSource.has(sid)).toBeFalsy();
+    expect(eventSource.has(uid)).toBeFalsy();
+  });
 
   /**
    * div
@@ -51,26 +51,26 @@ describe('eventSource', () => {
    *   div
    */
   test('eventSource.removeNodeTree should remove entire node tree', () => {
-    const container = createDiv()
-    const list = createDiv('list')
-    const target = createDiv()
-    target.appendChild(createDiv('target'))
-    list.appendChild(createDiv())
-    list.appendChild(target)
-    list.appendChild(createDiv())
-    container.appendChild(createDiv())
-    container.appendChild(list)
-    container.appendChild(createDiv())
+    const container = createDiv();
+    const list = createDiv('list');
+    const target = createDiv();
+    target.appendChild(createDiv('target'));
+    list.appendChild(createDiv());
+    list.appendChild(target);
+    list.appendChild(createDiv());
+    container.appendChild(createDiv());
+    container.appendChild(list);
+    container.appendChild(createDiv());
 
-    expect(eventSource.size).toBe(10)
+    expect(eventSource.size).toBe(10);
 
-    eventSource.removeNodeTree(list)
+    eventSource.removeNodeTree(list);
 
-    expect(eventSource.size).toBe(3)
+    expect(eventSource.size).toBe(3);
 
-    expect(eventSource.has(list.sid)).toBeFalsy()
-    expect(eventSource.has(list.uid)).toBeFalsy()
-    expect(eventSource.has(target.sid)).toBeFalsy()
-    expect(eventSource.has('target')).toBeFalsy()
-  })
-})
+    expect(eventSource.has(list.sid)).toBeFalsy();
+    expect(eventSource.has(list.uid)).toBeFalsy();
+    expect(eventSource.has(target.sid)).toBeFalsy();
+    expect(eventSource.has('target')).toBeFalsy();
+  });
+});

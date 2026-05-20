@@ -1,6 +1,6 @@
-import runner from './index.mini'
+import runner from './index.mini';
 
-const runnerWithDefault = runner as typeof runner & { default: typeof runner }
-runnerWithDefault.default = runner
+const runnerWithDefault = runner as typeof runner & { default: typeof runner };
+runnerWithDefault.default = runner;
 
-export = runnerWithDefault
+export = runnerWithDefault;

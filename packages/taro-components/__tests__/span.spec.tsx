@@ -1,25 +1,25 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { Span } from '../src/components/span/span'
-import { printUnimplementedWarning } from './utils'
+import { Span } from '../src/components/span/span';
+import { printUnimplementedWarning } from './utils';
 
-const logError = jest.fn()
-console.error = logError
+const logError = jest.fn();
+console.error = logError;
 
 describe('Span', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('unimplemented', async () => {
     page = await newSpecPage({
       components: [Span],
       template: () => <taro-span-core />,
-    })
-    await page.waitForChanges()
+    });
+    await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
       <taro-span-core></taro-span-core>
-    `)
-    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root))
-  })
-})
+    `);
+    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root));
+  });
+});

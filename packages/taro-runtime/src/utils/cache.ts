@@ -3,28 +3,28 @@
  */
 
 export class RuntimeCache<T> {
-  name: string
-  cache = new Map<string, T>()
+  name: string;
+  cache = new Map<string, T>();
 
   constructor(name: string) {
-    this.name = name
+    this.name = name;
   }
 
   has(identifier: string) {
-    return this.cache.has(identifier)
+    return this.cache.has(identifier);
   }
 
   set(identifier: string, ctx: T) {
     if (identifier && ctx) {
-      this.cache.set(identifier, ctx)
+      this.cache.set(identifier, ctx);
     }
   }
 
   get(identifier: string): T | undefined {
-    if (this.has(identifier)) return this.cache.get(identifier)
+    if (this.has(identifier)) return this.cache.get(identifier);
   }
 
   delete(identifier: string) {
-    this.cache.delete(identifier)
+    this.cache.delete(identifier);
   }
 }

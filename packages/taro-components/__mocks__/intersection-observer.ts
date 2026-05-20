@@ -1,15 +1,15 @@
 type ref = {
-  isIntersecting: boolean
-}
+  isIntersecting: boolean;
+};
 
 // @ts-ignore
 class IntersectionObserver {
-  list: ref[] = []
+  list: ref[] = [];
 
   constructor(fn: (args: ref[]) => void) {
     setTimeout(() => {
-      fn([{ isIntersecting: true }])
-    }, 1000)
+      fn([{ isIntersecting: true }]);
+    }, 1000);
   }
 
   observe() {}
@@ -17,5 +17,5 @@ class IntersectionObserver {
   disconnect() {}
 }
 
-window.IntersectionObserver = IntersectionObserver
-global.IntersectionObserver = IntersectionObserver
+window.IntersectionObserver = IntersectionObserver;
+global.IntersectionObserver = IntersectionObserver;

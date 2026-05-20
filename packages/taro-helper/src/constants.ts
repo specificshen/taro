@@ -1,9 +1,9 @@
-import * as os from 'node:os'
+import * as os from 'node:os';
 
-import { chalk } from './terminal'
+import { chalk } from './terminal';
 
 // eslint-disable-next-line dot-notation
-export const PLATFORMS = (global['PLATFORMS'] = global['PLATFORMS'] || {})
+export const PLATFORMS = (global['PLATFORMS'] = global['PLATFORMS'] || {});
 
 export const enum processTypeEnum {
   START = 'start',
@@ -22,9 +22,9 @@ export const enum processTypeEnum {
 
 export interface IProcessTypeMap {
   [key: string]: {
-    name: string
-    color: string | chalk.Chalk
-  }
+    name: string;
+    color: string | chalk.Chalk;
+  };
 }
 
 export const processTypeMap: IProcessTypeMap = {
@@ -76,52 +76,52 @@ export const processTypeMap: IProcessTypeMap = {
     name: '提示',
     color: 'green',
   },
-}
+};
 
-export const CSS_EXT: string[] = ['.css', '.scss', '.sass', '.less', '.styl', '.stylus', '.wxss', '.acss']
-export const SCSS_EXT: string[] = ['.scss']
-export const JS_EXT: string[] = ['.js', '.jsx']
-export const TS_EXT: string[] = ['.ts', '.tsx']
-export const UX_EXT: string[] = ['.ux']
-export const SCRIPT_EXT: string[] = JS_EXT.concat(TS_EXT)
-export const VUE_EXT: string[] = ['.vue']
+export const CSS_EXT: string[] = ['.css', '.scss', '.sass', '.less', '.styl', '.stylus', '.wxss', '.acss'];
+export const SCSS_EXT: string[] = ['.scss'];
+export const JS_EXT: string[] = ['.js', '.jsx'];
+export const TS_EXT: string[] = ['.ts', '.tsx'];
+export const UX_EXT: string[] = ['.ux'];
+export const SCRIPT_EXT: string[] = JS_EXT.concat(TS_EXT);
+export const VUE_EXT: string[] = ['.vue'];
 
-export const REG_JS = /\.m?js(\?.*)?$/
-export const REG_SCRIPT = /\.m?(js|jsx)(\?.*)?$/
-export const REG_TYPESCRIPT = /\.(tsx|ts)(\?.*)?$/
-export const REG_SCRIPTS = /\.m?[tj]sx?$/i
-export const REG_VUE = /\.vue$/i
-export const REG_SASS = /\.(s[ac]ss)$/
-export const REG_SASS_SASS = /\.sass$/
-export const REG_SASS_SCSS = /\.scss$/
-export const REG_LESS = /\.less$/
-export const REG_STYLUS = /\.styl(us)?$/
-export const REG_STYLE = /\.(css|scss|sass|less|styl|stylus|wxss|acss|ttss|jxss|qss)(\?.*)?$/
-export const REG_CSS = /\.(css|qss|jxss|wxss|acss|ttss)(\?.*)?$/
-export const REG_MEDIA = /\.(mp4|webm|ogg|mp3|m4a|wav|flac|aac)(\?.*)?$/
-export const REG_IMAGE = /\.(png|jpe?g|gif|bpm|svg|webp)(\?.*)?$/
-export const REG_FONT = /\.(woff2?|eot|ttf|otf)(\?.*)?$/
-export const REG_JSON = /\.json(\?.*)?$/
-export const REG_UX = /\.ux(\?.*)?$/
-export const REG_TEMPLATE = /\.(hxml|wxml|axml|ttml|qml|swan|jxml)(\?.*)?$/
-export const REG_WXML_IMPORT = /<import(.*)?src=(?:(?:'([^']*)')|(?:"([^"]*)"))/gi
+export const REG_JS = /\.m?js(\?.*)?$/;
+export const REG_SCRIPT = /\.m?(js|jsx)(\?.*)?$/;
+export const REG_TYPESCRIPT = /\.(tsx|ts)(\?.*)?$/;
+export const REG_SCRIPTS = /\.m?[tj]sx?$/i;
+export const REG_VUE = /\.vue$/i;
+export const REG_SASS = /\.(s[ac]ss)$/;
+export const REG_SASS_SASS = /\.sass$/;
+export const REG_SASS_SCSS = /\.scss$/;
+export const REG_LESS = /\.less$/;
+export const REG_STYLUS = /\.styl(us)?$/;
+export const REG_STYLE = /\.(css|scss|sass|less|styl|stylus|wxss|acss|ttss|jxss|qss)(\?.*)?$/;
+export const REG_CSS = /\.(css|qss|jxss|wxss|acss|ttss)(\?.*)?$/;
+export const REG_MEDIA = /\.(mp4|webm|ogg|mp3|m4a|wav|flac|aac)(\?.*)?$/;
+export const REG_IMAGE = /\.(png|jpe?g|gif|bpm|svg|webp)(\?.*)?$/;
+export const REG_FONT = /\.(woff2?|eot|ttf|otf)(\?.*)?$/;
+export const REG_JSON = /\.json(\?.*)?$/;
+export const REG_UX = /\.ux(\?.*)?$/;
+export const REG_TEMPLATE = /\.(hxml|wxml|axml|ttml|qml|swan|jxml)(\?.*)?$/;
+export const REG_WXML_IMPORT = /<import(.*)?src=(?:(?:'([^']*)')|(?:"([^"]*)"))/gi;
 export const REG_URL =
-  /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/i
+  /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
 
-export const REG_TARO_SCOPED_PACKAGE = /@tarojs[\\/][a-z]+/
-export const REG_CSS_IMPORT = /@import (["'])(.+?)\1;/g
+export const REG_TARO_SCOPED_PACKAGE = /@tarojs[\\/][a-z]+/;
+export const REG_CSS_IMPORT = /@import (["'])(.+?)\1;/g;
 
-export const NODE_MODULES = 'node_modules'
-export const REG_NODE_MODULES = /node_modules/
-export const REG_NODE_MODULES_DIR = /[\\/]node_modules[\\/]/gi
+export const NODE_MODULES = 'node_modules';
+export const REG_NODE_MODULES = /node_modules/;
+export const REG_NODE_MODULES_DIR = /[\\/]node_modules[\\/]/gi;
 
-export const PROJECT_CONFIG = 'config/index'
+export const PROJECT_CONFIG = 'config/index';
 
 export const DEVICE_RATIO = {
   640: 2.34 / 2,
   750: 1,
   828: 1.81 / 2,
-}
+};
 
 export const FILE_PROCESSOR_MAP = {
   '.js': 'babel',
@@ -129,7 +129,7 @@ export const FILE_PROCESSOR_MAP = {
   '.sass': 'sass',
   '.less': 'less',
   '.styl': 'stylus',
-}
+};
 
 export const UPDATE_PACKAGE_LIST = [
   '@spcsn/babel-plugin-transform-taroapi',
@@ -152,7 +152,7 @@ export const UPDATE_PACKAGE_LIST = [
   '@spcsn/taro-vite-runner',
   '@spcsn/taro-plugin-generator',
   '@spcsn/taro-binding',
-]
+];
 
 export enum META_TYPE {
   ENTRY = 'ENTRY',
@@ -164,32 +164,32 @@ export enum META_TYPE {
   EXPORTS = 'EXPORTS',
 }
 
-export const taroJsMiniComponentsPath = '@spcsn/taro-components/mini'
-export const taroJsComponents = '@spcsn/taro-components'
-export const taroJsQuickAppComponents = '@spcsn/taro-components-qa'
-export const taroJsFramework = '@spcsn/taro'
-export const taroJsRedux = '@spcsn/taro-redux'
-export const taroJsMobx = '@spcsn/taro-mobx'
-export const taroJsMobxCommon = '@spcsn/taro-mobx-common'
+export const taroJsMiniComponentsPath = '@spcsn/taro-components/mini';
+export const taroJsComponents = '@spcsn/taro-components';
+export const taroJsQuickAppComponents = '@spcsn/taro-components-qa';
+export const taroJsFramework = '@spcsn/taro';
+export const taroJsRedux = '@spcsn/taro-redux';
+export const taroJsMobx = '@spcsn/taro-mobx';
+export const taroJsMobxCommon = '@spcsn/taro-mobx-common';
 
-export const DEVICE_RATIO_NAME = 'deviceRatio'
-export const isWindows = os.platform() === 'win32'
+export const DEVICE_RATIO_NAME = 'deviceRatio';
+export const isWindows = os.platform() === 'win32';
 
-export const DEFAULT_TEMPLATE_SRC = 'github:NervJS/taro-project-templates#v4.2'
-export const DEFAULT_TEMPLATE_SRC_GITEE = 'direct:https://gitee.com/o2team/taro-project-templates.git#v4.2'
-export const TARO_CONFIG_FOLDER = '.taro4.2'
-export const TARO_BASE_CONFIG = 'index.json'
-export const TARO_GLOBAL_CONFIG_DIR = '.taro-global-config'
-export const TARO_GLOBAL_CONFIG_FILE = 'index.json'
+export const DEFAULT_TEMPLATE_SRC = 'github:NervJS/taro-project-templates#v4.2';
+export const DEFAULT_TEMPLATE_SRC_GITEE = 'direct:https://gitee.com/o2team/taro-project-templates.git#v4.2';
+export const TARO_CONFIG_FOLDER = '.taro4.2';
+export const TARO_BASE_CONFIG = 'index.json';
+export const TARO_GLOBAL_CONFIG_DIR = '.taro-global-config';
+export const TARO_GLOBAL_CONFIG_FILE = 'index.json';
 
-export const OUTPUT_DIR = 'dist'
-export const SOURCE_DIR = 'src'
-export const TEMP_DIR = '.temp'
-export const NPM_DIR = 'npm'
-export const ENTRY = 'app'
+export const OUTPUT_DIR = 'dist';
+export const SOURCE_DIR = 'src';
+export const TEMP_DIR = '.temp';
+export const NPM_DIR = 'npm';
+export const ENTRY = 'app';
 
 export enum FRAMEWORK_MAP {
   REACT = 'react',
 }
 
-export const defaultMainFields = ['browser', 'module', 'jsnext:main', 'main']
+export const defaultMainFields = ['browser', 'module', 'jsnext:main', 'main'];

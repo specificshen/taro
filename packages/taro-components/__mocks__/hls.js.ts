@@ -1,7 +1,7 @@
 class HLS {
   isSupported() {
-    return false
+    return false;
   }
 }
 
-export default new HLS()
+export default new HLS();

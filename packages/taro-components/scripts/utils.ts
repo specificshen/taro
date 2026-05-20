@@ -1,24 +1,24 @@
-import path from 'node:path'
+import path from 'node:path';
 
-import { fs } from '@spcsn/taro-helper'
+import { fs } from '@spcsn/taro-helper';
 
-import { TYPES_DIR } from './constants'
+import { TYPES_DIR } from './constants';
 
 export function camelCaseEnhance(word = '', index: number) {
-  word = word.toLowerCase()
+  word = word.toLowerCase();
   if (index !== 0) {
-    word = `${word[0].toUpperCase()}${word.slice(1)}`
+    word = `${word[0].toUpperCase()}${word.slice(1)}`;
   }
-  return word
+  return word;
 }
 
 export function getTypesList(type = ''): string[] {
   if (type) {
-    return fs.readdirSync(path.join('node_modules', 'miniapp-types/dist/types', type))
+    return fs.readdirSync(path.join('node_modules', 'miniapp-types/dist/types', type));
   }
-  return fs.readdirSync(TYPES_DIR)
+  return fs.readdirSync(TYPES_DIR);
 }
 
 export function getTypeFilePath(name: string): string {
-  return path.join(TYPES_DIR, `${name}.d.ts`)
+  return path.join(TYPES_DIR, `${name}.d.ts`);
 }

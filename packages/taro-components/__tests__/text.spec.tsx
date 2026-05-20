@@ -1,17 +1,17 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { Text } from '../src/components/text/text'
+import { Text } from '../src/components/text/text';
 
 describe('Text', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('slot', async () => {
-    const text = 'Taro Next'
+    const text = 'Taro Next';
     page = await newSpecPage({
       components: [Text],
       template: () => <taro-text-core>{text}</taro-text-core>,
-    })
-    expect(page.root?.textContent).toEqual(text)
-  })
-})
+    });
+    expect(page.root?.textContent).toEqual(text);
+  });
+});

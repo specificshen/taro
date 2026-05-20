@@ -1,8 +1,8 @@
-import { isNodeModule } from '@spcsn/taro-helper'
+import { isNodeModule } from '@spcsn/taro-helper';
 
-import type { Func, IPostcssOption } from '@spcsn/taro/types/compile'
+import type { Func, IPostcssOption } from '@spcsn/taro/types/compile';
 
-const platform = 'h5'
+const platform = 'h5';
 
 const defaultConstparseOption = {
   constants: [
@@ -12,9 +12,9 @@ const defaultConstparseOption = {
     },
   ],
   platform,
-}
+};
 
-const taroModuleRgx = [/@tarojs[/\\_]components/, /\btaro-components\b/]
+const taroModuleRgx = [/@tarojs[/\\_]components/, /\btaro-components\b/];
 
 const defaultEsnextModuleRgx = [
   /@tarojs[/\\_]components/,
@@ -23,32 +23,32 @@ const defaultEsnextModuleRgx = [
   /\btaro-h5\b/,
   /@tarojs[/\\_]router/,
   /\btaro-router\b/,
-]
+];
 
-const isTaroModule = (filename: string) => taroModuleRgx.some((reg) => reg.test(filename))
+const isTaroModule = (filename: string) => taroModuleRgx.some((reg) => reg.test(filename));
 
 const isEsnextModule = (filename: string, esnextModules) => {
-  const esnextModuleRules = [...defaultEsnextModuleRgx, ...esnextModules]
+  const esnextModuleRules = [...defaultEsnextModuleRgx, ...esnextModules];
   return esnextModuleRules.some((pattern) => {
     if (pattern instanceof RegExp) {
-      return pattern.test(filename)
+      return pattern.test(filename);
     } else {
-      return filename.indexOf(pattern) > -1
+      return filename.indexOf(pattern) > -1;
     }
-  })
-}
+  });
+};
 
 const getPostcssExclude = (esnextModules: string[]): ((fileName: string) => boolean) => {
   return (filename) => {
     if (isTaroModule(filename)) {
-      return true
+      return true;
     } else if (isEsnextModule(filename, esnextModules)) {
-      return false
+      return false;
     } else {
-      return isNodeModule(filename)
+      return isNodeModule(filename);
     }
-  }
-}
+  };
+};
 
 export const getDefaultPostcssConfig = function ({
   designWidth,
@@ -56,16 +56,16 @@ export const getDefaultPostcssConfig = function ({
   option = {} as IPostcssOption<'h5'>,
   esnextModules,
 }): [string, any, Func?][] {
-  const { autoprefixer, htmltransform, pxtransform = {}, ...options } = option
+  const { autoprefixer, htmltransform, pxtransform = {}, ...options } = option;
   if (designWidth) {
-    pxtransform.config!.designWidth = designWidth
+    pxtransform.config!.designWidth = designWidth;
   }
   if (deviceRatio) {
-    pxtransform.config!.deviceRatio = deviceRatio
+    pxtransform.config!.deviceRatio = deviceRatio;
   }
 
   // 由于 vite 缺少 postcss 文件的 filter 能力，所以只能针对 postcss-pxtransform 这个插件，在内部进行 filter，后面跟进 vite 的特性可以进行修改
-  pxtransform.config!.exclude = getPostcssExclude(esnextModules)
+  pxtransform.config!.exclude = getPostcssExclude(esnextModules);
 
   return [
     ['autoprefixer', autoprefixer, require('autoprefixer')],
@@ -73,5 +73,5 @@ export const getDefaultPostcssConfig = function ({
     ['postcss-html-transform', htmltransform, require('@spcsn/postcss-html-transform')],
     ['postcss-plugin-constparse', defaultConstparseOption, require('@spcsn/postcss-plugin-constparse')],
     ...Object.entries(options),
-  ]
-}
+  ];
+};

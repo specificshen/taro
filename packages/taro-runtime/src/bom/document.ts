@@ -1,8 +1,8 @@
-import { DEFAULT_COMPONENTS, isEnableTTDom, TT_SPECIFIC_COMPONENTS } from '@spcsn/taro-shared'
+import { DEFAULT_COMPONENTS, isEnableTTDom, TT_SPECIFIC_COMPONENTS } from '@spcsn/taro-shared';
 
-import { APP, BODY, CONTAINER, HEAD, HTML } from '../constants'
-import { TaroDocument } from '../dom/document'
-import env from '../env'
+import { APP, BODY, CONTAINER, HEAD, HTML } from '../constants';
+import { TaroDocument } from '../dom/document';
+import env from '../env';
 
 function createDocument(): TaroDocument {
   /**
@@ -17,78 +17,78 @@ function createDocument(): TaroDocument {
    *   </html>
    * </document>
    */
-  const doc = new TaroDocument()
-  const documentCreateElement = doc.createElement.bind(doc)
-  const html = documentCreateElement(HTML)
-  const head = documentCreateElement(HEAD)
-  const body = documentCreateElement(BODY)
-  const app = documentCreateElement(APP)
-  app.id = APP
-  const container = documentCreateElement(CONTAINER)
+  const doc = new TaroDocument();
+  const documentCreateElement = doc.createElement.bind(doc);
+  const html = documentCreateElement(HTML);
+  const head = documentCreateElement(HEAD);
+  const body = documentCreateElement(BODY);
+  const app = documentCreateElement(APP);
+  app.id = APP;
+  const container = documentCreateElement(CONTAINER);
 
-  doc.appendChild(html)
-  html.appendChild(head)
-  html.appendChild(body)
-  body.appendChild(container)
-  container.appendChild(app)
+  doc.appendChild(html);
+  html.appendChild(head);
+  html.appendChild(body);
+  body.appendChild(container);
+  container.appendChild(app);
 
-  doc.documentElement = html
-  doc.head = head
-  doc.body = body
+  doc.documentElement = html;
+  doc.head = head;
+  doc.body = body;
 
-  return doc
+  return doc;
 }
 
-declare const tt: any
+declare const tt: any;
 
 export function createTTDomDocument(): TaroDocument {
-  const document = tt?.appDocument
+  const document = tt?.appDocument;
   if (!document) {
-    throw new Error('tt.appDocument is not found')
+    throw new Error('tt.appDocument is not found');
   }
-  const html = document.createElement(HTML)
-  const head = document.createElement(HEAD)
-  const body = document.createElement(BODY)
-  const app = document.createElement(APP)
-  app.id = APP
-  const container = document.createElement(CONTAINER)
+  const html = document.createElement(HTML);
+  const head = document.createElement(HEAD);
+  const body = document.createElement(BODY);
+  const app = document.createElement(APP);
+  app.id = APP;
+  const container = document.createElement(CONTAINER);
 
-  const emptyFunction = () => {}
+  const emptyFunction = () => {};
 
-  document.childNodes.push(html)
-  html.childNodes.push(head, body)
-  body.childNodes.push(container)
-  container.childNodes.push(app)
+  document.childNodes.push(html);
+  html.childNodes.push(head, body);
+  body.childNodes.push(container);
+  container.childNodes.push(app);
 
-  document.documentElement = html
-  document.head = head
-  document.body = body
-  document.appElement = app
+  document.documentElement = html;
+  document.head = head;
+  document.body = body;
+  document.appElement = app;
 
-  let builtInComponents = tt?.getBuiltInComponents?.()
+  let builtInComponents = tt?.getBuiltInComponents?.();
   if (Array.isArray(builtInComponents)) {
-    builtInComponents = new Set(builtInComponents)
+    builtInComponents = new Set(builtInComponents);
   } else if (!(builtInComponents instanceof Set)) {
-    builtInComponents = new Set([...DEFAULT_COMPONENTS, ...TT_SPECIFIC_COMPONENTS])
+    builtInComponents = new Set([...DEFAULT_COMPONENTS, ...TT_SPECIFIC_COMPONENTS]);
   }
 
   document.getElementById = function getElementById(id: string) {
     if (id === 'app') {
-      return app
+      return app;
     } else {
-      return Object.getPrototypeOf(this).getElementById.call(this, id)
+      return Object.getPrototypeOf(this).getElementById.call(this, id);
     }
-  }
+  };
 
   document.getLastPage = function getLastPage() {
-    let last
-    for (const v of this._pageDocumentMap.values()) last = v
-    return last
-  }
+    let last;
+    for (const v of this._pageDocumentMap.values()) last = v;
+    return last;
+  };
 
   document.createElement = function (type: string, ...args) {
     if (type === 'root') {
-      return this.getLastPage()
+      return this.getLastPage();
     } else {
       const el = builtInComponents.has(type)
         ? Object.getPrototypeOf(this).createElement.call(this, type, ...args)
@@ -96,46 +96,46 @@ export function createTTDomDocument(): TaroDocument {
             __tt__inner__options__: {
               name: type,
             },
-          })
+          });
       // 给元素加上 scopeId
-      el.setAttribute('class', '')
+      el.setAttribute('class', '');
 
       // 保存原始的 setAttribute 和 removeAttribute
-      const originalSetAttribute = el.setAttribute.bind(el)
-      const originalRemoveAttribute = el.removeAttribute.bind(el)
+      const originalSetAttribute = el.setAttribute.bind(el);
+      const originalRemoveAttribute = el.removeAttribute.bind(el);
 
       // 拦截 setAttribute 来处理 catchMove
       el.setAttribute = function (name: string, value: any) {
-        const result = originalSetAttribute(name, value)
+        const result = originalSetAttribute(name, value);
 
         // 处理 catchMove 属性
         if (name === 'catchMove' && value) {
-          el.addEventListener('catchtouchmove', emptyFunction)
+          el.addEventListener('catchtouchmove', emptyFunction);
         }
 
-        return result
-      }
+        return result;
+      };
 
       // 拦截 removeAttribute 来处理 catchMove
       el.removeAttribute = function (name: string) {
-        const oldValue = el.getAttribute(name)
+        const oldValue = el.getAttribute(name);
 
         // 处理 catchMove 属性
         if (name === 'catchMove' && oldValue) {
-          el.removeEventListener('catchtouchmove', emptyFunction)
+          el.removeEventListener('catchtouchmove', emptyFunction);
         }
 
-        return originalRemoveAttribute(name)
-      }
+        return originalRemoveAttribute(name);
+      };
 
-      return el
+      return el;
     }
-  }
-  return document
+  };
+  return document;
 }
 
 // Note: 小程序端 vite 打包成 commonjs，const document = xxx 会报错，所以把 document 改为 taroDocumentProvider
 export const taroDocumentProvider: TaroDocument =
   process.env.TARO_PLATFORM === 'web'
     ? env.document
-    : (env.document = isEnableTTDom() ? createTTDomDocument() : createDocument())
+    : (env.document = isEnableTTDom() ? createTTDomDocument() : createDocument());

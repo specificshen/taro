@@ -1,11 +1,11 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { MovableArea } from '../src/components/movable-area/movable-area'
-import { MovableView } from '../src/components/movable-area/movable-view'
+import { MovableArea } from '../src/components/movable-area/movable-area';
+import { MovableView } from '../src/components/movable-area/movable-view';
 
 describe('MovableArea', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('base', async () => {
     page = await newSpecPage({
@@ -17,7 +17,7 @@ describe('MovableArea', () => {
           </taro-movable-view-core>
         </taro-movable-area-core>
       ),
-    })
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+});

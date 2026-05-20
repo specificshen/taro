@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
-import generate from '@babel/generator'
-import * as parser from '@babel/parser'
-import traverse from '@babel/traverse'
-import * as t from '@babel/types'
-import dedent from 'dedent'
+import generate from '@babel/generator';
+import * as parser from '@babel/parser';
+import traverse from '@babel/traverse';
+import * as t from '@babel/types';
+import dedent from 'dedent';
 
-import { ensureNestedObjectProperty } from '../../utils/ast'
-import { GeneratorError, GeneratorErrorType } from '../../utils/error'
+import { ensureNestedObjectProperty } from '../../utils/ast';
+import { GeneratorError, GeneratorErrorType } from '../../utils/error';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 const createModifiedConfigError = (compilerType: CompilerType) =>
   new GeneratorError({
@@ -40,72 +40,72 @@ const createModifiedConfigError = (compilerType: CompilerType) =>
       }
     }
   `),
-  })
+  });
 
 /**
  * 更新配置文件
  */
 export async function updateConfig(options: { ctx: IPluginContext; compilerType: CompilerType }) {
-  const { ctx, compilerType } = options
-  const { fs } = ctx.helper
+  const { ctx, compilerType } = options;
+  const { fs } = ctx.helper;
 
-  const sourceCode = await fs.readFile(ctx.paths.configPath, { encoding: 'utf-8' })
+  const sourceCode = await fs.readFile(ctx.paths.configPath, { encoding: 'utf-8' });
 
-  const ast = parser.parse(sourceCode, { sourceType: 'module', plugins: ['typescript'] })
-  insertBrowserlistEnv(ast)
-  let miniUpdated = false
-  let h5Updated = false
+  const ast = parser.parse(sourceCode, { sourceType: 'module', plugins: ['typescript'] });
+  insertBrowserlistEnv(ast);
+  let miniUpdated = false;
+  let h5Updated = false;
   traverse(ast, {
     ObjectProperty: (o) => {
-      const { node } = o
+      const { node } = o;
       if (t.isIdentifier(node.key) && node.key.name === 'mini' && t.isObjectExpression(node.value)) {
         if (compilerType === 'webpack5') {
-          modifyWebpackCompileConfig(node.value)
+          modifyWebpackCompileConfig(node.value);
         } else {
           // vite-runner 小程序看着不支持 legacy 字段
         }
-        miniUpdated = true
+        miniUpdated = true;
       }
       if (t.isIdentifier(node.key) && node.key.name === 'h5' && t.isObjectExpression(node.value)) {
         if (compilerType === 'webpack5') {
-          modifyWebpackCompileConfig(node.value)
+          modifyWebpackCompileConfig(node.value);
         } else {
-          modifyViteCompileConfig(node.value)
+          modifyViteCompileConfig(node.value);
         }
-        h5Updated = true
+        h5Updated = true;
       }
     },
-  })
+  });
   if (!miniUpdated || !h5Updated) {
-    throw createModifiedConfigError(compilerType)
+    throw createModifiedConfigError(compilerType);
   }
-  const { code } = generate(ast)
-  await fs.outputFile(ctx.paths.configPath, code, { encoding: 'utf-8' })
-  console.log('✅ 更新配置文件成功\n')
+  const { code } = generate(ast);
+  await fs.outputFile(ctx.paths.configPath, code, { encoding: 'utf-8' });
+  console.log('✅ 更新配置文件成功\n');
 }
 
 function modifyViteCompileConfig(config: t.ObjectExpression) {
   const legacyProp = config.properties.find(
     (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'legacy',
-  )
+  );
   if (!legacyProp) {
-    config.properties.push(t.objectProperty(t.identifier('legacy'), t.booleanLiteral(true)))
+    config.properties.push(t.objectProperty(t.identifier('legacy'), t.booleanLiteral(true)));
   } else if (t.isObjectProperty(legacyProp)) {
-    legacyProp.value = t.booleanLiteral(true)
+    legacyProp.value = t.booleanLiteral(true);
   } else {
-    throw createModifiedConfigError('vite')
+    throw createModifiedConfigError('vite');
   }
 }
 
 function modifyWebpackCompileConfig(config: t.ObjectExpression) {
-  ensureNestedObjectProperty(config, ['compile'])
+  ensureNestedObjectProperty(config, ['compile']);
   const compileProp = config.properties.find(
     (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'compile',
-  ) as t.ObjectProperty | undefined
+  ) as t.ObjectProperty | undefined;
   if (compileProp && t.isObjectExpression(compileProp.value)) {
     const includeProp = compileProp.value.properties.find(
       (p) => t.isObjectProperty(p) && t.isIdentifier(p.key) && p.key.name === 'include',
-    )
+    );
 
     const include = t.arrowFunctionExpression(
       [t.identifier('filename')],
@@ -119,15 +119,15 @@ function modifyWebpackCompileConfig(config: t.ObjectExpression) {
         ),
         [t.identifier('filename')],
       ),
-    )
-    include.params[0].typeAnnotation = t.tsTypeAnnotation(t.tsStringKeyword())
+    );
+    include.params[0].typeAnnotation = t.tsTypeAnnotation(t.tsStringKeyword());
 
     if (!includeProp) {
-      compileProp.value.properties.push(t.objectProperty(t.identifier('include'), t.arrayExpression([include])))
+      compileProp.value.properties.push(t.objectProperty(t.identifier('include'), t.arrayExpression([include])));
     } else if (t.isObjectProperty(includeProp) && t.isArrayExpression(includeProp.value)) {
-      includeProp.value.elements.push(include)
+      includeProp.value.elements.push(include);
     } else {
-      throw createModifiedConfigError('webpack5')
+      throw createModifiedConfigError('webpack5');
     }
   }
 }
@@ -137,10 +137,10 @@ function modifyWebpackCompileConfig(config: t.ObjectExpression) {
  * process.env.BROWSERSLIST_ENV = process.env.NODE_ENV
  */
 function insertBrowserlistEnv(ast: t.Node) {
-  let hasEnv = false
+  let hasEnv = false;
   traverse(ast, {
     AssignmentExpression(path) {
-      const { node } = path
+      const { node } = path;
       // 判断左侧是 process.env.BROWSERSLIST_ENV
       const isLeftMatch =
         node.left.type === 'MemberExpression' &&
@@ -150,7 +150,7 @@ function insertBrowserlistEnv(ast: t.Node) {
         node.left.object.property.type === 'Identifier' &&
         node.left.object.property.name === 'env' &&
         node.left.property.type === 'Identifier' &&
-        node.left.property.name === 'BROWSERSLIST_ENV'
+        node.left.property.name === 'BROWSERSLIST_ENV';
       // 判断右侧是 process.env.NODE_ENV
       const isRightMatch =
         node.right.type === 'MemberExpression' &&
@@ -160,11 +160,11 @@ function insertBrowserlistEnv(ast: t.Node) {
         node.right.object.property.type === 'Identifier' &&
         node.right.object.property.name === 'env' &&
         node.right.property.type === 'Identifier' &&
-        node.right.property.name === 'NODE_ENV'
+        node.right.property.name === 'NODE_ENV';
 
       if (isLeftMatch && isRightMatch) {
-        hasEnv = true
-        path.stop()
+        hasEnv = true;
+        path.stop();
       }
     },
     Program: {
@@ -172,11 +172,11 @@ function insertBrowserlistEnv(ast: t.Node) {
         if (!hasEnv) {
           const env = parser.parseExpression(
             'process.env.BROWSERSLIST_ENV = process.env.NODE_ENV',
-          ) as unknown as t.ExpressionStatement
-          const injectIndex = program.node.body.findIndex((stmt) => !t.isImportDeclaration(stmt))
-          program.node.body.splice(injectIndex, 0, env)
+          ) as unknown as t.ExpressionStatement;
+          const injectIndex = program.node.body.findIndex((stmt) => !t.isImportDeclaration(stmt));
+          program.node.body.splice(injectIndex, 0, env);
         }
       },
     },
-  })
+  });
 }

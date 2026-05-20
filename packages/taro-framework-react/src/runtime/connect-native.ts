@@ -19,57 +19,57 @@ import {
   requestAnimationFrame,
   safeExecute,
   window,
-} from '@spcsn/taro-runtime'
-import { EMPTY_OBJ, ensure, hooks, isUndefined } from '@spcsn/taro-shared'
+} from '@spcsn/taro-runtime';
+import { EMPTY_OBJ, ensure, hooks, isUndefined } from '@spcsn/taro-shared';
 
-import { setReconciler } from './connect'
-import { reactMeta } from './react-meta'
-import { isClassComponent } from './utils'
+import { setReconciler } from './connect';
+import { reactMeta } from './react-meta';
+import { isClassComponent } from './utils';
 
-import type { Instance, TaroRootElement } from '@spcsn/taro-runtime' // eslint-disable-line import/no-duplicates
-import type { MpInstance } from '@spcsn/taro-runtime/dist/runtime.esm' // eslint-disable-line import/no-duplicates
-import type { AppInstance, PageInstance } from '@spcsn/taro'
-import type { Func } from '@spcsn/taro/types/compile'
-import type React from 'react'
+import type { Instance, TaroRootElement } from '@spcsn/taro-runtime'; // eslint-disable-line import/no-duplicates
+import type { MpInstance } from '@spcsn/taro-runtime/dist/runtime.esm'; // eslint-disable-line import/no-duplicates
+import type { AppInstance, PageInstance } from '@spcsn/taro';
+import type { Func } from '@spcsn/taro/types/compile';
+import type React from 'react';
 
-declare const getCurrentPages: () => PageInstance[]
+declare const getCurrentPages: () => PageInstance[];
 
-const getNativeCompId = incrementId()
-let h: typeof React.createElement
-let ReactDOM
-let nativeComponentApp: AppInstance
+const getNativeCompId = incrementId();
+let h: typeof React.createElement;
+let ReactDOM;
+let nativeComponentApp: AppInstance;
 interface InitNativeComponentEntryParams {
-  R: typeof React
-  ReactDOM: typeof ReactDOM
-  cb?: Func
+  R: typeof React;
+  ReactDOM: typeof ReactDOM;
+  cb?: Func;
   // 是否使用默认的 DOM 入口 - app；默认为true，false的时候，会创建一个新的dom并且把它挂载在 app 下面
-  isDefaultEntryDom?: boolean
+  isDefaultEntryDom?: boolean;
 }
 
 function initNativeComponentEntry(params: InitNativeComponentEntryParams) {
-  const { R, ReactDOM, cb, isDefaultEntryDom = true } = params
+  const { R, ReactDOM, cb, isDefaultEntryDom = true } = params;
   interface IEntryState {
     components: {
-      compId: string
-      element: React.ReactElement
-    }[]
+      compId: string;
+      element: React.ReactElement;
+    }[];
   }
 
   interface IWrapperProps {
-    compId: string
-    getCtx: () => any
-    renderComponent: (ctx: any) => React.ReactElement
+    compId: string;
+    getCtx: () => any;
+    renderComponent: (ctx: any) => React.ReactElement;
   }
 
   class NativeComponentWrapper extends R.Component<IWrapperProps, Record<any, any>> {
-    root = R.createRef<TaroRootElement>()
-    ctx = this.props.getCtx()
+    root = R.createRef<TaroRootElement>();
+    ctx = this.props.getCtx();
 
     componentDidMount() {
-      this.ctx.component = this
-      const rootElement = this.root.current!
-      rootElement.ctx = this.ctx
-      rootElement.performUpdate(true)
+      this.ctx.component = this;
+      const rootElement = this.root.current!;
+      rootElement.ctx = this.ctx;
+      rootElement.performUpdate(true);
     }
 
     render() {
@@ -80,35 +80,35 @@ function initNativeComponentEntry(params: InitNativeComponentEntryParams) {
           id: this.props.compId,
         },
         this.props.renderComponent(this.ctx),
-      )
+      );
     }
   }
 
   class Entry extends R.Component<Record<any, any>, IEntryState> {
     state: IEntryState = {
       components: [],
-    }
+    };
 
     componentDidMount() {
       if (isDefaultEntryDom) {
-        Current.app = this
+        Current.app = this;
       } else {
-        nativeComponentApp = this
+        nativeComponentApp = this;
       }
-      cb && cb()
+      cb && cb();
     }
 
     mount(Component, compId, getCtx, cb?) {
-      const isReactComponent = isClassComponent(R, Component)
-      const inject = (node?: Instance) => node && injectPageInstance(node, compId)
+      const isReactComponent = isClassComponent(R, Component);
+      const inject = (node?: Instance) => node && injectPageInstance(node, compId);
       const refs = isReactComponent
         ? { ref: inject }
         : {
             forwardedRef: inject,
             reactReduxForwardedRef: inject,
-          }
+          };
       if (reactMeta.PageContext === EMPTY_OBJ) {
-        reactMeta.PageContext = R.createContext('')
+        reactMeta.PageContext = R.createContext('');
       }
       const item = {
         compId,
@@ -125,52 +125,52 @@ function initNativeComponentEntry(params: InitNativeComponentEntryParams) {
                 ...refs,
                 $scope: ctx,
               }),
-            )
+            );
           },
         }),
-      }
+      };
       this.setState(
         {
           components: [...this.state.components, item],
         },
         () => cb && cb(),
-      )
+      );
     }
 
     unmount(compId, cb?) {
-      const components = this.state.components
-      const index = components.findIndex((item) => item.compId === compId)
-      const next = [...components.slice(0, index), ...components.slice(index + 1)]
+      const components = this.state.components;
+      const index = components.findIndex((item) => item.compId === compId);
+      const next = [...components.slice(0, index), ...components.slice(index + 1)];
       this.setState(
         {
           components: next,
         },
         () => {
-          removePageInstance(compId)
-          cb && cb()
+          removePageInstance(compId);
+          cb && cb();
         },
-      )
+      );
     }
 
     render() {
-      const components = this.state.components
+      const components = this.state.components;
 
-      return components.map(({ element }) => element)
+      return components.map(({ element }) => element);
     }
   }
 
-  setReconciler(ReactDOM)
+  setReconciler(ReactDOM);
 
-  let app = document.getElementById('app')
+  let app = document.getElementById('app');
   if (!isDefaultEntryDom && !nativeComponentApp) {
     // create
-    const nativeApp = document.createElement('nativeComponent')
+    const nativeApp = document.createElement('nativeComponent');
     // insert
-    app?.parentNode?.appendChild(nativeApp)
-    app = nativeApp
+    app?.parentNode?.appendChild(nativeApp);
+    app = nativeApp;
   }
   // eslint-disable-next-line react/no-deprecated
-  ReactDOM.render(h(Entry, {}), app)
+  ReactDOM.render(h(Entry, {}), app);
 }
 
 export function createNativePageConfig(
@@ -181,20 +181,20 @@ export function createNativePageConfig(
   reactDOM: typeof ReactDOM,
   pageConfig,
 ) {
-  reactMeta.R = react
-  h = react.createElement
-  ReactDOM = reactDOM
-  setReconciler(ReactDOM)
+  reactMeta.R = react;
+  h = react.createElement;
+  ReactDOM = reactDOM;
+  setReconciler(ReactDOM);
   const [ONLOAD, ONUNLOAD, ONREADY, ONSHOW, ONHIDE, LIFECYCLES, SIDE_EFFECT_LIFECYCLES] =
-    hooks.call('getMiniLifecycleImpl')!.page
-  let unmounting = false
-  let prepareMountList: (() => void)[] = []
-  let pageElement: TaroRootElement | null = null
-  let loadResolver: (...args: unknown[]) => void
-  let hasLoaded: Promise<void>
-  const id = pageName ?? `taro_page_${getNativeCompId()}`
+    hooks.call('getMiniLifecycleImpl')!.page;
+  let unmounting = false;
+  let prepareMountList: (() => void)[] = [];
+  let pageElement: TaroRootElement | null = null;
+  let loadResolver: (...args: unknown[]) => void;
+  let hasLoaded: Promise<void>;
+  const id = pageName ?? `taro_page_${getNativeCompId()}`;
   function setCurrentRouter(page: MpInstance) {
-    const router = page.route || page.__route__ || page.$taroPath
+    const router = page.route || page.__route__ || page.$taroPath;
     Current.router = {
       params: page.$taroParams!,
       path: addLeadingSlash(router),
@@ -202,9 +202,9 @@ export function createNativePageConfig(
       onReady: getOnReadyEventKey(id),
       onShow: getOnShowEventKey(id),
       onHide: getOnHideEventKey(id),
-    }
+    };
     if (!isUndefined(page.exitState)) {
-      Current.router.exitState = page.exitState
+      Current.router.exitState = page.exitState;
     }
   }
 
@@ -212,30 +212,30 @@ export function createNativePageConfig(
     options: pageConfig,
     [ONLOAD](this: MpInstance, options: Readonly<Record<string, unknown>> = {}, cb?: TaroGeneral.TFunc) {
       hasLoaded = new Promise((resolve) => {
-        loadResolver = resolve
-      })
-      Current.page = this as any
-      this.config = pageConfig || {}
+        loadResolver = resolve;
+      });
+      Current.page = this as any;
+      this.config = pageConfig || {};
       // this.$taroPath 是页面唯一标识
-      const uniqueOptions = Object.assign({}, options, { $taroTimestamp: Date.now() })
-      const $taroPath = (this.$taroPath = getPath(id, uniqueOptions))
+      const uniqueOptions = Object.assign({}, options, { $taroTimestamp: Date.now() });
+      const $taroPath = (this.$taroPath = getPath(id, uniqueOptions));
 
       // this.$taroParams 作为暴露给开发者的页面参数对象，可以被随意修改
       if (this.$taroParams == null) {
-        this.$taroParams = uniqueOptions
+        this.$taroParams = uniqueOptions;
       }
 
-      setCurrentRouter(this)
-      window.trigger(CONTEXT_ACTIONS.INIT, $taroPath)
+      setCurrentRouter(this);
+      window.trigger(CONTEXT_ACTIONS.INIT, $taroPath);
 
       const mountCallback = () => {
-        pageElement = document.getElementById($taroPath)
-        ensure(pageElement !== null, '没有找到页面实例。')
-        safeExecute($taroPath, ONLOAD, this.$taroParams)
-        loadResolver()
-        pageElement.ctx = this
-        pageElement.performUpdate(true, cb)
-      }
+        pageElement = document.getElementById($taroPath);
+        ensure(pageElement !== null, '没有找到页面实例。');
+        safeExecute($taroPath, ONLOAD, this.$taroParams);
+        loadResolver();
+        pageElement.ctx = this;
+        pageElement.performUpdate(true, cb);
+      };
 
       const mount = () => {
         if (!Current.app) {
@@ -243,133 +243,133 @@ export function createNativePageConfig(
             R: react,
             ReactDOM,
             cb: () => {
-              Current.app!.mount!(Component, $taroPath, () => this, mountCallback)
+              Current.app!.mount!(Component, $taroPath, () => this, mountCallback);
             },
-          })
+          });
         } else {
-          Current.app!.mount!(Component, $taroPath, () => this, mountCallback)
+          Current.app!.mount!(Component, $taroPath, () => this, mountCallback);
         }
-      }
+      };
 
       if (unmounting) {
-        prepareMountList.push(mount)
+        prepareMountList.push(mount);
       } else {
-        mount()
+        mount();
       }
     },
     [ONUNLOAD]() {
-      const $taroPath = this.$taroPath
+      const $taroPath = this.$taroPath;
       // 销毁当前页面的上下文信息
-      window.trigger(CONTEXT_ACTIONS.DESTROY, $taroPath)
+      window.trigger(CONTEXT_ACTIONS.DESTROY, $taroPath);
       // 触发onUnload生命周期
-      safeExecute($taroPath, ONUNLOAD)
-      resetCurrent()
-      unmounting = true
+      safeExecute($taroPath, ONUNLOAD);
+      resetCurrent();
+      unmounting = true;
       Current.app!.unmount!($taroPath, () => {
-        unmounting = false
-        removePageInstance($taroPath)
+        unmounting = false;
+        removePageInstance($taroPath);
         if (pageElement) {
-          pageElement.ctx = null
-          pageElement = null
+          pageElement.ctx = null;
+          pageElement = null;
         }
         if (prepareMountList.length) {
-          prepareMountList.forEach((fn) => fn())
-          prepareMountList = []
+          prepareMountList.forEach((fn) => fn());
+          prepareMountList = [];
         }
-      })
+      });
     },
     [ONREADY]() {
       hasLoaded.then(() => {
         // 触发生命周期
-        safeExecute(this.$taroPath, ON_READY)
+        safeExecute(this.$taroPath, ON_READY);
         // 通过事件触发子组件的生命周期
-        requestAnimationFrame(() => eventCenter.trigger(getOnReadyEventKey(id)))
-        this.onReady.called = true
-      })
+        requestAnimationFrame(() => eventCenter.trigger(getOnReadyEventKey(id)));
+        this.onReady.called = true;
+      });
     },
     [ONSHOW](options = {}) {
       hasLoaded.then(() => {
         // 设置 Current 的 page 和 router
-        Current.page = this as any
-        setCurrentRouter(this)
+        Current.page = this as any;
+        setCurrentRouter(this);
         // 恢复上下文信息
-        window.trigger(CONTEXT_ACTIONS.RECOVER, this.$taroPath)
+        window.trigger(CONTEXT_ACTIONS.RECOVER, this.$taroPath);
         // 触发生命周期
-        safeExecute(this.$taroPath, ON_SHOW, options)
+        safeExecute(this.$taroPath, ON_SHOW, options);
         // 通过事件触发子组件的生命周期
-        requestAnimationFrame(() => eventCenter.trigger(getOnShowEventKey(id)))
-      })
+        requestAnimationFrame(() => eventCenter.trigger(getOnShowEventKey(id)));
+      });
     },
     [ONHIDE]() {
       // 缓存当前页面上下文信息
-      window.trigger(CONTEXT_ACTIONS.RESTORE, this.$taroPath)
+      window.trigger(CONTEXT_ACTIONS.RESTORE, this.$taroPath);
       // 设置 Current 的 page 和 router
       if (Current.page === this) {
-        Current.page = null
-        Current.router = null
+        Current.page = null;
+        Current.router = null;
       }
       // 触发生命周期
-      safeExecute(this.$taroPath, ON_HIDE)
+      safeExecute(this.$taroPath, ON_HIDE);
       // 通过事件触发子组件的生命周期
-      eventCenter.trigger(getOnHideEventKey(id))
+      eventCenter.trigger(getOnHideEventKey(id));
     },
-  }
+  };
 
   function resetCurrent() {
     // 小程序插件页面卸载之后返回到宿主页面时，需重置Current页面和路由。否则引发插件组件二次加载异常 fix:#11991
-    Current.page = null
-    Current.router = null
+    Current.page = null;
+    Current.router = null;
   }
 
   LIFECYCLES.forEach((lifecycle) => {
     pageObj[lifecycle] = function () {
-      return safeExecute(this.$taroPath, lifecycle, ...arguments)
-    }
-  })
+      return safeExecute(this.$taroPath, lifecycle, ...arguments);
+    };
+  });
 
   // onShareAppMessage 和 onShareTimeline 一样，会影响小程序右上方按钮的选项，因此不能默认注册。
   SIDE_EFFECT_LIFECYCLES.forEach((lifecycle) => {
     if (Component[lifecycle] || Component.prototype?.[lifecycle] || Component[lifecycle.replace(/^on/, 'enable')]) {
       pageObj[lifecycle] = function (...args) {
-        const target = args[0]?.target
+        const target = args[0]?.target;
         if (target?.id) {
-          const id = target.id
-          const element = document.getElementById(id)
+          const id = target.id;
+          const element = document.getElementById(id);
           if (element) {
-            target.dataset = element.dataset
+            target.dataset = element.dataset;
           }
         }
-        return safeExecute(this.$taroPath, lifecycle, ...args)
-      }
+        return safeExecute(this.$taroPath, lifecycle, ...args);
+      };
     }
-  })
+  });
 
-  pageObj.eh = eventHandler
+  pageObj.eh = eventHandler;
 
   if (!isUndefined(data)) {
-    pageObj.data = data
+    pageObj.data = data;
   }
 
-  hooks.call('modifyPageObject', pageObj)
+  hooks.call('modifyPageObject', pageObj);
 
-  return pageObj
+  return pageObj;
 }
 
 export function createH5NativeComponentConfig(Component, react: typeof React, reactDOM: typeof ReactDOM) {
-  reactMeta.R = react
-  h = react.createElement
-  ReactDOM = reactDOM
-  setReconciler(ReactDOM)
+  reactMeta.R = react;
+  h = react.createElement;
+  ReactDOM = reactDOM;
+  setReconciler(ReactDOM);
 
-  return Component
+  return Component;
 }
 
 export function createNativeComponentConfig(Component, react: typeof React, reactDOM, componentConfig) {
-  reactMeta.R = react
-  h = react.createElement
-  ReactDOM = reactDOM
-  setReconciler(ReactDOM)
-  const { isNewBlended } = componentConfig
+  reactMeta.R = react;
+  h = react.createElement;
+  ReactDOM = reactDOM;
+  setReconciler(ReactDOM);
+  const { isNewBlended } = componentConfig;
 
   const componentObj: Record<string, any> = {
     options: componentConfig,
@@ -380,105 +380,105 @@ export function createNativeComponentConfig(Component, react: typeof React, reac
         observer(_newVal, oldVal) {
           if (process.env.TARO_ENV === 'swan') {
             // 百度模版传递 props 时 函数参数会被忽略，这里需要根据 id 获取 TaroElement 中的 props 赋值到 ctx.data 中
-            const inst: any = document.getElementById(this.id)
+            const inst: any = document.getElementById(this.id);
             if (this.component?.ctx?.data && inst) {
-              this.component.ctx.data.props = inst?.props?.props
+              this.component.ctx.data.props = inst?.props?.props;
             }
           }
-          oldVal && this.component?.forceUpdate()
+          oldVal && this.component?.forceUpdate();
         },
       },
     },
     created() {
       if (process.env.TARO_ENV === 'swan') {
-        const inst: any = document.getElementById(this.id)
+        const inst: any = document.getElementById(this.id);
         // 百度小程序 真机上 props中的函数会被转为Object 调用报错 导致后续组件无法渲染 这里先取TaroElement上的props，在properties中会重新赋值
         if (this.data?.props && inst) {
-          this.data.props = inst.props?.props || {}
+          this.data.props = inst.props?.props || {};
         }
       }
-      const app = isNewBlended ? nativeComponentApp : Current.app
+      const app = isNewBlended ? nativeComponentApp : Current.app;
       if (!app) {
         initNativeComponentEntry({
           R: react,
           ReactDOM,
           isDefaultEntryDom: !isNewBlended,
-        })
+        });
       }
     },
     attached() {
-      const compId = (this.compId = getNativeCompId())
-      setCurrent(compId)
-      this.config = componentConfig
-      const app = isNewBlended ? nativeComponentApp : Current.app
+      const compId = (this.compId = getNativeCompId());
+      setCurrent(compId);
+      this.config = componentConfig;
+      const app = isNewBlended ? nativeComponentApp : Current.app;
       app!.mount!(
         Component,
         compId,
         () => this,
         () => {
-          const instance = getPageInstance(compId)
+          const instance = getPageInstance(compId);
 
           if (instance && instance.node) {
-            const el = document.getElementById(instance.node.uid)
+            const el = document.getElementById(instance.node.uid);
 
             if (el) {
-              el.ctx = this
+              el.ctx = this;
             }
           }
         },
-      )
+      );
     },
     ready() {
-      safeExecute(this.compId, 'onReady')
+      safeExecute(this.compId, 'onReady');
     },
     detached() {
-      resetCurrent()
-      const app = isNewBlended ? nativeComponentApp : Current.app
-      app!.unmount!(this.compId)
+      resetCurrent();
+      const app = isNewBlended ? nativeComponentApp : Current.app;
+      app!.unmount!(this.compId);
     },
     pageLifetimes: {
       show(options) {
-        safeExecute(this.compId, 'onShow', options)
+        safeExecute(this.compId, 'onShow', options);
       },
       hide() {
-        safeExecute(this.compId, 'onHide')
+        safeExecute(this.compId, 'onHide');
       },
     },
     methods: {
       eh: eventHandler,
       onLoad(options) {
-        safeExecute(this.compId, 'onLoad', options)
+        safeExecute(this.compId, 'onLoad', options);
       },
       onUnload() {
-        safeExecute(this.compId, 'onUnload')
+        safeExecute(this.compId, 'onUnload');
       },
     },
-  }
+  };
 
   function resetCurrent() {
     // 小程序插件页面卸载之后返回到宿主页面时，需重置Current页面和路由。否则引发插件组件二次加载异常 fix:#11991
-    Current.page = null
-    Current.router = null
+    Current.page = null;
+    Current.router = null;
   }
 
   // onShareAppMessage 和 onShareTimeline 一样，会影响小程序右上方按钮的选项，因此不能默认注册。
   if (Component.onShareAppMessage || Component.prototype?.onShareAppMessage || Component.enableShareAppMessage) {
     componentObj.methods.onShareAppMessage = function (options) {
-      const target = options?.target
+      const target = options?.target;
       if (target) {
-        const id = target.id
-        const element = document.getElementById(id)
+        const id = target.id;
+        const element = document.getElementById(id);
         if (element) {
-          target!.dataset = element.dataset
+          target!.dataset = element.dataset;
         }
       }
-      return safeExecute(this.compId, 'onShareAppMessage', options)
-    }
+      return safeExecute(this.compId, 'onShareAppMessage', options);
+    };
   }
   if (Component.onShareTimeline || Component.prototype?.onShareTimeline || Component.enableShareTimeline) {
     componentObj.methods.onShareTimeline = function () {
-      return safeExecute(this.compId, 'onShareTimeline')
-    }
+      return safeExecute(this.compId, 'onShareTimeline');
+    };
   }
 
   if (process.env.TARO_ENV === 'alipay') {
@@ -488,27 +488,27 @@ export function createNativeComponentConfig(Component, react: typeof React, reac
      * @see https://opendocs.alipay.com/mini/03dbc3#compileOptions
      * @returns
      */
-    componentObj.onInit = componentObj.created
-    componentObj.didMount = componentObj.attached
+    componentObj.onInit = componentObj.created;
+    componentObj.didMount = componentObj.attached;
     componentObj.didUpdate = function () {
-      this.data.props = this.props.props
-      this?.component?.forceUpdate?.()
-    }
-    componentObj.didUnmount = componentObj.detached
+      this.data.props = this.props.props;
+      this?.component?.forceUpdate?.();
+    };
+    componentObj.didUnmount = componentObj.detached;
   }
-  return componentObj
+  return componentObj;
 }
 
 function setCurrent(compId: string) {
-  if (!getCurrentPages || typeof getCurrentPages !== 'function') return
+  if (!getCurrentPages || typeof getCurrentPages !== 'function') return;
 
-  const pages = getCurrentPages()
-  const currentPage = pages[pages.length - 1]
-  if (Current.page === currentPage) return
+  const pages = getCurrentPages();
+  const currentPage = pages[pages.length - 1];
+  if (Current.page === currentPage) return;
 
-  Current.page = currentPage
+  Current.page = currentPage;
 
-  const route = (currentPage as any).route || (currentPage as any).__route__
+  const route = (currentPage as any).route || (currentPage as any).__route__;
   const router = {
     params: currentPage.options || {},
     path: addLeadingSlash(route),
@@ -516,8 +516,8 @@ function setCurrent(compId: string) {
     onReady: '',
     onHide: '',
     onShow: '',
-  }
-  Current.router = router
+  };
+  Current.router = router;
 
   if (!currentPage.options) {
     // 例如在微信小程序中，页面 options 的设置时机比组件 attached 慢
@@ -525,12 +525,12 @@ function setCurrent(compId: string) {
       enumerable: true,
       configurable: true,
       get() {
-        return this._optionsValue
+        return this._optionsValue;
       },
       set(value) {
-        router.params = value
-        this._optionsValue = value
+        router.params = value;
+        this._optionsValue = value;
       },
-    })
+    });
   }
 }

@@ -1,84 +1,84 @@
-import { getFiberCurrentPropsFromNode, getInstanceFromNode, getNodeFromInstance } from './componentTree'
+import { getFiberCurrentPropsFromNode, getInstanceFromNode, getNodeFromInstance } from './componentTree';
 import {
   isTextInputElement,
   ReactDOMInputRestoreControlledState,
   ReactDOMTextareaRestoreControlledState,
   toString,
-} from './domInput'
-import { updateValueIfChanged } from './inputValueTracking'
-import { TaroReconciler } from './reconciler'
+} from './domInput';
+import { updateValueIfChanged } from './inputValueTracking';
+import { TaroReconciler } from './reconciler';
 
-import type { TaroElement, TaroEvent } from '@spcsn/taro-runtime'
-import type { Fiber } from 'react-reconciler'
-import type { Props } from './props'
+import type { TaroElement, TaroEvent } from '@spcsn/taro-runtime';
+import type { Fiber } from 'react-reconciler';
+import type { Props } from './props';
 
-export type RestoreType = string | number | boolean | any[]
+export type RestoreType = string | number | boolean | any[];
 
 interface RestoreItem {
-  target: TaroElement
-  value: RestoreType
+  target: TaroElement;
+  value: RestoreType;
 }
 
-let restoreQueue: RestoreItem[] | null = null
+let restoreQueue: RestoreItem[] | null = null;
 
 // 对比 TaroElement tracker 下的 value 和事件下的 value，判断 element 的值是否存在更改
 export function getTargetInstForInputOrChangeEvent(e: TaroEvent, node: TaroElement) {
-  const targetInst = getInstanceFromNode(node)
-  const domEventName = e.type
+  const targetInst = getInstanceFromNode(node);
+  const domEventName = e.type;
 
-  if (!targetInst || !isTextInputElement(node)) return
+  if (!targetInst || !isTextInputElement(node)) return;
 
   if (domEventName === 'input' || domEventName === 'change') {
-    const nextValue = toString(e.mpEvent?.detail?.value)
+    const nextValue = toString(e.mpEvent?.detail?.value);
 
-    return getInstIfValueChanged(targetInst, nextValue)
+    return getInstIfValueChanged(targetInst, nextValue);
   }
 }
 
 function getInstIfValueChanged(targetInst: Fiber, nextValue: string) {
-  const targetNode = getNodeFromInstance(targetInst)
+  const targetNode = getNodeFromInstance(targetInst);
 
-  if (!targetNode) return false
+  if (!targetNode) return false;
 
   if (updateValueIfChanged(targetNode, nextValue)) {
-    return targetInst
+    return targetInst;
   }
 }
 
 // 把 target 塞入更新队列中
 export function enqueueStateRestore(target: RestoreItem): void {
   if (restoreQueue) {
-    restoreQueue.push(target)
+    restoreQueue.push(target);
   } else {
-    restoreQueue = [target]
+    restoreQueue = [target];
   }
 }
 
 // 判断是否需要恢复 target（input、textarea） 的状态
 export function needsStateRestore(): boolean {
-  return restoreQueue !== null
+  return restoreQueue !== null;
 }
 
 export function finishEventHandler() {
-  const controlledComponentsHavePendingUpdates = needsStateRestore()
+  const controlledComponentsHavePendingUpdates = needsStateRestore();
 
   if (controlledComponentsHavePendingUpdates) {
-    TaroReconciler.flushSync()
-    restoreStateIfNeeded()
+    TaroReconciler.flushSync();
+    restoreStateIfNeeded();
   }
 }
 
 // 遍历 restoreQueue、restoreTarget，恢复其状态
 export function restoreStateIfNeeded() {
   if (!restoreQueue) {
-    return
+    return;
   }
 
-  const queuedTargets = restoreQueue
-  restoreQueue = null
+  const queuedTargets = restoreQueue;
+  restoreQueue = null;
 
   for (let i = 0; i < queuedTargets.length; i++) {
-    restoreStateOfTarget(queuedTargets[i])
+    restoreStateOfTarget(queuedTargets[i]);
   }
 }
 
@@ -90,24 +90,24 @@ function restoreImpl(
 ): void {
   switch (tag) {
     case 'input':
-      ReactDOMInputRestoreControlledState(domElement, oldValue, props)
-      break
+      ReactDOMInputRestoreControlledState(domElement, oldValue, props);
+      break;
     case 'textarea':
-      ReactDOMTextareaRestoreControlledState(domElement, oldValue, props)
-      break
+      ReactDOMTextareaRestoreControlledState(domElement, oldValue, props);
+      break;
   }
 }
 
 function restoreStateOfTarget(item: RestoreItem) {
-  const internalInstance = getInstanceFromNode(item.target)
+  const internalInstance = getInstanceFromNode(item.target);
 
-  if (!internalInstance) return
+  if (!internalInstance) return;
 
-  const { stateNode, type } = internalInstance
+  const { stateNode, type } = internalInstance;
 
   if (stateNode) {
-    const props = getFiberCurrentPropsFromNode(stateNode)
+    const props = getFiberCurrentPropsFromNode(stateNode);
 
-    restoreImpl(stateNode, type, item.value, props)
+    restoreImpl(stateNode, type, item.value, props);
   }
 }

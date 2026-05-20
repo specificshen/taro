@@ -1,6 +1,6 @@
-import { resolve } from 'node:path'
+import { resolve } from 'node:path';
 
-import type { OnResolveArgs, OnResolveResult } from 'esbuild'
+import type { OnResolveArgs, OnResolveResult } from 'esbuild';
 
 export function externalEsbuildModule({
   path,
@@ -9,12 +9,12 @@ export function externalEsbuildModule({
   pluginData,
 }: Partial<OnResolveArgs>): OnResolveResult {
   if (namespace === 'file' && importer && path) {
-    path = resolve(importer, path)
+    path = resolve(importer, path);
   }
   return {
     path,
     namespace,
     pluginData,
     external: true,
-  }
+  };
 }

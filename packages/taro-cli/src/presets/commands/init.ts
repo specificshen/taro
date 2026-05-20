@@ -1,4 +1,4 @@
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
@@ -18,7 +18,7 @@ export default (ctx: IPluginContext) => {
     },
     async fn(opts) {
       // init project
-      const { appPath } = ctx.paths
+      const { appPath } = ctx.paths;
       const {
         projectName,
         templateSource,
@@ -35,9 +35,9 @@ export default (ctx: IPluginContext) => {
         sourceRoot,
         autoInstall,
         ask,
-      } = opts.options
+      } = opts.options;
 
-      const Project = require('../../create/project').default
+      const Project = require('../../create/project').default;
       const project = new Project({
         sourceRoot,
         projectName,
@@ -55,9 +55,9 @@ export default (ctx: IPluginContext) => {
         autoInstall,
         css,
         ask,
-      })
+      });
 
-      project.create()
+      project.create();
     },
-  })
-}
+  });
+};

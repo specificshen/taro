@@ -1,11 +1,11 @@
-import { VITE_COMPILER_LABEL } from './constant'
+import { VITE_COMPILER_LABEL } from './constant';
 
 import type {
   ViteH5CompilerContext,
   ViteHarmonyCompilerContext,
   ViteMiniCompilerContext,
-} from '@spcsn/taro/types/compile/viteCompilerContext'
-import type { PluginContext } from 'rollup'
+} from '@spcsn/taro/types/compile/viteCompilerContext';
+import type { PluginContext } from 'rollup';
 
 export async function getViteH5CompilerContext(
   rollupPluginContext: PluginContext,
@@ -13,9 +13,9 @@ export async function getViteH5CompilerContext(
   const info =
     process.env.NODE_ENV === 'production'
       ? rollupPluginContext.getModuleInfo(VITE_COMPILER_LABEL)
-      : await rollupPluginContext.load({ id: VITE_COMPILER_LABEL })
-  const compiler = info?.meta.viteCompilerContext
-  return compiler
+      : await rollupPluginContext.load({ id: VITE_COMPILER_LABEL });
+  const compiler = info?.meta.viteCompilerContext;
+  return compiler;
 }
 
 export async function getViteHarmonyCompilerContext(
@@ -24,13 +24,13 @@ export async function getViteHarmonyCompilerContext(
   const info =
     process.env.NODE_ENV === 'production'
       ? rollupPluginContext.getModuleInfo(VITE_COMPILER_LABEL)
-      : await rollupPluginContext.load({ id: VITE_COMPILER_LABEL })
-  const compiler = info?.meta.viteCompilerContext
-  return compiler
+      : await rollupPluginContext.load({ id: VITE_COMPILER_LABEL });
+  const compiler = info?.meta.viteCompilerContext;
+  return compiler;
 }
 
 export function getViteMiniCompilerContext(rollupPluginContext: PluginContext): ViteMiniCompilerContext | void {
-  const info = rollupPluginContext.getModuleInfo(VITE_COMPILER_LABEL)
-  const compiler = info?.meta.viteCompilerContext
-  return compiler
+  const info = rollupPluginContext.getModuleInfo(VITE_COMPILER_LABEL);
+  const compiler = info?.meta.viteCompilerContext;
+  return compiler;
 }

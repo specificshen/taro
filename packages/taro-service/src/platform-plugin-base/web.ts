@@ -1,46 +1,46 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import { isObject, PLATFORM_TYPE } from '@spcsn/taro-shared'
-import { get, merge } from 'lodash'
+import { isObject, PLATFORM_TYPE } from '@spcsn/taro-shared';
+import { get, merge } from 'lodash';
 
-import { getPkgVersion } from '../utils/package'
-import TaroPlatform from './platform'
+import { getPkgVersion } from '../utils/package';
+import TaroPlatform from './platform';
 
-import type { TConfig } from '../utils/types'
+import type { TConfig } from '../utils/types';
 
 export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroPlatform<T> {
-  platformType = PLATFORM_TYPE.WEB
+  platformType = PLATFORM_TYPE.WEB;
 
   /**
    * 1. 清空 dist 文件夹
    * 2. 输出编译提示
    */
   private async setup() {
-    await this.setupTransaction.perform(this.setupWebApp, this)
-    this.ctx.onSetupClose?.(this)
+    await this.setupTransaction.perform(this.setupWebApp, this);
+    this.ctx.onSetupClose?.(this);
   }
 
   private setupWebApp() {
-    const { output } = this.config
+    const { output } = this.config;
     // webpack5 原生支持 output.clean 选项，但是 webpack4 不支持， 为统一行为，这里做一下兼容
     // （在 packages/taro-mini-runner/src/webpack/chain.ts 和 packages/taro-webpack-runner/src/utils/chain.ts 的 makeConfig 中对 clean 选项做了过滤）
     // eslint-disable-next-line eqeqeq
     if (output == undefined || output.clean == undefined || output.clean === true) {
-      this.emptyOutputDir()
+      this.emptyOutputDir();
     } else if (isObject(output.clean)) {
-      this.emptyOutputDir(output.clean.keep || [])
+      this.emptyOutputDir(output.clean.keep || []);
     }
-    this.printDevelopmentTip()
+    this.printDevelopmentTip();
   }
 
   protected printDevelopmentTip() {
-    const tips: string[] = []
+    const tips: string[] = [];
 
     if (tips.length) {
-      const { chalk } = this.helper
-      console.log(chalk.yellowBright('Tips:'))
-      tips.forEach((item, index) => console.log(`${chalk.yellowBright(index + 1)}. ${item}`))
-      console.log('\n')
+      const { chalk } = this.helper;
+      console.log(chalk.yellowBright('Tips:'));
+      tips.forEach((item, index) => console.log(`${chalk.yellowBright(index + 1)}. ${item}`));
+      console.log('\n');
     }
   }
 
@@ -48,15 +48,15 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * 返回当前项目内的 runner 包
    */
   protected async getRunner() {
-    const { appPath } = this.ctx.paths
-    const { npm } = this.helper
+    const { appPath } = this.ctx.paths;
+    const { npm } = this.helper;
 
     // React-only / Vite-only fork：webpack5 路径已移除，runner 固定为 vite-runner
-    const runnerPkg = '@spcsn/taro-vite-runner'
+    const runnerPkg = '@spcsn/taro-vite-runner';
 
-    const runner = await npm.getNpmPkg(runnerPkg, appPath)
+    const runner = await npm.getNpmPkg(runnerPkg, appPath);
 
-    return runner.bind(null, appPath)
+    return runner.bind(null, appPath);
   }
 
   /**
@@ -64,16 +64,16 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * @param extraOptions 需要额外合入 Options 的配置项
    */
   protected getOptions(extraOptions = {}) {
-    const { sourcePath } = this.ctx.paths
-    const { initialConfig } = this.ctx
-    const { port } = this.ctx.runOpts.options
-    const { recursiveMerge, ENTRY, SOURCE_DIR, OUTPUT_DIR } = this.ctx.helper
-    const entryFileName = `${ENTRY}.config`
-    const entryFile = path.basename(entryFileName)
+    const { sourcePath } = this.ctx.paths;
+    const { initialConfig } = this.ctx;
+    const { port } = this.ctx.runOpts.options;
+    const { recursiveMerge, ENTRY, SOURCE_DIR, OUTPUT_DIR } = this.ctx.helper;
+    const entryFileName = `${ENTRY}.config`;
+    const entryFile = path.basename(entryFileName);
     const defaultEntry = {
       [ENTRY]: [path.join(sourcePath, entryFile)],
-    }
-    const customEntry = get(initialConfig, 'h5.entry')
+    };
+    const customEntry = get(initialConfig, 'h5.entry');
     const config = recursiveMerge(Object.assign({}, this.config), {
       entryFileName: ENTRY,
       env: {
@@ -85,15 +85,15 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
       devServer: { port },
       sourceRoot: this.config.sourceRoot || SOURCE_DIR,
       outputRoot: this.config.outputRoot || OUTPUT_DIR,
-    })
-    config.entry = merge(defaultEntry, customEntry)
+    });
+    config.entry = merge(defaultEntry, customEntry);
 
     return {
       ...config,
       buildAdapter: config.platform,
       platformType: this.platformType,
       ...extraOptions,
-    }
+    };
   }
 
   /**
@@ -101,12 +101,12 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
    * @param extraOptions 需要额外传入 runner 的配置项
    */
   private async build(extraOptions = {}) {
-    this.ctx.onBuildInit?.(this)
-    await this.buildTransaction.perform(this.buildWebApp, this, extraOptions)
+    this.ctx.onBuildInit?.(this);
+    await this.buildTransaction.perform(this.buildWebApp, this, extraOptions);
   }
 
   private async buildWebApp(extraOptions = {}) {
-    const runner = await this.getRunner()
+    const runner = await this.getRunner();
     const options = this.getOptions(
       Object.assign(
         {
@@ -114,15 +114,15 @@ export abstract class TaroPlatformWeb<T extends TConfig = TConfig> extends TaroP
         },
         extraOptions,
       ),
-    )
-    await runner(options)
+    );
+    await runner(options);
   }
 
   /**
    * 调用 runner 开启编译
    */
   public async start() {
-    await this.setup()
-    await this.build()
+    await this.setup();
+    await this.build();
   }
 }

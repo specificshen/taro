@@ -30,43 +30,43 @@ const needPromiseApis = new Set([
   'setWindowSize',
   'sendBizRedPacket',
   'startFacialRecognitionVerify',
-])
+]);
 
 function initWeappNativeApiFallback(taro) {
-  if (typeof wx === 'undefined' || typeof taro.addInterceptor === 'function') return
+  if (typeof wx === 'undefined' || typeof taro.addInterceptor === 'function') return;
 
-  const { processApis } = require('@spcsn/taro-shared')
+  const { processApis } = require('@spcsn/taro-shared');
 
   processApis(taro, wx, {
     needPromiseApis,
     modifyApis(apis) {
-      apis.delete('lanDebug')
+      apis.delete('lanDebug');
     },
     transformMeta(api, options) {
       if (api === 'showShareMenu') {
         options.menus = options.showShareItems?.map((item) =>
           item === 'wechatFriends' ? 'shareAppMessage' : item === 'wechatMoment' ? 'shareTimeline' : item,
-        )
+        );
       }
 
       return {
         key: api,
         options,
-      }
+      };
     },
-  })
+  });
 
-  taro.cloud = wx.cloud
+  taro.cloud = wx.cloud;
   taro.getTabBar = function (pageCtx) {
     if (typeof pageCtx?.getTabBar === 'function') {
-      return pageCtx.getTabBar()?.$taroInstances
+      return pageCtx.getTabBar()?.$taroInstances;
     }
-  }
+  };
   taro.getRenderer = function () {
-    return taro.getCurrentInstance()?.page?.renderer ?? 'webview'
-  }
+    return taro.getCurrentInstance()?.page?.renderer ?? 'webview';
+  };
 }
 
 module.exports = {
   initWeappNativeApiFallback,
-}
+};

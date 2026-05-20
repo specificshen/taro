@@ -1,5 +1,5 @@
 /* eslint-disable dot-notation */
-import type { Compiler } from 'webpack'
+import type { Compiler } from 'webpack';
 
 export default class TaroMiniHMRPlugin {
   apply(compiler: Compiler) {
@@ -7,10 +7,10 @@ export default class TaroMiniHMRPlugin {
       compilation.hooks.beforeChunkAssets.tap('TaroMiniHMRPlugin', () => {
         compilation.chunks.forEach((chunk) => {
           if (chunk.hasRuntime() && chunk.name === 'runtime') {
-            const runtimeModules = compilation.chunkGraph.getChunkRuntimeModulesInOrder(chunk)
+            const runtimeModules = compilation.chunkGraph.getChunkRuntimeModulesInOrder(chunk);
             for (const module of runtimeModules) {
               if (module.name === 'jsonp chunk loading') {
-                const runtimeSource = compilation.codeGenerationResults.getSource(module, chunk.runtime, 'runtime')
+                const runtimeSource = compilation.codeGenerationResults.getSource(module, chunk.runtime, 'runtime');
                 runtimeSource['_value'] += `
 var miniHMRCallback = function(parentChunkLoadingFunction, data) {
   var chunkIds = data[0];
@@ -25,12 +25,12 @@ var miniHMRCallback = function(parentChunkLoadingFunction, data) {
   }
   if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 }
-chunkLoadingGlobal.push = miniHMRCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));`
+chunkLoadingGlobal.push = miniHMRCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));`;
               }
             }
           }
-        })
-      })
-    })
+        });
+      });
+    });
   }
 }

@@ -1,61 +1,61 @@
-import path from 'node:path'
+import path from 'node:path';
 
-import { fs } from '@spcsn/taro-helper'
-import { normalizePath } from 'vite'
+import { fs } from '@spcsn/taro-helper';
+import { normalizePath } from 'vite';
 
-import { isRelativePath, isVirtualModule } from '../utils'
-import { componentConfig } from '../utils/component'
+import { isRelativePath, isVirtualModule } from '../utils';
+import { componentConfig } from '../utils/component';
 
-import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
-import type { PluginContext } from 'rollup'
-import type { PluginOption } from 'vite'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext';
+import type { PluginContext } from 'rollup';
+import type { PluginOption } from 'vite';
 
-const QUERY_IS_NATIVE_SCRIPT = '?isNativeScript='
-export const QUERY_IS_NATIVE_PAGE = QUERY_IS_NATIVE_SCRIPT + 'page'
-export const QUERY_IS_NATIVE_COMP = QUERY_IS_NATIVE_SCRIPT + 'comp'
-const IS_NATIVE_SCRIPT_REG = new RegExp(`\\${QUERY_IS_NATIVE_SCRIPT}(page|comp)$`)
-const QUERY_IS_NATIVE_STYLE = '?isNativeStyle=true'
-const IS_NATIVE_STYLE_REG = new RegExp(`\\${QUERY_IS_NATIVE_STYLE}`)
+const QUERY_IS_NATIVE_SCRIPT = '?isNativeScript=';
+export const QUERY_IS_NATIVE_PAGE = QUERY_IS_NATIVE_SCRIPT + 'page';
+export const QUERY_IS_NATIVE_COMP = QUERY_IS_NATIVE_SCRIPT + 'comp';
+const IS_NATIVE_SCRIPT_REG = new RegExp(`\\${QUERY_IS_NATIVE_SCRIPT}(page|comp)$`);
+const QUERY_IS_NATIVE_STYLE = '?isNativeStyle=true';
+const IS_NATIVE_STYLE_REG = new RegExp(`\\${QUERY_IS_NATIVE_STYLE}`);
 
 export default function (viteCompilerContext: ViteMiniCompilerContext | undefined): PluginOption {
   // todo 这个插件逻辑不是很清晰 待验证
-  const { taroConfig } = viteCompilerContext as ViteMiniCompilerContext
+  const { taroConfig } = viteCompilerContext as ViteMiniCompilerContext;
   return {
     name: 'taro:vite-native-support',
     enforce: 'pre',
     buildEnd() {
-      viteCompilerContext = undefined
+      viteCompilerContext = undefined;
     },
     resolveId(id) {
-      if (!viteCompilerContext) return
+      if (!viteCompilerContext) return;
       if (IS_NATIVE_STYLE_REG.test(id)) {
-        return id
+        return id;
       }
     },
     async load(id) {
-      if (!viteCompilerContext) return
+      if (!viteCompilerContext) return;
 
       if (IS_NATIVE_SCRIPT_REG.test(id)) {
-        let type: 'page' | 'comp' = 'page'
+        let type: 'page' | 'comp' = 'page';
         const target = id.replace(IS_NATIVE_SCRIPT_REG, (_, $1) => {
-          type = $1
-          return ''
-        })
+          type = $1;
+          return '';
+        });
 
-        let stylePath = ''
+        let stylePath = '';
 
         if (type === 'page') {
           for (const page of viteCompilerContext.pages) {
             if (page.isNative && page.scriptPath === target && page.cssPath && fs.existsSync(page.cssPath)) {
-              stylePath = viteCompilerContext.getTargetFilePath(page.cssPath, '.scss')
-              break
+              stylePath = viteCompilerContext.getTargetFilePath(page.cssPath, '.scss');
+              break;
             }
           }
         } else {
           for (const comp of viteCompilerContext.nativeComponents.values()) {
             if (comp.scriptPath === target && comp.cssPath && fs.existsSync(comp.cssPath)) {
-              stylePath = viteCompilerContext.getTargetFilePath(comp.cssPath, '.scss')
-              break
+              stylePath = viteCompilerContext.getTargetFilePath(comp.cssPath, '.scss');
+              break;
             }
           }
         }
@@ -65,38 +65,38 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
             code: [`import "${target}";\n`, stylePath ? `import "${stylePath}${QUERY_IS_NATIVE_STYLE}";\n` : ''].join(
               '',
             ),
-          }
+          };
         }
       } else if (IS_NATIVE_STYLE_REG.test(id)) {
-        let source = id.replace(new RegExp(`\\${QUERY_IS_NATIVE_STYLE}`), '')
-        source = viteCompilerContext.getTargetFilePath(source, viteCompilerContext.fileType.style)
-        const code = fs.readFileSync(source, 'utf-8')
+        let source = id.replace(new RegExp(`\\${QUERY_IS_NATIVE_STYLE}`), '');
+        source = viteCompilerContext.getTargetFilePath(source, viteCompilerContext.fileType.style);
+        const code = fs.readFileSync(source, 'utf-8');
         return {
           code,
-        }
+        };
       }
     },
     moduleParsed(moduleInfo) {
-      const { id } = moduleInfo
-      let ast
+      const { id } = moduleInfo;
+      let ast;
       try {
-        ast = moduleInfo.ast
+        ast = moduleInfo.ast;
       } catch {
-        return
+        return;
       }
 
       if (!isVirtualModule(id) && /\.[jt]sx/.test(id)) {
-        const walk = require('acorn-walk')
+        const walk = require('acorn-walk');
 
         walk.simple(ast, {
           CallExpression: (node) => {
-            const callee = node.callee
+            const callee = node.callee;
             if (callee.type === 'MemberExpression') {
               if (callee.property.name !== 'createElement') {
-                return
+                return;
               }
             } else {
-              const nameOfCallee = callee.name
+              const nameOfCallee = callee.name;
               if (
                 // 兼容 react17 new jsx transtrom
                 !/_?jsxs?/.test(nameOfCallee) &&
@@ -107,25 +107,25 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
                 !nameOfCallee?.includes('createElementBlock') &&
                 !nameOfCallee?.includes('resolveComponent') // 收集使用解析函数的组件名称
               ) {
-                return
+                return;
               }
             }
 
-            const [type, prop] = node.arguments
-            const componentName = type.name
+            const [type, prop] = node.arguments;
+            const componentName = type.name;
 
-            type.value && taroConfig.onParseCreateElement?.(type.value, componentConfig)
+            type.value && taroConfig.onParseCreateElement?.(type.value, componentConfig);
 
             if (componentName === 'CustomWrapper' && !componentConfig.thirdPartyComponents.get('custom-wrapper')) {
-              componentConfig.thirdPartyComponents.set('custom-wrapper', new Set())
+              componentConfig.thirdPartyComponents.set('custom-wrapper', new Set());
             }
             if (componentConfig.thirdPartyComponents.size === 0) {
-              return
+              return;
             }
-            const attrs = componentConfig.thirdPartyComponents.get(type.value)
+            const attrs = componentConfig.thirdPartyComponents.get(type.value);
 
             if (attrs == null || !prop || prop.type !== 'ObjectExpression') {
-              return
+              return;
             }
 
             prop.properties
@@ -136,16 +136,16 @@ export default function (viteCompilerContext: ViteMiniCompilerContext | undefine
                   p.key.name !== 'children' &&
                   p.key.name !== 'id',
               )
-              .forEach((p) => attrs.add(p.key.name))
+              .forEach((p) => attrs.add(p.key.name));
           },
-        })
+        });
       }
     },
-  }
+  };
 }
 
 export function miniTemplateLoader(ctx: PluginContext, templatePath: string, sourceDir: string): string {
-  const source = fs.readFileSync(templatePath).toString()
+  const source = fs.readFileSync(templatePath).toString();
   /**
    * 两种fix方案：
    * 1. 用任意xml标签包裹source，使之变成较标准的xml格式（含有一个根节点）
@@ -155,29 +155,29 @@ export function miniTemplateLoader(ctx: PluginContext, templatePath: string, sou
    *
    * 推荐方案1，这样在构建时会正常打入需要的包，但是若用户有 SrC 类似的写法导致引用失败，则可直接修正，不会认为是打包出现了问题
    **/
-  const sourceWithRoot = `<root>${source}</root>`
-  const parser = require('sax').parser(false, { lowercase: true })
-  const requests: string[] = []
+  const sourceWithRoot = `<root>${source}</root>`;
+  const parser = require('sax').parser(false, { lowercase: true });
+  const requests: string[] = [];
 
   parser.onattribute = ({ name, value }) => {
     if (name === 'src' && isRelativePath(value)) {
-      const request = path.resolve(path.dirname(templatePath), value)
-      requests.push(normalizePath(request))
+      const request = path.resolve(path.dirname(templatePath), value);
+      requests.push(normalizePath(request));
     }
-  }
+  };
   parser.onend = async () => {
     for (let i = 0; i < requests.length; i++) {
       ctx.emitFile({
         type: 'asset',
         fileName: requests[i].replace(sourceDir, '').replace(/^\//, ''),
         source: Uint8Array.from(fs.readFileSync(requests[i])),
-      })
-      ctx.addWatchFile(requests[i])
+      });
+      ctx.addWatchFile(requests[i]);
     }
-  }
-  parser.write(sourceWithRoot).close()
+  };
+  parser.write(sourceWithRoot).close();
 
-  ctx.addWatchFile(templatePath)
+  ctx.addWatchFile(templatePath);
 
-  return source
+  return source;
 }

@@ -1,6 +1,6 @@
 interface ICreateSwcRegisterParam {
-  only
-  plugins?: [string, any][]
+  only;
+  plugins?: [string, any][];
 }
 
 export default function createSwcRegister({ only, plugins }: ICreateSwcRegisterParam) {
@@ -18,13 +18,13 @@ export default function createSwcRegister({ only, plugins }: ICreateSwcRegisterP
     module: {
       type: 'commonjs',
     },
-  }
+  };
 
   if (plugins) {
     config.jsc.experimental = {
       plugins,
-    }
+    };
   }
 
-  require('@swc/register')(config)
+  require('@swc/register')(config);
 }

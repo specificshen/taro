@@ -1,30 +1,30 @@
-import { document } from '@spcsn/taro-runtime'
-import * as React from 'react'
+import { document } from '@spcsn/taro-runtime';
+import * as React from 'react';
 
-import { render } from '../dist/react.esm'
+import { render } from '../dist/react.esm';
 
 describe('Context', () => {
   beforeAll(() => {
-    process.env.FRAMEWORK = 'react'
-  })
+    process.env.FRAMEWORK = 'react';
+  });
 
   afterAll(() => {
-    process.env.FRAMEWORK = undefined
-  })
+    process.env.FRAMEWORK = undefined;
+  });
 
   it('Context must be available in the consumer', () => {
-    let actual = 0
-    const Context = React.createContext()
+    let actual = 0;
+    const Context = React.createContext();
 
     function Consumer() {
       return (
         <Context.Consumer>
           {(value) => {
-            actual = value
-            return <text prop={'Result: ' + value} />
+            actual = value;
+            return <text prop={'Result: ' + value} />;
           }}
         </Context.Consumer>
-      )
+      );
     }
 
     class MyNode extends React.Component {
@@ -34,19 +34,19 @@ describe('Context', () => {
             <text>Noise</text>
             <Consumer />
           </view>
-        )
+        );
       }
     }
 
-    const container = document.createElement('view')
+    const container = document.createElement('view');
     render(
       <Context.Provider value={5}>
         <MyNode />
       </Context.Provider>,
       container,
       function () {
-        expect(actual).toBe(5)
+        expect(actual).toBe(5);
       },
-    )
-  })
-})
+    );
+  });
+});

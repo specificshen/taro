@@ -15,6 +15,6 @@ const packagesManagement = {
     command: 'npm install',
     globalCommand: 'npm i -g @spcsn/taro-cli',
   },
-}
+};
 
-export default packagesManagement
+export default packagesManagement;

@@ -1,66 +1,66 @@
 /* eslint-disable no-console */
-import generator from '@babel/generator'
-import * as parser from '@babel/parser'
-import traverse, { type NodePath } from '@babel/traverse'
-import * as t from '@babel/types'
-import dedent from 'dedent'
+import generator from '@babel/generator';
+import * as parser from '@babel/parser';
+import traverse, { type NodePath } from '@babel/traverse';
+import * as t from '@babel/types';
+import dedent from 'dedent';
 
-import { GeneratorError, GeneratorErrorType } from '../../utils/error'
+import { GeneratorError, GeneratorErrorType } from '../../utils/error';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 export async function updateConfig(options: { ctx: IPluginContext; compilerType: 'webpack5' | 'vite' }) {
-  const { ctx, compilerType } = options
-  const { fs } = ctx.helper
-  const sourceCode = await fs.readFile(ctx.paths.configPath, { encoding: 'utf-8' })
+  const { ctx, compilerType } = options;
+  const { fs } = ctx.helper;
+  const sourceCode = await fs.readFile(ctx.paths.configPath, { encoding: 'utf-8' });
   const ast = parser.parse(sourceCode, {
     sourceType: 'module',
     plugins: ['typescript'],
-  })
+  });
 
   if (compilerType === 'webpack5') {
-    processWebpack5Config(ast)
+    processWebpack5Config(ast);
   } else if (compilerType === 'vite') {
-    processViteConfig(ast)
+    processViteConfig(ast);
   }
-  const { code: latestConfig } = generator(ast)
-  await fs.writeFile(ctx.paths.configPath, latestConfig, { encoding: 'utf-8' })
-  console.log('✅ 更新配置文件成功\n')
+  const { code: latestConfig } = generator(ast);
+  await fs.writeFile(ctx.paths.configPath, latestConfig, { encoding: 'utf-8' });
+  console.log('✅ 更新配置文件成功\n');
 }
 
 function processImportDecl(
   ast: parser.ParseResult<t.File>,
   pkgMap: Map<string, { defaultImport?: string; namedImport?: Set<string> }>,
 ) {
-  const alias = new Map<string, string>()
-  const importedModule = new Map<string, t.ImportDeclaration>()
+  const alias = new Map<string, string>();
+  const importedModule = new Map<string, t.ImportDeclaration>();
   traverse(ast, {
     ImportDeclaration(path) {
-      const importFrom = path.node.source.value
+      const importFrom = path.node.source.value;
       if (pkgMap.has(importFrom)) {
-        importedModule.set(importFrom, path.node)
-        const specifiers = path.node.specifiers
-        const importNames = pkgMap.get(importFrom)
-        if (!importNames) return
+        importedModule.set(importFrom, path.node);
+        const specifiers = path.node.specifiers;
+        const importNames = pkgMap.get(importFrom);
+        if (!importNames) return;
         for (const specifier of specifiers) {
           if (t.isImportDefaultSpecifier(specifier)) {
             if (importNames.defaultImport) {
-              alias.set(specifier.local.name, importNames.defaultImport)
-              Reflect.deleteProperty(importNames, 'defaultImport')
+              alias.set(specifier.local.name, importNames.defaultImport);
+              Reflect.deleteProperty(importNames, 'defaultImport');
             }
           }
 
           if (importNames.namedImport) {
             if (importNames.namedImport.size === 0) {
-              Reflect.deleteProperty(importNames, 'namedImport')
-              continue
+              Reflect.deleteProperty(importNames, 'namedImport');
+              continue;
             }
             if (t.isImportSpecifier(specifier) && t.isIdentifier(specifier.imported)) {
-              const importName = specifier.imported.name
-              const localName = specifier.local?.name ?? importName
-              alias.set(importName, localName)
+              const importName = specifier.imported.name;
+              const localName = specifier.local?.name ?? importName;
+              alias.set(importName, localName);
               if (importNames.namedImport.has(importName)) {
-                importNames.namedImport.delete(importName)
+                importNames.namedImport.delete(importName);
               }
             }
           }
@@ -73,23 +73,23 @@ function processImportDecl(
         for (const [moduleName, { namedImport, defaultImport }] of pkgMap) {
           if (defaultImport) {
             if (importedModule.get(moduleName)) {
-              const importDecl = importedModule.get(moduleName)
-              importDecl?.specifiers.unshift(t.importDefaultSpecifier(t.identifier(defaultImport)))
+              const importDecl = importedModule.get(moduleName);
+              importDecl?.specifiers.unshift(t.importDefaultSpecifier(t.identifier(defaultImport)));
             } else {
               path.node.body.unshift(
                 t.importDeclaration(
                   [t.importDefaultSpecifier(t.identifier(defaultImport))],
                   t.stringLiteral(moduleName),
                 ),
-              )
+              );
             }
           }
           if (namedImport && namedImport.size > 0) {
             // 需要从已有的导入语句追加
             if (importedModule.get(moduleName)) {
-              const importDecl = importedModule.get(moduleName)
+              const importDecl = importedModule.get(moduleName);
               for (const importName of namedImport) {
-                importDecl?.specifiers.push(t.importSpecifier(t.identifier(importName), t.identifier(importName)))
+                importDecl?.specifiers.push(t.importSpecifier(t.identifier(importName), t.identifier(importName)));
               }
             } else {
               path.node.body.unshift(
@@ -99,36 +99,36 @@ function processImportDecl(
                   ),
                   t.stringLiteral(moduleName),
                 ),
-              )
+              );
             }
           }
         }
       },
     },
-  })
-  return alias
+  });
+  return alias;
 }
 
 function processWebpack5Config(ast: parser.ParseResult<t.File>) {
-  const fromModule = 'weapp-tailwindcss/webpack'
-  const importName = 'UnifiedWebpackPluginV5'
-  const alias = processImportDecl(ast, new Map([[fromModule, { namedImport: new Set([importName]) }]]))
+  const fromModule = 'weapp-tailwindcss/webpack';
+  const importName = 'UnifiedWebpackPluginV5';
+  const alias = processImportDecl(ast, new Map([[fromModule, { namedImport: new Set([importName]) }]]));
 
-  let updated = false
+  let updated = false;
 
   traverse(ast, {
     VariableDeclarator(path) {
-      const { node } = path
+      const { node } = path;
       if (t.isIdentifier(node.id, { name: 'baseConfig' }) && t.isObjectExpression(node.init)) {
         traverse(
           node.init,
           {
             ObjectProperty: (prop: NodePath<t.ObjectProperty>) => {
               if (t.isIdentifier(prop.node.key, { name: 'mini' }) && t.isObjectExpression(prop.node.value)) {
-                const props = prop.node.value.properties
+                const props = prop.node.value.properties;
                 const webpackChainMethod = props.find(
                   (p) => t.isObjectMethod(p) && t.isIdentifier(p.key, { name: 'webpackChain' }),
-                ) as t.ObjectMethod | undefined
+                ) as t.ObjectMethod | undefined;
 
                 const installPluginCode = dedent(`
                   chain.merge({
@@ -142,9 +142,9 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                       }
                     }
                   })
-                `)
-                const installPluginStmt = parser.parseExpression(installPluginCode) as unknown as t.CallExpression
-                let pluginAlreadyExists = false
+                `);
+                const installPluginStmt = parser.parseExpression(installPluginCode) as unknown as t.CallExpression;
+                let pluginAlreadyExists = false;
                 // 存在 webpackChain 方法
                 if (webpackChainMethod) {
                   for (const stmt of webpackChainMethod.body.body) {
@@ -155,7 +155,7 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                       t.isIdentifier(stmt.expression.callee.object, { name: 'chain' }) &&
                       t.isIdentifier(stmt.expression.callee.property, { name: 'merge' })
                     ) {
-                      const [arg] = stmt.expression.arguments
+                      const [arg] = stmt.expression.arguments;
                       if (t.isObjectExpression(arg)) {
                         for (const prop of arg.properties) {
                           if (
@@ -174,9 +174,9 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                                     t.isIdentifier(ip.key, { name: 'plugin' }) &&
                                     t.isIdentifier(ip.value, { name: alias.get(importName) ?? importName }),
                                 ),
-                            )
+                            );
                             if (installProp) {
-                              pluginAlreadyExists = true
+                              pluginAlreadyExists = true;
                             }
                           }
                         }
@@ -185,7 +185,7 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                   }
 
                   if (!pluginAlreadyExists) {
-                    webpackChainMethod.body.body.push(t.expressionStatement(installPluginStmt))
+                    webpackChainMethod.body.body.push(t.expressionStatement(installPluginStmt));
                   }
                 } else {
                   // 没有 webpackChain 方法则添加
@@ -198,19 +198,19 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
                       false,
                       false,
                     ),
-                  )
+                  );
                 }
-                updated = true
-                prop.stop()
+                updated = true;
+                prop.stop();
               }
             },
           },
           path.scope,
-        )
-        path.stop()
+        );
+        path.stop();
       }
     },
-  })
+  });
   if (!updated) {
     throw new GeneratorError({
       type: GeneratorErrorType.modifyConfig,
@@ -238,22 +238,22 @@ function processWebpack5Config(ast: parser.ParseResult<t.File>) {
             }
         }  
       `),
-    })
+    });
   }
 }
 
 export function processViteConfig(ast: parser.ParseResult<t.File>) {
-  const weappTailwindCSS = 'weapp-tailwindcss/vite'
-  const tailwindcss = '@tailwindcss/postcss'
-  const importPluginName = 'UnifiedViteWeappTailwindcssPlugin'
-  const importTailwindcss = 'tailwindcss'
+  const weappTailwindCSS = 'weapp-tailwindcss/vite';
+  const tailwindcss = '@tailwindcss/postcss';
+  const importPluginName = 'UnifiedViteWeappTailwindcssPlugin';
+  const importTailwindcss = 'tailwindcss';
   const alias = processImportDecl(
     ast,
     new Map([
       [weappTailwindCSS, { namedImport: new Set([importPluginName]) }],
       [tailwindcss, { defaultImport: importTailwindcss }],
     ]),
-  )
+  );
 
   function createUnifiedVitePluginNode() {
     const code = `
@@ -265,8 +265,8 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
         // 由于 taro vite 默认会移除所有的 tailwindcss css 变量，所以一定要开启这个配置，进行css 变量的重新注入
         injectAdditionalCssVarScope: true,
       })
-    `
-    return parser.parseExpression(code) as t.CallExpression
+    `;
+    return parser.parseExpression(code) as t.CallExpression;
   }
 
   function createPostcssPluginNode(): t.ObjectExpression {
@@ -280,21 +280,21 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
           }
         },
       }
-    `
-    return parser.parseExpression(code) as t.ObjectExpression
+    `;
+    return parser.parseExpression(code) as t.ObjectExpression;
   }
 
-  let updated = false
+  let updated = false;
 
   traverse(ast, {
     VariableDeclarator(path) {
-      const { node } = path
+      const { node } = path;
       if (t.isIdentifier(node.id, { name: 'baseConfig' }) && t.isObjectExpression(node.init)) {
         traverse(
           node.init,
           {
             ObjectProperty: (prop: NodePath<t.ObjectProperty>) => {
-              if (!t.isIdentifier(prop.node.key, { name: 'compiler' })) return
+              if (!t.isIdentifier(prop.node.key, { name: 'compiler' })) return;
 
               // compiler: 'vite' => 替换为对象 compiler: { type: 'vite', ... }
               if (t.isStringLiteral(prop.node.value, { value: 'vite' })) {
@@ -304,17 +304,17 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                     t.identifier('vitePlugins'),
                     t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()]),
                   ),
-                ])
-                updated = true
-                prop.stop()
-                return
+                ]);
+                updated = true;
+                prop.stop();
+                return;
               }
 
               // compiler: { type: 'vite', ... }
               if (t.isObjectExpression(prop.node.value)) {
-                const compilerProps = prop.node.value.properties
+                const compilerProps = prop.node.value.properties;
 
-                let vitePluginsProp: t.ObjectProperty | undefined
+                let vitePluginsProp: t.ObjectProperty | undefined;
 
                 for (const p of compilerProps) {
                   if (
@@ -322,8 +322,8 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                     t.isIdentifier(p.key, { name: 'vitePlugins' }) &&
                     t.isArrayExpression(p.value)
                   ) {
-                    vitePluginsProp = p
-                    break
+                    vitePluginsProp = p;
+                    break;
                   }
                 }
 
@@ -333,13 +333,13 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                       t.identifier('vitePlugins'),
                       t.arrayExpression([createPostcssPluginNode(), createUnifiedVitePluginNode()]),
                     ),
-                  )
-                  updated = true
-                  prop.stop()
-                  return
+                  );
+                  updated = true;
+                  prop.stop();
+                  return;
                 }
-                if (!t.isArrayExpression(vitePluginsProp.value)) return
-                const elements = vitePluginsProp.value.elements
+                if (!t.isArrayExpression(vitePluginsProp.value)) return;
+                const elements = vitePluginsProp.value.elements;
 
                 const hasPostcssPlugin = elements.some(
                   (el) =>
@@ -350,32 +350,32 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
                         t.isIdentifier(prop.key, { name: 'name' }) &&
                         t.isStringLiteral(prop.value, { value: 'postcss-config-loader-plugin' }),
                     ),
-                )
+                );
 
                 const hasUnifiedPlugin = elements.some(
                   (el) =>
                     t.isCallExpression(el) &&
                     t.isIdentifier(el.callee, { name: alias.get(importPluginName) ?? importPluginName }),
-                )
+                );
 
                 if (!hasPostcssPlugin) {
-                  elements.unshift(createPostcssPluginNode())
+                  elements.unshift(createPostcssPluginNode());
                 }
 
                 if (!hasUnifiedPlugin) {
-                  elements.push(createUnifiedVitePluginNode())
+                  elements.push(createUnifiedVitePluginNode());
                 }
-                updated = true
-                prop.stop()
+                updated = true;
+                prop.stop();
               }
             },
           },
           path.scope,
-        )
-        path.stop()
+        );
+        path.stop();
       }
     },
-  })
+  });
   if (!updated) {
     throw new GeneratorError({
       type: GeneratorErrorType.modifyConfig,
@@ -406,6 +406,6 @@ export function processViteConfig(ast: parser.ParseResult<t.File>) {
           }
       }
     `),
-    })
+    });
   }
 }

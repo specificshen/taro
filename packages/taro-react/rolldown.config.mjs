@@ -1,7 +1,7 @@
-import { defineConfig } from 'rolldown'
+import { defineConfig } from 'rolldown';
 
-const externalPackages = ['@spcsn/taro-runtime', '@spcsn/taro-shared', 'react', 'react-reconciler']
-const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+const externalPackages = ['@spcsn/taro-runtime', '@spcsn/taro-shared', 'react', 'react-reconciler'];
+const external = (id) => externalPackages.some((pkg) => id === pkg || id.startsWith(`${pkg}/`));
 
 export default defineConfig({
   input: 'src/index.ts',
@@ -11,4 +11,4 @@ export default defineConfig({
     format: 'es',
     file: 'dist/react.esm.js',
   },
-})
+});

@@ -1,12 +1,12 @@
-import Weapp from './program'
+import Weapp from './program';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 // 让其它平台插件可以继承此平台
-export { Weapp }
+export { Weapp };
 
 export interface IOptions {
-  enablekeyboardAccessory?: boolean
+  enablekeyboardAccessory?: boolean;
 }
 
 export default (ctx: IPluginContext, options: IOptions) => {
@@ -14,8 +14,8 @@ export default (ctx: IPluginContext, options: IOptions) => {
     name: 'weapp',
     useConfigName: 'mini',
     async fn({ config }) {
-      const program = new Weapp(ctx, config, options || {})
-      await program.start()
+      const program = new Weapp(ctx, config, options || {});
+      await program.start();
     },
-  })
-}
+  });
+};

@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { ScrollView } from '../src/components/scroll-view/scroll-view'
+import { ScrollView } from '../src/components/scroll-view/scroll-view';
 
 describe('ScrollView', () => {
-  let page: SpecPage
+  let page: SpecPage;
   // beforeAll(() => {
   //   // eslint-disable-next-line no-undef
   //   originTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL
@@ -21,17 +21,17 @@ describe('ScrollView', () => {
     display: 'inline-block',
     width: '100%',
     height: '300px',
-  }
+  };
 
   const divStyleV = {
     height: '300px',
-  }
+  };
 
   it('scroll-x', async () => {
     // TODO
-    const onScroll = jest.fn()
-    const onScrollToUpper = jest.fn()
-    const onScrollToLower = jest.fn()
+    const onScroll = jest.fn();
+    const onScrollToUpper = jest.fn();
+    const onScrollToLower = jest.fn();
     page = await newSpecPage({
       components: [ScrollView],
       template: () => (
@@ -49,7 +49,7 @@ describe('ScrollView', () => {
           <div style={Object.assign({}, divStyleH, { backgroundColor: 'blue' })}></div>
         </taro-scroll-view-core>
       ),
-    })
+    });
     // const { scrollHeight, scrollWidth } = node
     // const { width } = node.getBoundingClientRect()
     // const upper = 50
@@ -92,16 +92,16 @@ describe('ScrollView', () => {
 
     // expect(onScrollToLower.calledOnceWith({ direction: 'right' }))
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('scroll-y', async () => {
     // TODO
-    const upper = 100
-    const lower = 150
-    const onScroll = jest.fn()
-    const onScrollToUpper = jest.fn()
-    const onScrollToLower = jest.fn()
+    const upper = 100;
+    const lower = 150;
+    const onScroll = jest.fn();
+    const onScrollToUpper = jest.fn();
+    const onScrollToLower = jest.fn();
     page = await newSpecPage({
       components: [ScrollView],
       template: () => (
@@ -121,7 +121,7 @@ describe('ScrollView', () => {
           <div style={Object.assign({}, divStyleV, { backgroundColor: 'blue' })}></div>
         </taro-scroll-view-core>
       ),
-    })
+    });
     // const { scrollHeight, scrollWidth } = node
     // const { height } = node.getBoundingClientRect()
 
@@ -159,6 +159,6 @@ describe('ScrollView', () => {
 
     // expect(onScrollToLower.calledOnceWith({ direction: 'bottom' }))
 
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    expect(page.root).toMatchSnapshot();
+  });
+});

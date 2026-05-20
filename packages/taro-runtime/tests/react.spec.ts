@@ -1,19 +1,19 @@
-import { afterAll, describe, expect, test, vi } from 'vitest'
+import { afterAll, describe, expect, test, vi } from 'vitest';
 
-import * as runtime from '../src/index'
+import * as runtime from '../src/index';
 
 describe('react', () => {
-  process.env.FRAMEWORK = 'react'
-  const document = runtime.document
+  process.env.FRAMEWORK = 'react';
+  const document = runtime.document;
 
   afterAll(() => {
-    process.env.FRAMEWORK = ''
-  })
+    process.env.FRAMEWORK = '';
+  });
 
   test('event should work', () => {
-    const div = document.createElement('div')
-    const spy = vi.fn()
-    div.addEventListener('tap', spy, null)
+    const div = document.createElement('div');
+    const spy = vi.fn();
+    div.addEventListener('tap', spy, null);
     const event = runtime.createEvent(
       {
         type: 'tap',
@@ -22,8 +22,8 @@ describe('react', () => {
         currentTarget: { dataset: {}, id: '' },
       },
       div,
-    )
-    div.dispatchEvent(event)
-    expect(spy).toBeCalledTimes(1)
-  })
-})
+    );
+    div.dispatchEvent(event);
+    expect(spy).toBeCalledTimes(1);
+  });
+});

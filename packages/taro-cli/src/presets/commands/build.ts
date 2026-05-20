@@ -1,9 +1,9 @@
-import { MessageKind, validateConfig } from '@tarojs/plugin-doctor'
+import { MessageKind, validateConfig } from '@tarojs/plugin-doctor';
 
-import { extractCompileEntry } from '../../util/appConfig'
-import * as hooks from '../constant'
+import { extractCompileEntry } from '../../util/appConfig';
+import * as hooks from '../constant';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 export default (ctx: IPluginContext) => {
   ctx.registerCommand({
@@ -38,20 +38,20 @@ export default (ctx: IPluginContext) => {
       'taro build --type weapp --mode prepare --env-prefix TARO_APP_',
     ],
     async fn(opts) {
-      const { options, config, _ } = opts
-      const { platform, isWatch, blended, newBlended, withoutBuild, noInjectGlobalStyle, noCheck } = options
-      const { fs, chalk, PROJECT_CONFIG } = ctx.helper
-      const { outputPath, configPath } = ctx.paths
-      const { args } = options
+      const { options, config, _ } = opts;
+      const { platform, isWatch, blended, newBlended, withoutBuild, noInjectGlobalStyle, noCheck } = options;
+      const { fs, chalk, PROJECT_CONFIG } = ctx.helper;
+      const { outputPath, configPath } = ctx.paths;
+      const { args } = options;
 
       if (!configPath || !fs.existsSync(configPath)) {
-        console.log(chalk.red(`找不到项目配置文件${PROJECT_CONFIG}，请确定当前目录是 Taro 项目根目录!`))
-        process.exit(1)
+        console.log(chalk.red(`找不到项目配置文件${PROJECT_CONFIG}，请确定当前目录是 Taro 项目根目录!`));
+        process.exit(1);
       }
 
       if (typeof platform !== 'string') {
-        console.log(chalk.red('请传入正确的编译类型！'))
-        process.exit(0)
+        console.log(chalk.red('请传入正确的编译类型！'));
+        process.exit(0);
       }
 
       // 校验 Taro 项目配置
@@ -59,47 +59,47 @@ export default (ctx: IPluginContext) => {
         const checkResult = await checkConfig({
           projectConfig: ctx.initialConfig,
           helper: ctx.helper,
-        })
+        });
         if (!checkResult.isValid) {
-          const ERROR = chalk.red('[✗] ')
-          const WARNING = chalk.yellow('[!] ')
-          const SUCCESS = chalk.green('[✓] ')
+          const ERROR = chalk.red('[✗] ');
+          const WARNING = chalk.yellow('[!] ');
+          const SUCCESS = chalk.green('[✓] ');
 
-          const lineChalk = chalk.hex('#fff')
-          const errorChalk = chalk.hex('#f00')
-          console.log(errorChalk(`Taro 配置有误，请检查！ (${configPath})`))
+          const lineChalk = chalk.hex('#fff');
+          const errorChalk = chalk.hex('#f00');
+          console.log(errorChalk(`Taro 配置有误，请检查！ (${configPath})`));
           checkResult.messages.forEach((message) => {
             switch (message.kind) {
               case MessageKind.Error:
-                console.log('  ' + ERROR + lineChalk(message.content))
-                break
+                console.log('  ' + ERROR + lineChalk(message.content));
+                break;
               case MessageKind.Success:
-                console.log('  ' + SUCCESS + lineChalk(message.content))
-                break
+                console.log('  ' + SUCCESS + lineChalk(message.content));
+                break;
               case MessageKind.Warning:
-                console.log('  ' + WARNING + lineChalk(message.content))
-                break
+                console.log('  ' + WARNING + lineChalk(message.content));
+                break;
               case MessageKind.Manual:
-                console.log('  ' + lineChalk(message.content))
-                break
+                console.log('  ' + lineChalk(message.content));
+                break;
               default:
-                break
+                break;
             }
-          })
-          console.log('')
-          process.exit(0)
+          });
+          console.log('');
+          process.exit(0);
         }
       }
 
-      const isProduction = process.env.NODE_ENV === 'production' || !isWatch
+      const isProduction = process.env.NODE_ENV === 'production' || !isWatch;
 
       // dist folder
-      fs.ensureDirSync(outputPath)
+      fs.ensureDirSync(outputPath);
 
       // is build native components mode?
-      const isBuildNativeComp = _[1] === 'native-components'
+      const isBuildNativeComp = _[1] === 'native-components';
 
-      await ctx.applyPlugins(hooks.ON_BUILD_START)
+      await ctx.applyPlugins(hooks.ON_BUILD_START);
       await ctx.applyPlugins({
         name: platform,
         opts: {
@@ -113,14 +113,14 @@ export default (ctx: IPluginContext) => {
             newBlended,
             noInjectGlobalStyle,
             async modifyAppConfig(appConfig) {
-              extractCompileEntry(appConfig, args, ctx)
+              extractCompileEntry(appConfig, args, ctx);
 
               await ctx.applyPlugins({
                 name: hooks.MODIFY_APP_CONFIG,
                 opts: {
                   appConfig,
                 },
-              })
+              });
             },
             async modifyWebpackChain(chain, webpack, data) {
               await ctx.applyPlugins({
@@ -131,7 +131,7 @@ export default (ctx: IPluginContext) => {
                   webpack,
                   data,
                 },
-              })
+              });
             },
             async modifyViteConfig(viteConfig, data, viteCompilerContext) {
               await ctx.applyPlugins({
@@ -142,7 +142,7 @@ export default (ctx: IPluginContext) => {
                   data,
                   viteCompilerContext,
                 },
-              })
+              });
             },
             async modifyBuildAssets(assets, miniPlugin) {
               await ctx.applyPlugins({
@@ -152,7 +152,7 @@ export default (ctx: IPluginContext) => {
                   assets,
                   miniPlugin,
                 },
-              })
+              });
             },
             async modifyMiniConfigs(configMap) {
               await ctx.applyPlugins({
@@ -161,7 +161,7 @@ export default (ctx: IPluginContext) => {
                 opts: {
                   configMap,
                 },
-              })
+              });
             },
             async modifyComponentConfig(componentConfig, config) {
               await ctx.applyPlugins({
@@ -170,7 +170,7 @@ export default (ctx: IPluginContext) => {
                   componentConfig,
                   config,
                 },
-              })
+              });
             },
             async onCompilerMake(compilation, compiler, plugin) {
               await ctx.applyPlugins({
@@ -180,7 +180,7 @@ export default (ctx: IPluginContext) => {
                   compiler,
                   plugin,
                 },
-              })
+              });
             },
             async onParseCreateElement(nodeName, componentConfig) {
               await ctx.applyPlugins({
@@ -189,7 +189,7 @@ export default (ctx: IPluginContext) => {
                   nodeName,
                   componentConfig,
                 },
-              })
+              });
             },
             async onBuildFinish({ error, stats, isWatch }) {
               await ctx.applyPlugins({
@@ -199,17 +199,17 @@ export default (ctx: IPluginContext) => {
                   stats,
                   isWatch,
                 },
-              })
+              });
             },
           },
         },
-      })
-      await ctx.applyPlugins(hooks.ON_BUILD_COMPLETE)
+      });
+      await ctx.applyPlugins(hooks.ON_BUILD_COMPLETE);
     },
-  })
-}
+  });
+};
 
 async function checkConfig({ projectConfig, helper }) {
-  const result = await validateConfig(projectConfig, helper)
-  return result
+  const result = await validateConfig(projectConfig, helper);
+  return result;
 }

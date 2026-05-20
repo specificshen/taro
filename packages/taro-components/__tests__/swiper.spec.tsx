@@ -1,19 +1,19 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { Swiper } from '../src/components/swiper/swiper'
-import { SwiperItem } from '../src/components/swiper/swiper-item'
+import { Swiper } from '../src/components/swiper/swiper';
+import { SwiperItem } from '../src/components/swiper/swiper-item';
 
 describe('Swiper', () => {
-  let page: SpecPage
+  let page: SpecPage;
   const itemStyle = {
     height: '100%',
-  }
+  };
 
   it('props', async () => {
     // test props: current, indicator, duration
     // TODO
-    const duration = 100
+    const duration = 100;
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
       template: () => (
@@ -29,7 +29,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const swiper = wrapper.find('.swiper-wrapper')
     // const swiperStyles = window.getComputedStyle(swiper)
@@ -61,12 +61,12 @@ describe('Swiper', () => {
     // expect(bulletAStyle.backgroundColor === indicatorColor)
     // expect(bulletBStyle.backgroundColor === indicatorActiveColor)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should autoplay', async () => {
     // TODO
-    const interval = 1500
+    const interval = 1500;
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
       template: () => (
@@ -82,7 +82,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const wrapper = await mount(app, scratch)
     // const swiper = wrapper.find('.swiper-wrapper')
@@ -95,8 +95,8 @@ describe('Swiper', () => {
 
     // expect(swiperStyles.transform === `matrix(1, 0, 0, 1, -${width}, 0)`)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should be circular', async () => {
     page = await newSpecPage({
@@ -114,18 +114,18 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const wrapper = await mount(app, scratch)
     // const swiper = wrapper.find('.swiper-wrapper')
     // expect(swiper.children.length === 5)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should be vertical', async () => {
     // TODO
-    const interval = 1500
+    const interval = 1500;
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
       template: () => (
@@ -141,7 +141,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const container = wrapper.find('.swiper-container')
     // const swiper = wrapper.find('.swiper-wrapper')
@@ -155,12 +155,12 @@ describe('Swiper', () => {
 
     // expect(swiperStyles.transform === `matrix(1, 0, 0, 1, 0, -${height * 2})`)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should has previous margin', async () => {
     // TODO
-    const previousMargin = 10
+    const previousMargin = 10;
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
       template: () => (
@@ -176,7 +176,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const wrapper = await mount(app, scratch)
     // const swiper = wrapper.find('.swiper-container')
@@ -184,8 +184,8 @@ describe('Swiper', () => {
 
     // expect(swiperStyles.marginLeft === `${previousMargin}px`)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should display multi items within screen width', async () => {
     // TODO
@@ -204,7 +204,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // const swiper = wrapper.find('.swiper-wrapper')
     // const { width } = swiper.getBoundingClientRect()
@@ -212,13 +212,13 @@ describe('Swiper', () => {
 
     // expect(item.style.width === `${width / 2}px`)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('events', async () => {
     // TODO
-    const onChange = jest.fn()
-    const onAnimationFinish = jest.fn()
+    const onChange = jest.fn();
+    const onAnimationFinish = jest.fn();
     page = await newSpecPage({
       components: [Swiper, SwiperItem],
       template: () => (
@@ -234,7 +234,7 @@ describe('Swiper', () => {
           </taro-swiper-item-core>
         </taro-swiper-core>
       ),
-    })
+    });
 
     // await wrapper.setProps({
     //   current: 1
@@ -252,6 +252,6 @@ describe('Swiper', () => {
     //   source: ''
     // }))
 
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    expect(page.root).toMatchSnapshot();
+  });
+});

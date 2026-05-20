@@ -1,17 +1,17 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { PickerView } from '../src/components/picker-view/picker-view'
-import { PickerViewColumn } from '../src/components/picker-view/picker-view-column'
+import { PickerView } from '../src/components/picker-view/picker-view';
+import { PickerViewColumn } from '../src/components/picker-view/picker-view-column';
 
 describe('PickerView', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('props valid', async () => {
-    const date = new Date()
-    const years: number[] = []
+    const date = new Date();
+    const years: number[] = [];
     for (let i = 1990; i <= date.getFullYear(); i++) {
-      years.push(i)
+      years.push(i);
     }
     page = await newSpecPage({
       components: [PickerView, PickerViewColumn],
@@ -34,37 +34,37 @@ describe('PickerView', () => {
           </taro-picker-view-core>
         </taro-view-core>
       ),
-    })
+    });
 
-    const indicatorEle = page.root?.querySelector('.taro-picker-view-mask-indicator')
-    expect(indicatorEle?.classList.contains('test_indicatorClass')).toBe(true)
+    const indicatorEle = page.root?.querySelector('.taro-picker-view-mask-indicator');
+    expect(indicatorEle?.classList.contains('test_indicatorClass')).toBe(true);
 
-    const maskTopEle = page.root?.querySelector('.taro-picker-view-mask-top')
-    expect(maskTopEle?.classList.contains('test_maskClass')).toBe(true)
+    const maskTopEle = page.root?.querySelector('.taro-picker-view-mask-top');
+    expect(maskTopEle?.classList.contains('test_maskClass')).toBe(true);
 
-    const maskBottomEle = page.root?.querySelector('.taro-picker-view-mask-bottom')
-    expect(maskBottomEle?.classList.contains('test_maskClass')).toBe(true)
+    const maskBottomEle = page.root?.querySelector('.taro-picker-view-mask-bottom');
+    expect(maskBottomEle?.classList.contains('test_maskClass')).toBe(true);
 
-    const pickerViewColumnEle = page.root?.querySelector('.taro-picker-view-column-container')
+    const pickerViewColumnEle = page.root?.querySelector('.taro-picker-view-column-container');
 
     // 模拟滑动
-    const startY = 0
-    const endY = 200
+    const startY = 0;
+    const endY = 200;
 
     pickerViewColumnEle?.dispatchEvent(
       new Event('mousedown', {
         // @ts-ignore
         clientY: startY,
       }),
-    )
+    );
 
     pickerViewColumnEle?.dispatchEvent(
       new Event('mousemove', {
         // @ts-ignore
         clientY: endY,
       }),
-    )
+    );
 
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    expect(page.root).toMatchSnapshot();
+  });
+});

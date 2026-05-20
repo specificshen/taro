@@ -1,15 +1,15 @@
-import { h } from '@stencil/core'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { RtcRoom } from '../src/components/rtc-room/rtc-room'
-import { RtcRoomItem } from '../src/components/rtc-room/rtc-room-item'
-import { printUnimplementedWarning } from './utils'
+import { RtcRoom } from '../src/components/rtc-room/rtc-room';
+import { RtcRoomItem } from '../src/components/rtc-room/rtc-room-item';
+import { printUnimplementedWarning } from './utils';
 
-const logError = jest.fn()
-console.error = logError
+const logError = jest.fn();
+console.error = logError;
 
 describe('RtcRoom', () => {
-  let page: SpecPage
+  let page: SpecPage;
 
   it('unimplemented', async () => {
     page = await newSpecPage({
@@ -22,8 +22,8 @@ describe('RtcRoom', () => {
           <taro-rtc-room-item-core />
         </taro-rtc-room-core>
       ),
-    })
-    await page.waitForChanges()
+    });
+    await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
       <taro-rtc-room-core>
@@ -32,7 +32,7 @@ describe('RtcRoom', () => {
         <taro-rtc-room-item-core></taro-rtc-room-item-core>
         <taro-rtc-room-item-core></taro-rtc-room-item-core>
       </taro-rtc-room-core>
-    `)
-    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root))
-  })
-})
+    `);
+    expect(logError).toHaveBeenCalledWith(printUnimplementedWarning(page.root));
+  });
+});

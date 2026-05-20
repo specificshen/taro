@@ -1,14 +1,14 @@
-import { Kernel } from '@spcsn/taro-service'
+import { Kernel } from '@spcsn/taro-service';
 
 export default function customCommand(command: string, kernel: Kernel, args: { _: string[]; [key: string]: any }) {
   if (typeof command === 'string') {
-    const options: any = {}
-    const excludeKeys = ['_', 'version', 'v', 'help', 'h', 'disable-global-config']
+    const options: any = {};
+    const excludeKeys = ['_', 'version', 'v', 'help', 'h', 'disable-global-config'];
     Object.keys(args).forEach((key) => {
       if (!excludeKeys.includes(key)) {
-        options[key] = args[key]
+        options[key] = args[key];
       }
-    })
+    });
 
     kernel.run({
       name: command,
@@ -17,6 +17,6 @@ export default function customCommand(command: string, kernel: Kernel, args: { _
         options,
         isHelp: args.h,
       },
-    })
+    });
   }
 }

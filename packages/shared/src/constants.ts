@@ -3,9 +3,9 @@ export enum PLATFORM_TYPE {
   WEB = 'web',
 }
 
-export const COMPILE_MODE_IDENTIFIER_PREFIX = 'f'
+export const COMPILE_MODE_IDENTIFIER_PREFIX = 'f';
 
-export const COMPILE_MODE_SUB_RENDER_FN = 'subRenderFn'
+export const COMPILE_MODE_SUB_RENDER_FN = 'subRenderFn';
 
 export const PLATFORM_CONFIG_MAP = {
   h5: {
@@ -14,7 +14,7 @@ export const PLATFORM_CONFIG_MAP = {
   mini: {
     type: PLATFORM_TYPE.MINI,
   },
-}
+};
 
 export const TT_SPECIFIC_COMPONENTS = new Set([
   'page-container',
@@ -36,7 +36,7 @@ export const TT_SPECIFIC_COMPONENTS = new Set([
   'flow-ad',
   'ai-agent-chat',
   'component',
-])
+]);
 
 export const DEFAULT_COMPONENTS = new Set<string>([
   'view',
@@ -82,7 +82,7 @@ export const DEFAULT_COMPONENTS = new Set<string>([
   'import',
   'official-account',
   'editor',
-])
+]);
 
 export const UNITLESS_PROPERTIES_SET = new Set([
   'animation-iteration-count',
@@ -128,4 +128,4 @@ export const UNITLESS_PROPERTIES_SET = new Set([
   'stroke-miterlimit',
   'stroke-opacity',
   'stroke-width',
-])
+]);

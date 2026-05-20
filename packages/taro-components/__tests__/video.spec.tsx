@@ -1,25 +1,25 @@
-import { h } from '@stencil/core'
-import { AnyHTMLElement } from '@stencil/core/internal'
-import { newSpecPage, SpecPage } from '@stencil/core/testing'
+import { h } from '@stencil/core';
+import { AnyHTMLElement } from '@stencil/core/internal';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 
-import { Video } from '../src/components/video/video'
+import { Video } from '../src/components/video/video';
 
 describe('Video', () => {
-  const videoUrl = 'http://storage.jd.com/cjj-pub-images/bear.mp4'
-  let page: SpecPage
+  const videoUrl = 'http://storage.jd.com/cjj-pub-images/bear.mp4';
+  let page: SpecPage;
 
   it('props', async () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} />,
-    })
-    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
+    });
+    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video');
     // const centerPlayBtnCls = '.taro-video-cover-play-button'
     // const controlsCls = '.taro-video-controls'
 
     // expect(video).toBeInstanceOf(HTMLDivElement)
-    expect(video?.style['object-fit']).toEqual('contain')
+    expect(video?.style['object-fit']).toEqual('contain');
     // expect(video?.getAttribute('autoplay')).toEqual(false)
     // expect(video?.getAttribute('loop')).toEqual(false)
     // expect(video?.muted === false) // .toEqual(false)
@@ -53,29 +53,29 @@ describe('Video', () => {
     // // expect(page.root?.querySelector(controlsCls)).toBeInstanceOf(HTMLDivElement)
     // expect(video?.poster).toBe(poster)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should set initial time', async () => {
-    const initialTime = 10
+    const initialTime = 10;
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} initialTime={initialTime} />,
-    })
-    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
+    });
+    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video');
 
-    expect(video?.currentTime).toEqual(initialTime)
+    expect(video?.currentTime).toEqual(initialTime);
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should toggle full screen', async () => {
     // TODO
-    const onFullScreenChange = jest.fn()
+    const onFullScreenChange = jest.fn();
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} onFullScreenChange={onFullScreenChange} />,
-    })
+    });
     // const wrapper = await mount(app, scratch)
     // const { node } = wrapper
     // const video = wrapper.find('video.taro-video-video')
@@ -106,51 +106,51 @@ describe('Video', () => {
     // }))
     // expect(video.requestFullscreen.callCount === 1)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should play', async () => {
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} />,
-    })
-    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
+    });
+    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video');
     if (video) {
-      const play = jest.fn()
-      video.play = play
-      await video?.play()
-      await page.waitForChanges()
+      const play = jest.fn();
+      video.play = play;
+      await video?.play();
+      await page.waitForChanges();
 
-      expect(play.mock.calls.length).toBe(1)
+      expect(play.mock.calls.length).toBe(1);
 
-      expect(page.root).toMatchSnapshot()
+      expect(page.root).toMatchSnapshot();
     }
-  })
+  });
 
   it('should pause', async () => {
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} />,
-    })
-    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video')
+    });
+    const video = page.root?.querySelector<AnyHTMLElement>('video.taro-video-video');
     if (video) {
-      const pause = jest.fn()
-      video.pause = pause
-      await video?.pause()
-      await page.waitForChanges()
+      const pause = jest.fn();
+      video.pause = pause;
+      await video?.pause();
+      await page.waitForChanges();
 
-      expect(pause.mock.calls.length).toBe(1)
+      expect(pause.mock.calls.length).toBe(1);
 
-      expect(page.root).toMatchSnapshot()
+      expect(page.root).toMatchSnapshot();
     }
-  })
+  });
 
   it('should seek and stop', async () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} />,
-    })
+    });
     // const wrapper = await mount(app, scratch)
     // const video = wrapper.find('video.taro-video-video')
     // ref.current.seek(233)
@@ -165,15 +165,15 @@ describe('Video', () => {
     // expect(video.currentTime === 0)
     // expect(video.pause.callCount === 1)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('should be controlled by bar', async () => {
     // TODO
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} />,
-    })
+    });
     // const wrapper = await mount(app, scratch)
     // const controlBar = wrapper.find('.taro-video-controls')
     // let currentTime = wrapper.find('.taro-video-current-time')
@@ -224,8 +224,8 @@ describe('Video', () => {
     // expect(muteBtn instanceof HTMLDivElement)
     // expect(danmuBtn instanceof HTMLDivElement)
 
-    expect(page.root).toMatchSnapshot()
-  })
+    expect(page.root).toMatchSnapshot();
+  });
 
   it('danmu', async () => {
     // TODO
@@ -240,11 +240,11 @@ describe('Video', () => {
         color: 'rgb(255, 0, 255)',
         time: 3,
       },
-    ]
+    ];
     page = await newSpecPage({
       components: [Video],
       template: () => <taro-video-core src={videoUrl} enableDanmu={true} danmuList={danmuList} />,
-    })
+    });
     // const wrapper = await mount(app, scratch)
     // const danmu = wrapper.find('taro-video-danmu')
 
@@ -262,6 +262,6 @@ describe('Video', () => {
     // expect(danmu.children[1].textContent === danmuList[1].text)
     // expect(danmu.children[1].style.color === danmuList[1].color)
 
-    expect(page.root).toMatchSnapshot()
-  })
-})
+    expect(page.root).toMatchSnapshot();
+  });
+});

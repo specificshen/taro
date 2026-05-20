@@ -8,9 +8,9 @@ module.exports = {
           'jest-cli': '27.5.1',
           'jest-runner': '27.5.1',
           'jest-environment-node': '27.5.1',
-        }
+        };
       }
-      return pkg
+      return pkg;
     },
   },
-}
+};

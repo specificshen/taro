@@ -1,8 +1,8 @@
-import { FONT_LIMIT, IMAGE_LIMIT, MEDIA_LIMIT } from '@spcsn/taro-runner-utils'
+import { FONT_LIMIT, IMAGE_LIMIT, MEDIA_LIMIT } from '@spcsn/taro-runner-utils';
 
-import type { ViteMiniBuildConfig } from '@spcsn/taro/types/compile/viteCompilerContext'
+import type { ViteMiniBuildConfig } from '@spcsn/taro/types/compile/viteCompilerContext';
 
-const platform = 'mini'
+const platform = 'mini';
 
 const defaultConfig: Partial<ViteMiniBuildConfig> = {
   sourceRoot: 'src',
@@ -46,6 +46,6 @@ const defaultConfig: Partial<ViteMiniBuildConfig> = {
       },
     },
   },
-}
+};
 
-export default defaultConfig
+export default defaultConfig;

@@ -1,4 +1,4 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
 import {
   createSwcRegister,
@@ -11,83 +11,83 @@ import {
   SOURCE_DIR,
   TARO_GLOBAL_CONFIG_DIR,
   TARO_GLOBAL_CONFIG_FILE,
-} from '@spcsn/taro-helper'
-import ora from 'ora'
-import { merge } from 'webpack-merge'
+} from '@spcsn/taro-helper';
+import ora from 'ora';
+import { merge } from 'webpack-merge';
 
-import { filterGlobalConfig } from './utils'
-import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from './utils/constants'
+import { filterGlobalConfig } from './utils';
+import { CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE } from './utils/constants';
 
-import type { IProjectConfig } from '@spcsn/taro/types/compile'
+import type { IProjectConfig } from '@spcsn/taro/types/compile';
 
 interface IConfigOptions {
-  appPath: string
-  disableGlobalConfig?: boolean
+  appPath: string;
+  disableGlobalConfig?: boolean;
 }
 
 export default class Config {
-  appPath: string
-  configPath!: string
-  initialConfig!: IProjectConfig
-  initialGlobalConfig!: IProjectConfig
-  isInitSuccess!: boolean
-  disableGlobalConfig: boolean
+  appPath: string;
+  configPath!: string;
+  initialConfig!: IProjectConfig;
+  initialGlobalConfig!: IProjectConfig;
+  isInitSuccess!: boolean;
+  disableGlobalConfig: boolean;
 
   constructor(opts: IConfigOptions) {
-    this.appPath = opts.appPath
-    this.disableGlobalConfig = !!opts?.disableGlobalConfig
+    this.appPath = opts.appPath;
+    this.disableGlobalConfig = !!opts?.disableGlobalConfig;
   }
 
   async init(configEnv: { mode: string; command: string }) {
-    this.initialConfig = {}
-    this.initialGlobalConfig = {}
-    this.isInitSuccess = false
-    this.configPath = resolveScriptPath(path.join(this.appPath, CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE))
+    this.initialConfig = {};
+    this.initialGlobalConfig = {};
+    this.isInitSuccess = false;
+    this.configPath = resolveScriptPath(path.join(this.appPath, CONFIG_DIR_NAME, DEFAULT_CONFIG_FILE));
     if (!fs.existsSync(this.configPath)) {
-      if (this.disableGlobalConfig) return
-      this.initGlobalConfig()
+      if (this.disableGlobalConfig) return;
+      this.initGlobalConfig();
     } else {
-      this.initGlobalConfig(configEnv.command)
+      this.initGlobalConfig(configEnv.command);
       createSwcRegister({
         only: [(filePath) => filePath.indexOf(path.join(this.appPath, CONFIG_DIR_NAME)) >= 0],
-      })
+      });
       try {
-        const userExport = getModuleDefaultExport(require(this.configPath))
-        this.initialConfig = typeof userExport === 'function' ? await userExport(merge, configEnv) : userExport
-        this.isInitSuccess = true
+        const userExport = getModuleDefaultExport(require(this.configPath));
+        this.initialConfig = typeof userExport === 'function' ? await userExport(merge, configEnv) : userExport;
+        this.isInitSuccess = true;
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     }
   }
 
   initGlobalConfig(command: string = '') {
-    const homedir = getUserHomeDir()
-    if (!homedir) return console.error('获取不到用户 home 路径')
-    const globalPluginConfigPath = path.join(getUserHomeDir(), TARO_GLOBAL_CONFIG_DIR, TARO_GLOBAL_CONFIG_FILE)
-    if (!fs.existsSync(globalPluginConfigPath)) return
-    const spinner = ora(`开始获取 taro 全局配置文件： ${globalPluginConfigPath}`).start()
+    const homedir = getUserHomeDir();
+    if (!homedir) return console.error('获取不到用户 home 路径');
+    const globalPluginConfigPath = path.join(getUserHomeDir(), TARO_GLOBAL_CONFIG_DIR, TARO_GLOBAL_CONFIG_FILE);
+    if (!fs.existsSync(globalPluginConfigPath)) return;
+    const spinner = ora(`开始获取 taro 全局配置文件： ${globalPluginConfigPath}`).start();
     try {
-      this.initialGlobalConfig = fs.readJSONSync(globalPluginConfigPath) || {}
-      this.initialGlobalConfig = filterGlobalConfig(this.initialGlobalConfig, command)
-      spinner.succeed('获取 taro 全局配置成功')
+      this.initialGlobalConfig = fs.readJSONSync(globalPluginConfigPath) || {};
+      this.initialGlobalConfig = filterGlobalConfig(this.initialGlobalConfig, command);
+      spinner.succeed('获取 taro 全局配置成功');
     } catch (e) {
-      spinner.stop()
-      console.warn(`获取全局配置失败，如果需要启用全局插件请查看配置文件: ${globalPluginConfigPath} `)
+      spinner.stop();
+      console.warn(`获取全局配置失败，如果需要启用全局插件请查看配置文件: ${globalPluginConfigPath} `);
     }
   }
 
   getConfigWithNamed(platform, configName) {
-    const initialConfig = this.initialConfig
-    const sourceDirName = initialConfig.sourceRoot || SOURCE_DIR
-    const outputDirName = initialConfig.outputRoot || OUTPUT_DIR
-    const sourceDir = path.join(this.appPath, sourceDirName)
-    const entryName = ENTRY
-    const entryFilePath = resolveScriptPath(path.join(sourceDir, entryName))
+    const initialConfig = this.initialConfig;
+    const sourceDirName = initialConfig.sourceRoot || SOURCE_DIR;
+    const outputDirName = initialConfig.outputRoot || OUTPUT_DIR;
+    const sourceDir = path.join(this.appPath, sourceDirName);
+    const entryName = ENTRY;
+    const entryFilePath = resolveScriptPath(path.join(sourceDir, entryName));
 
     const entry = {
       [entryName]: [entryFilePath],
-    }
+    };
 
     return {
       entry,
@@ -117,6 +117,6 @@ export default class Config {
       esbuild: initialConfig.esbuild,
       ...initialConfig[configName],
       ...initialConfig[platform],
-    }
+    };
   }
 }

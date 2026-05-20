@@ -1,12 +1,12 @@
-export const needsEscapeRegEx = /[\n\r'\\\u2028\u2029]/
-export const quoteNewlineRegEx = /([\n\r'\u2028\u2029])/g
-export const backSlashRegEx = /\\/g
+export const needsEscapeRegEx = /[\n\r'\\\u2028\u2029]/;
+export const quoteNewlineRegEx = /([\n\r'\u2028\u2029])/g;
+export const backSlashRegEx = /\\/g;
 
-export const baseTemplateName = 'base'
-export const baseCompName = 'comp'
-export const customWrapperName = 'custom-wrapper'
-export const ENTRY_QUERY = 'taro-entry-loader'
-export const PAGENAME_QUERY = 'taro-pagename'
+export const baseTemplateName = 'base';
+export const baseCompName = 'comp';
+export const customWrapperName = 'custom-wrapper';
+export const ENTRY_QUERY = 'taro-entry-loader';
+export const PAGENAME_QUERY = 'taro-pagename';
 export const DEFAULT_TERSER_OPTIONS = {
   parse: {
     ecma: 8,
@@ -44,8 +44,8 @@ export const DEFAULT_TERSER_OPTIONS = {
     comments: false,
     ascii_only: true,
   },
-}
+};
 
-export const MINI_EXCLUDE_POSTCSS_PLUGIN_NAME = ['cssModules']
-export const H5_EXCLUDE_POSTCSS_PLUGIN_NAME = ['cssModules', 'url']
-export const HARMONY_SCOPES = [/^@system\./, /^@ohos\./, /^@hmscore\//, /^@(jd|taro)-oh\//]
+export const MINI_EXCLUDE_POSTCSS_PLUGIN_NAME = ['cssModules'];
+export const H5_EXCLUDE_POSTCSS_PLUGIN_NAME = ['cssModules', 'url'];
+export const HARMONY_SCOPES = [/^@system\./, /^@ohos\./, /^@hmscore\//, /^@(jd|taro)-oh\//];

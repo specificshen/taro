@@ -1,4 +1,4 @@
-import { Rule } from 'postcss'
+import { Rule } from 'postcss';
 
 const htmlTags = [
   'html',
@@ -94,7 +94,7 @@ const htmlTags = [
   'tr',
   'ul',
   'svg',
-]
+];
 const miniAppTags = [
   'cover-image',
   'cover-view',
@@ -145,44 +145,44 @@ const miniAppTags = [
   'open-data',
   'navigation-bar',
   'page-meta',
-]
+];
 const tags2Rgx = (tags: string[] = []) =>
-  new RegExp(`(^| |\\+|,|~|>|\\n)(${tags.join('|')})\\b(?=$| |\\.|\\+|,|~|:|\\[)`, 'g')
+  new RegExp(`(^| |\\+|,|~|>|\\n)(${tags.join('|')})\\b(?=$| |\\.|\\+|,|~|:|\\[)`, 'g');
 
 interface IOptions {
   /** 当前编译平台 */
-  platform?: string
+  platform?: string;
   /** 设置是否去除 cursor 相关样式 (h5默认值：true) */
-  removeCursorStyle?: boolean
+  removeCursorStyle?: boolean;
 }
 
 const postcssHtmlTransform = (options: IOptions = {}) => {
-  let selectorFilter
-  let walkRules
+  let selectorFilter;
+  let walkRules;
   switch (options.platform) {
     case 'h5': {
-      selectorFilter = tags2Rgx(miniAppTags)
+      selectorFilter = tags2Rgx(miniAppTags);
       walkRules = (rule: Rule) => {
-        rule.selector = rule.selector.replace(selectorFilter, '$1taro-$2-core')
-      }
-      break
+        rule.selector = rule.selector.replace(selectorFilter, '$1taro-$2-core');
+      };
+      break;
     }
     case 'rn': {
-      break
+      break;
     }
     case 'quickapp': {
-      break
+      break;
     }
     default: {
       // mini-program
-      const selector = tags2Rgx(htmlTags)
+      const selector = tags2Rgx(htmlTags);
       walkRules = (rule: Rule) => {
         if (/(^| )\*(?![=/*])/.test(rule.selector)) {
-          rule.remove()
-          return
+          rule.remove();
+          return;
         }
-        rule.selector = rule.selector.replace(selector, '$1.h5-$2')
-      }
+        rule.selector = rule.selector.replace(selector, '$1.h5-$2');
+      };
     }
   }
   return {
@@ -190,21 +190,21 @@ const postcssHtmlTransform = (options: IOptions = {}) => {
     Rule(rule) {
       if (typeof walkRules === 'function') {
         if (selectorFilter && selectorFilter.test(rule.prop)) {
-          walkRules(rule)
+          walkRules(rule);
         } else {
-          walkRules(rule)
+          walkRules(rule);
         }
       }
     },
     Declaration(decl) {
       if (options?.removeCursorStyle) {
         if (decl.prop === 'cursor') {
-          decl.remove()
+          decl.remove();
         }
       }
     },
-  }
-}
+  };
+};
 
-postcssHtmlTransform.postcss = true
-export default postcssHtmlTransform
+postcssHtmlTransform.postcss = true;
+export default postcssHtmlTransform;

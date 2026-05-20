@@ -1,10 +1,10 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import helper, { REG_NODE_MODULES } from '@spcsn/taro-helper'
+import helper, { REG_NODE_MODULES } from '@spcsn/taro-helper';
 
 interface IOptions {
-  include?: string[]
-  chain?: any
+  include?: string[];
+  chain?: any;
 }
 
 /**
@@ -23,63 +23,63 @@ interface IOptions {
  * @class MultiPlatformPlugin
  */
 export class MultiPlatformPlugin {
-  private source: string
-  private target: string
-  private options: IOptions
+  private source: string;
+  private target: string;
+  private options: IOptions;
 
   constructor(source: string, target: string, options?: IOptions) {
-    this.source = source
-    this.target = target
-    this.options = options || {}
+    this.source = source;
+    this.target = target;
+    this.options = options || {};
   }
 
   public apply(resolver) {
-    const target = resolver.ensureHook(this.target)
+    const target = resolver.ensureHook(this.target);
     resolver.getHook(this.source).tapAsync('MultiPlatformPlugin', (request, resolveContext, callback) => {
-      const innerRequest: string = request.request || request.path
-      if (!innerRequest || (request.context.hasOwnProperty('issuer') && !request.context.issuer)) return callback()
+      const innerRequest: string = request.request || request.path;
+      if (!innerRequest || (request.context.hasOwnProperty('issuer') && !request.context.issuer)) return callback();
 
       if (!path.extname(innerRequest)) {
-        let srcRequest: string
+        let srcRequest: string;
         if (path.isAbsolute(innerRequest)) {
           // absolute path
-          srcRequest = innerRequest
+          srcRequest = innerRequest;
         } else if (!path.isAbsolute(innerRequest) && /^\./.test(innerRequest)) {
           // relative path
-          srcRequest = path.resolve(request.path, request.request)
+          srcRequest = path.resolve(request.path, request.request);
         } else {
-          return callback()
+          return callback();
         }
 
         if (REG_NODE_MODULES.test(srcRequest) && !this.includes(srcRequest)) {
-          return callback()
+          return callback();
         }
 
-        const extensions = this.options.chain?.resolve?.extensions?.values()
+        const extensions = this.options.chain?.resolve?.extensions?.values();
 
-        const newRequestStr = helper.resolveMainFilePath(srcRequest, extensions)
-        if (newRequestStr === innerRequest) return callback()
+        const newRequestStr = helper.resolveMainFilePath(srcRequest, extensions);
+        if (newRequestStr === innerRequest) return callback();
         const obj = Object.assign({}, request, {
           request: newRequestStr,
-        })
+        });
         return resolver.doResolve(target, obj, 'resolve multi platform file path', resolveContext, (err, result) => {
-          if (err) return callback(err)
+          if (err) return callback(err);
 
-          if (result === undefined) return callback(null, null)
-          return callback(null, result)
-        })
+          if (result === undefined) return callback(null, null);
+          return callback(null, result);
+        });
       }
 
-      callback()
-    })
+      callback();
+    });
   }
 
   private includes(filePath: string): boolean {
-    if (!this.options.include || !this.options.include.length) return false
+    if (!this.options.include || !this.options.include.length) return false;
 
-    filePath = filePath.replace(/[\\/]/g, '/')
+    filePath = filePath.replace(/[\\/]/g, '/');
 
-    const res = this.options.include.find((item) => filePath.includes(item))
-    return Boolean(res)
+    const res = this.options.include.find((item) => filePath.includes(item));
+    return Boolean(res);
   }
 }

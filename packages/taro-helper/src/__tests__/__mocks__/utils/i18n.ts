@@ -1,3 +1,3 @@
-const t = () => 'i18n'
+const t = () => 'i18n';
 
-export default t
+export default t;

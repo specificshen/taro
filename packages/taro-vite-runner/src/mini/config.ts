@@ -1,4 +1,4 @@
-import path from 'node:path'
+import path from 'node:path';
 
 import {
   defaultMainFields,
@@ -7,11 +7,11 @@ import {
   recursiveMerge,
   REG_NODE_MODULES_DIR,
   REG_TARO_SCOPED_PACKAGE,
-} from '@spcsn/taro-helper'
-import { getSassLoaderOption } from '@spcsn/taro-runner-utils'
-import { PLATFORM_TYPE } from '@spcsn/taro-shared'
+} from '@spcsn/taro-helper';
+import { getSassLoaderOption } from '@spcsn/taro-runner-utils';
+import { PLATFORM_TYPE } from '@spcsn/taro-shared';
 
-import { getDefaultPostcssConfig } from '../postcss/postcss.mini'
+import { getDefaultPostcssConfig } from '../postcss/postcss.mini';
 import {
   getBabelOption,
   getCSSModulesOptions,
@@ -19,52 +19,52 @@ import {
   getMode,
   getPostcssPlugins,
   stripMultiPlatformExt,
-} from '../utils'
-import { createBabelTransformPlugin } from '../utils/babel'
-import { DEFAULT_TERSER_OPTIONS, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME } from '../utils/constants'
-import { logger } from '../utils/logger'
+} from '../utils';
+import { createBabelTransformPlugin } from '../utils/babel';
+import { DEFAULT_TERSER_OPTIONS, MINI_EXCLUDE_POSTCSS_PLUGIN_NAME } from '../utils/constants';
+import { logger } from '../utils/logger';
 
-import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext'
-import type { GetManualChunk } from 'rollup'
-import type { PluginOption } from 'vite'
+import type { ViteMiniCompilerContext } from '@spcsn/taro/types/compile/viteCompilerContext';
+import type { GetManualChunk } from 'rollup';
+import type { PluginOption } from 'vite';
 
-type RolldownInjectOptions = Record<string, string | [string, string]>
+type RolldownInjectOptions = Record<string, string | [string, string]>;
 
 function resolveModulePath(id: string, basedir: string): string {
-  if (path.isAbsolute(id)) return id
-  return require.resolve(id, { paths: [basedir, __dirname] })
+  if (path.isAbsolute(id)) return id;
+  return require.resolve(id, { paths: [basedir, __dirname] });
 }
 
 function normalizeInjectValue(value: string | string[]): string | [string, string] {
-  if (!Array.isArray(value)) return value
-  return value.length <= 1 ? (value[0] ?? '') : [value[0] ?? '', value[1] ?? '']
+  if (!Array.isArray(value)) return value;
+  return value.length <= 1 ? (value[0] ?? '') : [value[0] ?? '', value[1] ?? ''];
 }
 
 async function removeSourceMapFiles(dir: string) {
-  if (!(await fs.pathExists(dir))) return
+  if (!(await fs.pathExists(dir))) return;
 
-  const entries = await fs.readdir(dir)
+  const entries = await fs.readdir(dir);
   await Promise.all(
     entries.map(async (entry) => {
-      const filePath = path.join(dir, entry)
-      const stat = await fs.stat(filePath)
+      const filePath = path.join(dir, entry);
+      const stat = await fs.stat(filePath);
       if (stat.isDirectory()) {
-        await removeSourceMapFiles(filePath)
-        return
+        await removeSourceMapFiles(filePath);
+        return;
       }
       if (filePath.endsWith('.map')) {
-        await fs.remove(filePath)
+        await fs.remove(filePath);
       }
     }),
-  )
+  );
 }
 
 export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOption {
-  const { taroConfig, cwd: appPath, sourceDir } = viteCompilerContext
-  const outputRoot = path.join(appPath, taroConfig.outputRoot || 'dist')
-  const enableSourceMap = taroConfig.enableSourceMap ?? false
-  const compactWatch = taroConfig.isWatch && !enableSourceMap
-  const minify = compactWatch ? 'esbuild' : getMinify(taroConfig)
+  const { taroConfig, cwd: appPath, sourceDir } = viteCompilerContext;
+  const outputRoot = path.join(appPath, taroConfig.outputRoot || 'dist');
+  const enableSourceMap = taroConfig.enableSourceMap ?? false;
+  const compactWatch = taroConfig.isWatch && !enableSourceMap;
+  const minify = compactWatch ? 'esbuild' : getMinify(taroConfig);
   function getDefineOption() {
     const {
       env = {},
@@ -72,17 +72,17 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       defineConstants = {},
       framework = 'react',
       buildAdapter = PLATFORMS.WEAPP,
-    } = taroConfig
+    } = taroConfig;
 
-    env.FRAMEWORK = JSON.stringify(framework)
-    env.TARO_ENV = JSON.stringify(buildAdapter)
-    env.TARO_PLATFORM = JSON.stringify(process.env.TARO_PLATFORM || PLATFORM_TYPE.MINI)
-    env.NODE_ENV = JSON.stringify(compactWatch ? 'production' : process.env.NODE_ENV)
-    env.SUPPORT_TARO_POLYFILL = env.SUPPORT_TARO_POLYFILL || '"disabled"'
+    env.FRAMEWORK = JSON.stringify(framework);
+    env.TARO_ENV = JSON.stringify(buildAdapter);
+    env.TARO_PLATFORM = JSON.stringify(process.env.TARO_PLATFORM || PLATFORM_TYPE.MINI);
+    env.NODE_ENV = JSON.stringify(compactWatch ? 'production' : process.env.NODE_ENV);
+    env.SUPPORT_TARO_POLYFILL = env.SUPPORT_TARO_POLYFILL || '"disabled"';
     const envConstants = Object.keys(env).reduce((target, key) => {
-      target[`process.env.${key}`] = env[key]
-      return target
-    }, {})
+      target[`process.env.${key}`] = env[key];
+      return target;
+    }, {});
 
     const runtimeConstants = {
       ENABLE_SIZE_APIS: runtime.enableSizeAPIs ?? false,
@@ -90,20 +90,20 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       ENABLE_CLONE_NODE: runtime.enableCloneNode ?? false,
       ENABLE_CONTAINS: runtime.enableContains ?? false,
       ENABLE_MUTATION_OBSERVER: runtime.enableMutationObserver ?? false,
-    }
+    };
 
     return {
       ...envConstants,
       ...defineConstants,
       ...runtimeConstants,
-    }
+    };
   }
 
   function getAliasOption() {
-    const alias = taroConfig.alias || {}
+    const alias = taroConfig.alias || {};
     return Object.entries(alias).map(([find, replacement]) => {
-      return { find, replacement }
-    })
+      return { find, replacement };
+    });
   }
 
   function getInjectOption(): RolldownInjectOptions {
@@ -120,128 +120,128 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
       location: ['@spcsn/taro-runtime', 'location'],
       URLSearchParams: ['@spcsn/taro-runtime', 'URLSearchParams'],
       URL: ['@spcsn/taro-runtime', 'URL'],
-    }
+    };
 
-    const injectOptions = taroConfig.injectOptions
+    const injectOptions = taroConfig.injectOptions;
 
     if (injectOptions?.include) {
       for (const key in injectOptions.include) {
-        options[key] = normalizeInjectValue(injectOptions.include[key])
+        options[key] = normalizeInjectValue(injectOptions.include[key]);
       }
     }
 
     if (injectOptions?.exclude?.length) {
       injectOptions.exclude.forEach((item) => {
-        delete options[item]
-      })
+        delete options[item];
+      });
     }
 
-    return options
+    return options;
   }
 
   async function getSassOption() {
-    const sassLoaderOption = taroConfig.sassLoaderOption
+    const sassLoaderOption = taroConfig.sassLoaderOption;
     const nativeStyleImporter = function importer(url, prev, done) {
       // 让 sass 文件里的 @import 能解析小程序原生样式文体，如 @import "a.wxss";
-      const extname = path.extname(url)
+      const extname = path.extname(url);
       // fix: @import 文件可以不带scss/sass缀，如: @import "define";
       if (extname === '.scss' || extname === '.sass' || extname === '.css' || !extname) {
-        return null
+        return null;
       } else {
-        const filePath = path.resolve(path.dirname(prev), url)
+        const filePath = path.resolve(path.dirname(prev), url);
         fs.access(filePath, fs.constants.F_OK, (err) => {
           if (err) {
-            logger.error(err.message)
-            return null
+            logger.error(err.message);
+            return null;
           } else {
             fs.readFile(filePath)
               .then((res) => {
-                done({ contents: res.toString() })
+                done({ contents: res.toString() });
               })
               .catch((err) => {
-                logger.error(err)
-                return null
-              })
+                logger.error(err);
+                return null;
+              });
           }
-        })
+        });
       }
-    }
-    const importer = [nativeStyleImporter]
+    };
+    const importer = [nativeStyleImporter];
     if (sassLoaderOption?.importer) {
       Array.isArray(sassLoaderOption.importer)
         ? importer.unshift(...sassLoaderOption.importer)
-        : importer.unshift(sassLoaderOption.importer)
+        : importer.unshift(sassLoaderOption.importer);
     }
     const option = {
       ...(await getSassLoaderOption(taroConfig)),
       ...sassLoaderOption,
       importer,
-    }
+    };
     return {
       scss: option,
       sass: option,
-    }
+    };
   }
 
   const __postcssOption = getDefaultPostcssConfig({
     designWidth: taroConfig.designWidth || 750,
     deviceRatio: taroConfig.deviceRatio,
     postcssOption: taroConfig.postcss,
-  })
+  });
 
   // Note: 分 chunks, commonjs 的循环依赖令人头疼，需要把根据不同的框架，把 taro 和 框架的依赖，打成一个 base chunk（命名为 taro），保证这个 chunk 不会去引用别的 chunk
   function getManualChunks(): GetManualChunk {
-    const { framework } = taroConfig
+    const { framework } = taroConfig;
     const reactRelatedDeps: RegExp[] = [
       /node_modules[\\/]react-reconciler[\\/]/,
       /node_modules[\\/]react[\\/]/,
       /node_modules[\\/]scheduler[\\/]/,
-    ]
-    const vueRelatedDeps: RegExp[] = [/node_modules[\\/]@vue[\\/]/, /node_modules[\\/]vue[\\/]/]
-    const taroDeps: RegExp[] = [REG_TARO_SCOPED_PACKAGE]
-    const taroViteRunnerDeps: RegExp[] = [/node_modules[\\/]@tarojs[\\/]vite-runner/]
-    const nodeModulesDeps: RegExp[] = [REG_NODE_MODULES_DIR]
-    const babelDeps: RegExp[] = [/node_modules[\\/]@babel[\\/]/]
-    const commonjsHelpersDeps: RegExp[] = [/commonjsHelpers\.js$/]
-    const tslibDeps: RegExp[] = [/node_modules[\\/]tslib[\\/]/]
+    ];
+    const vueRelatedDeps: RegExp[] = [/node_modules[\\/]@vue[\\/]/, /node_modules[\\/]vue[\\/]/];
+    const taroDeps: RegExp[] = [REG_TARO_SCOPED_PACKAGE];
+    const taroViteRunnerDeps: RegExp[] = [/node_modules[\\/]@tarojs[\\/]vite-runner/];
+    const nodeModulesDeps: RegExp[] = [REG_NODE_MODULES_DIR];
+    const babelDeps: RegExp[] = [/node_modules[\\/]@babel[\\/]/];
+    const commonjsHelpersDeps: RegExp[] = [/commonjsHelpers\.js$/];
+    const tslibDeps: RegExp[] = [/node_modules[\\/]tslib[\\/]/];
     const testByReg2DExpList = (reg2DExpList: RegExp[][]) => (id: string) =>
-      reg2DExpList.some((regExpList) => regExpList.some((regExp) => regExp.test(id)))
+      reg2DExpList.some((regExpList) => regExpList.some((regExp) => regExp.test(id)));
     switch (framework) {
       case 'react':
         return (id, { getModuleInfo }) => {
-          REG_NODE_MODULES_DIR.lastIndex = 0
-          const moduleInfo = getModuleInfo(id)
+          REG_NODE_MODULES_DIR.lastIndex = 0;
+          const moduleInfo = getModuleInfo(id);
           // Note: vite-runner 里面涉及到一些js文件的注入，比如 comp.js， 为了避免这些文件被打包进 vendors，这里做了特殊处理
-          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null
+          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null;
           // Note: react 中用到了 for of等新的语法，babel相关依赖会被打包到 vendors 中，但taro中会打包react相关依赖，从而会引入 vendors 中的 babel 相关依赖，导致循环引用
-          if (testByReg2DExpList([babelDeps, commonjsHelpersDeps])(id)) return 'babelHelpers'
-          if (testByReg2DExpList([reactRelatedDeps])(id)) return 'common'
-          if (testByReg2DExpList([taroDeps, tslibDeps])(id)) return 'taro'
-          if (testByReg2DExpList([nodeModulesDeps])(id)) return 'vendors'
-          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common'
-        }
+          if (testByReg2DExpList([babelDeps, commonjsHelpersDeps])(id)) return 'babelHelpers';
+          if (testByReg2DExpList([reactRelatedDeps])(id)) return 'common';
+          if (testByReg2DExpList([taroDeps, tslibDeps])(id)) return 'taro';
+          if (testByReg2DExpList([nodeModulesDeps])(id)) return 'vendors';
+          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common';
+        };
       case 'vue3':
         return (id, { getModuleInfo }) => {
-          REG_NODE_MODULES_DIR.lastIndex = 0
-          const moduleInfo = getModuleInfo(id)
+          REG_NODE_MODULES_DIR.lastIndex = 0;
+          const moduleInfo = getModuleInfo(id);
           // Note: vite-runner 里面涉及到一些js文件的注入，比如 comp.js， 为了避免这些文件被打包进 vendors，这里做了特殊处理
-          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null
+          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null;
           // Note: vue3 中用到了 for of等新的语法，babel相关依赖会被打包到 vendors 中，但taro中会打包vue3相关依赖，从而会引入 vendors 中的 babel 相关依赖，导致循环引用
-          if (testByReg2DExpList([babelDeps])(id)) return 'babelHelpers'
-          if (testByReg2DExpList([taroDeps, vueRelatedDeps, tslibDeps, commonjsHelpersDeps])(id)) return 'taro'
-          if (testByReg2DExpList([nodeModulesDeps])(id)) return 'vendors'
-          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common'
-        }
+          if (testByReg2DExpList([babelDeps])(id)) return 'babelHelpers';
+          if (testByReg2DExpList([taroDeps, vueRelatedDeps, tslibDeps, commonjsHelpersDeps])(id)) return 'taro';
+          if (testByReg2DExpList([nodeModulesDeps])(id)) return 'vendors';
+          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common';
+        };
       default:
         // Note: 其他框架就先不分 chunks 了
         return (id, { getModuleInfo }) => {
-          REG_NODE_MODULES_DIR.lastIndex = 0
-          const moduleInfo = getModuleInfo(id)
+          REG_NODE_MODULES_DIR.lastIndex = 0;
+          const moduleInfo = getModuleInfo(id);
           // Note: vite-runner 里面涉及到一些js文件的注入，比如 comp.js， 为了避免这些文件被打包进 vendors，这里做了特殊处理
-          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null
-          if (testByReg2DExpList([nodeModulesDeps, commonjsHelpersDeps])(id)) return 'vendors'
-          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common'
-        }
+          if (testByReg2DExpList([taroViteRunnerDeps])(id)) return null;
+          if (testByReg2DExpList([nodeModulesDeps, commonjsHelpersDeps])(id)) return 'vendors';
+          if (moduleInfo?.importers?.length && moduleInfo.importers.length > 1) return 'common';
+        };
     }
   }
 
@@ -249,11 +249,11 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     name: 'taro:vite-mini-config',
     config: async () => {
       if (!enableSourceMap) {
-        await removeSourceMapFiles(outputRoot)
+        await removeSourceMapFiles(outputRoot);
       }
 
-      const taroComponentsPath = resolveModulePath(taroConfig.taroComponentsPath, appPath)
-      const taroRuntimePath = resolveModulePath('@spcsn/taro-runtime', appPath)
+      const taroComponentsPath = resolveModulePath(taroConfig.taroComponentsPath, appPath);
+      const taroRuntimePath = resolveModulePath('@spcsn/taro-runtime', appPath);
 
       return {
         mode: getMode(taroConfig),
@@ -276,7 +276,7 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
             },
             output: {
               entryFileNames(chunkInfo) {
-                return stripMultiPlatformExt(chunkInfo.name) + taroConfig.fileType.script
+                return stripMultiPlatformExt(chunkInfo.name) + taroConfig.fileType.script;
               },
               chunkFileNames: taroConfig.output!.chunkFileNames,
               manualChunks: getManualChunks(),
@@ -334,11 +334,11 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
           modules: getCSSModulesOptions(taroConfig),
         },
         // @TODO xsscript loader
-      }
+      };
     },
     configResolved(_resolvedConfig) {
       // console.log('resolvedConfig.plugins: ', resolvedConfig.plugins)
       // console.log('resolvedConfig.esbuild: ', resolvedConfig.esbuild)
     },
-  }
+  };
 }

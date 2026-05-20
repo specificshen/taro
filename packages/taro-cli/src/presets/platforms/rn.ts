@@ -1,23 +1,23 @@
-import * as fs from 'node:fs'
-import * as os from 'node:os'
-import * as path from 'node:path'
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 
-import { chalk } from '@spcsn/taro-helper'
-import * as child_process from 'child_process'
+import { chalk } from '@spcsn/taro-helper';
+import * as child_process from 'child_process';
 
-import { printDevelopmentTip } from '../../util'
+import { printDevelopmentTip } from '../../util';
 
-import type { IPluginContext } from '@spcsn/taro-service'
+import type { IPluginContext } from '@spcsn/taro-service';
 
 function checkReactNativeDependencies(packageInfo): boolean {
-  const packageNames = ['react', 'react-native', '@spcsn/taro-rn', '@spcsn/taro-rn-runner']
-  const { dependencies, devDependencies } = packageInfo
+  const packageNames = ['react', 'react-native', '@spcsn/taro-rn', '@spcsn/taro-rn-runner'];
+  const { dependencies, devDependencies } = packageInfo;
   for (let i = 0; i < packageNames.length; i++) {
     if (!dependencies[packageNames[i]] && !devDependencies[packageNames[i]]) {
-      return false
+      return false;
     }
   }
-  return true
+  return true;
 }
 
 function makeSureReactNativeInstalled(workspaceRoot: string): Promise<void> {
@@ -26,41 +26,41 @@ function makeSureReactNativeInstalled(workspaceRoot: string): Promise<void> {
       fs.readFileSync(path.join(workspaceRoot, 'package.json'), {
         encoding: 'utf8',
       }),
-    )
+    );
 
     if (checkReactNativeDependencies(packageInfo)) {
-      resolve()
+      resolve();
     } else {
       // 便于开发时切换版本
-      const devTag = process.env.DEVTAG || ''
-      console.log('Installing React-Native related packages:')
-      let packages = `react@^18.2.0 react-dom@^18.2.0 react-native@^0.73.1 @react-native/metro-config@^0.73.2 expo@~50.0.2 @tarojs/taro-rn${devTag} @tarojs/components-rn${devTag} @tarojs/rn-runner${devTag} @tarojs/rn-supporter${devTag} @tarojs/runtime-rn${devTag}`
-      console.log(packages)
+      const devTag = process.env.DEVTAG || '';
+      console.log('Installing React-Native related packages:');
+      let packages = `react@^18.2.0 react-dom@^18.2.0 react-native@^0.73.1 @react-native/metro-config@^0.73.2 expo@~50.0.2 @tarojs/taro-rn${devTag} @tarojs/components-rn${devTag} @tarojs/rn-runner${devTag} @tarojs/rn-supporter${devTag} @tarojs/runtime-rn${devTag}`;
+      console.log(packages);
       // windows下不加引号的话，package.json中添加的依赖不会自动带上^
       packages = packages
         .split(' ')
         .map((str) => `"${str}"`)
-        .join(' ')
-      let installCmd = `npm install ${packages} --save`
+        .join(' ');
+      let installCmd = `npm install ${packages} --save`;
       if (fs.existsSync(path.join(workspaceRoot, 'yarn.lock'))) {
-        installCmd = `yarn add ${packages} --force`
+        installCmd = `yarn add ${packages} --force`;
       }
       if (fs.existsSync(path.join(workspaceRoot, 'pnpm-lock.yaml'))) {
-        installCmd = `pnpm add ${packages}`
+        installCmd = `pnpm add ${packages}`;
       }
       child_process.exec(installCmd, (error) => {
         if (error) {
-          reject(error)
-          return
+          reject(error);
+          return;
         }
-        console.log(chalk.green(`React-Native related packages have been installed successfully.${os.EOL}${os.EOL}`))
+        console.log(chalk.green(`React-Native related packages have been installed successfully.${os.EOL}${os.EOL}`));
         console.log(
           `${chalk.yellow('ATTEHNTION')}: Package.json has been modified automatically, please submit it by yourself.${os.EOL}${os.EOL}`,
-        )
-        resolve()
-      })
+        );
+        resolve();
+      });
     }
-  })
+  });
 }
 
 export default (ctx: IPluginContext) => {
@@ -68,8 +68,8 @@ export default (ctx: IPluginContext) => {
     name: 'rn',
     useConfigName: 'rn',
     async fn({ config }) {
-      const { appPath, nodeModulesPath } = ctx.paths
-      const { npm } = ctx.helper
+      const { appPath, nodeModulesPath } = ctx.paths;
+      const { npm } = ctx.helper;
       const {
         deviceType = 'android',
         port,
@@ -81,9 +81,9 @@ export default (ctx: IPluginContext) => {
         sourcemapSourcesRoot,
         assetsDest,
         qr,
-      } = ctx.runOpts.options
+      } = ctx.runOpts.options;
 
-      printDevelopmentTip('rn')
+      printDevelopmentTip('rn');
 
       // 准备 rnRunner 参数
       const rnRunnerOpts = {
@@ -100,26 +100,26 @@ export default (ctx: IPluginContext) => {
         sourcemapSourcesRoot,
         assetsDest,
         buildAdapter: config.platform,
-      }
+      };
 
       if (!rnRunnerOpts.entry) {
-        rnRunnerOpts.entry = 'app'
+        rnRunnerOpts.entry = 'app';
       }
 
       makeSureReactNativeInstalled(appPath).then(
         async () => {
           // build with metro
-          const rnRunner = await npm.getNpmPkg('@spcsn/taro-rn-runner', appPath)
-          await rnRunner(appPath, rnRunnerOpts)
+          const rnRunner = await npm.getNpmPkg('@spcsn/taro-rn-runner', appPath);
+          await rnRunner(appPath, rnRunnerOpts);
         },
         (error) => {
-          console.log(chalk.red('Error when detecting React-Native packages:'))
-          console.log(error)
+          console.log(chalk.red('Error when detecting React-Native packages:'));
+          console.log(error);
           console.log(
             `${chalk.greenBright('TIP')}: 1) Try to remove React-Native dependencies in package.json and shoot again; 2) Install the packages above manually.`,
-          )
+          );
         },
-      )
+      );
     },
-  })
-}
+  });
+};

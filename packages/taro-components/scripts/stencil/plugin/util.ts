@@ -1,10 +1,10 @@
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import { LegacyAsyncImporter, LegacyImporterResult } from 'sass'
+import { LegacyAsyncImporter, LegacyImporterResult } from 'sass';
 
-import * as d from './declarations'
+import * as d from './declarations';
 
-import type { LegacyOptions } from 'sass/types/legacy/options'
+import type { LegacyOptions } from 'sass/types/legacy/options';
 
 /**
  * Determine if the Sass plugin should be applied, based on the provided `fileName`
@@ -15,14 +15,14 @@ import type { LegacyOptions } from 'sass/types/legacy/options'
  */
 export function usePlugin(fileName: string): boolean {
   if (typeof fileName === 'string') {
-    return /(\.scss|\.sass)$/i.test(fileName)
+    return /(\.scss|\.sass)$/i.test(fileName);
   }
-  return false
+  return false;
 }
 
-const EXTENDED_PATH_REGEX = /^\\\\\?\\/
-const NON_ASCII_REGEX = /[^\x00-\x80]+/ // eslint-disable-line no-control-regex
-const SLASH_REGEX = /\\/g
+const EXTENDED_PATH_REGEX = /^\\\\\?\\/;
+const NON_ASCII_REGEX = /[^\x00-\x80]+/; // eslint-disable-line no-control-regex
+const SLASH_REGEX = /\\/g;
 
 /**
  * Build a list of options to provide to Sass' `render` API.
@@ -40,28 +40,28 @@ export function getRenderOptions(
 ): LegacyOptions<'async'> {
   // Create a copy of the original sass config, so we don't modify the one provided.
   // Explicitly add `data` (as it's a required field) to be the source text
-  const renderOpts: LegacyOptions<'async'> = { ...opts, data: sourceText }
+  const renderOpts: LegacyOptions<'async'> = { ...opts, data: sourceText };
 
   // activate indented syntax if the file extension is .sass.
   // this needs to be set prior to injecting global sass (as the syntax affects the import terminator)
-  renderOpts.indentedSyntax = /(\.sass)$/i.test(fileName)
+  renderOpts.indentedSyntax = /(\.sass)$/i.test(fileName);
 
   // create a copy of the original path config, so we don't modify the one provided
-  renderOpts.includePaths = Array.isArray(opts.includePaths) ? opts.includePaths.slice() : []
+  renderOpts.includePaths = Array.isArray(opts.includePaths) ? opts.includePaths.slice() : [];
   // add the directory of the source file to includePaths
-  renderOpts.includePaths.push(path.dirname(fileName))
+  renderOpts.includePaths.push(path.dirname(fileName));
   // ensure each of the includePaths is an absolute path
   renderOpts.includePaths = renderOpts.includePaths.map((includePath) => {
     if (path.isAbsolute(includePath)) {
-      return includePath
+      return includePath;
     }
     // if it's a relative path then resolve it with the project's root directory
-    return path.resolve(context.config.rootDir!, includePath)
-  })
+    return path.resolve(context.config.rootDir!, includePath);
+  });
 
   // create a copy of the original global config of paths to inject, so we don't modify the one provided.
   // this is a Stencil-specific configuration, and not a part of the Sass API.
-  const injectGlobalPaths: string[] = Array.isArray(opts.injectGlobalPaths) ? opts.injectGlobalPaths.slice() : []
+  const injectGlobalPaths: string[] = Array.isArray(opts.injectGlobalPaths) ? opts.injectGlobalPaths.slice() : [];
 
   if (injectGlobalPaths.length > 0) {
     // Automatically inject each of these paths into the source text.
@@ -72,34 +72,34 @@ export function getRenderOptions(
           // convert any relative paths to absolute paths relative to the project root
           if (context.sys && typeof context.sys.normalizePath === 'function') {
             // context.sys.normalizePath added in stencil 1.11.0
-            injectGlobalPath = context.sys.normalizePath(path.join(context.config.rootDir!, injectGlobalPath))
+            injectGlobalPath = context.sys.normalizePath(path.join(context.config.rootDir!, injectGlobalPath));
           } else {
             // TODO, eventually remove normalizePath() from @stencil/sass
-            injectGlobalPath = normalizePath(path.join(context.config.rootDir!, injectGlobalPath))
+            injectGlobalPath = normalizePath(path.join(context.config.rootDir!, injectGlobalPath));
           }
         }
 
-        const importTerminator = renderOpts.indentedSyntax ? '\n' : ';'
+        const importTerminator = renderOpts.indentedSyntax ? '\n' : ';';
 
-        return `@import "${injectGlobalPath}"${importTerminator}`
+        return `@import "${injectGlobalPath}"${importTerminator}`;
       })
-      .join('')
+      .join('');
 
-    renderOpts.data = injectText + renderOpts.data
+    renderOpts.data = injectText + renderOpts.data;
   }
 
   // remove non-standard sass option
-  delete (renderOpts as any).injectGlobalPaths
+  delete (renderOpts as any).injectGlobalPaths;
 
   // the "file" config option is not valid here
-  delete renderOpts.file
+  delete renderOpts.file;
 
   if (context.sys && typeof context.sys.resolveModuleId === 'function') {
-    const importers: LegacyAsyncImporter[] = []
+    const importers: LegacyAsyncImporter[] = [];
     if (typeof renderOpts.importer === 'function') {
-      importers.push(renderOpts.importer)
+      importers.push(renderOpts.importer);
     } else if (Array.isArray(renderOpts.importer)) {
-      importers.push(...renderOpts.importer)
+      importers.push(...renderOpts.importer);
     }
 
     /**
@@ -117,7 +117,7 @@ export function getRenderOptions(
       if (typeof url === 'string') {
         if (url.startsWith('~')) {
           try {
-            const m = getModuleId(url)
+            const m = getModuleId(url);
 
             if (m.moduleId) {
               context.sys
@@ -127,33 +127,33 @@ export function getRenderOptions(
                 })
                 .then((resolved: d.ResolveModuleIdResults) => {
                   if (resolved.pkgDirPath) {
-                    const resolvedPath = path.join(resolved.pkgDirPath, m.filePath!)
+                    const resolvedPath = path.join(resolved.pkgDirPath, m.filePath!);
                     done({
                       file: context.sys.normalizePath(resolvedPath),
-                    })
+                    });
                   } else {
-                    done(null)
+                    done(null);
                   }
                 })
                 .catch((err) => {
-                  done(err)
-                })
+                  done(err);
+                });
 
-              return
+              return;
             }
           } catch (e) {
-            done(e)
+            done(e);
           }
         }
       }
-      done(null)
-    }
-    importers.push(importer)
+      done(null);
+    };
+    importers.push(importer);
 
-    renderOpts.importer = importers
+    renderOpts.importer = importers;
   }
 
-  return renderOpts
+  return renderOpts;
 }
 
 /**
@@ -166,9 +166,9 @@ export function getRenderOptions(
  */
 export function createResultsId(fileName: string): string {
   // create what the new path is post transform (.css)
-  const pathParts = fileName.split('.')
-  pathParts[pathParts.length - 1] = 'css'
-  return pathParts.join('.')
+  const pathParts = fileName.split('.');
+  pathParts[pathParts.length - 1] = 'css';
+  return pathParts.join('.');
 }
 
 export function normalizePath(str: string) {
@@ -176,30 +176,30 @@ export function normalizePath(str: string) {
   // https://github.com/sindresorhus/slash MIT
   // By Sindre Sorhus
   if (typeof str !== 'string') {
-    throw new Error(`invalid path to normalize`)
+    throw new Error(`invalid path to normalize`);
   }
-  str = str.trim()
+  str = str.trim();
 
   if (EXTENDED_PATH_REGEX.test(str) || NON_ASCII_REGEX.test(str)) {
-    return str
+    return str;
   }
 
-  str = str.replace(SLASH_REGEX, '/')
+  str = str.replace(SLASH_REGEX, '/');
 
   // always remove the trailing /
   // this makes our file cache look ups consistent
   if (str.charAt(str.length - 1) === '/') {
-    const colonIndex = str.indexOf(':')
+    const colonIndex = str.indexOf(':');
     if (colonIndex > -1) {
       if (colonIndex < str.length - 2) {
-        str = str.substring(0, str.length - 1)
+        str = str.substring(0, str.length - 1);
       }
     } else if (str.length > 1) {
-      str = str.substring(0, str.length - 1)
+      str = str.substring(0, str.length - 1);
     }
   }
 
-  return str
+  return str;
 }
 
 /**
@@ -209,19 +209,19 @@ export function normalizePath(str: string) {
  */
 export function getModuleId(orgImport: string): { moduleId?: string; filePath?: string } {
   if (orgImport.startsWith('~')) {
-    orgImport = orgImport.substring(1)
+    orgImport = orgImport.substring(1);
   }
-  const split = orgImport.split('/')
-  const m: ReturnType<typeof getModuleId> = {}
+  const split = orgImport.split('/');
+  const m: ReturnType<typeof getModuleId> = {};
 
   if (orgImport.startsWith('@') && split.length > 1) {
     // we have a scoped package, it's module includes the word following the first slash
-    m.moduleId = split.slice(0, 2).join('/')
-    m.filePath = split.slice(2).join('/')
+    m.moduleId = split.slice(0, 2).join('/');
+    m.filePath = split.slice(2).join('/');
   } else {
-    m.moduleId = split[0]
-    m.filePath = split.slice(1).join('/')
+    m.moduleId = split[0];
+    m.filePath = split.slice(1).join('/');
   }
 
-  return m
+  return m;
 }
