@@ -17,8 +17,6 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
     {
       name: 'taro:vite-mini-emit',
       async generateBundle(_outputOpts, bundle) {
-        const isUsingCustomWrapper = componentConfig.thirdPartyComponents.has('custom-wrapper');
-
         if (viteCompilerContext) {
           const { taroConfig, sourceDir } = viteCompilerContext;
           const template = taroConfig.template;
@@ -52,6 +50,11 @@ export default function (viteCompilerContext: ViteMiniCompilerContext): PluginOp
                 }
               }
             }
+          }
+
+          const isUsingCustomWrapper = true;
+          if (!componentConfig.thirdPartyComponents.has(customWrapperName)) {
+            componentConfig.thirdPartyComponents.set(customWrapperName, new Set());
           }
 
           // emit: app.json
